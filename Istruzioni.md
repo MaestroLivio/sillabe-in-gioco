@@ -1,78 +1,175 @@
-Agisci come uno sviluppatore web senior specializzato in ed-tech, accessibilità e Comunicazione Aumentativa Alternativa (CAA). 
-Crea un'applicazione web interattiva completa (in un unico file standalone con HTML5, CSS3 inline e JavaScript ES6) per l'apprendimento della letto-scrittura basato sul trascinamento delle sillabe e sintesi vocale.
+# Istruzioni d'uso — Sillabe in Gioco
+
+Guida rapida per insegnanti, logopedisti, genitori e bambini.
+Per l'installazione tecnica vedi [README.md](README.md).
 
 ---
 
-### 1. INTERFACCIA GRAFICA (UI/UX)
-L'interfaccia deve replicare lo stile visivo dei software didattici per l'infanzia:
-* **Tema visivo:** Sfondo celeste/azzurro chiaro con elementi colorati, angoli arrotondati e uno stile cartoon/didattico.
-* **Barra di Titolo Superiore:** 
-  - Titolo dinamico del livello (es. "2. DALLA PAROLA ALLA FRASE" oppure "4. DALLA FRASE SEMPLICE ALLA FRASE COORDINATA").
-  - Pulsante rosso di chiusura/uscita (X) in alto a destra.
-* **Area Visiva (TV Container):**
-  - Un riquadro a forma di TV vintage color verde petrolio/ottanio contenente l'immagine illustrativa della frase corrente.
-* **Riproduttore Audio (Radio Vintage):**
-  - Un'icona/pulsante a forma di radio rossa con altoparlante. Cliccandoci sopra viene riprodotta la frase completa via sintesi vocale.
-* **Area di Costruzione (Slot Frase):**
-  - Contenitori rettangolari azzurri dove inserire le sillabe trascinabili, con separatori arancioni verticali tra gli slot.
-  - **Modalità Semplice (con Guida/Suggerimento):** Mostra sopra la riga di composizione la frase completa di esempio. Alcuni slot possono essere pre-riempiti in grigio per guidare il bambino, lasciando solo alcuni slot vuoti da completare.
-  - **Modalità Avanzata (Frasi Coordinate):** Presenta due righe separate ("FRASE 1" e "FRASE 2") collegate da un connettore centrale (es. il cerchio arancione/azzurro con la congiunzione "E").
-* **Area di Gioco (Tessere Sillabiche):**
-  - Tessere rettangolari trascinabili (drag-and-drop) contenenti le sillabe mescolate, comprese delle sillabe "distrattore" (errate).
-* **Barra di Navigazione e Strumenti (In basso):**
-  - Personaggio/mascotte (es. orsetto o burattino) in basso a sinistra.
-  - Pulsanti interattivi: "SUGGERIMENTO" (icona lampada), "STAMPA" (stampante), "ESERCIZI" (cassetta attrezzi), "RIFAI" (ruota cromatica), "HO FINITO" (scatola giochi).
-  - Controller di navigazione in basso a destra con frecce avanti/indietro e contatore del livello (es. "3 / 10" o "1 / 40").
+## 1. Avviare l'app
+
+| Piattaforma | Come |
+|---|---|
+| **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
+| **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
+| **Windows** | Esegui `SillabeInGioco-Setup-2.0.0.exe` e segui la procedura |
+| **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
+| **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
+
+> [!TIP]
+> Al primo avvio il sistema potrebbe chiedere il permesso di usare la voce:
+> serve solo alla sintesi vocale locale, nessun audio viene registrato o inviato.
 
 ---
 
-### 2. FUNZIONALITÀ INTERATTIVE E LOGICA (JavaScript)
+## 2. La schermata Home
 
-1. **Web Speech API (Text-to-Speech in Italiano `it-IT`):**
-   * **Sillaba singola:** Quando l'utente clicca o inizia il drag su una tessera sillabica, il sistema deve pronunciarne la fonetica.
-   * **Frase completa:** Cliccando sulla Radio rossa, la voce guida legge la frase bersaglio.
-   * **Lettura finale automatica:** Quando la frase viene completata correttamente, gli slot si evidenziano di verde, viene riprodotto un effetto sonoro di vittoria e la sintesi vocale legge l'intera frase (o le frasi coordinate) a ritmo scandito.
-
-2. **Drag & Drop (Compatibile con Desktop e Touch Screen):**
-   * Supporto sia per eventi mouse (HTML5 Drag and Drop) sia per eventi touch su tablet/LIM (`touchstart`, `touchmove`, `touchend`).
-   * Aggancio magnetico (snap-in) delle tessere negli slot corretti.
-   * Se la sillaba trascinata è errata o finisce fuori da uno slot, ritorna nella posizione iniziale con un'animazione.
-
-3. **Sistema di Suggerimento e Reset:**
-   * Cliccando sul pulsante "SUGGERIMENTO", la prossima sillaba corretta e il rispettivo slot target lampeggiano.
-   * Cliccando su "RIFAI", le tessere tornano nella zona di partenza e gli slot si svuotano.
-
-4. **Navigazione tra i Livelli:**
-   * Possibilità di scorrere avanti e indietro tra i livelli tramite le frecce.
+- **Continua** riprende il livello dove eri rimasto.
+- **Livello a caso** propone un esercizio qualsiasi tra i 40.
+- **I quattro percorsi** mostrano 10 livelli ciascuno con le stelle ottenute; tocca un percorso per aprire il primo livello non ancora completato.
+- **Strumenti**: Esercizi, Stampa, Trofei, Aiuto.
+- **Il tuo progresso**: livelli completati, stelle, precisione, tempo di gioco.
+- L'ingranaggio in alto a destra apre le **impostazioni**; la ✕ chiude l'app (nel browser torna alla scheda precedente).
 
 ---
 
-### 3. STRUTTURA DATI (Array JSON di 40 Livelli)
-Includi una struttura dati `LEVELS` ben organizzata contenente 40 esercizi divisi in 4 macro-gruppi di difficoltà:
+## 3. Giocare un livello
 
-1. **Livelli 1-10 (Dalla Parola alla Frase - Modalità Guidata):**
-   - Frasi brevissime (Soggetto + Verbo + Oggetto) con riga di suggerimento e slot pre-riempiti.
-2. **Livelli 11-20 (Frasi Semplici con Espansioni):**
-   - Frasi lineari complete da ricomporre interamente (es. "Il cane gioca con la palla").
-3. **Livelli 21-30 (Frasi Coordinate):**
-   - Struttura a doppia frase ("FRASE 1" e "FRASE 2") unite da congiunzioni come "e", "ma", "poi" (es. "Il gatto dorme E il topo va nella tana").
-4. **Livelli 31-40 (Frasi Subordinate e Complesse):**
-   - Frasi con causali, temporali e relative (es. "Quando piove il bambino apre l'ombrello").
+1. **Ascolta** — tocca la radio rossa: la voce legge la frase intera.
+2. **Trascina** — prendi una tessera sillabica e portala nella casella azzurra.
+   - Con il mouse: trascinamento classico.
+   - Con il dito o la penna: trascinamento diretto sul touch screen.
+   - Senza trascinare: tocca la tessera (senti la sillaba), poi tocca la casella.
+3. **Controlla** — se la sillaba è giusta la casella si riempie con un *clic* e un suono;
+   se è sbagliata la tessera torna al suo posto con un'animazione e un suono grave.
+4. **Completa** — quando tutte le caselle sono piene, gli slot diventano verdi,
+   partono i coriandoli e la voce legge la frase **scandita sillaba per sillaba**.
+   Compare il pannello del risultato con le stelle e il pulsante per il livello successivo.
 
-Ogni oggetto livello deve avere la seguente struttura JSON:
-```json
-{
-  "id": 1,
-  "title": "2. DALLA PAROLA ALLA FRASE",
-  "mode": "simple", // "simple" o "coordinated"
-  "image": "path/to/image.jpg",
-  "hintText": "il filo è lungo",
-  "sentences": [
-    {
-      "label": "FRASE 1",
-      "target": ["il", "fi", "lo", "è", "lun", "go"],
-      "prefilled": [true, true, true, true, false, false] // true = slot grigio pre-compilato
-    }
-  ],
-  "distractors": ["co", "vi", "e"]
-}
+### I pulsanti in basso
+
+| Pulsante | Cosa fa |
+|---|---|
+| 💡 **SUGGERIMENTO** | Fa lampeggiare insieme la tessera giusta e la casella di destinazione |
+| 🧰 **ESERCIZI** | Apre una sessione di 8 domande (ascolto, sillaba iniziale, conteggio, lacuna) |
+| 🖨️ **STAMPA** | Genera la scheda A4 del livello corrente: frase, caselle, tessere da ritagliare |
+| 🔄 **RIFAI** | Svuota le caselle e rimette tutte le tessere nel vassoio |
+| 🎁 **HO FINITO** | Verifica il lavoro e dice quante sillabe mancano |
+| ← → | Livello precedente / successivo, con contatore `n / 40` |
+
+🐻 **Orsetto Lino**, in basso a sinistra, dà consigli contestuali: toccalo per sapere cosa fare.
+
+In alto a destra: 🏠 torna alla home, ✕ chiude il livello.
+
+---
+
+## 4. I quattro percorsi
+
+| Percorso | Livelli | Cosa si impara |
+|---|---|---|
+| 🌱 **1 · Guidato** | 1–10 | Soggetto + verbo + oggetto. La frase è scritta in alto e 4–5 caselle sono già compilate in grigio. |
+| 🌿 **2 · Frasi semplici** | 11–20 | Frasi lineari complete con espansioni: tutte le caselle sono da riempire. |
+| 🌳 **3 · Coordinate** | 21–30 | Due frasi unite da *e*, *ma*, *poi*, con il connettore al centro. |
+| 🏔️ **4 · Complesse** | 31–40 | Subordinate causali, temporali e relative: *quando*, *se*, *perché*, *mentre*, *dopo*, *prima*, *poiché*. |
+
+Ogni livello ha **3 tessere distrattore** (sillabe sbagliate) mescolate alle corrette:
+servono a far ragionare sul suono, non solo sulla forma.
+
+### Le stelle
+
+- ⭐⭐⭐ nessun errore
+- ⭐⭐ fino a 2 errori
+- ⭐ oltre 2 errori
+
+I trofei si sbloccano con traguardi complessivi (primo livello, metà percorso, tutti i livelli,
+precisione negli esercizi, uso della voce, livello completato senza suggerimenti).
+
+---
+
+## 5. Esercizi
+
+Otto domande per sessione, scelte a caso tra quattro tipi:
+
+1. **Ascolto** — senti una sillaba e scegli quella giusta tra quattro.
+2. **Sillaba iniziale** — quale sillaba apre la parola?
+3. **Conteggio** — quante sillabe ha la parola?
+4. **Lacuna** — quale sillaba completa la parola?
+
+Alla fine: punteggio, precisione, record personale e pulsanti per ripetere o tornare alla home.
+
+---
+
+## 6. Stampa
+
+La scheda A4 contiene:
+
+- titolo del livello e frase completa;
+- le caselle con la prima sillaba come esempio;
+- le tessere sillabiche da ritagliare in fondo;
+- righe per nome, data e autovalutazione con le stelle.
+
+Suggerimento: stampa in **bianco e nero** per risparmiare inchiostro; le caselle restano leggibili.
+
+---
+
+## 7. Impostazioni di accessibilità
+
+Apri l'ingranaggio ⚙️ dalla home.
+
+| Impostazione | A cosa serve |
+|---|---|
+| **Dimensione testo** 90–150% | Ingrandisce tutto il testo senza rompere il layout |
+| **Velocità voce** | Rallenta la sintesi per chi ha bisogno di più tempo |
+| **Voce** | Sceglie tra le voci italiane installate nel sistema |
+| **Tema scuro** | Riduce l'affaticamento visivo e l'abbagliamento |
+| **Effetti sonori** | Disattiva i suoni sintetici (la voce resta attiva) |
+| **Lettura automatica** | Legge la frase appena si apre un livello |
+| **Riga suggerimento** | Mostra o nasconde la frase guida nei livelli 1–10 |
+| **Riduci animazioni** | Meno movimento per chi è sensibile |
+
+Tutte le scelte sono salvate automaticamente sul dispositivo.
+
+### Scorciatoie da tastiera
+
+| Tasto | Azione |
+|---|---|
+| `←` `→` | Livello precedente / successivo |
+| `H` | Suggerimento |
+| `R` | Rifai |
+| `Esc` | Torna alla home |
+
+---
+
+## 8. Consigli didattici
+
+- **Prima l'ascolto**: fai ascoltare la frase 2–3 volte prima di toccare le tessere.
+- **Una sillaba alla volta**: nei livelli 11–40 conviene procedere da sinistra a destra.
+- **Gli errori sono utili**: il suono grave e il ritorno della tessera insegnano senza punire.
+- **Usa i distrattori**: chiedi «perché *co* non va bene?» per far emergere la regola.
+- **Scheda stampata**: dopo il livello digitale, la scheda A4 consolida la scrittura a mano.
+- **Sessioni brevi**: 10–15 minuti sono più efficaci di 40, soprattutto nei percorsi 3 e 4.
+
+---
+
+## 9. Problemi frequenti
+
+| Problema | Soluzione |
+|---|---|
+| Nessuna voce | Installa una voce italiana dal sistema (macOS: *Dettatura e voce*; Windows: *Voce*; ChromeOS: *Accessibilità → Sintesi vocale*) |
+| La voce è troppo veloce | Impostazioni → *Velocità voce* verso sinistra |
+| Il trascinamento non parte su tablet | Tocca la tessera e poi la casella: funziona anche senza trascinare |
+| Il layout è stretto | Ruota il tablet in orizzontale o riduci lo zoom del browser |
+| Progressi spariti | I dati sono locali: cancellare i dati di navigazione o reinstallare l'app li azzera |
+| L'app non parte da `index.html` | È normale che il service worker (offline) richieda `http://` o l'app installata |
+
+---
+
+## 10. Privacy
+
+Nessuna connessione a internet, nessun account, nessuna pubblicità, nessuna statistica.
+I progressi restano in `localStorage` (web) o nella cartella dati dell'app (desktop).
+La sintesi vocale usa le voci del sistema operativo: il testo non viene inviato altrove.
+Dettagli completi in [PRIVACY.md](PRIVACY.md).
+
+---
+
+Copyright © 2026 Livio Luppino · Licenza MIT · Uso libero in classe, in studio e in famiglia.
