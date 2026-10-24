@@ -220,7 +220,10 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run icons:native` | Genera `icon.icns` (macOS) e `icon.ico` (Windows) |
 | `npm run screenshots` | Cattura le 12 schermate in `build/screenshots/` |
 | `npm run build:web` | Pacchetto PWA + estensione ChromeOS in `dist/` |
-| `npm run build:mac` | DMG + ZIP per macOS (arm64 e x64) |
+| `npm run build:mac` | DMG + ZIP per macOS: arm64 e x64 |
+| `npm run build:mac:arm64` | Solo Apple Silicon (DMG + ZIP) |
+| `npm run build:mac:x64` | Solo Intel (DMG + ZIP) |
+| `npm run make:dmg` | Ricrea solo i DMG dalle app già impacchettate in `dist/` |
 | `npm run clean:volumes` | Smonta i volumi DMG rimasti agganciati da build interrotte (solo macOS) |
 | `npm run build:win` | Installer NSIS + versione portabile |
 | `npm run build:linux` | AppImage + DEB |
@@ -258,7 +261,8 @@ sillabe-in-gioco/
 │   ├── smoke-test.js           # Test end-to-end headless
 │   ├── levels-audit.js         # Audit illustrazioni/caselle dei 40 livelli
 │   ├── layout-audit.js         # Audit responsive, target touch, resa SVG
-│   ├── clean-volumes.js        # Smonta volumi DMG residui prima della build macOS
+│   ├── clean-volumes.js        # Smonta volumi DMG residui
+│   ├── make-dmg.js             # Crea i DMG con hdiutil in un solo passaggio
 │   └── screenshots.js          # Cattura screenshot
 ├── .github/workflows/          # CI: build matrix macOS/Windows/Linux
 ├── README.md
@@ -329,9 +333,11 @@ gh release upload "v$(node -p "require('./package.json').version")" dist/*.dmg d
 ```
 
 > [!NOTE]
-> `npm run build:mac` smonta prima eventuali volumi DMG rimasti agganciati da build
-> interrotte (`scripts/clean-volumes.js`): senza questa pulizia `hdiutil detach`
-> fallisce e la build esce con errore anche a pacchetti già scritti.
+> I DMG sono creati da `scripts/make-dmg.js` con un solo passaggio `hdiutil`, senza
+> montare il volume né usare l'automazione di Finder: il percorso usato da
+> electron-builder lasciava il volume occupato e faceva fallire `hdiutil detach`
+> con exit code 1 anche a pacchetti già scritti. Il risultato è lo stesso: app,
+> collegamento ad *Applicazioni*, 100 MB circa.
 
 ---
 

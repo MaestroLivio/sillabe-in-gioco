@@ -30,9 +30,12 @@
     "test:levels": "electron scripts/levels-audit.js",
     "test": "npm run validate && npm run test:smoke && npm run test:levels && npm run test:layout",
     "clean:volumes": "node scripts/clean-volumes.js",
+    "make:dmg": "node scripts/make-dmg.js arm64 && node scripts/make-dmg.js x64",
     "screenshots": "electron scripts/screenshots.js",
     "build:web": "node scripts/package-web.js",
-    "build:mac": "node scripts/clean-volumes.js && electron-builder --mac --publish never",
+    "build:mac": "npm run clean:volumes && electron-builder --mac --publish never && node scripts/make-dmg.js arm64 && node scripts/make-dmg.js x64",
+    "build:mac:arm64": "npm run clean:volumes && electron-builder --mac --arm64 --publish never && node scripts/make-dmg.js arm64",
+    "build:mac:x64": "npm run clean:volumes && electron-builder --mac --x64 --publish never && node scripts/make-dmg.js x64",
     "build:win": "electron-builder --win --publish never",
     "build:linux": "electron-builder --linux --publish never",
     "build:all": "npm run build:mac && npm run build:win && npm run build:linux",
@@ -66,13 +69,6 @@
       "category": "public.app-category.education",
       "target": [
         {
-          "target": "dmg",
-          "arch": [
-            "arm64",
-            "x64"
-          ]
-        },
-        {
           "target": "zip",
           "arch": [
             "arm64",
@@ -89,27 +85,6 @@
       "extendInfo": {
         "LSMinimumSystemVersion": "10.15"
       }
-    },
-    "dmg": {
-      "title": "Sillabe in Gioco ${version}",
-      "contents": [
-        {
-          "x": 150,
-          "y": 190,
-          "type": "file"
-        },
-        {
-          "x": 420,
-          "y": 190,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ],
-      "window": {
-        "width": 600,
-        "height": 400
-      },
-      "backgroundColor": "#dff1ff"
     },
     "win": {
       "target": [

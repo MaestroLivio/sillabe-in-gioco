@@ -12,10 +12,13 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
   finestra, quando lo scroll non era ancora arrivato in fondo. Ora lo scroll viene
   ripetuto fino al fondo reale e, se non ci arriva, l'audit lo segnala invece di
   mostrare un falso allarme. Verificato: 15 px di margine a 390 px di larghezza.
-- **Build macOS che falliva sul secondo avvio**: se una build precedente lasciava
-  montato il volume `/Volumes/Sillabe in Gioco…`, `hdiutil detach` falliva e
-  electron-builder usciva con codice 1 anche a DMG già scritti. Il nuovo
-  `scripts/clean-volumes.js` (eseguito da `npm run build:mac`) smonta i residui.
+- **Build macOS inaffidabile**: electron-builder creava il DMG montando un volume
+  in `/Volumes` e disponendo la finestra via automazione di Finder; se il volume
+  restava occupato, `hdiutil detach` falliva e la build usciva con codice 1 anche a
+  DMG e ZIP già scritti. Ora i DMG sono creati da `scripts/make-dmg.js` in un solo
+  passaggio `hdiutil`, senza volume da smontare né AppleScript: app e collegamento
+  ad *Applicazioni* restano identici. `scripts/clean-volumes.js` pulisce comunque
+  i residui di build interrotte.
 
 ## [2.0.0] — 2026-10-24
 
