@@ -28,11 +28,21 @@ app.whenReady().then(async () => {
       const sleep = ms => new Promise(r => setTimeout(r, ms));
       ${code}
       await sleep(350);
-      // porta in fondo alla pagina: è lì che la barra fissa potrebbe coprire contenuti
-      document.scrollingElement.scrollTop = 1e6;
-      document.body.scrollTop = 1e6;
-      window.scrollTo(0, 1e6);
-      await sleep(400);
+      // Porta in fondo alla pagina: è lì che la barra fissa potrebbe coprire contenuti.
+      // Ripete lo scroll più volte perché dopo un resize il primo tentativo può essere
+      // troncato dall'altezza massima calcolata sul layout precedente.
+      const toBottom = async () => {
+        for (let i = 0; i < 8; i++) {
+          document.scrollingElement.scrollTop = 1e6;
+          document.body.scrollTop = 1e6;
+          window.scrollTo(0, 1e6);
+          await sleep(120);
+          const d = document.documentElement;
+          if (Math.abs(d.scrollHeight - d.clientHeight - d.scrollTop) <= 1) break;
+        }
+      };
+      await toBottom();
+      await sleep(200);
 
       const doc = document.documentElement;
       const overflowX = doc.scrollWidth - doc.clientWidth;
@@ -60,6 +70,7 @@ app.whenReady().then(async () => {
 
       return {
         overflowX,
+        atBottom: doc.scrollHeight - doc.clientHeight - Math.round(doc.scrollTop) <= 1,
         barTop,
         lastTileBottom: lastTile,
         clearance,
@@ -73,6 +84,11 @@ app.whenReady().then(async () => {
     })()`);
     console.log(`\n— ${label} —`);
     console.log(JSON.stringify(r, null, 1));
+    // Se lo scroll non arriva in fondo la misura di clearance non è attendibile:
+    // è un problema dell'audit, non dell'app, ma va segnalato per non fidarsi del verde.
+    if (r.clearance !== null && !r.atBottom) {
+      problems.push(`${label}: scroll non arrivato in fondo (misura non attendibile)`);
+    }
     return r;
   };
 

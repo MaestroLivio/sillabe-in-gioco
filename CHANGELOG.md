@@ -4,6 +4,19 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [Non rilasciato]
+
+### Corretto
+- **Diagnostica di layout fuorviante su schermo piccolo**: l'audit misurava la
+  sovrapposizione con la barra inferiore subito dopo un ridimensionamento della
+  finestra, quando lo scroll non era ancora arrivato in fondo. Ora lo scroll viene
+  ripetuto fino al fondo reale e, se non ci arriva, l'audit lo segnala invece di
+  mostrare un falso allarme. Verificato: 15 px di margine a 390 px di larghezza.
+- **Build macOS che falliva sul secondo avvio**: se una build precedente lasciava
+  montato il volume `/Volumes/Sillabe in Gioco…`, `hdiutil detach` falliva e
+  electron-builder usciva con codice 1 anche a DMG già scritti. Il nuovo
+  `scripts/clean-volumes.js` (eseguito da `npm run build:mac`) smonta i residui.
+
 ## [2.0.0] — 2026-10-24
 
 ### Aggiunto

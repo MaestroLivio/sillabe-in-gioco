@@ -221,6 +221,7 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run screenshots` | Cattura le 12 schermate in `build/screenshots/` |
 | `npm run build:web` | Pacchetto PWA + estensione ChromeOS in `dist/` |
 | `npm run build:mac` | DMG + ZIP per macOS (arm64 e x64) |
+| `npm run clean:volumes` | Smonta i volumi DMG rimasti agganciati da build interrotte (solo macOS) |
 | `npm run build:win` | Installer NSIS + versione portabile |
 | `npm run build:linux` | AppImage + DEB |
 | `npm run dist` | Icone + pacchetti web + macOS + Windows |
@@ -257,6 +258,7 @@ sillabe-in-gioco/
 │   ├── smoke-test.js           # Test end-to-end headless
 │   ├── levels-audit.js         # Audit illustrazioni/caselle dei 40 livelli
 │   ├── layout-audit.js         # Audit responsive, target touch, resa SVG
+│   ├── clean-volumes.js        # Smonta volumi DMG residui prima della build macOS
 │   └── screenshots.js          # Cattura screenshot
 ├── .github/workflows/          # CI: build matrix macOS/Windows/Linux
 ├── README.md
@@ -310,18 +312,26 @@ Dettagli in [PRIVACY.md](PRIVACY.md).
 
 ## Pubblicazione
 
-Per pubblicare una release:
+Il rilascio è **automatico**: la CI compila su macOS, Windows e Linux a ogni tag `v*`
+e pubblica gli artefatti nella release GitHub.
 
 ```bash
-npm version patch
-npm run dist
-gh release create "v$(node -p "require('./package.json').version")" \
-  dist/*.dmg dist/*.exe dist/*.zip \
-  --title "Sillabe in Gioco v$(node -p "require('./package.json').version")" \
-  --notes-file CHANGELOG.md
+npm version patch          # aggiorna package.json e crea il commit + tag
+git push origin main --follow-tags
 ```
 
-La CI in `.github/workflows/build.yml` compila su macOS, Windows e Linux a ogni tag `v*`.
+La release viene creata da `.github/workflows/build.yml` con le note prese da
+`CHANGELOG.md`. Per una build locale (solo macOS) e un caricamento manuale:
+
+```bash
+npm run dist
+gh release upload "v$(node -p "require('./package.json').version")" dist/*.dmg dist/*.zip
+```
+
+> [!NOTE]
+> `npm run build:mac` smonta prima eventuali volumi DMG rimasti agganciati da build
+> interrotte (`scripts/clean-volumes.js`): senza questa pulizia `hdiutil detach`
+> fallisce e la build esce con errore anche a pacchetti già scritti.
 
 ---
 
