@@ -1,0 +1,34 @@
+# Dipendenze
+node_modules/
+package-lock.json.bak
+
+# Build
+dist/
+build/icon.iconset/
+build/*.blockmap
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+
+# Editor
+.vscode/
+.idea/
+*.sublime-*
+
+# Log
+*.log
+npm-debug.log*
+logs/
+
+# Ambiente
+.env
+.env.local
+
+# Temporanei
+tmp/
+cache/
+*.tmp

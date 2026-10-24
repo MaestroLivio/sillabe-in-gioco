@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#4a90e2">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; media-src 'self' data: blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="description" content="Laboratorio di letto-scrittura: impara a leggere e scrivere giocando con le sillabe. App didattica accessibile con sintesi vocale italiana.">
+<title>Laboratorio di Letto‑Scrittura · Sillabe in Gioco</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+/* ==========================================================================
+   1. TOKENS & RESET
+   ========================================================================== */
+:root{
+  --sky-1:#cfeaff; --sky-2:#eef8ff; --sky-3:#bfe2fb;
+  --blue:#4a90e2; --blue-d:#2f6cb3; --blue-l:#7fb6f0;
+  --teal:#2f6f68; --teal-d:#1d4a45; --teal-l:#3d8b82;
+  --orange:#f59a2a; --orange-d:#cf7a10;
+  --red:#d94b45; --red-d:#b03a35;
+  --green:#3fae5a; --green-d:#2c8a44;
+  --cream:#fff7e8; --paper:#ffffff;
+  --ink:#25384d; --ink-soft:#5a7189;
+  --line:#d8e6f2;
+  --radius:18px; --radius-sm:12px;
+  --shadow:0 6px 0 rgba(37,56,77,.16);
+  --shadow-soft:0 10px 28px rgba(37,56,77,.14);
+  --font:"Trebuchet MS","Verdana","Segoe UI",system-ui,-apple-system,sans-serif;
+  --font-scale:1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:var(--font);
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 8%, #ffffff 0 90px, transparent 91px),
+    radial-gradient(circle at 20% 12%, #ffffff 0 60px, transparent 61px),
+    linear-gradient(180deg,var(--sky-1),var(--sky-2) 45%,var(--sky-3));
+  background-attachment:fixed;
+  font-size:calc(16px * var(--font-scale));
+  -webkit-tap-highlight-color:transparent;
+  overflow-x:hidden;
+}
+body.theme-night{
+  --paper:#243244; --cream:#2c3a4d; --ink:#eaf3ff; --ink-soft:#a8c0d8;
+  --line:#3a4c63; --sky-1:#1b2739; --sky-2:#16202e; --sky-3:#1f2d40;
+  background:linear-gradient(180deg,#1b2739,#16202e 45%,#1f2d40);
+  background-attachment:fixed;
+}
+button{font-family:inherit;font-size:1rem;cursor:pointer;border:none;background:none;color:inherit}
+button:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px;border-radius:6px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ==========================================================================
+   2. SCREENS & SHELL
+   ========================================================================== */
+.app{max-width:1080px;margin:0 auto;padding:0 16px calc(var(--bar-h,140px) + 18px);position:relative}
+/* Animazione in sola opacità: un transform sul contenitore creerebbe un
+   containing block e la barra inferiore (position:fixed) non resterebbe
+   ancorata alla finestra. */
+.screen{display:none;animation:fadeIn .26s ease both}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.screen.active .card{animation:fadeUp .26s ease both}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}}
+
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  background:linear-gradient(180deg,var(--blue-l),var(--blue) 55%,var(--blue-d));
+  color:#fff;padding:12px 16px;border-radius:0 0 var(--radius) var(--radius);
+  box-shadow:var(--shadow);position:relative;z-index:5;margin:0 -16px
+}
+.topbar h1{font-size:1.02rem;letter-spacing:.2px;line-height:1.25}
+.topbar p{font-size:.75rem;opacity:.9;font-weight:400}
+.titlewrap{display:flex;align-items:center;gap:10px;min-width:0}
+.titlewrap h1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:54vw}
+.badge{
+  background:rgba(255,255,255,.22);border:2px solid rgba(255,255,255,.5);
+  border-radius:999px;padding:4px 10px;font-size:.68rem;font-weight:700;white-space:nowrap;flex:0 0 auto
+}
+.topActions{display:flex;align-items:center;gap:8px}
+.btn-close{
+  width:42px;height:42px;border-radius:50%;background:var(--red);color:#fff;
+  font-size:1.1rem;font-weight:700;display:grid;place-items:center;flex:0 0 auto;
+  box-shadow:0 3px 0 var(--red-d);transition:transform .15s
+}
+.btn-close:active{transform:translateY(2px);box-shadow:none}
+.icon-btn{
+  width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.18);flex:0 0 auto;
+  display:grid;place-items:center;font-size:1.05rem;border:2px solid rgba(255,255,255,.35)
+}
+.icon-btn:hover{background:rgba(255,255,255,.3)}
+
+.card{
+  background:var(--paper);border-radius:var(--radius);padding:16px;
+  box-shadow:var(--shadow-soft);border:2px solid var(--line)
+}
+.card h2{font-size:1rem;margin-bottom:10px;color:var(--ink)}
+.muted{color:var(--ink-soft);font-size:.85rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* ==========================================================================
+   3. HOME / DASHBOARD
+   ========================================================================== */
+.home-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:16px}
+@media (max-width:820px){.home-grid{grid-template-columns:1fr}}
+.hero{display:flex;gap:18px;align-items:center;background:linear-gradient(140deg,#fffdf8,#eaf6ff)}
+.hero .mascot{font-size:4.2rem;line-height:1;filter:drop-shadow(0 6px 0 rgba(37,56,77,.12));animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.hero h2{font-size:1.3rem;margin-bottom:6px}
+.hero p{font-size:.88rem;color:var(--ink-soft);margin-bottom:14px}
+.progress-ring{--p:0;width:92px;height:92px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+  background:conic-gradient(var(--green) calc(var(--p)*1%),#e3edf6 0);position:relative}
+.progress-ring::before{content:"";position:absolute;inset:9px;background:var(--paper);border-radius:50%}
+.progress-ring span{position:relative;font-weight:700;font-size:1.02rem;color:var(--green-d)}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:14px;
+  background:linear-gradient(180deg,#ffd08a,var(--orange));color:#4a2c00;font-weight:700;
+  box-shadow:0 4px 0 var(--orange-d);transition:transform .12s,box-shadow .12s
+}
+.btn:hover{filter:brightness(1.04)}
+.btn:active{transform:translateY(3px);box-shadow:none}
+.btn.primary{background:linear-gradient(180deg,#7fd8a1,var(--green));color:#093d1b;box-shadow:0 4px 0 var(--green-d)}
+.btn.ghost{background:var(--paper);border:2px solid var(--line);color:var(--ink);box-shadow:0 4px 0 var(--line)}
+.btn.small{padding:9px 13px;font-size:.82rem;border-radius:11px;min-height:40px}
+.btn.danger{background:linear-gradient(180deg,#f08b85,var(--red));color:#fff;box-shadow:0 4px 0 var(--red-d)}
+
+.groups{display:grid;gap:10px}
+.group-card{
+  display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;cursor:pointer;
+  border:2px solid var(--line);background:var(--cream);text-align:left;width:100%;
+  transition:transform .12s,border-color .12s
+}
+.group-card:hover{transform:translateY(-2px);border-color:var(--blue-l)}
+.group-card .emoji{font-size:1.8rem}
+.group-card .gbody{flex:1;min-width:0}
+.group-card .gname{font-weight:700;font-size:.92rem}
+.group-card .gsub{font-size:.74rem;color:var(--ink-soft)}
+.mini-bar{height:8px;border-radius:99px;background:#e3edf6;overflow:hidden;margin-top:6px}
+.mini-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--green),#8fe0a8);width:0;transition:width .4s}
+.group-card .gcount{font-size:.72rem;font-weight:700;color:var(--green-d)}
+
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.tool-btn{
+  display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 8px;
+  border-radius:14px;background:var(--cream);border:2px solid var(--line);transition:transform .12s
+}
+.tool-btn:hover{transform:translateY(-2px)}
+.tool-btn .ti{font-size:1.7rem}
+.tool-btn .tl{font-size:.74rem;font-weight:700;letter-spacing:.3px}
+
+/* ==========================================================================
+   4. LEVEL — TV, RADIO, SLOTS, TILES
+   ========================================================================== */
+.stage{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin-top:16px;align-items:start}
+@media (max-width:780px){.stage{grid-template-columns:1fr}}
+
+.tv{
+  background:linear-gradient(160deg,var(--teal-l),var(--teal) 45%,var(--teal-d));
+  border-radius:26px;padding:14px 14px 34px;position:relative;
+  box-shadow:0 10px 0 rgba(13,42,39,.35),inset 0 0 0 3px rgba(255,255,255,.12)
+}
+.tv-screen{
+  background:#0e1f1d;border-radius:16px;padding:8px;box-shadow:inset 0 0 24px rgba(0,0,0,.6);
+  position:relative;overflow:hidden
+}
+.tv-screen svg{display:block;width:100%;height:auto;border-radius:10px}
+.tv-glare{position:absolute;inset:8px;background:linear-gradient(115deg,rgba(255,255,255,.2),transparent 42%);pointer-events:none;border-radius:12px}
+.tv-knobs{position:absolute;right:14px;bottom:9px;display:flex;gap:10px;align-items:center}
+.knob{width:14px;height:14px;border-radius:50%;background:#d8e8e4;box-shadow:inset 0 -2px 0 rgba(0,0,0,.25)}
+.tv-legs{display:flex;justify-content:space-between;padding:0 40px;margin-top:-6px}
+.tv-legs i{width:12px;height:16px;background:var(--teal-d);border-radius:0 0 5px 5px;display:block}
+.tv-label{
+  position:absolute;left:16px;bottom:9px;font-size:.6rem;letter-spacing:2px;
+  color:#cfe9e4;text-transform:uppercase;opacity:.85
+}
+
+.radio-panel{display:flex;flex-direction:column;gap:12px}
+.radio{
+  background:linear-gradient(160deg,#e86a63,var(--red) 50%,var(--red-d));
+  border-radius:20px;padding:14px;color:#fff;text-align:center;
+  box-shadow:0 8px 0 rgba(130,40,36,.5),inset 0 0 0 3px rgba(255,255,255,.14);
+  transition:transform .12s
+}
+.radio:hover{transform:translateY(-2px)}
+.radio:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(130,40,36,.5)}
+.radio.playing{animation:pulse 1s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 8px 0 rgba(130,40,36,.5),0 0 0 0 rgba(217,75,69,.5)}50%{box-shadow:0 8px 0 rgba(130,40,36,.5),0 0 0 14px rgba(217,75,69,0)}}
+.speaker{
+  width:60px;height:60px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;
+  background:
+    repeating-radial-gradient(circle at 50% 50%,rgba(255,255,255,.28) 0 2px,transparent 2px 7px),
+    rgba(0,0,0,.18);
+  border:3px solid rgba(255,255,255,.5);font-size:1.4rem
+}
+.radio .rlabel{font-size:.68rem;letter-spacing:2px;font-weight:700;opacity:.95;display:block}
+.radio .rsub{font-size:.66rem;opacity:.85;display:block}
+.info-card{background:var(--cream);border:2px dashed var(--line);border-radius:14px;padding:12px;font-size:.8rem;line-height:1.45}
+.info-card strong{display:block;margin-bottom:4px;font-size:.72rem;letter-spacing:.6px;text-transform:uppercase;color:var(--ink-soft)}
+
+/* HINT LINE */
+.hintline{
+  text-align:center;margin:16px auto 4px;font-size:1rem;color:var(--ink-soft);
+  background:var(--paper);border:2px dashed var(--blue-l);border-radius:999px;
+  padding:8px 18px;display:table;max-width:94%
+}
+.hintline b{color:var(--blue-d)}
+
+/* SLOT ROWS */
+#slotsWrap{margin-top:12px}
+.part{margin-bottom:12px}
+.part-head{display:flex;align-items:center;gap:10px;margin:0 4px 6px;font-size:.7rem;font-weight:700;letter-spacing:1px;color:var(--ink-soft)}
+.part-head .dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.slotrow{
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;
+  background:linear-gradient(180deg,#eaf6ff,#dcefff);border:3px solid #b9dcf7;
+  border-radius:16px;padding:14px 12px;min-height:86px;box-shadow:inset 0 2px 8px rgba(74,144,226,.12)
+}
+body.theme-night .slotrow{background:#1e2c3e;border-color:#33506e}
+.slot{
+  min-width:56px;min-height:54px;padding:5px 11px;border-radius:12px;
+  background:#fdfeff;border:3px solid #a9d2f2;display:grid;place-items:center;
+  font-size:1.3rem;font-weight:700;color:var(--blue-d);position:relative;
+  transition:transform .12s,background .18s,border-color .18s
+}
+body.theme-night .slot{background:#2a3d55;border-color:#43648a;color:#dbeeff}
+.slot::after{
+  content:"";position:absolute;right:-7px;top:14%;height:72%;width:3px;border-radius:2px;
+  background:var(--orange);opacity:.75
+}
+.slotrow .slot:last-child::after{display:none}
+.slot.prefilled{background:#e9edf2;border-color:#c4ccd6;border-style:dashed;color:#7b8794}
+body.theme-night .slot.prefilled{background:#31435c;border-color:#4a6484;color:#a9bdd3}
+.slot.filled{background:#eaf9ee;border-color:var(--green);color:var(--green-d);animation:pop .25s ease}
+body.theme-night .slot.filled{background:#22402c;border-color:#4ec173;color:#a9efbd}
+.slot.target{box-shadow:0 0 0 4px rgba(245,154,42,.45);animation:pulseSoft 1s infinite}
+.slot.wrong{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.86)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes pulseSoft{0%,100%{box-shadow:0 0 0 3px rgba(245,154,42,.35)}50%{box-shadow:0 0 0 9px rgba(245,154,42,.12)}}
+
+/* connector between coordinated sentences */
+.connector{display:flex;align-items:center;justify-content:center;gap:10px;margin:2px 0 10px}
+.connector .line{flex:1;height:3px;background:repeating-linear-gradient(90deg,#b9dcf7 0 8px,transparent 8px 14px)}
+.connector .badge-c{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;
+  font-size:1.05rem;color:#fff;background:linear-gradient(180deg,#ffc46b,var(--orange));
+  box-shadow:0 4px 0 var(--orange-d);border:3px solid var(--paper);flex:0 0 auto
+}
+
+/* TILES */
+#tilesWrap{margin-top:14px}
+.tiles-head{display:flex;align-items:center;justify-content:space-between;margin:0 4px 8px;gap:10px}
+.tiles-head h2{font-size:.72rem;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink-soft)}
+.tile-pool{
+  display:flex;flex-wrap:wrap;justify-content:center;gap:10px;
+  background:rgba(255,255,255,.6);border:2px dashed var(--line);border-radius:16px;padding:14px;min-height:90px
+}
+body.theme-night .tile-pool{background:rgba(255,255,255,.04)}
+.tile{
+  min-width:62px;min-height:56px;padding:8px 16px;border-radius:14px;
+  background:linear-gradient(180deg,#fffdf6,var(--cream));border:3px solid var(--orange);
+  color:#6b3f00;font-size:1.35rem;font-weight:700;display:grid;place-items:center;
+  user-select:none;-webkit-user-select:none;touch-action:none;cursor:grab;
+  box-shadow:0 4px 0 rgba(207,122,16,.55);transition:transform .1s,box-shadow .1s
+}
+body.theme-night .tile{background:#3a3020;color:#ffe0ad;border-color:#c78a2c}
+.tile:hover{transform:translateY(-2px)}
+.tile:active{cursor:grabbing}
+.tile.dragging{opacity:.4;transform:scale(.96)}
+.tile.selected{outline:4px solid var(--blue);outline-offset:2px;transform:translateY(-3px)}
+.tile.ghost{position:fixed;pointer-events:none;z-index:999;transform:translate(-50%,-50%) scale(1.06);opacity:.95;box-shadow:0 12px 24px rgba(0,0,0,.25);margin:0}
+.tile.used{display:none}
+.tile.blink{animation:blink .45s 4}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* ==========================================================================
+   5. BOTTOM BAR
+   ========================================================================== */
+.bottombar{
+  position:fixed;left:0;right:0;bottom:0;z-index:40;
+  background:linear-gradient(180deg,#fdfefe,#eef4f9);
+  border-top:3px solid var(--line);box-shadow:0 -8px 24px rgba(37,56,77,.12);
+  padding:8px 14px calc(8px + env(safe-area-inset-bottom));
+}
+body.theme-night .bottombar{background:linear-gradient(180deg,#26374b,#1d2a3b)}
+.bottombar-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.mascot-btn{
+  display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:14px;
+  background:var(--cream);border:2px solid var(--line);flex:0 0 auto
+}
+.mascot-btn .m{font-size:1.8rem;line-height:1}
+.mascot-btn .mtext{text-align:left;font-size:.66rem;line-height:1.15;color:var(--ink-soft)}
+.mascot-btn .mtext b{display:block;font-size:.74rem;color:var(--ink)}
+.toolrow{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.tool{
+  display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 10px;border-radius:12px;
+  background:var(--paper);border:2px solid var(--line);min-width:62px;transition:transform .12s
+}
+.tool:hover{transform:translateY(-2px);border-color:var(--blue-l)}
+.tool .ti{font-size:1.12rem}
+.tool .tl{font-size:.58rem;font-weight:700;letter-spacing:.4px;color:var(--ink-soft)}
+.navrow{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.nav-btn{
+  width:46px;height:46px;border-radius:50%;background:linear-gradient(180deg,var(--blue-l),var(--blue));
+  color:#fff;font-size:1.2rem;display:grid;place-items:center;box-shadow:0 4px 0 var(--blue-d)
+}
+.nav-btn:active{transform:translateY(3px);box-shadow:none}
+.counter{font-weight:700;font-size:.82rem;min-width:56px;text-align:center;color:var(--ink-soft)}
+@media (max-width:760px){
+  .toolrow .tool .tl{display:none}
+  .tool{min-width:44px;padding:8px}
+  .mascot-btn .mtext{display:none}
+}
+@media (max-width:520px){
+  .nav-btn{width:44px;height:44px;font-size:1.02rem}
+  .app{padding:0 10px calc(var(--bar-h,140px) + 14px)}
+  .topbar{margin:0 -10px}
+  .titlewrap h1{max-width:46vw;font-size:.92rem}
+  .badge{display:none}
+}
+
+/* ==========================================================================
+   6. MODAL / SHEETS / TOAST
+   ========================================================================== */
+.overlay{
+  position:fixed;inset:0;background:rgba(20,35,50,.5);backdrop-filter:blur(3px);
+  display:none;align-items:center;justify-content:center;padding:16px;z-index:100
+}
+.overlay.open{display:flex;animation:fadeUp .2s ease}
+.sheet{
+  background:var(--paper);border-radius:22px;max-width:620px;width:100%;max-height:88vh;overflow:auto;
+  padding:20px;box-shadow:0 24px 60px rgba(0,0,0,.35);border:3px solid var(--line)
+}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
+.sheet-head h2{font-size:1.05rem}
+.close-x{width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;font-weight:700;flex:0 0 auto}
+.field{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}
+.field:last-child{border-bottom:none}
+.field label{font-size:.88rem}
+.field .hint{font-size:.72rem;color:var(--ink-soft);display:block;font-weight:400}
+input[type=range]{width:140px;accent-color:var(--blue)}
+select{font-family:inherit;padding:8px;border-radius:10px;border:2px solid var(--line);background:var(--paper);color:var(--ink);max-width:220px}
+.switch{position:relative;width:50px;height:28px;flex:0 0 auto;display:inline-block}
+.switch input{opacity:0;width:0;height:0;position:absolute}
+.switch span{position:absolute;inset:0;background:#cbd8e4;border-radius:999px;transition:.2s;cursor:pointer}
+.switch span::before{content:"";position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;top:3px;left:3px;transition:.2s}
+.switch input:checked+span{background:var(--green)}
+.switch input:checked+span::before{transform:translateX(22px)}
+.switch input:focus-visible+span{outline:3px solid var(--orange);outline-offset:2px}
+
+.toast{
+  position:fixed;left:50%;bottom:118px;transform:translate(-50%,20px);z-index:200;
+  background:#25384d;color:#fff;padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:700;
+  opacity:0;pointer-events:none;transition:.25s;box-shadow:0 10px 24px rgba(0,0,0,.25);max-width:92vw;text-align:center
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ==========================================================================
+   7. EXERCISES / RESULTS / TROPHIES
+   ========================================================================== */
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:.78rem;font-weight:700;color:var(--ink-soft)}
+.quiz-q{font-size:1.1rem;text-align:center;margin:10px 0 18px;line-height:1.4}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:520px){.quiz-options{grid-template-columns:1fr}}
+.opt{
+  padding:16px;border-radius:14px;background:var(--cream);border:3px solid var(--line);
+  font-size:1.15rem;font-weight:700;transition:transform .12s
+}
+.opt:hover{transform:translateY(-2px);border-color:var(--blue-l)}
+.opt.correct{background:#eaf9ee;border-color:var(--green);color:var(--green-d)}
+.opt.wrong{background:#fdecea;border-color:var(--red);color:var(--red-d)}
+.quiz-audio{display:flex;justify-content:center;margin-bottom:8px}
+.big-radio{
+  width:86px;height:86px;border-radius:50%;background:linear-gradient(160deg,#e86a63,var(--red));
+  color:#fff;font-size:2rem;display:grid;place-items:center;box-shadow:0 6px 0 var(--red-d)
+}
+
+.results{text-align:center;padding:10px 0}
+.results .big{font-size:3.2rem;line-height:1}
+.stars{font-size:2rem;letter-spacing:4px;margin:10px 0;color:var(--orange)}
+.results h2{font-size:1.35rem;margin:8px 0}
+.results p{color:var(--ink-soft);font-size:.88rem;margin-bottom:16px}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:12px 0}
+.stat{background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:12px;text-align:center}
+.stat b{display:block;font-size:1.4rem;color:var(--blue-d)}
+.stat span{font-size:.7rem;color:var(--ink-soft);letter-spacing:.4px}
+
+.trophy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.trophy{
+  text-align:center;padding:14px 8px;border-radius:14px;border:2px solid var(--line);background:var(--cream);
+  opacity:.45;filter:grayscale(1)
+}
+.trophy.unlocked{opacity:1;filter:none;border-color:var(--orange);background:#fff9ec}
+body.theme-night .trophy.unlocked{background:#3a3222}
+.trophy .te{font-size:1.8rem}
+.trophy .tn{font-size:.7rem;font-weight:700;margin-top:4px}
+.trophy .td{font-size:.63rem;color:var(--ink-soft)}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:150;overflow:hidden}
+.confetti i{position:absolute;top:-16px;width:10px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+
+/* ==========================================================================
+   8. PRINT SHEET
+   ========================================================================== */
+#printSheet{display:none}
+@media print{
+  body{background:#fff!important;color:#000!important;font-size:12pt}
+  .app,.overlay,.toast,.bottombar,.confetti{display:none!important}
+  #printSheet{display:block!important;padding:0}
+  .ps-head{text-align:center;border-bottom:3px solid #000;padding-bottom:8px;margin-bottom:16px}
+  .ps-head h1{font-size:18pt}
+  .ps-head p{font-size:10pt}
+  .ps-line{margin:14px 0;font-weight:700;font-size:13pt}
+  .ps-slots{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px}
+  .ps-slot{border:2px solid #333;border-radius:6px;min-width:52px;min-height:42px;padding:4px 8px;display:flex;align-items:center;justify-content:center;font-size:13pt}
+  .ps-slot.pre{background:#e9e9e9;color:#777}
+  .ps-tiles{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+  .ps-tile{border:2px dashed #333;border-radius:8px;padding:8px 14px;font-size:13pt}
+  .ps-foot{margin-top:22px;font-size:9pt;border-top:1px solid #999;padding-top:8px;color:#444}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<section id="screen-home" class="screen active" aria-label="Schermata iniziale">
+  <header class="topbar">
+    <div class="titlewrap">
+      <span class="badge">App didattica</span>
+      <div>
+        <h1>Laboratorio di Letto‑Scrittura</h1>
+        <p>Sillabe in gioco · leggere, ascoltare, comporre</p>
+      </div>
+    </div>
+    <div class="topActions">
+      <button class="icon-btn" id="homeSettingsBtn" aria-label="Apri impostazioni">⚙️</button>
+      <button class="btn-close" id="homeCloseBtn" aria-label="Chiudi applicazione">✕</button>
+    </div>
+  </header>
+
+  <div class="home-grid">
+    <div class="card hero">
+      <div class="mascot" aria-hidden="true">🐻</div>
+      <div style="flex:1;min-width:0">
+        <h2 id="heroTitle">Ciao! Iniziamo a leggere?</h2>
+        <p id="heroSub">Scegli un percorso e trascina le sillabe al posto giusto. La voce ti aiuta a leggere ogni sillaba.</p>
+        <div class="row">
+          <button class="btn primary" id="continueBtn">▶ Continua</button>
+          <button class="btn ghost small" id="randomBtn">🎲 Livello a caso</button>
+        </div>
+      </div>
+      <div class="progress-ring" id="progressRing" role="img" aria-label="Progresso complessivo"><span id="progressPct">0%</span></div>
+    </div>
+
+    <div class="card">
+      <h2>I quattro percorsi</h2>
+      <div class="groups" id="groupList"></div>
+    </div>
+
+    <div class="card">
+      <h2>Strumenti</h2>
+      <p class="muted" style="margin-bottom:10px">Esercizi, schede da stampare, trofei e impostazioni di accessibilità.</p>
+      <div class="tool-grid">
+        <button class="tool-btn" id="toolExercises"><span class="ti">🧰</span><span class="tl">ESERCIZI</span></button>
+        <button class="tool-btn" id="toolPrint"><span class="ti">🖨️</span><span class="tl">STAMPA</span></button>
+        <button class="tool-btn" id="toolTrophies"><span class="ti">🏆</span><span class="tl">TROFEI</span></button>
+        <button class="tool-btn" id="toolHelp"><span class="ti">❓</span><span class="tl">AIUTO</span></button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Il tuo progresso</h2>
+      <div class="stat-grid" id="homeStats"></div>
+      <p class="muted" style="font-size:.74rem;margin-top:6px">I progressi sono salvati su questo dispositivo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="screen-level" class="screen" aria-label="Livello in corso">
+  <header class="topbar">
+    <div class="titlewrap">
+      <span class="badge" id="levelGroupBadge">Percorso 1</span>
+      <h1 id="levelTitle">1. Dalla parola alla frase</h1>
+    </div>
+    <div class="topActions">
+      <button class="icon-btn" id="levelHomeBtn" aria-label="Torna alla home">🏠</button>
+      <button class="btn-close" id="levelCloseBtn" aria-label="Chiudi gioco">✕</button>
+    </div>
+  </header>
+
+  <div class="stage">
+    <div>
+      <div class="tv">
+        <div class="tv-screen">
+          <div id="tvImage" aria-live="polite"></div>
+          <div class="tv-glare"></div>
+        </div>
+        <div class="tv-knobs" aria-hidden="true"><i class="knob"></i><i class="knob"></i></div>
+        <span class="tv-label">Sillabe TV</span>
+      </div>
+      <div class="tv-legs" aria-hidden="true"><i></i><i></i></div>
+    </div>
+
+    <aside class="radio-panel">
+      <button class="radio" id="radioBtn" aria-label="Ascolta la frase completa">
+        <span class="speaker" aria-hidden="true">🔊</span>
+        <span class="rlabel">ASCOLTA</span>
+        <span class="rsub" id="radioSub">la frase intera</span>
+      </button>
+      <div class="info-card">
+        <strong>Come si gioca</strong>
+        Trascina ogni tessera nella casella giusta. Tocca una tessera per sentirne il suono.
+        <span id="modeNote"></span>
+      </div>
+      <div class="info-card" id="progressCard">
+        <strong>Questo livello</strong>
+        <span id="levelProgressText">0 di 0 sillabe</span>
+      </div>
+    </aside>
+  </div>
+
+  <div id="slotsWrap" aria-label="Area di costruzione della frase"></div>
+
+  <div id="tilesWrap">
+    <div class="tiles-head">
+      <h2>Tessere sillabiche</h2>
+      <button class="btn ghost small" id="shuffleBtn" aria-label="Mescola le tessere">🔀 Mescola</button>
+    </div>
+    <div class="tile-pool" id="tilePool" role="group" aria-label="Tessere sillabiche disponibili"></div>
+  </div>
+
+  <footer class="bottombar">
+    <div class="bottombar-inner">
+      <button class="mascot-btn" id="mascotBtn" aria-label="La mascotte ti dà un consiglio">
+        <span class="m" aria-hidden="true">🐻</span>
+        <span class="mtext"><b>Orsetto Lino</b><span id="mascotText">Tocca una tessera per ascoltarla</span></span>
+      </button>
+      <div class="toolrow">
+        <button class="tool" id="hintBtn" aria-label="Suggerimento"><span class="ti">💡</span><span class="tl">SUGGERIMENTO</span></button>
+        <button class="tool" id="exercisesBtn" aria-label="Esercizi"><span class="ti">🧰</span><span class="tl">ESERCIZI</span></button>
+        <button class="tool" id="printBtn" aria-label="Stampa la scheda"><span class="ti">🖨️</span><span class="tl">STAMPA</span></button>
+        <button class="tool" id="resetBtn" aria-label="Rifai il livello"><span class="ti">🔄</span><span class="tl">RIFAI</span></button>
+        <button class="tool" id="finishBtn" aria-label="Ho finito"><span class="ti">🎁</span><span class="tl">HO FINITO</span></button>
+      </div>
+      <div class="navrow">
+        <button class="nav-btn" id="prevBtn" aria-label="Livello precedente">←</button>
+        <span class="counter" id="levelCounter">1 / 40</span>
+        <button class="nav-btn" id="nextBtn" aria-label="Livello successivo">→</button>
+      </div>
+    </div>
+  </footer>
+</section>
+
+<section id="screen-exercises" class="screen" aria-label="Esercizi">
+  <header class="topbar">
+    <div class="titlewrap">
+      <span class="badge">Esercizi</span>
+      <h1 id="quizTitle">Allenamento sillabe</h1>
+    </div>
+    <div class="topActions">
+      <button class="icon-btn" id="quizHomeBtn" aria-label="Torna alla home">🏠</button>
+      <button class="btn-close" id="quizCloseBtn" aria-label="Chiudi esercizi">✕</button>
+    </div>
+  </header>
+  <div class="card" style="margin-top:16px">
+    <div class="quiz-top">
+      <span id="quizCounter">Domanda 1 di 8</span>
+      <span id="quizScore">Punteggio 0</span>
+    </div>
+    <div class="quiz-audio" id="quizAudioWrap"></div>
+    <p class="quiz-q" id="quizQuestion">…</p>
+    <div class="quiz-options" id="quizOptions"></div>
+    <div class="row" style="justify-content:center;margin-top:18px">
+      <button class="btn ghost small" id="quizRepeatBtn">🔊 Ripeti</button>
+      <button class="btn small" id="quizSkipBtn">Salta →</button>
+    </div>
+  </div>
+</section>
+
+<section id="screen-results" class="screen" aria-label="Risultato">
+  <header class="topbar">
+    <div class="titlewrap"><span class="badge" id="resultsBadge">Livello completato</span><h1 id="resultsTop">Bravissimo!</h1></div>
+    <div class="topActions"><button class="btn-close" id="resultsCloseBtn" aria-label="Chiudi">✕</button></div>
+  </header>
+  <div class="card" style="margin-top:16px">
+    <div class="results">
+      <div class="big" id="resultsEmoji" aria-hidden="true">🌟</div>
+      <div class="stars" id="resultsStars" aria-label="Valutazione in stelle">☆☆☆</div>
+      <h2 id="resultsTitle">Livello completato!</h2>
+      <p id="resultsText">Hai composto la frase correttamente.</p>
+      <div class="stat-grid" id="resultsStats"></div>
+      <div class="row" style="justify-content:center">
+        <button class="btn primary" id="resultsNext">▶ Livello successivo</button>
+        <button class="btn ghost" id="resultsRetry">🔄 Rifai</button>
+        <button class="btn ghost" id="resultsHome">🏠 Home</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="screen-trophies" class="screen" aria-label="Trofei e progressi">
+  <header class="topbar">
+    <div class="titlewrap"><span class="badge">I tuoi trofei</span><h1>Medagliere</h1></div>
+    <div class="topActions">
+      <button class="icon-btn" id="trophyHomeBtn" aria-label="Torna alla home">🏠</button>
+      <button class="btn-close" id="trophyCloseBtn" aria-label="Chiudi">✕</button>
+    </div>
+  </header>
+  <div class="card" style="margin-top:16px">
+    <div class="stat-grid" id="trophyStats"></div>
+    <h2 style="margin-top:10px">Traguardi</h2>
+    <div class="trophy-grid" id="trophyGrid"></div>
+    <div class="row" style="margin-top:16px">
+      <button class="btn ghost small" id="resetProgressBtn">🗑️ Azzera i progressi</button>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="overlayTitle">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2 id="overlayTitle">Impostazioni</h2>
+      <button class="close-x" id="overlayClose" aria-label="Chiudi">✕</button>
+    </div>
+    <div id="overlayBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+<div id="printSheet"></div>
+<div class="sr-only" id="live" role="status" aria-live="polite"></div>
+<script>
+"use strict";
+/* ==========================================================================
+   SILLABE IN GIOCO — logica applicativa
+   Sezioni: dati · stato · voce · suoni · illustrazioni · schermate ·
+            livello · drag&drop · assistenza · esercizi · stampa · trofei
+   ========================================================================== */
+
+/* ------------------------------------------------------------------
+   1. DATI — 40 livelli, tutti con frase diversa
+   ------------------------------------------------------------------ */
+const GROUP_TITLES = [
+  "Dalla parola alla frase",
+  "Frasi semplici",
+  "Frasi coordinate",
+  "Frasi complesse"
+];
+const GROUP_BADGES = ["Percorso 1 · Guidato", "Percorso 2 · Frasi semplici", "Percorso 3 · Coordinate", "Percorso 4 · Complesse"];
+const GROUP_EMOJI = ["🌱", "🌿", "🌳", "🏔️"];
+
+/* parts: [etichetta, sillabe, numero di slot pre-compilati]
+   emo: personaggi/oggetti disegnati nell'illustrazione
+   conn: parola del connettore tra le due parti (solo coordinate/complesse) */
+const RAW = [
+  /* --- 1-10 · guidati: soggetto + verbo + oggetto --- */
+  { mode:"simple", guided:true, conn:null, emo:["🐱","🥛"],      parts:[["FRASE 1",["il","gat","to","be","ve","il","lat","te"],4]] },
+  { mode:"simple", guided:true, conn:null, emo:["👩","🍽️"],      parts:[["FRASE 1",["la","mam","ma","la","va","i","piat","ti"],4]] },
+  { mode:"simple", guided:true, conn:null, emo:["🐶","🦴"],      parts:[["FRASE 1",["il","ca","ne","man","gia","l'os","so"],4]] },
+  { mode:"simple", guided:true, conn:null, emo:["🧒","🚪"],      parts:[["FRASE 1",["il","bim","bo","a","pre","la","por","ta"],4]] },
+  { mode:"simple", guided:true, conn:null, emo:["👵","🍰"],      parts:[["FRASE 1",["la","non","na","cu","ci","na","la","tor","ta"],5]] },
+  { mode:"simple", guided:true, conn:null, emo:["☀️","🌾"],      parts:[["FRASE 1",["il","so","le","scal","da","i","pra","ti"],4]] },
+  { mode:"simple", guided:true, conn:null, emo:["🐸","🌊"],      parts:[["FRASE 1",["la","ra","na","sal","ta","nel","la","go"],4]] },
+  { mode:"simple", guided:true, conn:null, emo:["🐟","🌊"],      parts:[["FRASE 1",["il","pe","sce","nuo","ta","nel","ma","re"],4]] },
+  { mode:"simple", guided:true, conn:null, emo:["🐱","🛏️"],      parts:[["FRASE 1",["il","gat","to","dor","me","sul","let","to"],4]] },
+  { mode:"simple", guided:true, conn:null, emo:["👩","📖"],      parts:[["FRASE 1",["la","mam","ma","leg","ge","un","li","bro"],4]] },
+
+  /* --- 11-20 · frasi semplici complete --- */
+  { mode:"simple", guided:false, conn:null, emo:["🐶","⚽"],     parts:[["FRASE 1",["il","ca","ne","gio","ca","con","la","pal","la"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["👧","🌸"],     parts:[["FRASE 1",["la","bam","bi","na","di","se","gna","un","fio","re"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["👨","🚗"],     parts:[["FRASE 1",["il","pa","pà","gui","da","la","mac","chi","na","ros","sa"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["🧒","⚽"],     parts:[["FRASE 1",["i","bam","bi","ni","gio","ca","no","nel","cor","ti","le"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["👩‍🏫","📝"],   parts:[["FRASE 1",["la","ma","e","stra","scri","ve","al","la","la","va","gna"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["🐱","🐭"],     parts:[["FRASE 1",["il","gat","to","in","se","gue","il","to","po","li","no"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["👨‍🌾","🍎"],   parts:[["FRASE 1",["il","con","ta","di","no","rac","co","glie","le","me","le"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["🌧️","🌷"],    parts:[["FRASE 1",["la","piog","gia","ba","gna","i","fio","ri","del","giar","di","no"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["🚂","🏛️"],    parts:[["FRASE 1",["il","tre","no","ar","ri","va","al","la","sta","zio","ne"],0]] },
+  { mode:"simple", guided:false, conn:null, emo:["🦋","🌼"],     parts:[["FRASE 1",["la","far","fal","la","vo","la","so","pra","il","pra","to"],0]] },
+
+  /* --- 21-30 · coordinate --- */
+  { mode:"coordinated", guided:false, conn:"e", emo:["🐱","🐶"],  parts:[["FRASE 1",["il","gat","to","dor","me"],0],["FRASE 2",["il","ca","ne","ab","ba","ia"],0]] },
+  { mode:"coordinated", guided:false, conn:"e", emo:["👩","👨"],  parts:[["FRASE 1",["la","mam","ma","cu","ci","na"],0],["FRASE 2",["il","pa","pà","ap","pa","rec","chia"],0]] },
+  { mode:"coordinated", guided:false, conn:"ma", emo:["🌧️","🧒"], parts:[["FRASE 1",["pio","ve","for","te"],0],["FRASE 2",["il","bam","bi","no","e","sce"],0]] },
+  { mode:"coordinated", guided:false, conn:"e", emo:["🐭","🐱"],  parts:[["FRASE 1",["il","to","po","cor","re"],0],["FRASE 2",["il","gat","to","lo","in","se","gue"],0]] },
+  { mode:"coordinated", guided:false, conn:"e", emo:["🌙","⭐"],  parts:[["FRASE 1",["la","lu","na","sor","ge"],0],["FRASE 2",["le","stel","le","bril","la","no"],0]] },
+  { mode:"coordinated", guided:false, conn:"poi", emo:["🌬️","🌧️"], parts:[["FRASE 1",["il","ven","to","sof","fia"],0],["FRASE 2",["ar","ri","va","la","piog","gia"],0]] },
+  { mode:"coordinated", guided:false, conn:"e", emo:["🧒","👩"],  parts:[["FRASE 1",["il","bim","bo","ri","de"],0],["FRASE 2",["la","mam","ma","sor","ri","de"],0]] },
+  { mode:"coordinated", guided:false, conn:"ma", emo:["🍞","🍲"], parts:[["FRASE 1",["il","pa","ne","è","pron","to"],0],["FRASE 2",["la","zup","pa","è","fred","da"],0]] },
+  { mode:"coordinated", guided:false, conn:"e", emo:["🐶","⚽"],  parts:[["FRASE 1",["il","ca","ne","sal","ta"],0],["FRASE 2",["la","pal","la","ro","to","la"],0]] },
+  { mode:"coordinated", guided:false, conn:"e", emo:["🚢","🕊️"], parts:[["FRASE 1",["la","na","ve","par","te"],0],["FRASE 2",["il","gab","bia","no","vo","la"],0]] },
+
+  /* --- 31-40 · complesse (subordinate) --- */
+  { mode:"complex", guided:false, conn:"quando", emo:["🌧️","☂️"], parts:[["PARTE 1",["quan","do","pio","ve"],0],["PARTE 2",["il","bam","bi","no","a","pre","l'om","brel","lo"],0]] },
+  { mode:"complex", guided:false, conn:"se", emo:["☀️","🌷"],     parts:[["PARTE 1",["se","il","so","le","splen","de"],0],["PARTE 2",["i","fio","ri","si","a","pro","no"],0]] },
+  { mode:"complex", guided:false, conn:"perché", emo:["🥱","🛏️"],  parts:[["PARTE 1",["per","ché","è","tar","di"],0],["PARTE 2",["il","bim","bo","va","a","let","to"],0]] },
+  { mode:"complex", guided:false, conn:"dopo", emo:["🏫","🛝"],    parts:[["PARTE 1",["do","po","la","scuo","la"],0],["PARTE 2",["i","bam","bi","ni","gio","ca","no","al","par","co"],0]] },
+  { mode:"complex", guided:false, conn:"mentre", emo:["👩","👨"],  parts:[["PARTE 1",["men","tre","la","mam","ma","cu","ci","na"],0],["PARTE 2",["il","pa","pà","leg","ge","il","gior","na","le"],0]] },
+  { mode:"complex", guided:false, conn:"quando", emo:["🌷","🐦"],  parts:[["PARTE 1",["quan","do","ar","ri","va","la","pri","ma","ve","ra"],0],["PARTE 2",["gli","uc","cel","li","can","ta","no"],0]] },
+  { mode:"complex", guided:false, conn:"se", emo:["💧","🥤"],      parts:[["PARTE 1",["se","be","vi","po","ca","ac","qua"],0],["PARTE 2",["hai","se","te"],0]] },
+  { mode:"complex", guided:false, conn:"prima", emo:["🧥","🚪"],   parts:[["PARTE 1",["pri","ma","di","u","sci","re"],0],["PARTE 2",["il","bim","bo","met","te","il","cap","pot","to"],0]] },
+  { mode:"complex", guided:false, conn:"quando", emo:["🔔","🏫"],  parts:[["PARTE 1",["quan","do","la","cam","pa","na","suo","na"],0],["PARTE 2",["gli","a","lun","ni","en","tra","no","in","clas","se"],0]] },
+  { mode:"complex", guided:false, conn:"poiché", emo:["🎉","🏫"],  parts:[["PARTE 1",["poi","ché","è","fes","ta"],0],["PARTE 2",["la","scuo","la","res","ta","chiu","sa"],0]] }
+];
+
+const DISTRACTOR_POOL = ["ba","ci","du","fe","go","lu","ma","no","pe","ri","sa","tu","vo","za","bri","gno","sca","trel","gna","pio","cie","sfo","mi","ru","te","la","ni"];
+
+/* Frase completa di ogni livello, con la spaziatura corretta tra le parole:
+   serve per la didascalia, la lettura ad alta voce e la scheda stampata. */
+const SENTENCES = [
+  "Il gatto beve il latte",
+  "La mamma lava i piatti",
+  "Il cane mangia l'osso",
+  "Il bimbo apre la porta",
+  "La nonna cucina la torta",
+  "Il sole scalda i prati",
+  "La rana salta nel lago",
+  "Il pesce nuota nel mare",
+  "Il gatto dorme sul letto",
+  "La mamma legge un libro",
+
+  "Il cane gioca con la palla",
+  "La bambina disegna un fiore",
+  "Il papà guida la macchina rossa",
+  "I bambini giocano nel cortile",
+  "La maestra scrive alla lavagna",
+  "Il gatto insegue il topolino",
+  "Il contadino raccoglie le mele",
+  "La pioggia bagna i fiori del giardino",
+  "Il treno arriva alla stazione",
+  "La farfalla vola sopra il prato",
+
+  "Il gatto dorme e il cane abbaia",
+  "La mamma cucina e il papà apparecchia",
+  "Piove forte ma il bambino esce",
+  "Il topo corre e il gatto lo insegue",
+  "La luna sorge e le stelle brillano",
+  "Il vento soffia poi arriva la pioggia",
+  "Il bimbo ride e la mamma sorride",
+  "Il pane è pronto ma la zuppa è fredda",
+  "Il cane salta e la palla rotola",
+  "La nave parte e il gabbiano vola",
+
+  "Quando piove il bambino apre l'ombrello",
+  "Se il sole splende i fiori si aprono",
+  "Perché è tardi il bimbo va a letto",
+  "Dopo la scuola i bambini giocano al parco",
+  "Mentre la mamma cucina il papà legge il giornale",
+  "Quando arriva la primavera gli uccelli cantano",
+  "Se bevi poca acqua hai sete",
+  "Prima di uscire il bimbo mette il cappotto",
+  "Quando la campana suona gli alunni entrano in classe",
+  "Poiché è festa la scuola resta chiusa"
+];
+
+const LEVELS = RAW.map((r, i) => {
+  const groupIdx = Math.floor(i / 10);
+  const syllables = r.parts.reduce((acc, p) => acc.concat(p[1]), []);
+  const lower = syllables.map(s => s.toLowerCase());
+  const distractors = shuffleArr(DISTRACTOR_POOL.filter(s => !lower.includes(s))).slice(0, 3);
+  return {
+    id: i + 1,
+    index: i,
+    group: groupIdx,
+    title: `${i + 1}. ${GROUP_TITLES[groupIdx]}`,
+    badge: GROUP_BADGES[groupIdx],
+    mode: r.mode,
+    guided: r.guided,
+    connector: r.conn,
+    emo: r.emo,
+    parts: r.parts.map(([label, syl, pre]) => ({
+      label,
+      syllables: syl,
+      prefilled: syl.map((_, k) => k < pre)
+    })),
+    syllables,
+    distractors,
+    sentence: SENTENCES[i] || syllables.join(""),
+    text: SENTENCES[i] || syllables.join("")
+  };
+});
+
+/* ------------------------------------------------------------------
+   2. STATO E PERSISTENZA
+   ------------------------------------------------------------------ */
+const STORE_KEY = "sillabe.progress.v2";
+const SETTINGS_KEY = "sillabe.settings.v2";
+
+const DEFAULT_SETTINGS = {
+  fontScale: 1,
+  theme: "day",
+  rate: 0.9,
+  voiceURI: "",
+  soundOn: true,
+  autoRead: true,
+  showHints: true,
+  reduceMotion: false
+};
+
+function loadJSON(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    return Object.assign({}, fallback, JSON.parse(raw));
+  } catch (e) { return fallback; }
+}
+function saveJSON(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) { /* storage pieno o negato */ }
+}
+
+let settings = loadJSON(SETTINGS_KEY, DEFAULT_SETTINGS);
+let progress = loadJSON(STORE_KEY, { levels: {}, exercises: { sessions: 0, best: 0 }, listens: 0, lastLevel: 1 });
+if (!progress.levels) progress.levels = {};
+
+const L = {
+  screen: "home",
+  levelIndex: 0,
+  slots: [],
+  tiles: [],
+  startedAt: 0,
+  mistakes: 0,
+  hints: 0,
+  selectedTile: null,
+  completed: false,
+  listenCount: 0
+};
+
+const $ = sel => document.querySelector(sel);
+const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+function shuffleArr(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+}
+function toast(msg, ms = 2200) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => t.classList.remove("show"), ms);
+}
+function announce(msg) { $("#live").textContent = msg; }
+
+/* ------------------------------------------------------------------
+   3. VOCE (Web Speech API, it-IT)
+   ------------------------------------------------------------------ */
+const synth = window.speechSynthesis || null;
+let voices = [];
+let itVoice = null;
+
+function refreshVoices() {
+  if (!synth) return;
+  voices = synth.getVoices() || [];
+  const italian = voices.filter(v => /it(-|_)?/i.test(v.lang));
+  const saved = settings.voiceURI && voices.find(v => v.voiceURI === settings.voiceURI);
+  itVoice = saved || italian.find(v => /Alice|Elsa|Federica|Silvia|Luca|Google/i.test(v.name)) || italian[0] || null;
+}
+if (synth) {
+  refreshVoices();
+  synth.onvoiceschanged = refreshVoices;
+}
+
+function speak(text, opts = {}) {
+  if (!text || !synth) return;
+  const rate = opts.rate !== undefined ? opts.rate : settings.rate;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "it-IT";
+  u.rate = Math.max(0.5, Math.min(1.6, rate));
+  u.pitch = opts.pitch !== undefined ? opts.pitch : 1.05;
+  u.volume = 1;
+  if (itVoice) u.voice = itVoice;
+  if (opts.onend) u.onend = opts.onend;
+  if (opts.onstart) u.onstart = opts.onstart;
+  if (!opts.queue) synth.cancel();
+  synth.speak(u);
+  return u;
+}
+
+/** Legge le sillabe una alla volta, con pausa: utile per la lettura scandita. */
+function speakSyllables(list) {
+  if (!synth) return;
+  synth.cancel();
+  let i = 0;
+  const next = () => {
+    if (i >= list.length) return;
+    const s = list[i++];
+    speak(s, { rate: Math.max(0.6, settings.rate - 0.15), onend: () => setTimeout(next, 130) });
+  };
+  next();
+}
+
+function speakSentence(level, scandito = false) {
+  if (!level) return;
+  if (scandito) { speakSyllables(level.syllables); return; }
+  const full = level.sentence || level.parts.map(p => p.syllables.join("")).join(" " + (level.connector ? level.connector + " " : ""));
+  speak(full, { rate: Math.max(0.65, settings.rate - 0.05) });
+  progress.listens = (progress.listens || 0) + 1;
+  saveJSON(STORE_KEY, progress);
+}
+
+/* ------------------------------------------------------------------
+   4. EFFETTI SONORI (WebAudio, nessun file esterno)
+   ------------------------------------------------------------------ */
+let audioCtx = null;
+function ac() {
+  if (!audioCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (Ctx) audioCtx = new Ctx();
+  }
+  if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+function tone(freq, start, dur, type = "sine", gain = 0.12) {
+  const ctx = ac();
+  if (!ctx) return;
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = type;
+  o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, ctx.currentTime + start);
+  g.gain.exponentialRampToValueAtTime(gain, ctx.currentTime + start + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + dur);
+  o.connect(g).connect(ctx.destination);
+  o.start(ctx.currentTime + start);
+  o.stop(ctx.currentTime + start + dur + 0.02);
+}
+function fx(name) {
+  if (!settings.soundOn) return;
+  if (name === "place") { tone(660, 0, 0.11, "triangle", 0.1); tone(880, 0.06, 0.1, "triangle", 0.08); }
+  if (name === "wrong") { tone(200, 0, 0.16, "sawtooth", 0.07); tone(160, 0.12, 0.18, "sawtooth", 0.06); }
+  if (name === "hint") { tone(980, 0, 0.09, "sine", 0.07); }
+  if (name === "win") { [523, 659, 784, 1046].forEach((f, i) => tone(f, i * 0.12, 0.24, "triangle", 0.12)); }
+  if (name === "click") { tone(440, 0, 0.05, "sine", 0.05); }
+}
+
+/* ------------------------------------------------------------------
+   5. ILLUSTRAZIONI SVG generate al volo
+   ------------------------------------------------------------------ */
+const GROUP_BG = [
+  ["#d7f0ff", "#a9dcff"],
+  ["#e2f8d9", "#a9e3a0"],
+  ["#ffe9cc", "#ffcf9b"],
+  ["#e6dcff", "#c2b1f5"]
+];
+
+function escapeXML(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/** Spezza la frase in righe da ~24 caratteri per la didascalia. */
+function wrapText(text, max) {
+  const words = text.split(" ");
+  const lines = [];
+  let cur = "";
+  words.forEach(w => {
+    if ((cur + " " + w).trim().length > max && cur) { lines.push(cur); cur = w; }
+    else cur = (cur ? cur + " " : "") + w;
+  });
+  if (cur) lines.push(cur);
+  return lines.slice(0, 3);
+}
+
+function illustrationSVG(level) {
+  const [c1, c2] = GROUP_BG[level.group];
+  const W = 640, H = 360;
+  const emojis = level.emo || ["✨"];
+  const captions = wrapText(level.sentence || level.text, 34);
+
+  // posizioni degli elementi illustrati
+  const spots = emojis.length === 1
+    ? [{ x: 320, y: 190, s: 150 }]
+    : emojis.length === 2
+      ? [{ x: 225, y: 185, s: 128 }, { x: 420, y: 200, s: 112 }]
+      : [
+          { x: 165, y: 195, s: 104 },
+          { x: 330, y: 172, s: 116 },
+          { x: 495, y: 200, s: 100 }
+        ];
+
+  const items = emojis.map((e, i) => {
+    const p = spots[i] || spots[0];
+    return `<text x="${p.x}" y="${p.y}" font-size="${p.s}" text-anchor="middle" dominant-baseline="middle">${escapeXML(e)}</text>`;
+  }).join("");
+
+  const capSvg = captions.map((line, i) =>
+    `<text x="320" y="${300 + i * 22}" font-size="19" font-family="Trebuchet MS, Verdana, sans-serif" font-weight="bold" text-anchor="middle" fill="#22384d">${escapeXML(line)}</text>`
+  ).join("");
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Illustrazione: ${escapeXML(level.text)}">
+    <defs>
+      <linearGradient id="sky${level.id}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${c1}"/><stop offset="100%" stop-color="${c2}"/>
+      </linearGradient>
+      <radialGradient id="sun${level.id}" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#fff3b0"/><stop offset="100%" stop-color="#ffd45e"/>
+      </radialGradient>
+    </defs>
+    <rect width="${W}" height="${H}" fill="url(#sky${level.id})"/>
+    <circle cx="560" cy="58" r="34" fill="url(#sun${level.id})" opacity=".95"/>
+    <g fill="#ffffff" opacity=".85">
+      <ellipse cx="120" cy="62" rx="48" ry="24"/><ellipse cx="158" cy="54" rx="34" ry="20"/>
+      <ellipse cx="330" cy="44" rx="38" ry="18"/><ellipse cx="360" cy="50" rx="26" ry="15"/>
+    </g>
+    <path d="M0 268 Q160 236 320 262 T640 258 L640 360 L0 360 Z" fill="#8fd694" opacity=".55"/>
+    <path d="M0 296 Q180 274 340 292 T640 288 L640 360 L0 360 Z" fill="#6cc47a" opacity=".55"/>
+    <rect x="0" y="286" width="${W}" height="74" fill="#ffffff" opacity=".55" rx="14"/>
+    ${items}
+    ${capSvg}
+  </svg>`;
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
+
+/* ------------------------------------------------------------------
+   6. NAVIGAZIONE SCHERMATE
+   ------------------------------------------------------------------ */
+const SCREENS = ["home", "level", "exercises", "results", "trophies"];
+function showScreen(name) {
+  SCREENS.forEach(s => {
+    const node = $("#screen-" + s);
+    if (node) node.classList.toggle("active", s === name);
+  });
+  L.screen = name;
+  window.scrollTo({ top: 0, behavior: settings.reduceMotion ? "auto" : "smooth" });
+  if (name === "home") renderHome();
+  if (name === "trophies") renderTrophies();
+}
+
+/* ------------------------------------------------------------------
+   7. HOME
+   ------------------------------------------------------------------ */
+function starsFor(levelId) {
+  const rec = progress.levels[levelId];
+  return rec ? rec.stars : 0;
+}
+function groupStats(g) {
+  const from = g * 10 + 1, to = from + 9;
+  let done = 0, stars = 0;
+  for (let id = from; id <= to; id++) {
+    if (progress.levels[id]) { done++; stars += progress.levels[id].stars || 0; }
+  }
+  return { done, stars, total: 10 };
+}
+
+function renderHome() {
+  const totalStars = Object.values(progress.levels).reduce((a, r) => a + (r.stars || 0), 0);
+  const doneCount = Object.keys(progress.levels).length;
+  const pct = Math.round(doneCount / 40 * 100);
+
+  const ring = $("#progressRing");
+  ring.style.setProperty("--p", pct);
+  $("#progressPct").textContent = pct + "%";
+  ring.setAttribute("aria-label", `Progresso complessivo: ${pct} per cento, ${doneCount} livelli su 40`);
+
+  $("#heroTitle").textContent = doneCount === 0 ? "Ciao! Iniziamo a leggere?" :
+    doneCount >= 40 ? "Hai finito tutti i percorsi! 🎉" : `Hai completato ${doneCount} livelli su 40`;
+  $("#heroSub").textContent = doneCount === 0
+    ? "Scegli un percorso e trascina le sillabe al posto giusto. La voce ti aiuta a leggere ogni sillaba."
+    : `Hai conquistato ${totalStars} stelle. Continua dal livello ${Math.min(40, doneCount + 1)} oppure riprova un percorso.`;
+  $("#continueBtn").textContent = doneCount === 0 ? "▶ Inizia" : "▶ Continua";
+
+  const list = $("#groupList");
+  list.innerHTML = "";
+  GROUP_TITLES.forEach((title, g) => {
+    const st = groupStats(g);
+    const b = el("button", "group-card");
+    b.type = "button";
+    b.innerHTML = `<span class="emoji" aria-hidden="true">${GROUP_EMOJI[g]}</span>
+      <span class="gbody">
+        <span class="gname">${title}</span>
+        <span class="gsub">Livelli ${g * 10 + 1}–${g * 10 + 10} · ${st.done}/10 completati</span>
+        <span class="mini-bar"><i style="width:${st.done * 10}%"></i></span>
+      </span>
+      <span class="gcount">${st.stars}★</span>`;
+    b.setAttribute("aria-label", `${title}, livelli da ${g * 10 + 1} a ${g * 10 + 10}, ${st.done} completati. Apri il primo livello non completato.`);
+    b.addEventListener("click", () => {
+      fx("click");
+      let target = g * 10;
+      for (let id = g * 10 + 1; id <= g * 10 + 10; id++) {
+        if (!progress.levels[id]) { target = id - 1; break; }
+        target = id - 1;
+      }
+      startLevel(target);
+    });
+    list.appendChild(b);
+  });
+
+  $("#homeStats").innerHTML = `
+    <div class="stat"><b>${doneCount}<span style="font-size:.9rem">/40</span></b><span>LIVELLI</span></div>
+    <div class="stat"><b>${totalStars}<span style="font-size:.9rem">/120</span></b><span>STELLE</span></div>
+    <div class="stat"><b>${progress.exercises.sessions || 0}</b><span>ALLENAMENTI</span></div>
+    <div class="stat"><b>${progress.listens || 0}</b><span>ASCOLTI</span></div>`;
+
+  $("#continueBtn").onclick = () => {
+    fx("click");
+    startLevel(Math.min(39, Math.max(0, (progress.lastLevel || 1) - 1)));
+  };
+  $("#randomBtn").onclick = () => startLevel(Math.floor(Math.random() * LEVELS.length));
+}
+
+/* ------------------------------------------------------------------
+   8. LIVELLO — rendering
+   ------------------------------------------------------------------ */
+function startLevel(index) {
+  L.levelIndex = Math.max(0, Math.min(LEVELS.length - 1, index));
+  progress.lastLevel = L.levelIndex + 1;
+  saveJSON(STORE_KEY, progress);
+  buildLevel();
+  showScreen("level");
+  if (settings.autoRead) setTimeout(() => speakSentence(currentLevel()), 420);
+}
+
+function currentLevel() { return LEVELS[L.levelIndex]; }
+
+function buildLevel() {
+  const lvl = currentLevel();
+  L.slots = [];
+  L.mistakes = 0;
+  L.hints = 0;
+  L.listenCount = 0;
+  L.completed = false;
+  L.selectedTile = null;
+  L.startedAt = Date.now();
+
+  $("#levelTitle").textContent = lvl.title;
+  $("#levelGroupBadge").textContent = lvl.badge;
+  $("#levelCounter").textContent = `${lvl.id} / ${LEVELS.length}`;
+  $("#prevBtn").disabled = L.levelIndex === 0;
+  $("#nextBtn").disabled = L.levelIndex === LEVELS.length - 1;
+
+  // TV
+  const tv = $("#tvImage");
+  tv.innerHTML = "";
+  const img = new Image();
+  img.src = illustrationSVG(lvl);
+  img.alt = "Illustrazione della frase: " + lvl.text;
+  img.style.width = "100%";
+  img.style.display = "block";
+  img.style.borderRadius = "10px";
+  tv.appendChild(img);
+
+  // suggerimento / riga guida
+  const oldHint = $("#hintLine");
+  if (oldHint) oldHint.remove();
+  if (lvl.guided && settings.showHints) {
+    const hint = el("div", "hintline");
+    hint.id = "hintLine";
+    hint.innerHTML = `La frase è: <b>${lvl.text}</b>`;
+    $("#slotsWrap").before(hint);
+  }
+
+  // slot
+  const wrap = $("#slotsWrap");
+  wrap.innerHTML = "";
+  let globalIdx = 0;
+
+  lvl.parts.forEach((part, pIdx) => {
+    if (pIdx > 0 && lvl.connector) {
+      const conn = el("div", "connector");
+      conn.innerHTML = `<span class="line"></span><span class="badge-c" aria-label="Congiunzione ${lvl.connector}">${lvl.connector}</span><span class="line"></span>`;
+      wrap.appendChild(conn);
+    }
+
+    const partBox = el("div", "part");
+    const head = el("div", "part-head");
+    head.innerHTML = `<span class="dot" aria-hidden="true"></span>${part.label}`;
+    partBox.appendChild(head);
+
+    const row = el("div", "slotrow");
+    row.setAttribute("role", "group");
+    row.setAttribute("aria-label", `${part.label}: ${part.syllables.length} caselle`);
+
+    part.syllables.forEach((syl, sIdx) => {
+      const slot = el("button", "slot");
+      slot.type = "button";
+      slot.dataset.index = String(globalIdx);
+      slot.dataset.part = String(pIdx);
+      slot.dataset.pos = String(sIdx);
+      const pre = part.prefilled[sIdx];
+      if (pre) {
+        slot.classList.add("prefilled");
+        slot.textContent = syl;
+        slot.setAttribute("aria-label", `Casella ${sIdx + 1}, già compilata: ${syl}`);
+        slot.disabled = true;
+      } else {
+        slot.setAttribute("aria-label", `Casella ${sIdx + 1}, vuota`);
+        slot.addEventListener("click", () => onSlotClick(slot));
+        slot.addEventListener("keydown", e => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSlotClick(slot); }
+        });
+      }
+      slot.addEventListener("dragover", e => { e.preventDefault(); slot.classList.add("drop-hover"); });
+      slot.addEventListener("dragleave", () => slot.classList.remove("drop-hover"));
+      row.appendChild(slot);
+      L.slots.push({ index: globalIdx, part: pIdx, pos: sIdx, syllable: syl, prefilled: pre, filled: pre });
+      globalIdx++;
+    });
+
+    partBox.appendChild(row);
+    wrap.appendChild(partBox);
+  });
+
+  // tessere
+  const needing = [];
+  lvl.parts.forEach((part, pIdx) => {
+    part.syllables.forEach((syl, sIdx) => {
+      if (!part.prefilled[sIdx]) needing.push({ text: syl, part: pIdx, pos: sIdx });
+    });
+  });
+  L.tiles = shuffleArr(needing.concat(lvl.distractors.map(d => ({ text: d, part: -1, pos: -1 }))));
+  renderTiles();
+
+  // pannello laterale
+  $("#radioSub").textContent = lvl.mode === "coordinated" ? "le due frasi" : lvl.mode === "complex" ? "la frase intera" : "la frase intera";
+  $("#modeNote").textContent = lvl.guided
+    ? " In questo percorso alcune caselle sono già compilate: completa tu le altre."
+    : lvl.mode === "coordinated"
+      ? " Ogni riga è una frase: uniscile con il connettore al centro."
+      : lvl.mode === "complex"
+        ? " La prima parte è la subordinata, la seconda la frase principale."
+        : " Trascina tutte le sillabe nell'ordine giusto.";
+  updateProgressText();
+  setMascot(lvl.guided ? "Guarda le caselle grigie: sono già fatte!" : "Tocca una tessera per ascoltarla.");
+  syncBottomBarHeight();
+}
+
+function renderTiles() {
+  const pool = $("#tilePool");
+  pool.innerHTML = "";
+  L.tiles.forEach((t, i) => {
+    if (t.used) return;
+    const tile = el("button", "tile", t.text);
+    tile.type = "button";
+    tile.dataset.tile = String(i);
+    tile.setAttribute("aria-label", `Tessera ${t.text}. Premi Invio per selezionarla, oppure trascinala in una casella.`);
+    tile.addEventListener("click", () => onTileClick(tile, t));
+    tile.addEventListener("pointerdown", e => startDrag(e, tile, t));
+    tile.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", String(i));
+      e.dataTransfer.effectAllowed = "move";
+    });
+    pool.appendChild(tile);
+  });
+  if (!pool.children.length) {
+    const empty = el("p", "muted", "Tutte le tessere sono state usate. Controlla le caselle!");
+    pool.appendChild(empty);
+  }
+}
+
+function updateProgressText() {
+  const total = L.slots.length;
+  const done = L.slots.filter(s => s.filled).length;
+  $("#levelProgressText").textContent = `${done} di ${total} sillabe al posto giusto`;
+}
+
+/** Misura l'altezza reale della barra inferiore e la espone come variabile CSS:
+    così il contenuto non finisce mai sotto la barra, a nessuna larghezza. */
+let barObserver = null;
+function syncBottomBarHeight() {
+  const bar = document.querySelector(".bottombar");
+  if (!bar) return;
+  const apply = () => {
+    const h = Math.ceil(bar.getBoundingClientRect().height);
+    if (h > 0) document.documentElement.style.setProperty("--bar-h", h + "px");
+  };
+  apply();
+  if (!barObserver && "ResizeObserver" in window) {
+    barObserver = new ResizeObserver(apply);
+    barObserver.observe(bar);
+  }
+}
+window.addEventListener("resize", syncBottomBarHeight);
+window.addEventListener("orientationchange", () => setTimeout(syncBottomBarHeight, 260));
+
+function setMascot(text) {
+  const node = $("#mascotText");
+  if (node) node.textContent = text;
+}
+
+/* ------------------------------------------------------------------
+   9. INTERAZIONI: click, selezione, drag & drop (mouse/touch/penna)
+   ------------------------------------------------------------------ */
+function onTileClick(tile, t) {
+  if (L.completed) return;
+  fx("click");
+  speak(t.text, { rate: Math.max(0.6, settings.rate - 0.2) });
+  if (tile.classList.contains("selected")) {
+    tile.classList.remove("selected");
+    L.selectedTile = null;
+    return;
+  }
+  $$(".tile.selected").forEach(n => n.classList.remove("selected"));
+  tile.classList.add("selected");
+  L.selectedTile = { tile, data: t };
+  setMascot(`Hai scelto «${t.text}»: tocca la casella giusta.`);
+  announce(`Tessera ${t.text} selezionata. Scegli una casella.`);
+}
+
+function onSlotClick(slot) {
+  if (L.completed || !L.selectedTile) {
+    if (!L.selectedTile && !slot.classList.contains("prefilled")) {
+      setMascot("Prima scegli una tessera, poi tocca la casella.");
+    }
+    return;
+  }
+  const sel = L.selectedTile;
+  tryPlace(sel.tile, sel.data, slot);
+  L.selectedTile = null;
+  $$(".tile.selected").forEach(n => n.classList.remove("selected"));
+}
+
+/* --- drag con Pointer Events (funziona con mouse, dito, penna) --- */
+let drag = null;
+
+function startDrag(e, tile, data) {
+  if (L.completed) return;
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  drag = { tile, data, startX: e.clientX, startY: e.clientY, moved: false, ghost: null, pointerId: e.pointerId };
+  speak(data.text, { rate: Math.max(0.6, settings.rate - 0.2) });
+  tile.setPointerCapture && tile.setPointerCapture(e.pointerId);
+  document.addEventListener("pointermove", onDragMove);
+  document.addEventListener("pointerup", onDragEnd);
+  document.addEventListener("pointercancel", onDragEnd);
+}
+
+function onDragMove(e) {
+  if (!drag) return;
+  const dx = e.clientX - drag.startX, dy = e.clientY - drag.startY;
+  if (!drag.moved && Math.hypot(dx, dy) < 7) return;
+  if (!drag.moved) {
+    drag.moved = true;
+    const rect = drag.tile.getBoundingClientRect();
+    const ghost = drag.tile.cloneNode(true);
+    ghost.classList.add("ghost");
+    ghost.classList.remove("selected");
+    ghost.style.width = rect.width + "px";
+    ghost.style.height = rect.height + "px";
+    document.body.appendChild(ghost);
+    drag.ghost = ghost;
+    drag.offsetX = drag.startX - rect.left;
+    drag.offsetY = drag.startY - rect.top;
+    drag.tile.classList.add("dragging");
+    document.body.style.cursor = "grabbing";
+  }
+  if (drag.ghost) {
+    drag.ghost.style.left = (e.clientX - drag.offsetX + drag.ghost.offsetWidth / 2) + "px";
+    drag.ghost.style.top = (e.clientY - drag.offsetY + drag.ghost.offsetHeight / 2) + "px";
+  }
+  $$(".slot.drop-hover").forEach(s => s.classList.remove("drop-hover"));
+  const target = slotAt(e.clientX, e.clientY);
+  if (target && !target.disabled) target.classList.add("drop-hover");
+}
+
+function slotAt(x, y) {
+  const node = document.elementFromPoint(x, y);
+  return node ? node.closest(".slot") : null;
+}
+
+function onDragEnd(e) {
+  document.removeEventListener("pointermove", onDragMove);
+  document.removeEventListener("pointerup", onDragEnd);
+  document.removeEventListener("pointercancel", onDragEnd);
+  if (!drag) return;
+  const d = drag;
+  drag = null;
+  document.body.style.cursor = "";
+  if (d.ghost) d.ghost.remove();
+  d.tile.classList.remove("dragging");
+  $$(".slot.drop-hover").forEach(s => s.classList.remove("drop-hover"));
+
+  if (!d.moved) return; // è stato un tap: gestisce il click
+  const slot = slotAt(e.clientX, e.clientY);
+  if (slot && !slot.disabled) {
+    tryPlace(d.tile, d.data, slot);
+  } else {
+    // fuori da uno slot: la tessera torna al suo posto
+    d.tile.classList.add("shake-anim");
+    setTimeout(() => d.tile.classList.remove("shake-anim"), 420);
+    setMascot("La tessera è tornata al suo posto: prova in una casella.");
+  }
+}
+
+/* --- collocazione e verifica --- */
+function tryPlace(tileEl, data, slotEl) {
+  if (!slotEl || slotEl.disabled || L.completed) return;
+  const idx = Number(slotEl.dataset.index);
+  const slot = L.slots[idx];
+  if (!slot || slot.filled) {
+    slotEl.classList.add("shake");
+    setTimeout(() => slotEl.classList.remove("shake"), 400);
+    setMascot("Questa casella è già occupata: scegline un'altra.");
+    return;
+  }
+  if (slot.syllable.toLowerCase() === data.text.toLowerCase()) {
+    placeSyllable(slotEl, slot, data);
+  } else {
+    L.mistakes++;
+    fx("wrong");
+    slotEl.classList.add("shake");
+    setTimeout(() => slotEl.classList.remove("shake"), 420);
+    tileEl.classList.add("shake-anim");
+    setTimeout(() => tileEl.classList.remove("shake-anim"), 420);
+    setMascot(`«${data.text}» non va bene qui. Riascolta la sillaba e riprova.`);
+    announce(`Sbagliato: la sillaba ${data.text} non va in questa casella.`);
+    speak("Riprova", { rate: 1 });
+  }
+}
+
+function placeSyllable(slotEl, slot, data) {
+  slotEl.textContent = slot.syllable;
+  slotEl.classList.add("filled");
+  slotEl.setAttribute("aria-label", `Casella ${slot.pos + 1}: ${slot.syllable}`);
+  slot.filled = true;
+  data.used = true;
+  const tile = $$(".tile").find(t => t.dataset.tile === String(L.tiles.indexOf(data)));
+  if (tile) tile.remove();
+  fx("place");
+  speak(slot.syllable, { rate: Math.max(0.6, settings.rate - 0.15) });
+  setMascot(`Bravo! «${slot.syllable}» è al posto giusto.`);
+  updateProgressText();
+  checkCompletion();
+}
+
+function checkCompletion() {
+  const allDone = L.slots.every(s => s.filled);
+  if (!allDone || L.completed) return;
+  L.completed = true;
+  const lvl = currentLevel();
+  $$(".slot.filled").forEach(s => s.classList.add("done"));
+  fx("win");
+  confetti();
+  const seconds = Math.round((Date.now() - L.startedAt) / 1000);
+  const stars = L.mistakes === 0 ? 3 : L.mistakes <= 2 ? 2 : 1;
+  const prev = progress.levels[lvl.id];
+  if (!prev || stars > prev.stars) {
+    progress.levels[lvl.id] = { stars, mistakes: L.mistakes, seconds, date: new Date().toISOString() };
+  } else {
+    prev.mistakes = Math.min(prev.mistakes ?? 99, L.mistakes);
+  }
+  saveJSON(STORE_KEY, progress);
+
+  setTimeout(() => {
+    speakSyllables(lvl.syllables);
+  }, 260);
+
+  setTimeout(() => showResults(stars, seconds), 1500);
+}
+
+/* ------------------------------------------------------------------
+   10. AIUTI: suggerimento, mescola, rifai, ho finito
+   ------------------------------------------------------------------ */
+function giveHint() {
+  if (L.completed) { toast("Livello già completato! 🎉"); return; }
+  const slot = L.slots.find(s => !s.filled);
+  if (!slot) return;
+  L.hints++;
+  const slotEl = document.querySelector(`.slot[data-index="${slot.index}"]`);
+  const tileEl = Array.from(document.querySelectorAll(".tile")).find(t => t.textContent === slot.syllable);
+  if (slotEl) {
+    slotEl.classList.add("target");
+    setTimeout(() => slotEl.classList.remove("target"), 2600);
+  }
+  if (tileEl) {
+    tileEl.classList.add("blink");
+    tileEl.scrollIntoView({ block: "nearest", behavior: settings.reduceMotion ? "auto" : "smooth" });
+    setTimeout(() => tileEl.classList.remove("blink"), 2000);
+  }
+  fx("hint");
+  speak(slot.syllable, { rate: Math.max(0.6, settings.rate - 0.25) });
+  setMascot(`La prossima sillaba è «${slot.syllable}».`);
+  announce(`Suggerimento: la prossima sillaba è ${slot.syllable}.`);
+}
+
+function resetLevel() {
+  buildLevel();
+  toast("Livello ricominciato da capo");
+  announce("Livello azzerato.");
+  if (settings.autoRead) setTimeout(() => speakSentence(currentLevel()), 300);
+}
+
+function finishLevel() {
+  if (L.completed) { showResults(lastStars || 3, Math.round((Date.now() - L.startedAt) / 1000)); return; }
+  const missing = L.slots.filter(s => !s.filled).length;
+  if (missing) {
+    toast(`Mancano ancora ${missing} sillabe: non mollare!`);
+    setMascot(`Mancano ${missing} sillabe. Usa il suggerimento se ti serve aiuto.`);
+    const slot = L.slots.find(s => !s.filled);
+    if (slot) {
+      const node = document.querySelector(`.slot[data-index="${slot.index}"]`);
+      if (node) { node.classList.add("target"); setTimeout(() => node.classList.remove("target"), 2000); }
+    }
+    speak(`Mancano ${missing} sillabe`);
+    return;
+  }
+}
+
+function confetti() {
+  if (settings.reduceMotion) return;
+  const box = $("#confetti");
+  const colors = ["#f59a2a", "#3fae5a", "#4a90e2", "#d94b45", "#ffd45e", "#9b7ff0"];
+  for (let i = 0; i < 48; i++) {
+    const p = document.createElement("i");
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.background = colors[i % colors.length];
+    p.style.animationDuration = (1.6 + Math.random() * 1.4) + "s";
+    p.style.animationDelay = (Math.random() * 0.5) + "s";
+    p.style.transform = `rotate(${Math.random() * 360}deg)`;
+    box.appendChild(p);
+    setTimeout(() => p.remove(), 3600);
+  }
+}
+
+/* ------------------------------------------------------------------
+   11. RISULTATI
+   ------------------------------------------------------------------ */
+let lastStars = 3;
+
+function showResults(stars, seconds) {
+  if (typeof stars === "number") lastStars = stars;
+  const lvl = currentLevel();
+  const rec = progress.levels[lvl.id];
+  const starCount = rec ? rec.stars : lastStars;
+  const perfect = starCount === 3;
+
+  $("#resultsEmoji").textContent = perfect ? "🏆" : starCount === 2 ? "🌟" : "🎉";
+  $("#resultsStars").textContent = "★".repeat(starCount) + "☆".repeat(3 - starCount);
+  $("#resultsStars").setAttribute("aria-label", `${starCount} stelle su 3`);
+  $("#resultsTitle").textContent = perfect ? "Perfetto, senza errori!" : "Frase completata!";
+  $("#resultsText").textContent = `«${lvl.text}»`;
+  $("#resultsBadge").textContent = `Livello ${lvl.id} completato`;
+  $("#resultsTop").textContent = perfect ? "Bravissimo!" : "Ben fatto!";
+  $("#resultsStats").innerHTML = `
+    <div class="stat"><b>${starCount}/3</b><span>STELLE</span></div>
+    <div class="stat"><b>${L.mistakes}</b><span>ERRORI</span></div>
+    <div class="stat"><b>${seconds}s</b><span>TEMPO</span></div>
+    <div class="stat"><b>${L.hints}</b><span>AIUTI</span></div>`;
+  $("#resultsNext").disabled = L.levelIndex >= LEVELS.length - 1;
+  showScreen("results");
+  announce(`Livello completato con ${starCount} stelle su 3.`);
+  if (settings.autoRead) setTimeout(() => speak("Bravo! " + lvl.parts.map(p => p.syllables.join("")).join(" ")), 300);
+}
+
+/* ------------------------------------------------------------------
+   12. ESERCIZI (quiz di 8 domande su sillabe e parole)
+   ------------------------------------------------------------------ */
+const QUIZ_LEN = 8;
+const quiz = { items: [], i: 0, score: 0, streak: 0, answered: false };
+
+function allSyllables() {
+  const set = new Set();
+  LEVELS.forEach(l => l.syllables.forEach(s => set.add(s)));
+  return Array.from(set);
+}
+function pick(arr, n, exclude) {
+  const pool = arr.filter(x => !exclude || x !== exclude);
+  return shuffleArr(pool).slice(0, n);
+}
+
+function buildQuiz() {
+  const syls = allSyllables();
+  const words = LEVELS.map(l => l.syllables).filter(a => a.length >= 3 && a.length <= 9);
+  quiz.items = [];
+  for (let i = 0; i < QUIZ_LEN; i++) {
+    const type = ["listen", "first", "count", "missing"][i % 4];
+    if (type === "listen") {
+      const answer = syls[Math.floor(Math.random() * syls.length)];
+      quiz.items.push({
+        type, prompt: "Ascolta e scegli la sillaba giusta.",
+        speak: answer, answer, options: shuffleArr([answer].concat(pick(syls, 3, answer)))
+      });
+    } else if (type === "first") {
+      const seq = words[Math.floor(Math.random() * words.length)];
+      const answer = seq[0];
+      const word = seq.join("");
+      quiz.items.push({
+        type, prompt: `Con quale sillaba inizia la parola «${word}»?`,
+        speak: word, answer, options: shuffleArr([answer].concat(pick(syls, 3, answer)))
+      });
+    } else if (type === "count") {
+      const seq = words[Math.floor(Math.random() * words.length)];
+      const answer = String(seq.length);
+      const opts = new Set([answer]);
+      while (opts.size < 4) opts.add(String(Math.max(2, Math.min(12, seq.length + Math.floor(Math.random() * 5) - 2))));
+      quiz.items.push({
+        type, prompt: `Quante sillabe ha la parola «${seq.join("")}»?`,
+        speak: seq.join(""), answer, options: shuffleArr(Array.from(opts))
+      });
+    } else {
+      const seq = words[Math.floor(Math.random() * words.length)];
+      const pos = Math.floor(Math.random() * seq.length);
+      const answer = seq[pos];
+      const word = seq.map((s, k) => k === pos ? "···" : s).join("");
+      quiz.items.push({
+        type, prompt: `Quale sillaba manca nella parola «${word}»?`,
+        speak: seq.join(""), answer, options: shuffleArr([answer].concat(pick(syls, 3, answer)))
+      });
+    }
+  }
+  quiz.i = 0; quiz.score = 0; quiz.streak = 0;
+  showScreen("exercises");
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const item = quiz.items[quiz.i];
+  if (!item) { finishQuiz(); return; }
+  quiz.answered = false;
+  $("#quizCounter").textContent = `Domanda ${quiz.i + 1} di ${quiz.items.length}`;
+  $("#quizScore").textContent = `Punteggio ${quiz.score}`;
+  $("#quizQuestion").textContent = item.prompt;
+
+  const audioWrap = $("#quizAudioWrap");
+  audioWrap.innerHTML = "";
+  const radio = el("button", "big-radio");
+  radio.type = "button";
+  radio.textContent = "🔊";
+  radio.setAttribute("aria-label", "Ascolta di nuovo");
+  radio.onclick = () => speak(item.speak, { rate: Math.max(0.65, settings.rate - 0.1) });
+  audioWrap.appendChild(radio);
+
+  const box = $("#quizOptions");
+  box.innerHTML = "";
+  item.options.forEach(opt => {
+    const b = el("button", "opt", opt);
+    b.type = "button";
+    b.addEventListener("click", () => answerQuiz(b, opt, item));
+    box.appendChild(b);
+  });
+
+  if (settings.autoRead) setTimeout(() => speak(item.speak, { rate: Math.max(0.65, settings.rate - 0.1) }), 320);
+  announce(item.prompt);
+}
+
+function answerQuiz(btn, opt, item) {
+  if (quiz.answered) return;
+  quiz.answered = true;
+  $$("#quizOptions .opt").forEach(b => b.disabled = true);
+  if (opt === item.answer) {
+    btn.classList.add("correct");
+    quiz.score++;
+    quiz.streak++;
+    fx("place");
+    speak("Giusto!", { rate: 1.05 });
+    announce("Risposta corretta.");
+  } else {
+    btn.classList.add("wrong");
+    quiz.streak = 0;
+    fx("wrong");
+    const right = $$("#quizOptions .opt").find(b => b.textContent === item.answer);
+    if (right) right.classList.add("correct");
+    speak("Quasi! Era " + item.answer, { rate: 1 });
+    announce(`Sbagliato. La risposta giusta era ${item.answer}.`);
+  }
+  $("#quizScore").textContent = `Punteggio ${quiz.score}`;
+  setTimeout(() => {
+    quiz.i++;
+    if (quiz.i < quiz.items.length) renderQuestion();
+    else finishQuiz();
+  }, 1400);
+}
+
+function finishQuiz() {
+  const pct = Math.round(quiz.score / quiz.items.length * 100);
+  const stars = pct >= 90 ? 3 : pct >= 60 ? 2 : pct >= 35 ? 1 : 0;
+  progress.exercises.sessions = (progress.exercises.sessions || 0) + 1;
+  progress.exercises.best = Math.max(progress.exercises.best || 0, quiz.score);
+  saveJSON(STORE_KEY, progress);
+
+  $("#resultsEmoji").textContent = stars >= 2 ? "🏅" : "💪";
+  $("#resultsStars").textContent = "★".repeat(stars) + "☆".repeat(3 - stars);
+  $("#resultsTitle").textContent = stars >= 2 ? "Allenamento superato!" : "Continua ad allenarti";
+  $("#resultsText").textContent = `Hai risposto correttamente a ${quiz.score} domande su ${quiz.items.length} (${pct}%).`;
+  $("#resultsBadge").textContent = "Esercizi";
+  $("#resultsTop").textContent = "Risultato esercizi";
+  $("#resultsStats").innerHTML = `
+    <div class="stat"><b>${quiz.score}/${quiz.items.length}</b><span>RISPOSTE</span></div>
+    <div class="stat"><b>${pct}%</b><span>PRECISIONE</span></div>
+    <div class="stat"><b>${progress.exercises.best || 0}</b><span>RECORD</span></div>
+    <div class="stat"><b>${progress.exercises.sessions}</b><span>SESSIONI</span></div>`;
+  $("#resultsNext").textContent = "🔁 Nuovo allenamento";
+  showScreen("results");
+  if (stars >= 2) { fx("win"); confetti(); }
+  if (settings.autoRead) setTimeout(() => speak(`Hai totalizzato ${quiz.score} risposte giuste su ${quiz.items.length}`), 300);
+}
+
+/* ------------------------------------------------------------------
+   13. STAMPA — scheda del livello corrente
+   ------------------------------------------------------------------ */
+function buildPrintSheet(level) {
+  const sheet = $("#printSheet");
+  const slotHtml = lvl => lvl.parts.map(p => `
+      <div class="ps-line">${p.label}</div>
+      <div class="ps-slots">${p.syllables.map((s, i) => `<div class="ps-slot ${p.prefilled[i] ? "pre" : ""}">${p.prefilled[i] ? s : ""}</div>`).join("")}</div>
+    `).join("");
+
+  const tiles = shuffleArr(level.parts.flatMap(p => p.syllables).filter((s, i, a) => a.indexOf(s) === i));
+  sheet.innerHTML = `
+    <div class="ps-head">
+      <h1>${level.title}</h1>
+      <p>Laboratorio di letto-scrittura · Scheda di lavoro</p>
+    </div>
+    <p class="ps-line">Frase: ${level.guided ? "____________________" : "________________________________________"}</p>
+    ${slotHtml(level)}
+    <p class="ps-line">Ritaglia le sillabe e incollale nelle caselle giuste:</p>
+    <div class="ps-tiles">${tiles.map(t => `<span class="ps-tile">${t}</span>`).join("")}</div>
+    <p class="ps-line">Sillabe mescolate da ritagliare: ${shuffleArr(level.distractors).join(" · ")}</p>
+    <div class="ps-foot">
+      Nome: ______________________________ &nbsp;&nbsp; Data: ____________ &nbsp;&nbsp; Stelle: ☆ ☆ ☆
+    </div>`;
+}
+
+function printCurrent() {
+  buildPrintSheet(currentLevel());
+  setTimeout(() => window.print(), 120);
+}
+
+/* ------------------------------------------------------------------
+   14. TROFEI
+   ------------------------------------------------------------------ */
+const TROPHIES = [
+  { id: "first", e: "🌱", n: "Primo passo", d: "1 livello completato", test: () => Object.keys(progress.levels).length >= 1 },
+  { id: "ten", e: "🌿", n: "Esploratore", d: "10 livelli completati", test: () => Object.keys(progress.levels).length >= 10 },
+  { id: "twenty", e: "🌳", n: "Metà strada", d: "20 livelli completati", test: () => Object.keys(progress.levels).length >= 20 },
+  { id: "forty", e: "🏆", n: "Campione", d: "40 livelli completati", test: () => Object.keys(progress.levels).length >= 40 },
+  { id: "perfect", e: "⭐", n: "Perfezionista", d: "5 livelli con 3 stelle", test: () => Object.values(progress.levels).filter(r => r.stars === 3).length >= 5 },
+  { id: "voice", e: "🗣️", n: "Voce d'oro", d: "20 frasi ascoltate", test: () => (progress.listens || 0) >= 20 },
+  { id: "train", e: "🧰", n: "Allenamento", d: "5 sessioni di esercizi", test: () => (progress.exercises.sessions || 0) >= 5 },
+  { id: "alone", e: "🧠", n: "Da solo", d: "Un livello senza aiuti", test: () => Object.values(progress.levels).some(r => (r.mistakes || 0) === 0) }
+];
+
+function renderTrophies() {
+  const done = Object.keys(progress.levels).length;
+  const stars = Object.values(progress.levels).reduce((a, r) => a + (r.stars || 0), 0);
+  const unlocked = TROPHIES.filter(t => t.test()).length;
+  $("#trophyStats").innerHTML = `
+    <div class="stat"><b>${done}/40</b><span>LIVELLI</span></div>
+    <div class="stat"><b>${stars}/120</b><span>STELLE</span></div>
+    <div class="stat"><b>${unlocked}/${TROPHIES.length}</b><span>TROFEI</span></div>
+    <div class="stat"><b>${progress.exercises.sessions || 0}</b><span>ALLENAMENTI</span></div>`;
+  const grid = $("#trophyGrid");
+  grid.innerHTML = "";
+  TROPHIES.forEach(t => {
+    const got = t.test();
+    const node = el("div", "trophy" + (got ? " unlocked" : ""));
+    node.innerHTML = `<div class="te" aria-hidden="true">${got ? t.e : "🔒"}</div>
+      <div class="tn">${t.n}</div><div class="td">${t.d}</div>`;
+    node.setAttribute("aria-label", `${t.n}: ${t.d}. ${got ? "Sbloccato" : "Bloccato"}`);
+    grid.appendChild(node);
+  });
+}
+
+/* ------------------------------------------------------------------
+   15. IMPOSTAZIONI E AIUTO (sheet)
+   ------------------------------------------------------------------ */
+function openSheet(title, html) {
+  $("#overlayTitle").textContent = title;
+  $("#overlayBody").innerHTML = html;
+  $("#overlay").classList.add("open");
+  $("#overlayClose").focus();
+}
+function closeSheet() { $("#overlay").classList.remove("open"); }
+
+function applySettings() {
+  document.documentElement.style.setProperty("--font-scale", settings.fontScale);
+  document.body.classList.toggle("theme-night", settings.theme === "night");
+  document.body.classList.toggle("reduce-motion", !!settings.reduceMotion);
+}
+
+function openSettings() {
+  const voiceOpts = (voices.filter(v => /it/i.test(v.lang)).length ? voices.filter(v => /it/i.test(v.lang)) : voices)
+    .map(v => `<option value="${v.voiceURI}" ${settings.voiceURI === v.voiceURI ? "selected" : ""}>${v.name} (${v.lang})</option>`)
+    .join("");
+  openSheet("Impostazioni", `
+    <div class="field"><label for="setFont">Dimensione testo<span class="hint">Più grande per leggere meglio</span></label>
+      <input id="setFont" type="range" min="0.9" max="1.5" step="0.05" value="${settings.fontScale}"></div>
+    <div class="field"><label for="setRate">Velocità voce<span class="hint">0,6 lenta · 1,4 veloce</span></label>
+      <input id="setRate" type="range" min="0.6" max="1.4" step="0.05" value="${settings.rate}"></div>
+    <div class="field"><label for="setVoice">Voce italiana<span class="hint">Dipende dal sistema</span></label>
+      <select id="setVoice"><option value="">Automatica</option>${voiceOpts}</select></div>
+    <div class="field"><label for="setTheme">Tema scuro<span class="hint">Meno luce, stesso divertimento</span></label>
+      <span class="switch"><input id="setTheme" type="checkbox" ${settings.theme === "night" ? "checked" : ""}><span></span></span></div>
+    <div class="field"><label for="setSound">Effetti sonori<span class="hint">Suoni di conferma e vittoria</span></label>
+      <span class="switch"><input id="setSound" type="checkbox" ${settings.soundOn ? "checked" : ""}><span></span></span></div>
+    <div class="field"><label for="setAuto">Lettura automatica<span class="hint">Legge la frase all'apertura del livello</span></label>
+      <span class="switch"><input id="setAuto" type="checkbox" ${settings.autoRead ? "checked" : ""}><span></span></span></div>
+    <div class="field"><label for="setHints">Mostra riga suggerimento<span class="hint">Solo nei livelli guidati</span></label>
+      <span class="switch"><input id="setHints" type="checkbox" ${settings.showHints ? "checked" : ""}><span></span></span></div>
+    <div class="field"><label for="setMotion">Riduci animazioni<span class="hint">Per chi preferisce meno movimento</span></label>
+      <span class="switch"><input id="setMotion" type="checkbox" ${settings.reduceMotion ? "checked" : ""}><span></span></span></div>
+    <div class="row" style="justify-content:flex-end;margin-top:14px">
+      <button class="btn ghost small" id="settingsDone">Chiudi</button>
+    </div>
+    <p class="muted" style="margin-top:8px;font-size:.72rem">Le impostazioni sono salvate automaticamente su questo dispositivo.</p>
+  `);
+
+  const bind = (id, key, transform) => {
+    const input = $("#" + id);
+    if (!input) return;
+    input.addEventListener("input", () => {
+      settings[key] = transform ? transform(input) : input.value;
+      saveJSON(SETTINGS_KEY, settings);
+      applySettings();
+    });
+  };
+  bind("setFont", "fontScale", i => parseFloat(i.value));
+  bind("setRate", "rate", i => parseFloat(i.value));
+  bind("setVoice", "voiceURI", i => { refreshVoices(); return i.value; });
+  bind("setTheme", "theme", i => i.checked ? "night" : "day");
+  bind("setSound", "soundOn", i => i.checked);
+  bind("setAuto", "autoRead", i => i.checked);
+  bind("setHints", "showHints", i => { if (L.screen === "level") buildLevel(); return i.checked; });
+  bind("setMotion", "reduceMotion", i => i.checked);
+
+  $("#settingsDone").onclick = closeSheet;
+}
+
+function openHelp() {
+  openSheet("Come funziona", `
+    <p style="font-size:.9rem;line-height:1.55">
+      <b>Sillabe in gioco</b> è un laboratorio per imparare a leggere e scrivere componendo frasi con le sillabe.
+    </p>
+    <ul style="margin:12px 0 12px 20px;font-size:.86rem;line-height:1.7">
+      <li><b>1. Ascolta</b> la frase con il tasto rosso della radio.</li>
+      <li><b>2. Trascina</b> ogni tessera nella casella giusta (con il dito o con il mouse).</li>
+      <li><b>3. Tocca</b> una tessera per ascoltarne il suono; toccala e poi tocca la casella per inserirla.</li>
+      <li><b>4. Suggerimento</b> fa lampeggiare la sillaba giusta; <b>Rifai</b> ricomincia il livello.</li>
+      <li><b>5. Esercizi</b> propone 8 domande su sillabe, parole e conteggi.</li>
+    </ul>
+    <p class="muted" style="font-size:.78rem">Scorciatoie da tastiera: ← → per cambiare livello, H per il suggerimento, R per rifare, Esc per tornare alla home.</p>
+    <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn ghost small" id="helpDone">Ho capito</button></div>
+  `);
+  $("#helpDone").onclick = closeSheet;
+}
+
+/* ------------------------------------------------------------------
+   16. EVENTI GLOBALI
+   ------------------------------------------------------------------ */
+function switchScreenCleanup() {
+  if (synth) synth.cancel();
+}
+
+$("#homeSettingsBtn").onclick = openSettings;
+$("#homeCloseBtn").onclick = () => {
+  switchScreenCleanup();
+  if (window.desktopAPI && window.desktopAPI.close) window.desktopAPI.close();
+  else if (window.close) { window.close(); toast("Puoi chiudere la scheda del browser 🙂"); }
+};
+$("#toolExercises").onclick = buildQuiz;
+$("#toolPrint").onclick = () => { buildPrintSheet(LEVELS[Math.max(0, (progress.lastLevel || 1) - 1)]); setTimeout(() => window.print(), 120); };
+$("#toolTrophies").onclick = () => showScreen("trophies");
+$("#toolHelp").onclick = openHelp;
+
+$("#levelHomeBtn").onclick = () => { switchScreenCleanup(); showScreen("home"); };
+$("#levelCloseBtn").onclick = () => { switchScreenCleanup(); showScreen("home"); };
+$("#radioBtn").onclick = () => {
+  const btn = $("#radioBtn");
+  btn.classList.add("playing");
+  setTimeout(() => btn.classList.remove("playing"), 1600);
+  speakSentence(currentLevel());
+  announce("Ascolto della frase.");
+};
+$("#radioBtn").addEventListener("keydown", e => {
+  if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#radioBtn").click(); }
+});
+
+$("#hintBtn").onclick = giveHint;
+$("#resetBtn").onclick = resetLevel;
+$("#printBtn").onclick = printCurrent;
+$("#finishBtn").onclick = finishLevel;
+$("#exercisesBtn").onclick = buildQuiz;
+$("#shuffleBtn").onclick = () => {
+  L.tiles = shuffleArr(L.tiles);
+  renderTiles();
+  toast("Tessere mescolate");
+};
+$("#mascotBtn").onclick = () => {
+  const lvl = currentLevel();
+  const firstMissing = L.slots.find(s => !s.filled);
+  if (L.completed) { speak("Hai già finito questo livello. Bravo!"); setMascot("Livello finito, complimenti!"); return; }
+  if (firstMissing) {
+    speak(`La prossima sillaba è ${firstMissing.syllable}`, { rate: 0.85 });
+    setMascot(`Ti serve «${firstMissing.syllable}»? Prova a cercarla.`);
+  }
+};
+$("#prevBtn").onclick = () => { if (L.levelIndex > 0) startLevel(L.levelIndex - 1); };
+$("#nextBtn").onclick = () => { if (L.levelIndex < LEVELS.length - 1) startLevel(L.levelIndex + 1); };
+
+$("#resultsNext").onclick = () => {
+  if ($("#resultsBadge").textContent === "Esercizi") { buildQuiz(); return; }
+  if (L.levelIndex < LEVELS.length - 1) startLevel(L.levelIndex + 1);
+  else showScreen("home");
+};
+$("#resultsRetry").onclick = () => { buildLevel(); showScreen("level"); };
+$("#resultsHome").onclick = () => showScreen("home");
+$("#resultsCloseBtn").onclick = () => showScreen("home");
+
+$("#quizHomeBtn").onclick = () => showScreen("home");
+$("#quizCloseBtn").onclick = () => showScreen("home");
+$("#quizRepeatBtn").onclick = () => {
+  const item = quiz.items[quiz.i];
+  if (item) speak(item.speak, { rate: Math.max(0.65, settings.rate - 0.1) });
+};
+$("#quizSkipBtn").onclick = () => { quiz.i++; if (quiz.i < quiz.items.length) renderQuestion(); else finishQuiz(); };
+
+$("#trophyHomeBtn").onclick = () => showScreen("home");
+$("#trophyCloseBtn").onclick = () => showScreen("home");
+$("#resetProgressBtn").onclick = () => {
+  if (confirm("Vuoi azzerare tutti i progressi e i trofei?")) {
+    progress = { levels: {}, exercises: { sessions: 0, best: 0 }, listens: 0, lastLevel: 1 };
+    saveJSON(STORE_KEY, progress);
+    renderTrophies();
+    toast("Progressi azzerati");
+  }
+};
+$("#overlayClose").onclick = closeSheet;
+$("#overlay").addEventListener("click", e => { if (e.target.id === "overlay") closeSheet(); });
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    if ($("#overlay").classList.contains("open")) { closeSheet(); return; }
+    if (L.screen === "level") { switchScreenCleanup(); showScreen("home"); }
+    return;
+  }
+  if (L.screen !== "level" || $("#overlay").classList.contains("open")) return;
+  if (e.target.matches("input, select, textarea")) return;
+  if (e.key === "ArrowRight") { if (L.levelIndex < LEVELS.length - 1) startLevel(L.levelIndex + 1); }
+  if (e.key === "ArrowLeft") { if (L.levelIndex > 0) startLevel(L.levelIndex - 1); }
+  if (e.key.toLowerCase() === "h") giveHint();
+  if (e.key.toLowerCase() === "r") resetLevel();
+});
+
+/* avvio */
+applySettings();
+renderHome();
+$$(".screen").forEach(s => s.classList.remove("active"));
+$("#screen-home").classList.add("active");
+syncBottomBarHeight();
+if (synth) refreshVoices();
+
+/* Registrazione del service worker (PWA: ChromeOS, desktop, tablet) */
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => { /* offline non disponibile */ });
+  });
+}
+</script>
+</body>
+</html>

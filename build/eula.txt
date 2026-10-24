@@ -1,0 +1,39 @@
+SILLABE IN GIOCO — CONTRATTO DI LICENZA D'USO (EULA)
+Versione 2.0.0
+
+1. OGGETTO
+Il presente contratto regola l'uso del software "Sillabe in Gioco" (di seguito
+"Software"), applicazione didattica per l'apprendimento della letto-scrittura
+in lingua italiana.
+
+2. LICENZA
+Il Software è distribuito con licenza MIT. È consentito installare ed eseguire
+il Software su un numero illimitato di dispositivi, per uso personale,
+familiare, scolastico o terapeutico.
+
+3. USO DIDATTICO
+Il Software può essere utilizzato liberamente da insegnanti, logopedisti,
+educatori e genitori, anche in contesti professionali, senza corrispettivo.
+È gradita, ma non obbligatoria, la citazione della fonte.
+
+4. DATI E PRIVACY
+Il Software non raccoglie, non trasmette e non condivide alcun dato personale.
+I progressi di gioco sono salvati esclusivamente in locale sul dispositivo
+(localStorage o cartella dati dell'applicazione). Non sono presenti analytics,
+pubblicità, tracciamenti o connessioni a servizi remoti. La sintesi vocale
+utilizza le voci installate nel sistema operativo.
+
+5. LIMITAZIONI DI RESPONSABILITÀ
+Il Software è fornito "così com'è", senza garanzie di alcun tipo. Gli autori non
+rispondono di eventuali danni derivanti dall'uso del Software. Il Software è uno
+strumento didattico di supporto e non sostituisce la valutazione di un
+professionista (logopedista, neuropsichiatra infantile, insegnante specializzato).
+
+6. AGGIORNAMENTI
+Le versioni successive possono modificare funzionalità e contenuti didattici.
+
+7. ACCETTAZIONE
+Proseguendo con l'installazione l'utente dichiara di aver letto e accettato i
+termini del presente contratto.
+
+Copyright © 2026 Livio Luppino — Licenza MIT

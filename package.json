@@ -1,0 +1,164 @@
+{
+  "name": "sillabe-in-gioco",
+  "productName": "Sillabe in Gioco",
+  "version": "2.0.0",
+  "description": "Laboratorio di letto-scrittura: impara a leggere e scrivere componendo frasi con le sillabe, con sintesi vocale italiana.",
+  "author": {
+    "name": "Livio Luppino",
+    "email": "livioluppino@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "private": true,
+  "main": "desktop/main.js",
+  "homepage": "https://github.com/MaestroLivio/sillabe-in-gioco",
+  "keywords": [
+    "educazione",
+    "dislessia",
+    "CAA",
+    "sillabe",
+    "letto-scrittura",
+    "italiano"
+  ],
+  "scripts": {
+    "start": "electron .",
+    "icons": "node build/make-icons.js",
+    "icons:native": "node build/make-native-icons.js",
+    "serve": "node scripts/serve.js",
+    "validate": "node scripts/validate.js",
+    "test:smoke": "electron scripts/smoke-test.js",
+    "test:layout": "electron scripts/layout-audit.js",
+    "test:levels": "electron scripts/levels-audit.js",
+    "test": "npm run validate && npm run test:smoke && npm run test:levels && npm run test:layout",
+    "screenshots": "electron scripts/screenshots.js",
+    "build:web": "node scripts/package-web.js",
+    "build:mac": "electron-builder --mac --publish never",
+    "build:win": "electron-builder --win --publish never",
+    "build:linux": "electron-builder --linux --publish never",
+    "build:all": "npm run build:mac && npm run build:win && npm run build:linux",
+    "build:chromeos": "npm run build:web",
+    "dist": "npm run icons && npm run icons:native && npm run validate && npm run build:web && npm run build:mac && npm run build:win"
+  },
+  "devDependencies": {
+    "electron": "^32.2.0",
+    "electron-builder": "^25.1.8",
+    "sharp": "^0.33.5"
+  },
+  "build": {
+    "appId": "it.sillabeingioco.app",
+    "productName": "Sillabe in Gioco",
+    "copyright": "Copyright © 2026 Livio Luppino",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "desktop/**/*",
+      "index.html",
+      "manifest.webmanifest",
+      "sw.js",
+      "icons/**/*",
+      "package.json"
+    ],
+    "compression": "maximum",
+    "asar": true,
+    "mac": {
+      "category": "public.app-category.education",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.icns",
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "LSMinimumSystemVersion": "10.15"
+      }
+    },
+    "dmg": {
+      "title": "Sillabe in Gioco ${version}",
+      "contents": [
+        {
+          "x": 150,
+          "y": 190,
+          "type": "file"
+        },
+        {
+          "x": 420,
+          "y": 190,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 600,
+        "height": 400
+      },
+      "backgroundColor": "#dff1ff"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "publisherName": "Sillabe in Gioco"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Sillabe in Gioco",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico",
+      "artifactName": "SillabeInGioco-Setup-${version}.${ext}",
+      "deleteAppDataOnUninstall": false,
+      "license": "build/eula.txt"
+    },
+    "portable": {
+      "artifactName": "SillabeInGioco-Portable-${version}.${ext}"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Education",
+      "icon": "build/icon-512.png",
+      "synopsis": "Laboratorio di letto-scrittura con sillabe",
+      "desktop": {
+        "StartupWMClass": "sillabe-in-gioco"
+      }
+    },
+    "appImage": {
+      "artifactName": "SillabeInGioco-${version}.${ext}"
+    }
+  }
+}
