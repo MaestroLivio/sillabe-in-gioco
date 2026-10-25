@@ -132,16 +132,15 @@ for (const token of KNOWN_TRAPS) {
    Qui si guarda la FORMA D'ONDA, che è l'unica cosa che distingue un fonema
    tenuto da un nome ripetuto:
      - un suono tenuto è UN SOLO blocco di energia, senza pause interne;
-     - un'occlusiva sono `reps` scoppi separati dal silenzio;
+     - un'occlusiva è UN SOLO scoppio: se ne comparissero due, il bambino
+       sentirebbe «b-b» invece di /b/;
      - un nome ripetuto ha tre o più blocchi (o uno solo, ma troppo lungo:
        il nome tenuto non è un fonema).
-   In più si misura il «flutter»: una modulazione periodica 2-12 Hz vuol dire
-   che il loop si sente girare. */
+   In più si misura la RIPETIZIONE dell'inviluppo: un loop rimette in fila lo
+   stesso frammento e si riconosce così. Non basta il «flutter» (modulazione
+   2-12 Hz), che sulla voce è rumore: sulla 2.2.2 il loop di /m/ aveva flutter
+   1,3 dB — indistinguibile dalla voce — mentre la ripetizione era 0,96. */
 const { LETTER_PHONEMES } = require("./pronunciation");
-
-/* Suoni che si tengono: vocali, fricative, nasali, laterale, vibrante.
-   Le occlusive non si possono tenere: restano `reps` scoppi. */
-const HELD = Object.keys(LETTER_PHONEMES).filter(l => !LETTER_PHONEMES[l].reps);
 
 /** Decodifica un MP3 in campioni mono 22.05 kHz, senza dipendenze npm.
     Su macOS basta `afconvert` (sempre presente); altrove serve ffmpeg. */
@@ -214,6 +213,38 @@ function flutter(env, hopSec) {
   return best;
 }
 
+/** Quanto l'inviluppo si RIPETE, da 0 (nessuna somiglianza) a 1 (identico).
+    È il controllo che distingue un loop da un allungamento: un loop rimette
+    in fila lo stesso frammento, quindi l'inviluppo a `d` e a `d + periodo` è
+    quasi identico e l'autocorrelazione sale. `atempo` invece ricostruisce il
+    segnale e non ripete nulla.
+
+    Serve perché il `flutter` da solo non basta: misurato sui clip, il loop
+    della 2.2.2 su /m/ aveva flutter 1,3 dB (sotto qualunque soglia) ma
+    ripetizione 0,96, mentre un `atempo` pulito su /s/ ha flutter 3,7 dB
+    (sopra soglia, per il normale tremolio della voce) e ripetizione 0,00.
+    Con la sola soglia sul flutter il test promuoveva i loop e bocciava i
+    clip corretti. */
+function repetition(env, hopSec) {
+  const core = env.slice(Math.round(0.06 / hopSec), env.length - Math.round(0.08 / hopSec));
+  if (core.length < 20) return 0;
+  const n = core.length;
+  const mean = core.reduce((a, b) => a + b, 0) / n;
+  const d = core.map(v => v - mean);
+  let e0 = 0;
+  for (const v of d) e0 += v * v;
+  if (e0 < 1e-9) return 0;
+  let best = 0;
+  const lo = Math.round(0.10 / hopSec), hi = Math.min(n - 4, Math.round(0.40 / hopSec));
+  for (let lag = lo; lag <= hi; lag++) {
+    let num = 0, m = 0;
+    for (let i = 0; i + lag < n; i++) { num += d[i] * d[i + lag]; m++; }
+    if (m < 8) continue;
+    best = Math.max(best, num / (m * (e0 / n)));
+  }
+  return best;
+}
+
 let checkedLetters = 0;
 let measuredLetters = 0;
 for (const letter of Object.keys(LETTER_PHONEMES)) {
@@ -236,27 +267,46 @@ for (const letter of Object.keys(LETTER_PHONEMES)) {
   const dur = s.length / 22050;
   const spec = LETTER_PHONEMES[letter];
 
-  if (spec.reps) {
-    /* occlusiva: tanti scoppi quante sono le ripetizioni volute */
-    if (nBlocks !== spec.reps) {
-      errors.push(`lettera «${letter}»: ${nBlocks} scoppi invece di ${spec.reps}`);
+  if (spec.say) {
+    /* vocale: un blocco solo, tenuto (0,4-1,3 s). Non è un fonema ritagliato,
+       quindi non si controlla la ripetizione: una vocale lunga è periodica
+       per natura e l'autocorrelazione dell'inviluppo non dice nulla. */
+    if (nBlocks !== 1) {
+      errors.push(`lettera «${letter}»: ${nBlocks} blocchi di suono, la vocale deve essere un suono solo`);
     }
-    if (dur > 0.6) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, troppo lunga per uno scoppio`);
+    if (dur < 0.40) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, vocale troppo breve`);
+    if (dur > 1.30) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, vocale troppo lunga`);
     continue;
   }
 
-  /* suono tenuto: un blocco solo, di durata plausibile, senza pompaggio */
+  if (!spec.hold) {
+    /* occlusiva: un solo scoppio, corto. Due colpi si sentirebbero «b-b». */
+    if (nBlocks !== 1) {
+      errors.push(`lettera «${letter}»: ${nBlocks} scoppi, l'occlusiva deve essere un suono solo`);
+    }
+    if (dur > 0.45) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, troppo lunga per uno scoppio`);
+    continue;
+  }
+
+  /* suono tenuto: un blocco solo, di durata plausibile, senza ripetizioni */
   if (nBlocks !== 1) {
     errors.push(`lettera «${letter}»: ${nBlocks} blocchi di suono, il fonema deve essere un suono solo (nome ripetuto?)`);
     continue;
   }
-  if (dur < 0.5) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, fonema troppo breve per essere tenuto`);
-  if (dur > 1.2) {
+  if (dur < 0.30) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, fonema troppo breve per essere tenuto`);
+  if (dur > 0.75) {
     errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, troppo lunga: sembra il nome ripetuto, non un fonema`);
   }
+  /* la ripetizione è il controllo decisivo: è quello che vede il loop */
+  const rep = repetition(env, hopSec);
+  if (rep > 0.55) {
+    errors.push(`lettera «${letter}»: inviluppo ripetuto (${rep.toFixed(2)}), il clip è un loop e non un fonema continuo`);
+  }
+  /* il flutter resta come rete di sicurezza per i tremolii non periodici,
+     con soglia larga: la voce stessa ne produce 3-4 dB su /s/ */
   const fl = flutter(env, hopSec);
-  if (fl > 4.5) {
-    errors.push(`lettera «${letter}»: modulazione ${fl.toFixed(1)} dB a 2-12 Hz, il loop si sente girare`);
+  if (fl > 6.0) {
+    errors.push(`lettera «${letter}»: modulazione ${fl.toFixed(1)} dB a 2-12 Hz, il fonema non è continuo`);
   }
 }
 

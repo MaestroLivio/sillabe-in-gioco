@@ -39,29 +39,44 @@ const OVERRIDES = {
  * fonema. Le sole stringhe ripetute che restano un suono unico sono quelle
  * delle vocali («aaaaaa» è una /a:/ sola).
  *
- * Metodo attuale: si parte da una parola vera (o dal nome della lettera) e si
- * **ritaglia** il fonema misurando l'audio della voce:
+ * Metodo attuale: si parte da una parola vera e si **ritaglia** il fonema
+ * misurando l'audio della voce. Il tratto ritagliato viene poi **allungato
+ * rallentandolo** (`atempo`), non ripetuto: il bambino sente un solo suono
+ * continuo, lo stesso fonema pronunciato adagio.
  *
  *  1. VOCALI — la voce tiene già la vocale: si scrive la lettera ripetuta
- *     (`say`, campo `say`) e si tiene tutto il suono.
+ *     (`say`, campo `say`) e si tiene tutto il suono. Non serve allungare.
  *  2. CONTINUE (fricative, nasali, laterali, vibrante) — in italiano la
  *     consonante doppia è un suono tenuto: dentro «esse», «emme», «elle»,
  *     «enne», «effe», «erre» c'è la geminata /s:/, /m:/, /l:/, /n:/, /f:/,
- *     /r/ (con in mezzo il trillo). Si taglia quel tratto e lo si allunga con
- *     un *loop sfumato* (`acrossfade`): la vocale del nome non si sente mai.
- *     Per /v/ e /z/ il nome della lettera non contiene la geminata, quindi si
- *     parte da una parola vera che ce l'ha in posizione intervocalica
- *     («avvio», «pezzo»).
+ *     /r:/ (con in mezzo il trillo). Si taglia quel tratto e lo si rallenta
+ *     fino a `hold` secondi. Per /v/ il nome della lettera non contiene la
+ *     geminata, quindi si parte da una parola vera che ce l'ha in posizione
+ *     intervocalica («avvio»).
  *  3. OCCLUSIVE (p, b, t, d, c dura, g dura) — non si possono tenere, per
- *     definizione: si taglia il solo scoppio (il tratto non periodico subito
- *     dopo l'occlusione) e lo si ripete `reps` volte, separate da una pausa,
- *     così il bambino sente il ritmo del suono.
+ *     definizione: si taglia chiusura + scoppio, cioè il silenzio
+ *     dell'occlusione e il rilascio che lo segue. Tenere anche solo 15 ms di
+ *     chiusura rende il colpo udibile come consonante e non come un clic
+ *     secco; lo scoppio NON si ripete, altrimenti il bambino sentirebbe «b-b».
+ *
+ * PERCHÉ `atempo` E NON ALTRO (misurato, non supposto):
+ *  - `atempo` conserva l'altezza della voce: su «emme» il primo picco
+ *    armonico resta 159 Hz contro 157 Hz dell'originale, e il centroide
+ *    spettrale di /s/ passa da 8445 a 8423 Hz. Lo spettro non si sposta,
+ *    quindi il fonema resta lo stesso;
+ *  - il ricampionamento (`asetrate`) invece dimezza l'altezza (79 Hz su
+ *    «emme»): la voce diventa maschile e il fonema cambia;
+ *  - il *loop* (`acrossfade`, usato nella 2.2.1 e nella 2.2.2) produce una
+ *    modulazione periodica di 2-12 Hz: all'orecchio è una vibrazione, e su
+ *    /s/ si sente come un ronzio. Era il difetto segnalato dall'utente;
+ *  - ripetere la lettera nella stringa (`"sss"`) è la trappola descritta
+ *    sopra e non si usa più.
  *
  * `from`/`to` sono MISURATI sull'audio della voce alla velocità indicata, non
- * stimati: sono i punti in cui finisce l'occlusione e comincia la vocale (o
- * viceversa). Se si cambia voce o velocità vanno rimisurati: per questo
- * `test-pronunciation.js` controlla la forma d'onda dei clip prodotti (un
- * solo blocco di suono per i fonemi tenuti, nessuna ripetizione del nome).
+ * stimati: sono i punti in cui comincia e finisce il fonema. Se si cambia voce
+ * o velocità vanno rimisurati: per questo `test-pronunciation.js` controlla la
+ * forma d'onda dei clip prodotti (un solo blocco di suono, nessuna
+ * modulazione periodica, nessuna ripetizione del nome).
  *
  * Campi:
  *   say   = testo da far pronunciare alla voce (vocali)
@@ -69,8 +84,8 @@ const OVERRIDES = {
  *   rate  = parole al minuto per `say`
  *   from  = inizio del fonema da tenere (s)
  *   to    = fine del fonema (s)
- *   hold  = durata del fonema tenuto dopo il loop (s)
- *   reps  = quante volte ripetere lo scoppio (occlusive)
+ *   hold  = durata finale del fonema (s) — solo per i fonemi tenuti: il tratto
+ *           ritagliato viene rallentato fino a questa lunghezza
  */
 const LETTER_PHONEMES = {
   /* --- vocali: la voce le tiene già, basta allungare la stringa --- */
@@ -80,38 +95,55 @@ const LETTER_PHONEMES = {
   o: { say: "oooooo", rate: 50 },
   u: { say: "uuuuuu", rate: 50 },
 
-  /* --- continue: geminata ritagliata dal nome della lettera ---
+  /* --- continue: geminata ritagliata dal nome della lettera e rallentata ---
      «effe» /f:/, «elle» /l:/, «emme» /m:/, «enne» /n:/, «esse» /s:/.
-     Per «erre» il tratto centrale è il trillo: si tiene anche la prima
-     vibrazione (da 0.140) perché la sola occlusione sarebbe di 15 ms. */
-  f: { word: "effe", rate: 165, from: 0.145, to: 0.309, hold: 0.78 },
-  l: { word: "elle", rate: 165, from: 0.120, to: 0.244, hold: 0.78 },
-  m: { word: "emme", rate: 165, from: 0.115, to: 0.279, hold: 0.78 },
-  n: { word: "enne", rate: 165, from: 0.130, to: 0.279, hold: 0.78 },
-  r: { word: "erre", rate: 165, from: 0.140, to: 0.262, hold: 0.78 },
-  s: { word: "esse", rate: 165, from: 0.090, to: 0.264, hold: 0.78 },
+     Per «erre» il tratto centrale è il trillo: si taglia dal rilascio alla
+     fine della vibrazione. `hold` è 0,40 s perché è la durata in cui `atempo`
+     resta pulito (misurato: /s/ a 0,40 s ha una modulazione di 2,7 dB, a
+     0,60 s sale a 4,9 dB e si sente «pompare»). */
+  f: { word: "effe", rate: 60, from: 0.191, to: 0.389, hold: 0.40 },
+  l: { word: "elle", rate: 60, from: 0.165, to: 0.335, hold: 0.40 },
+  m: { word: "emme", rate: 60, from: 0.163, to: 0.350, hold: 0.40 },
+  n: { word: "enne", rate: 60, from: 0.170, to: 0.357, hold: 0.40 },
+  r: { word: "erre", rate: 60, from: 0.180, to: 0.335, hold: 0.38 },
+  s: { word: "esse", rate: 60, from: 0.126, to: 0.347, hold: 0.40 },
 
-  /* /v/ e /z/: il nome della lettera non ha la geminata, si parte da una
-     parola vera. Nota onesta su /v/: la voce produce una labiodentale
-     *approssimante* ([ʋ], centroide ~850 Hz), non una fricativa con rumore
-     in alta frequenza: è il suono che questa voce sa fare, e resta ben
-     distinto da /b/ e da /f/. */
-  v: { word: "avvio", rate: 120, from: 0.394, to: 0.499, hold: 0.78 },
-  z: { word: "pezzo", rate: 120, from: 0.224, to: 0.349, hold: 0.78 },
+  /* /v/: il nome della lettera non ha la geminata, si parte da una parola
+     vera. Nota onesta su /v/: la voce produce una labiodentale
+     *approssimante* ([ʋ], centroide ~200 Hz nella tenuta), non una fricativa
+     con rumore in alta frequenza: è il suono che questa voce sa fare, e resta
+     ben distinto da /b/ e da /f/. */
+  v: { word: "avvio", rate: 60, from: 0.105, to: 0.215, hold: 0.40 },
 
-  /* --- occlusive: solo lo scoppio, ripetuto ---
-     `from`/`to` prendono il tratto non periodico dopo l'occlusione: per le
-     sonore è il burst vero e proprio, per le sorde anche l'aspirazione. */
-  b: { word: "gabbia",  rate: 120, from: 0.038, to: 0.058, reps: 2 },
-  c: { word: "secco",   rate: 120, from: 0.341, to: 0.360, reps: 2 },  // /k/
-  d: { word: "freddo",  rate: 120, from: 0.398, to: 0.414, reps: 2 },
-  g: { word: "agguato", rate: 120, from: 0.496, to: 0.516, reps: 2 },  // /g/
-  p: { word: "doppio",  rate: 120, from: 0.394, to: 0.414, reps: 2 },
-  t: { word: "fatto",   rate: 120, from: 0.416, to: 0.436, reps: 2 }
+  /* /z/: in italiano la lettera zeta è un'AFFRICATA (/ts/ o /dz/), non una
+     fricativa: il fonema da insegnare è /ts/, quindi si taglia il rilascio
+     dell'affricata e non la sua parte fricativa. Si usa «zio», dove la /ts/
+     è in posizione iniziale e isolata: misurato, il rilascio sta a
+     0,085-0,115 s (rapporto di attraversamento per lo zero 0,57-0,69, cioè
+     rumore, contro 0,02 dell'occlusione sonora che lo precede). Prima di
+     questa misura il taglio prendeva l'occlusione e non lo scoppio, e il
+     clip era la voce a bassa frequenza di /dz/ (96% dell'energia sotto
+     1 kHz) e non il rumore di /ts/ (centroide 5554 Hz). */
+  z: { word: "zio", rate: 60, from: 0.085, to: 0.115 },
+
+  /* --- occlusive: chiusura + scoppio, UNA volta sola ---
+     `from`/`to` comprendono il silenzio della chiusura: è quello che rende il
+     colpo riconoscibile come consonante. I tagli sono misurati sulle parole
+     qui indicate; /k/ viene da «cima» perché «secco» ha lo scoppio sepolto
+     nel silenzio (centroide 1744 Hz contro 5980 Hz di «cima», cioè rumore
+     vero contro voce). */
+  b: { word: "gabbia",  rate: 60, from: 0.434, to: 0.470 },  // /b/
+  c: { word: "cima",    rate: 60, from: 0.000, to: 0.030 },  // /k/
+  d: { word: "freddo",  rate: 60, from: 0.462, to: 0.492 },  // /d/
+  g: { word: "gallo",   rate: 60, from: 0.070, to: 0.096 },  // /g/
+  p: { word: "pala",    rate: 60, from: 0.014, to: 0.042 },  // /p/
+  t: { word: "tana",    rate: 60, from: 0.001, to: 0.025 }   // /t/
 };
 
-/** Pausa fra due scoppi di un'occlusiva (s). */
-const PHONEME_GAP = 0.08;
+/** Silenzio aggiunto in coda a uno scoppio (s): uno scoppio dura 20-30 ms e
+    un MP3 così corto non è valido; la coda non si sente e rende il colpo
+    identico per tutte e sei le occlusive. */
+const STOP_PAD = 0.12;
 
 /** Loudness di ascolto dei fonemi tenuti, in LUFS (non in dB RMS).
     Si normalizza la loudness e non il picco: /s/, /f/ e /z/ sono rumore con
@@ -135,4 +167,4 @@ const ACCENTS = {
   "pà": "pà"
 };
 
-module.exports = { OVERRIDES, ACCENTS, LETTER_PHONEMES, PHONEME_GAP, PHONEME_LUFS, PHONEME_CEILING, PHONEME_PEAK };
+module.exports = { OVERRIDES, ACCENTS, LETTER_PHONEMES, STOP_PAD, PHONEME_LUFS, PHONEME_CEILING, PHONEME_PEAK };

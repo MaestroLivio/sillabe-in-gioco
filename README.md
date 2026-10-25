@@ -69,11 +69,12 @@ fra quattro; la scheda del suono mostra il gruppo e la parola con il gruppo evid
   ripetuta (`sss`) **non** funziona — la voce la legge come una sigla e compita il nome
   tre volte («esse esse esse»). I clip si ricavano quindi **ritagliando** il fonema
   dall'audio della voce — la geminata che ogni nome di lettera contiene (*e**ss**e*,
-  *e**mm**e*) o una parola vera per `v` e `z` (*a**vv**io*, *pe**zz**o*) — e
-  allungandolo con un loop sfumato; quelli che non si possono tenere (`t`, `p`, `b`,
-  `d`, `c`, `g`) sono il solo scoppio, ripetuto due volte senza la /i/ di «ti», «pi».
+  *e**mm**e*) o una parola vera per `v` (*a**vv**io*) — e **rallentandolo** con `atempo`
+  fino a 0,40 s: un solo suono continuo, pronunciato adagio, senza loop e senza
+  ripetizioni. Quelli che non si possono tenere (`t`, `p`, `b`, `d`, `c`, `g`) sono
+  chiusura + scoppio, una volta sola, senza la /i/ di «ti», «pi», «bi».
   Il test `npm run test:pronuncia` analizza la forma d'onda e fallisce se un clip
-  contiene più di un blocco di suono.
+  contiene più di un blocco di suono o se l'inviluppo si ripete (cioè se è un loop).
 - **Sintesi di sistema come riserva** (Web Speech API, `it-IT`): se un file audio manca,
   l'app torna a leggere con la voce del dispositivo e preferisce le voci neurali/premium.
 - Lettura **scandita sillaba per sillaba** con la pausa giusta tra una sillaba e l'altra.

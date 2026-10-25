@@ -118,11 +118,14 @@ Dal riquadro **PAROLE** in home, oppure toccando una parola dall'elenco «Formaz
 - Ogni pezzo si ascolta toccandolo; la radio legge la parola intera.
 - **Le singole lettere si sentono come suono, non come nome.** Toccando la tessera
   `s` non si sente «esse» ma un /s/ tenuto e lento, e così `m` → /m:/, `f` → /f:/,
-  `r` → /r/ col trillo. Le consonanti che non si possono tenere (`t`, `p`, `b`, `d`,
-  `c`, `g`) si sentono come il loro scoppio, ripetuto due volte con una pausa breve:
-  è il ritmo del suono, senza la vocale che la voce aggiungerebbe.
-  - Il suono di `c` è quello **duro** di *casa*, `/k/` (non quello di *cena*).
-  - Il suono di `g` è quello **duro** di *gatto*, `/g/`.
+  `r` → /r/ col trillo. Il fonema è ritagliato dall'audio della voce e
+  **rallentato** fino a 0,40 s: è un unico suono continuo, senza loop e senza
+  ripetizioni. Le consonanti che non si possono tenere (`t`, `p`, `b`, `d`,
+  `c`, `g`) si sentono come **chiusura + scoppio, una volta sola**, senza la
+  vocale che la voce aggiungerebbe.
+  - Il suono di `c` è quello **duro** di *cima*, `/k/` (non quello di *cena*).
+  - Il suono di `g` è quello **duro** di *gallo*, `/g/`.
+  - Il suono di `z` è lo scoppio dell'**affricata** `/ts/` di *zio*.
   - Il suono di `v` è labiodentale ma **non perfettamente sibilante**: è il più
     vicino che la voce sintetica sappia produrre, e resta distinto da `b` e da `f`.
 - Pulsanti in basso: **SUGGERIMENTO**, **ASCOLTA**, **RIFAI**, **← →** per cambiare parola.

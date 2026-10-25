@@ -4,6 +4,47 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.2.3] — 2026-10-25
+
+### Corretto
+- **I fonemi «vibravano»: il loop era il difetto.** La 2.2.2 allungava il
+  fonema ripetendolo con un `acrossfade`, e all'orecchio quel giro continuo è
+  una vibrazione (su `/s/` un ronzio). Ora il tratto ritagliato viene
+  **rallentato** con `atempo`, un passaggio per volta e misurando ogni volta la
+  durata reale: ne esce **un solo fonema continuo**, lo stesso suono
+  pronunciato adagio. Nessun loop, nessuna ripetizione.
+  - `atempo` conserva l'altezza: su «emme» il primo picco armonico resta
+    159 Hz contro 157 Hz dell'originale, e il centroide spettrale di `/s/`
+    passa da 8445 a 8423 Hz. Il fonema è lo stesso, non una voce più grave;
+  - il ricampionamento (`asetrate`) dimezza l'altezza (79 Hz) e non si usa;
+  - la lunghezza è ora un **bersaglio** (0,38–0,40 s), non un fattore di
+    velocità: è la durata in cui `atempo` resta pulito. A 0,60 s la modulazione
+    di `/s/` sale a 4,9 dB e si sente «pompare».
+- **Il test approvava i loop e bocciava i clip giusti.** Il controllo sulla
+  modulazione periodica 2–12 Hz (il «flutter») non distingue il loop dalla
+  voce: sulla 2.2.2 il loop di `/m/` misurava 1,3 dB, indistinguibile dal
+  tremolio naturale della voce, mentre su `/s/` corretto misura 3,7 dB e
+  veniva bocciato. Ora `test-pronunciation.js` misura la **ripetizione
+  dell'inviluppo** (autocorrelazione fra 0,10 e 0,40 s): un loop rimette in
+  fila lo stesso frammento e sale a 0,77–0,97, un `atempo` resta a 0,00–0,48.
+  Provato sui clip della 2.2.2, il nuovo controllo ne **boccia 7 su 8**.
+- **Gli scoppi delle occlusive cadevano nel silenzio.** I tagli della 2.2.2
+  erano misurati male: per `c` la finestra 0,382–0,412 s di «secco» è dentro
+  la chiusura, cioè silenzio (centroide 1744 Hz), e il clip era il rumore di
+  fondo e non `/k/`. Ogni occlusiva è stata rimisurata e ora la finestra
+  comprende **chiusura + scoppio**, che è ciò che rende il colpo riconoscibile
+  come consonante:
+  - `b` da «gabbia» 0,434–0,470 s (centroide 2046 Hz);
+  - `c` da «cima» 0,000–0,030 s (centroide 6119 Hz, il rumore vero di `/k/`);
+  - `d` da «freddo» 0,462–0,492 s (centroide 3798 Hz);
+  - `g` da «gallo» 0,070–0,096 s (centroide 2160 Hz);
+  - `p` da «pala» 0,014–0,042 s (centroide 2174 Hz);
+  - `t` da «tana» 0,001–0,025 s (centroide 3593 Hz).
+- **La lettera `z` era una fricativa che l'italiano non ha.** In italiano la
+  zeta è un'**affricata** `/ts/` (o `/dz/`), non una fricativa sonora: il clip
+  ora è lo scoppio dell'affricata, preso da «zio» in posizione iniziale. La
+  2.2.2 usava «pezzo», che è la stessa affricata ma con lo scoppio sepolto.
+
 ## [2.2.2] — 2026-10-25
 
 ### Corretto
