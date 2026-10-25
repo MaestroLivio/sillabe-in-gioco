@@ -1,7 +1,7 @@
 # Informativa sulla privacy · Sillabe in Gioco
 
 **Ultimo aggiornamento:** 24 ottobre 2026
-**Versione applicazione:** 2.0.1
+**Versione applicazione:** 2.0.2
 **Titolare:** Livio Luppino
 
 ## In sintesi
@@ -9,6 +9,14 @@
 Sillabe in Gioco **non raccoglie alcun dato personale**. Non ci sono account, server,
 analytics, pubblicità o tracciamenti. L'applicazione funziona interamente sul dispositivo
 dell'utente e non effettua connessioni di rete verso servizi remoti.
+
+## Immagini e asset
+
+Le 40 illustrazioni delle frasi sono **disegni vettoriali originali inclusi nel
+pacchetto dell'app** (`illustrations/`). Vengono caricate dal disco del
+dispositivo: nessuna immagine è richiesta a un server, a un CDN o a un servizio
+di intelligenza artificiale, e nessun dato dell'utente viene inviato altrove per
+generarle.
 
 ## Quali dati vengono trattati
 

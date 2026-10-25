@@ -4,6 +4,34 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.0.2] — 2026-10-25
+
+### Aggiunto
+- **Un'illustrazione vettoriale per ognuna delle 40 frasi.** Ogni livello ha ora
+  un disegno "da libro illustrato" al posto delle sole emoji: il gatto con la
+  ciotola di latte, la mamma ai fornelli, il treno in stazione, la luna sul mare
+  di notte, la festa a scuola. Scene complete di personaggi, animali, arredi e
+  paesaggi (168 forme medie per scena), in 1280×720.
+- **Sorgenti vettoriali versionati** in `illustrations/NN.svg`: le immagini
+  possono essere modificate o ristampate a qualsiasi risoluzione. Le PNG sono
+  generate da questi sorgenti.
+- **Nessun testo dentro i disegni.** È un'app di letto-scrittura: l'illustrazione
+  mostra il significato della frase, non la sua scrittura. Un controllo
+  automatico (`scripts/illustrations/verify.js`) verifica che ogni PNG contenga
+  i colori dei soggetti previsti e che tutte e 40 le scene siano diverse.
+- `npm run illustrations` rigenera le 40 immagini; `npm run test:illustrations`
+  le valida.
+
+### Cambiato
+- La TV del livello mostra il PNG dedicato alla frase, con lo SVG disegnato al
+  volo come riserva se un file non fosse disponibile.
+- La didascalia testuale sovraimpressa all'illustrazione è stata rimossa: la
+  frase resta leggibile nel suggerimento guidato, nella lettura ad alta voce e
+  nella schermata dei risultati.
+- Le illustrazioni sono incluse nei pacchetti desktop, web/PWA e ChromeOS e
+  precaricate dal service worker, quindi restano disponibili offline.
+- `npm test` include ora il controllo delle illustrazioni.
+
 ## [2.0.1] — 2026-10-25
 
 ### Corretto

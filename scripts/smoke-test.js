@@ -61,6 +61,7 @@ app.whenReady().then(async () => {
     out.tilesL1 = document.querySelectorAll('#tilePool .tile').length;
     out.tvSvg = !!document.querySelector('#tvImage img');
     out.tvSvgLength = (document.querySelector('#tvImage img') || {}).src?.length || 0;
+    out.tvIllustration = (document.querySelector('#tvImage img') || {}).getAttribute('src') || '';
 
     // risolvi il livello 1 programmaticamente
     const missing = L.slots.filter(s => !s.filled);
@@ -160,7 +161,8 @@ app.whenReady().then(async () => {
   expect("8 caselle", results.slotsL1 === 8, results.slotsL1);
   expect("4 precompilate", results.prefilledL1 === 4, results.prefilledL1);
   expect("7 tessere (4 libere + 3 distrattori)", results.tilesL1 === 7, results.tilesL1);
-  expect("illustrazione SVG presente", results.tvSvg && results.tvSvgLength > 500, results.tvSvgLength);
+  expect("illustrazione del livello presente", results.tvSvg && results.tvSvgLength > 0, results.tvSvgLength);
+  expect("illustrazione riferita al file del livello 1", /illustrations\/01\.png$/.test(results.tvIllustration), results.tvIllustration);
   expect("livello completabile senza errori", results.completedL1);
   expect("tutte le caselle riempite", results.placedSlots === 8, results.placedSlots);
 

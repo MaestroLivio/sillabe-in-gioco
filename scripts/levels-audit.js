@@ -31,9 +31,19 @@ app.whenReady().then(async () => {
     const out = [];
     for (let i = 0; i < LEVELS.length; i++) {
       startLevel(i);
-      await sleep(60);
       const lvl = LEVELS[i];
-      const img = document.querySelector('#tvImage img');
+      // le illustrazioni sono PNG su disco: attende la decodifica invece di
+      // fidarsi di un ritardo fisso
+      const img = await new Promise(resolve => {
+        const deadline = Date.now() + 2500;
+        const tick = () => {
+          const node = document.querySelector('#tvImage img');
+          if (node && node.complete && node.naturalWidth > 0) return resolve(node);
+          if (Date.now() > deadline) return resolve(node || null);
+          setTimeout(tick, 40);
+        };
+        tick();
+      });
       let colors = 0;
       if (img && img.complete && img.naturalWidth > 0) {
         const c = document.createElement('canvas');
@@ -55,6 +65,7 @@ app.whenReady().then(async () => {
         id: lvl.id,
         mode: lvl.mode,
         text: lvl.text,
+        src: img ? img.getAttribute('src') : '',
         imgOk: !!img && img.naturalWidth > 0,
         colors,
         slots, tiles, prefilled, total,
@@ -65,9 +76,16 @@ app.whenReady().then(async () => {
   })()`);
 
   const bad = report.filter(r => !r.ok);
+  // ogni livello deve puntare alla propria illustrazione, non a una condivisa
+  const srcs = report.map(r => r.src);
+  const duplicated = srcs.filter((s, i) => s && srcs.indexOf(s) !== i);
   report.forEach(r => {
     console.log(`${r.ok ? "✔" : "✖"} ${String(r.id).padStart(2)} [${r.mode}] img:${r.imgOk ? r.colors + "c" : "NO"} slots:${r.slots}/${r.total} pre:${r.prefilled} tiles:${r.tiles} — ${r.text}`);
   });
+  if (duplicated.length) {
+    console.log(`\n✖ illustrazioni condivise: ${duplicated.join(", ")}`);
+    bad.push({ id: "dup" });
+  }
   console.log("\n" + (bad.length ? `✖ ${bad.length} livelli con problemi` : "✔ 40/40 livelli con illustrazione e tessere corrette"));
   app.exit(bad.length ? 1 : 0);
 }).catch(e => { console.error(e); app.exit(1); });

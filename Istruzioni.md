@@ -11,7 +11,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 |---|---|
 | **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
 | **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
-| **Windows** | Esegui `SillabeInGioco-Setup-2.0.1.exe` e segui la procedura |
+| **Windows** | Esegui `SillabeInGioco-Setup-2.0.2.exe` e segui la procedura |
 | **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
 | **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
 
@@ -55,6 +55,20 @@ Per l'installazione tecnica vedi [README.md](README.md).
 | 🔄 **RIFAI** | Svuota le caselle e rimette tutte le tessere nel vassoio |
 | 🎁 **HO FINITO** | Verifica il lavoro e dice quante sillabe mancano |
 | ← → | Livello precedente / successivo, con contatore `n / 40` |
+
+### L'illustrazione
+
+Ogni frase ha il suo disegno, in alto sopra le caselle: il gatto con la ciotola
+di latte, la mamma ai fornelli, il treno in stazione, la luna sul mare, la festa
+a scuola. Sono 40 scene diverse, una per livello.
+
+> [!NOTE]
+> I disegni **non contengono lettere né parole**: mostrano il significato della
+> frase, non come si scrive. Così l'immagine aiuta a capire *cosa* si sta
+> leggendo senza rivelare la soluzione del gioco.
+
+Se il disegno non dovesse caricarsi, l'app ne mostra comunque uno disegnato al
+volo: il livello resta giocabile anche in quel caso.
 
 🐻 **Orsetto Lino**, in basso a sinistra, dà consigli contestuali: toccalo per sapere cosa fare.
 

@@ -950,7 +950,10 @@ function fx(name) {
 }
 
 /* ------------------------------------------------------------------
-   5. ILLUSTRAZIONI SVG generate al volo
+   5. ILLUSTRAZIONI
+   Le scene sono vettoriali (illustrations/NN.svg) e vengono servite come
+   PNG dal pacchetto. `illustrationSVG` resta come riserva disegnata al volo
+   se un file manca, così un livello non rimane mai senza figura.
    ------------------------------------------------------------------ */
 const GROUP_BG = [
   ["#d7f0ff", "#a9dcff"],
@@ -963,24 +966,20 @@ function escapeXML(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-/** Spezza la frase in righe da ~24 caratteri per la didascalia. */
-function wrapText(text, max) {
-  const words = text.split(" ");
-  const lines = [];
-  let cur = "";
-  words.forEach(w => {
-    if ((cur + " " + w).trim().length > max && cur) { lines.push(cur); cur = w; }
-    else cur = (cur ? cur + " " : "") + w;
-  });
-  if (cur) lines.push(cur);
-  return lines.slice(0, 3);
+/* Illustrazioni "da libro" pre-generate: un disegno per frase, salvato in
+   illustrations/. Sono vettoriali (sorgenti .svg) rasterizzate in PNG e
+   incluse nel pacchetto, così l'app resta completamente offline.
+   Nessuna illustrazione contiene testo: il disegno mostra il significato
+   della frase, non la sua scrittura. */
+function illustrationFile(level) {
+  const num = String(level.id).padStart(2, "0");
+  return `illustrations/${num}.png`;
 }
 
 function illustrationSVG(level) {
   const [c1, c2] = GROUP_BG[level.group];
   const W = 640, H = 360;
   const emojis = level.emo || ["✨"];
-  const captions = wrapText(level.sentence || level.text, 34);
 
   // posizioni degli elementi illustrati
   const spots = emojis.length === 1
@@ -997,10 +996,6 @@ function illustrationSVG(level) {
     const p = spots[i] || spots[0];
     return `<text x="${p.x}" y="${p.y}" font-size="${p.s}" text-anchor="middle" dominant-baseline="middle">${escapeXML(e)}</text>`;
   }).join("");
-
-  const capSvg = captions.map((line, i) =>
-    `<text x="320" y="${300 + i * 22}" font-size="19" font-family="Trebuchet MS, Verdana, sans-serif" font-weight="bold" text-anchor="middle" fill="#22384d">${escapeXML(line)}</text>`
-  ).join("");
 
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Illustrazione: ${escapeXML(level.text)}">
     <defs>
@@ -1020,8 +1015,7 @@ function illustrationSVG(level) {
     <path d="M0 268 Q160 236 320 262 T640 258 L640 360 L0 360 Z" fill="#8fd694" opacity=".55"/>
     <path d="M0 296 Q180 274 340 292 T640 288 L640 360 L0 360 Z" fill="#6cc47a" opacity=".55"/>
     <rect x="0" y="286" width="${W}" height="74" fill="#ffffff" opacity=".55" rx="14"/>
-    ${items}
-    ${capSvg}
+    <g transform="translate(0 -34)">${items}</g>
   </svg>`;
   return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
 }
@@ -1143,15 +1137,21 @@ function buildLevel() {
   $("#prevBtn").disabled = L.levelIndex === 0;
   $("#nextBtn").disabled = L.levelIndex === LEVELS.length - 1;
 
-  // TV
+  // TV — illustrazione della frase: PNG "da libro" incluso nel pacchetto,
+  // con riserva sullo SVG disegnato al volo se il file non è disponibile.
   const tv = $("#tvImage");
   tv.innerHTML = "";
   const img = new Image();
-  img.src = illustrationSVG(lvl);
   img.alt = "Illustrazione della frase: " + lvl.text;
   img.style.width = "100%";
   img.style.display = "block";
   img.style.borderRadius = "10px";
+  img.onerror = () => {
+    if (img.dataset.fallback) return;
+    img.dataset.fallback = "1";
+    img.src = illustrationSVG(lvl);
+  };
+  img.src = illustrationFile(lvl);
   tv.appendChild(img);
 
   // suggerimento / riga guida

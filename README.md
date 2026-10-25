@@ -31,7 +31,7 @@ esercizi, schede stampabili e trofei.
 ### Gioco
 - **Trascinamento delle sillabe** con snap‑in magnetico nella casella corretta.
 - Tre modalità d'ingresso alla tessera: **drag & drop** (mouse, dito, penna), **tap su tessera + tap sulla casella**, **tastiera** (Invio/Spazio).
-- Illustrazione diversa per ogni frase, generata come **SVG inline** con personaggi e didascalia.
+- **Un'illustrazione originale per ognuna delle 40 frasi**: scene vettoriali da libro illustrato (personaggi, animali, arredi, paesaggi) in 1280×720, senza alcun testo dentro il disegno.
 - Tessere **distrattore** sempre presenti, rimescolabili con un tocco.
 - Animazioni di conferma, errore (shake), completamento (pop + coriandoli).
 
@@ -132,8 +132,8 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.0.1-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.0.1.dmg` (Intel)
+- `Sillabe in Gioco-2.0.2-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.0.2.dmg` (Intel)
 - versioni `.zip` per gli aggiornamenti automatici
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
@@ -153,8 +153,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.0.1.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.0.1.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.0.2.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.0.2.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -172,7 +172,7 @@ Due strade, entrambe incluse.
 npm run build:chromeos
 ```
 
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.0.1.zip`.
+Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.0.2.zip`.
 
 Installazione in modalità sviluppatore:
 
@@ -196,7 +196,7 @@ privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
 ### Web / PWA
 
 ```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.0.1.zip
+npm run build:web      # crea dist/web + dist/sillabe-web-v2.0.2.zip
 npm run serve          # prova locale con service worker attivo
 ```
 
@@ -212,10 +212,12 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm start` | Avvia l'app desktop Electron in sviluppo |
 | `npm run serve` | Server statico locale su `:4321` (service worker attivo) |
 | `npm run validate` | Verifica i 40 livelli: unicità frasi, sillabe, distrattori, gruppi |
+| `npm run illustrations` | Rigenera le 40 illustrazioni (SVG + PNG) dal generatore vettoriale |
+| `npm run test:illustrations` | Valida le illustrazioni: dimensione, soggetti attesi, nessun duplicato |
 | `npm run test:smoke` | Smoke test headless Electron: 30 controlli su schermate e flussi |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
-| `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa SVG |
-| `npm test` | Esegue valida + smoke + livelli + layout (usato dalla CI) |
+| `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |
+| `npm test` | Esegue valida + illustrazioni + smoke + livelli + layout (usato dalla CI) |
 | `npm run icons` | Rigenera tutte le icone PNG da `build/icon.svg` |
 | `npm run icons:native` | Genera `icon.icns` (macOS) e `icon.ico` (Windows) |
 | `npm run screenshots` | Cattura le 12 schermate in `build/screenshots/` |
@@ -240,6 +242,8 @@ sillabe-in-gioco/
 ├── sw.js                       # Service worker (offline)
 ├── favicon.png
 ├── icons/                      # Icone PNG 16→1024 + maskable
+├── illustrations/              # 40 illustrazioni: NN.png (1280×720) + NN.svg (sorgente)
+├── scripts/illustrations/      # Generatore vettoriale delle scene (draw, props, scenes)
 ├── desktop/
 │   ├── main.js                 # Processo principale Electron (finestra, menu, permessi)
 │   └── preload.js              # Bridge sicuro contextIsolation
@@ -299,7 +303,7 @@ Scelte tecniche rilevanti:
 - **Nessuna libreria esterna**: zero CDN, zero npm a runtime, quindi nessuna chiamata di rete.
 - **Un solo file HTML** per l'app: facile da distribuire, copiare su LIM o condividere via email.
 - **Pointer Events** invece dei soli eventi touch/mouse: un unico percorso per dito, penna e mouse, con fallback HTML5 Drag and Drop.
-- **Illustrazioni SVG generate**: 40 immagini originali senza peso di asset e senza diritti di terzi.
+- **Illustrazioni vettoriali originali**: 40 scene da libro illustrato, sorgenti SVG versionati nel repository e rasterizzati in PNG ad alta risoluzione. Nuove, senza diritti di terzi, incluse nell'app e disponibili offline.
 - **Contesto sicuro** in Electron: `contextIsolation`, `sandbox`, `nodeIntegration: false`, navigazione esterna bloccata, permessi in allowlist.
 
 ---

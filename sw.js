@@ -1,11 +1,13 @@
 /* Service worker — cache offline per l'app Sillabe in Gioco */
-const CACHE = "sillabe-v2.0.1";
+const CACHE = "sillabe-v2.0.2";
+const ILLUSTRATIONS = Array.from({ length: 40 }, (_, i) => `./illustrations/${String(i + 1).padStart(2, "0")}.png`);
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icons/icon-512.png",
+  ...ILLUSTRATIONS
 ];
 
 self.addEventListener("install", event => {
