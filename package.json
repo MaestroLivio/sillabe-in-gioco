@@ -27,6 +27,7 @@
     "validate": "node scripts/validate.js",
     "illustrations": "node scripts/illustrations/generate.js",
     "test:illustrations": "node scripts/illustrations/verify.js",
+    "test:release": "node scripts/verify-release.js",
     "test:smoke": "electron scripts/smoke-test.js",
     "test:layout": "electron scripts/layout-audit.js",
     "test:levels": "electron scripts/levels-audit.js",

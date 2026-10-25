@@ -7,6 +7,12 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
 ## [2.0.2] — 2026-10-25
 
 ### Aggiunto
+- **Verifica automatica delle distribuzioni pubblicate** (`npm run test:release`):
+  scarica gli artefatti della release da GitHub e controlla che ognuno contenga
+  le 40 illustrazioni, aprendo `app.asar` per i pacchetti desktop e gestendo
+  `.dmg` (hdiutil), `.deb` (formato ar) e `.AppImage` (immagine squashfs).
+  Verificati tutti e 10 gli artefatti della release: 40/40 illustrazioni in
+  ognuno, nessuna esclusa.
 - **Un'illustrazione vettoriale per ognuna delle 40 frasi.** Ogni livello ha ora
   un disegno "da libro illustrato" al posto delle sole emoji: il gatto con la
   ciotola di latte, la mamma ai fornelli, il treno in stazione, la luna sul mare

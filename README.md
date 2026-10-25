@@ -214,6 +214,7 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run validate` | Verifica i 40 livelli: unicità frasi, sillabe, distrattori, gruppi |
 | `npm run illustrations` | Rigenera le 40 illustrazioni (SVG + PNG) dal generatore vettoriale |
 | `npm run test:illustrations` | Valida le illustrazioni: dimensione, soggetti attesi, nessun duplicato |
+| `npm run test:release -- v2.0.2` | Scarica gli artefatti pubblicati e verifica che contengano le 40 illustrazioni |
 | `npm run test:smoke` | Smoke test headless Electron: 30 controlli su schermate e flussi |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |
