@@ -1,0 +1,93 @@
+/**
+ * Estrae dall'app tutto il testo che viene letto ad alta voce.
+ *
+ * Sorgente unica di verità: index.html. Si estraggono
+ *  - i token sillabici dei livelli (40 frasi, 443 istanze),
+ *  - i distrattori del pool,
+ *  - le frasi complete,
+ *  - le frasi fisse dell'interfaccia (Bravo!, Riprova, ...).
+ *
+ * Uso: node scripts/audio/extract.js
+ * Output (stdout, JSON):
+ *   { syllables: [...], sentences: [...], ui: [...], spoken: {token: formaGrafemica} }
+ */
+const fs = require("fs");
+const path = require("path");
+
+const ROOT = path.join(__dirname, "..", "..");
+const html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+
+/* --- blocchi di codice sorgente --- */
+function block(startMarker, endMarker) {
+  const a = html.indexOf(startMarker);
+  if (a < 0) throw new Error("marcatore non trovato: " + startMarker);
+  const b = html.indexOf(endMarker, a);
+  if (b < 0) throw new Error("fine blocco non trovata per: " + startMarker);
+  return html.slice(a, b);
+}
+
+/* --- stringhe di un array JS semplice ["a","b",...] --- */
+function strings(src) {
+  return [...src.matchAll(/"((?:[^"\\]|\\.)*)"/g)].map(m => JSON.parse('"' + m[1] + '"'));
+}
+
+/* --- 1. sillabe dei livelli ---
+   Il blocco RAW contiene gli array di sillabe come ultimo elemento di `parts`.
+   Estraiamo solo gli array che seguono una graffa di `parts:[[`. */
+const rawSrc = block("const RAW = [", "const DISTRACTOR_POOL");
+const syllables = new Set();
+for (const m of rawSrc.matchAll(/parts:\s*\[([\s\S]*?)\]\s*\}/g)) {
+  for (const arr of m[1].matchAll(/\["([^"]*)",\s*\[([^\]]*)\]/g)) {
+    for (const s of strings("[" + arr[2] + "]")) syllables.add(s);
+  }
+}
+
+/* --- 2. distrattori --- */
+const distSrc = block("const DISTRACTOR_POOL", "const SENTENCES");
+const distractors = strings(distSrc);
+
+/* --- 3. frasi complete --- */
+const sentSrc = block("const SENTENCES = [", "];");
+const sentences = strings(sentSrc);
+
+/* --- 4. frasi fisse dell'interfaccia ---
+   Sono le battute che l'app dice sempre uguali. Le frasi che contengono
+   numeri o nomi variabili non si preregistrano: vengono composte a runtime
+   da una di queste battute + il clip della sillaba, oppure lette dalla
+   sintesi di sistema. */
+const uiSource = [
+  "Bravo!",
+  "Giusto!",
+  "Riprova",
+  "Quasi! Era",
+  "Mancano",
+  "La prossima sillaba è",
+  "Hai già finito questo livello. Bravo!",
+  "sillabe"
+];
+
+/* --- 5. parole intere ---
+   Gli esercizi chiedono "Quante sillabe ha la parola «gatto»?" e leggono la
+   parola intera: serve un file anche per quelle. */
+const words = [...new Set(
+  sentences.flatMap(s => s.toLowerCase().split(/\s+/)).filter(Boolean)
+)].sort((a, b) => a.localeCompare(b, "it"));
+
+const allSyllables = [...new Set([...syllables, ...distractors])].sort((a, b) => a.localeCompare(b, "it"));
+
+module.exports = {
+  syllables: allSyllables,
+  levelSyllables: [...syllables].sort((a, b) => a.localeCompare(b, "it")),
+  distractors: [...new Set(distractors)].sort((a, b) => a.localeCompare(b, "it")),
+  sentences,
+  words,
+  uiSource
+};
+
+if (require.main === module) {
+  const d = module.exports;
+  console.log(JSON.stringify({
+    counts: { syllables: d.syllables.length, levelSyllables: d.levelSyllables.length, distractors: d.distractors.length, sentences: d.sentences.length, words: d.words.length },
+    syllables: d.syllables
+  }, null, 1));
+}

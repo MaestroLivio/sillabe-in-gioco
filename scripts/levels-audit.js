@@ -61,6 +61,20 @@ app.whenReady().then(async () => {
       const total = lvl.syllables.length;
       // nel pool finiscono solo le sillabe da collocare più i 3 distrattori
       const expectedTiles = total - prefilled + 3;
+      // voce: il livello deve avere il clip della frase e quello di ogni sillaba
+      await loadAudioManifest();
+      const fraseClip = audioFileFor(String(lvl.id), 'frasi');
+      const sylMissing = lvl.syllables.filter(s => !audioFileFor(s, 'syl'));
+      let fraseOk = false;
+      if (fraseClip) {
+        fraseOk = await new Promise(res => {
+          const a = new Audio(fraseClip);
+          a.oncanplaythrough = () => res(true);
+          a.onerror = () => res(false);
+          setTimeout(() => res(false), 3000);
+          a.load();
+        });
+      }
       out.push({
         id: lvl.id,
         mode: lvl.mode,
@@ -69,7 +83,10 @@ app.whenReady().then(async () => {
         imgOk: !!img && img.naturalWidth > 0,
         colors,
         slots, tiles, prefilled, total,
+        fraseClip: !!fraseClip, fraseOk,
+        sylMissing: sylMissing.length,
         ok: !!img && img.naturalWidth > 0 && colors > 12 && slots === total && tiles === expectedTiles
+            && !!fraseClip && fraseOk && sylMissing.length === 0
       });
     }
     return out;
@@ -80,7 +97,7 @@ app.whenReady().then(async () => {
   const srcs = report.map(r => r.src);
   const duplicated = srcs.filter((s, i) => s && srcs.indexOf(s) !== i);
   report.forEach(r => {
-    console.log(`${r.ok ? "✔" : "✖"} ${String(r.id).padStart(2)} [${r.mode}] img:${r.imgOk ? r.colors + "c" : "NO"} slots:${r.slots}/${r.total} pre:${r.prefilled} tiles:${r.tiles} — ${r.text}`);
+    console.log(`${r.ok ? "✔" : "✖"} ${String(r.id).padStart(2)} [${r.mode}] img:${r.imgOk ? r.colors + "c" : "NO"} slots:${r.slots}/${r.total} pre:${r.prefilled} tiles:${r.tiles} voce:${r.fraseOk ? "ok" : "NO"}${r.sylMissing ? " mancano " + r.sylMissing + " sillabe" : ""} — ${r.text}`);
   });
   if (duplicated.length) {
     console.log(`\n✖ illustrazioni condivise: ${duplicated.join(", ")}`);

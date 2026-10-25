@@ -1,0 +1,254 @@
+#!/usr/bin/env node
+/**
+ * Genera i file audio dell'app con una voce neurale italiana.
+ *
+ * Per ogni token/frase:
+ *   1. si sceglie la forma grafemica da pronunciare (pronunciation.js),
+ *   2. si sintetizza con `say` (voce neurale "Emma Premium"),
+ *   3. si normalizza il volume e si codifica in MP3 mono 32 kbps
+ *      (un file per sillaba pesa ~2 kB: 230 file restano sotto 1 MB),
+ *   4. si annota nel manifest la durata reale del file.
+ *
+ * È necessario macOS: usa `say`, `afconvert` e `afinfo`.
+ *
+ * Uso:
+ *   node scripts/audio/build.js            genera tutto
+ *   node scripts/audio/build.js --only=syl rigenera solo le sillabe
+ *   node scripts/audio/build.js --check    verifica senza scrivere
+ */
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
+const { execFileSync } = require("child_process");
+
+const { syllables, sentences, words, uiSource } = require("./extract");
+const { OVERRIDES } = require("./pronunciation");
+
+const ROOT = path.join(__dirname, "..", "..");
+const AUDIO = path.join(ROOT, "audio");
+const VOICE = "Emma";            // voce neurale it-IT ("Emma (Premium)")
+const RATE = 165;                // parole al minuto: ritmo da maestra, non da sintesi
+const MP3_KBPS = 32;
+
+const args = process.argv.slice(2);
+const only = (args.find(a => a.startsWith("--only=")) || "").split("=")[1] || "all";
+const checkOnly = args.includes("--check");
+
+/* --- utilità --- */
+function sh(cmd, argv) {
+  return execFileSync(cmd, argv, { stdio: ["ignore", "pipe", "pipe"] }).toString();
+}
+
+/** Durata in secondi di un file audio (afinfo). */
+function duration(file) {
+  const m = sh("afinfo", [file]).match(/estimated duration:\s*([\d.]+)/);
+  return m ? +(+m[1]).toFixed(3) : 0;
+}
+
+/** Sintetizza `text` in MP3 mono, normalizzato, senza silenzi ai bordi. */
+function synth(text, outMp3, { rate = RATE } = {}) {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "sillabe-"));
+  const aiff = path.join(tmp, "t.aiff");
+  const wav = path.join(tmp, "t.wav");
+  try {
+    sh("say", ["-v", VOICE, "-r", String(rate), "-o", aiff, text]);
+    // 22.05 kHz mono: più che sufficiente per la voce, dimezza i byte
+    sh("afconvert", ["-f", "WAVE", "-d", "LEI16@22050", "-c", "1", aiff, wav]);
+    // normalizza e rifila i silenzi; -af silenceremove toglie pause ai bordi
+    sh("ffmpeg", ["-y", "-loglevel", "error", "-i", wav,
+      "-af", "silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.02," +
+             "areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.05,areverse," +
+             "loudnorm=I=-16:TP=-1.5:LRA=11",
+      "-ac", "1", "-ar", "22050", "-b:a", MP3_KBPS + "k", outMp3]);
+    return +duration(outMp3).toFixed(3);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+}
+
+/**
+ * Esegue `task` su ogni elemento con al massimo `limit` processi `say`
+ * simultanei. `say` impiega ~1 s ad avviarsi (carica il modello neurale):
+ * in serie 370 clip richiederebbero mezz'ora, in parallelo pochi minuti.
+ */
+function pool(items, limit, task) {
+  return new Promise((resolve, reject) => {
+    let next = 0, done = 0;
+    const total = items.length;
+    if (!total) return resolve();
+    const launch = () => {
+      if (next >= total) return;
+      const item = items[next++];
+      Promise.resolve()
+        .then(() => task(item))
+        .then(res => {
+          done++;
+          if (done === total) resolve();
+          else launch();
+        })
+        .catch(reject);
+    };
+    for (let k = 0; k < Math.min(limit, total); k++) launch();
+  });
+}
+
+/** Nome file stabile e leggibile: traslitterazione ASCII del token.
+    Le vocali accentate ricevono un suffisso numerico perché sono sillabe
+    diverse dalla vocale semplice («e» congiunzione ≠ «è» verbo): senza il
+    suffisso i due token finirebbero nello stesso file. */
+function slug(token) {
+  const map = {
+    "à": "a1", "è": "e1", "é": "e2", "ì": "i1", "ò": "o1", "ù": "u1",
+    "'": "-", " ": "_"
+  };
+  return token.toLowerCase().split("").map(c => map[c] !== undefined ? map[c] : c).join("");
+}
+
+function write(group, name, text, opts) {
+  const dir = path.join(AUDIO, group);
+  fs.mkdirSync(dir, { recursive: true });
+  const file = path.join(dir, name + ".mp3");
+  const dur = synth(text, file, opts);
+  return { file: `audio/${group}/${name}.mp3`, dur, spoken: text };
+}
+
+/**
+ * Ricostruisce `manifest.json` dai file già presenti su disco, senza
+ * sintetizzare nulla. Serve dopo un aggiornamento dei testi (nuove sillabe o
+ * frasi) o per riallineare l'indice se il manifest è rimasto indietro.
+ */
+function reindex() {
+  const read = rel => {
+    const abs = path.join(ROOT, rel);
+    return fs.existsSync(abs) ? +duration(abs).toFixed(3) : null;
+  };
+  const entry = (group, name, spoken) => {
+    const rel = `audio/${group}/${name}.mp3`;
+    const dur = read(rel);
+    return dur === null ? null : { file: rel, dur, spoken };
+  };
+
+  const groups = {};
+
+  const syl = {};
+  for (const tok of syllables) {
+    const e = entry("syl", slug(tok), OVERRIDES[tok] || tok);
+    if (e) syl[tok] = e;
+  }
+  groups.syl = syl;
+
+  const frasi = {};
+  sentences.forEach((s, i) => {
+    const e = entry("frasi", String(i + 1).padStart(2, "0"), s);
+    if (e) frasi[i + 1] = e;
+  });
+  groups.frasi = frasi;
+
+  const parole = {};
+  for (const w of words) {
+    const e = entry("parole", slug(w), OVERRIDES[w] || w);
+    if (e) parole[w] = e;
+  }
+  groups.parole = parole;
+
+  const ui = {};
+  for (const phrase of uiSource) {
+    const e = entry("ui", slug(phrase), phrase);
+    if (e) ui[phrase] = e;
+  }
+  groups.ui = ui;
+
+  const out = { version: 1, voice: VOICE, rate: RATE, groups };
+  fs.writeFileSync(path.join(AUDIO, "manifest.json"), JSON.stringify(out, null, 1) + "\n");
+  const counts = Object.entries(groups).map(([g, v]) => `${g}: ${Object.keys(v).length}`).join(", ");
+  console.log(`manifest ricostruito — ${counts}`);
+}
+
+/* --- generazione ---
+   Ogni blocco riempie una parte del manifest. Con --only si può rigenerare
+   un solo gruppo; il manifest esistente viene letto e aggiornato, non perso. */
+if (!checkOnly) fs.mkdirSync(AUDIO, { recursive: true });
+
+const manifest = { version: 1, voice: VOICE, rate: RATE, groups: {} };
+const PARALLEL = 8;     // processi `say` simultanei (oltre ~10 la voce satura)
+
+async function generate() {
+  if (only === "all" || only === "syl") {
+    const syl = {};
+    const rate = Math.round(RATE * 0.85);
+    await pool(syllables, PARALLEL, tok => {
+      const spoken = OVERRIDES[tok] || tok;
+      syl[tok] = checkOnly
+        ? { file: `audio/syl/${slug(tok)}.mp3`, spoken }
+        : write("syl", slug(tok), spoken, { rate });
+    });
+    manifest.groups.syl = syl;
+    if (!checkOnly) console.log(`sillabe: ${Object.keys(syl).length}`);
+  }
+
+  if (only === "all" || only === "frasi") {
+    const frasi = {};
+    await pool(sentences.map((s, i) => ({ s, id: i + 1 })), PARALLEL, ({ s, id }) => {
+      const name = String(id).padStart(2, "0");
+      frasi[id] = checkOnly
+        ? { file: `audio/frasi/${name}.mp3`, spoken: s }
+        : write("frasi", name, s, { rate: RATE });
+    });
+    manifest.groups.frasi = frasi;
+    if (!checkOnly) console.log(`frasi: ${Object.keys(frasi).length}`);
+  }
+
+  if (only === "all" || only === "parole") {
+    const parole = {};
+    const rate = Math.round(RATE * 0.92);
+    await pool(words, PARALLEL, w => {
+      const spoken = OVERRIDES[w] || w;
+      parole[w] = checkOnly
+        ? { file: `audio/parole/${slug(w)}.mp3`, spoken }
+        : write("parole", slug(w), spoken, { rate });
+    });
+    manifest.groups.parole = parole;
+    if (!checkOnly) console.log(`parole: ${Object.keys(parole).length}`);
+  }
+
+  if (only === "all" || only === "ui") {
+    const ui = {};
+    const rate = Math.round(RATE * 1.05);
+    await pool(uiSource, PARALLEL, phrase => {
+      ui[phrase] = checkOnly
+        ? { file: `audio/ui/${slug(phrase)}.mp3`, spoken: phrase }
+        : write("ui", slug(phrase), phrase, { rate });
+    });
+    manifest.groups.ui = ui;
+    if (!checkOnly) console.log(`interfaccia: ${Object.keys(ui).length}`);
+  }
+}
+
+async function main() {
+  if (args.includes("--reindex")) { reindex(); return; }
+  await generate();
+  if (checkOnly) return;
+
+  const file = path.join(AUDIO, "manifest.json");
+  let prev = {};
+  if (only !== "all" && fs.existsSync(file)) {
+    try { prev = JSON.parse(fs.readFileSync(file, "utf8")).groups || {}; } catch (e) { prev = {}; }
+  }
+  manifest.groups = Object.assign({}, prev, manifest.groups);
+  fs.writeFileSync(file, JSON.stringify(manifest, null, 1) + "\n");
+
+  const files = [];
+  (function walk(d) {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) walk(p); else if (p.endsWith(".mp3")) files.push(p);
+    }
+  })(AUDIO);
+  const bytes = files.reduce((n, f) => n + fs.statSync(f).size, 0);
+  console.log(`\n${files.length} file MP3, ${(bytes / 1048576).toFixed(2)} MB in audio/`);
+}
+
+main().catch(err => {
+  console.error("✘ generazione interrotta:", err.message);
+  process.exit(1);
+});

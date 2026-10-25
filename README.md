@@ -36,7 +36,17 @@ esercizi, schede stampabili e trofei.
 - Animazioni di conferma, errore (shake), completamento (pop + coriandoli).
 
 ### Voce
-- **Sintesi vocale italiana** (`it-IT`) per ogni sillaba, per la frase intera e per la lettura finale **scandita sillaba per sillaba**.
+- **Voci preregistrate con voce neurale italiana**, incluse nel pacchetto: 166 sillabe,
+  40 frasi, 138 parole e le battute dell'interfaccia. Identiche su ogni dispositivo,
+  anche senza voci italiane installate nel sistema.
+- **Le sillabe non vengono più compitate.** Con la sintesi di sistema alcune sillabe
+  isolate (`ac`, `ap`, `ia`, `ta`, `uc`) venivano lette come sigle, lettera per lettera;
+  i clip preregistrati eliminano il problema alla radice. Un test di regressione
+  (`npm run test:pronuncia`) confronta ogni sillaba critica con la sua lettura
+  compitata e fallisce se le due coincidono.
+- **Sintesi di sistema come riserva** (Web Speech API, `it-IT`): se un file audio manca,
+  l'app torna a leggere con la voce del dispositivo e preferisce le voci neurali/premium.
+- Lettura **scandita sillaba per sillaba** con la pausa giusta tra una sillaba e l'altra.
 - Voce, velocità e lettura automatica configurabili.
 - Tasto **ASCOLTA** (radio vintage) per riascoltare la frase in qualsiasi momento.
 
@@ -132,8 +142,8 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.0.2-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.0.2.dmg` (Intel)
+- `Sillabe in Gioco-2.1.0-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.1.0.dmg` (Intel)
 - versioni `.zip` per gli aggiornamenti automatici
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
@@ -153,8 +163,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.0.2.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.0.2.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.1.0.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.1.0.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -172,7 +182,7 @@ Due strade, entrambe incluse.
 npm run build:chromeos
 ```
 
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.0.2.zip`.
+Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.1.0.zip`.
 
 Installazione in modalità sviluppatore:
 
@@ -196,7 +206,7 @@ privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
 ### Web / PWA
 
 ```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.0.2.zip
+npm run build:web      # crea dist/web + dist/sillabe-web-v2.1.0.zip
 npm run serve          # prova locale con service worker attivo
 ```
 
@@ -214,11 +224,15 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run validate` | Verifica i 40 livelli: unicità frasi, sillabe, distrattori, gruppi |
 | `npm run illustrations` | Rigenera le 40 illustrazioni (SVG + PNG) dal generatore vettoriale |
 | `npm run test:illustrations` | Valida le illustrazioni: dimensione, soggetti attesi, nessun duplicato |
-| `npm run test:release -- v2.0.2` | Scarica gli artefatti pubblicati e verifica che contengano le 40 illustrazioni |
+| `npm run audio` | Rigenera tutti i clip vocali (sillabe, frasi, parole, interfaccia) con la voce neurale |
+| `npm run audio -- --only=syl` | Rigenera solo un gruppo (`syl`, `frasi`, `parole`, `ui`) |
+| `npm run test:audio` | Verifica i clip: copertura di sillabe/frasi/parole, durate, file orfani |
+| `npm run test:pronuncia` | Controlla che le sillabe critiche non siano compitate lettera per lettera |
+| `npm run test:release -- v2.1.0` | Scarica gli artefatti pubblicati e verifica che contengano le 40 illustrazioni |
 | `npm run test:smoke` | Smoke test headless Electron: 30 controlli su schermate e flussi |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |
-| `npm test` | Esegue valida + illustrazioni + smoke + livelli + layout (usato dalla CI) |
+| `npm test` | Esegue validazione + illustrazioni + audio + pronuncia + smoke + livelli + layout (usato dalla CI) |
 | `npm run icons` | Rigenera tutte le icone PNG da `build/icon.svg` |
 | `npm run icons:native` | Genera `icon.icns` (macOS) e `icon.ico` (Windows) |
 | `npm run screenshots` | Cattura le 12 schermate in `build/screenshots/` |
@@ -244,7 +258,14 @@ sillabe-in-gioco/
 ├── favicon.png
 ├── icons/                      # Icone PNG 16→1024 + maskable
 ├── illustrations/              # 40 illustrazioni: NN.png (1280×720) + NN.svg (sorgente)
+├── audio/                      # Voci preregistrate (voce neurale, offline)
+│   ├── manifest.json           # Indice: token -> file, con durata e forma pronunciata
+│   ├── syl/                    # 166 sillabe
+│   ├── frasi/                  # 40 frasi complete (01.mp3 … 40.mp3)
+│   ├── parole/                 # 138 parole degli esercizi
+│   └── ui/                     # Battute fisse dell'interfaccia
 ├── scripts/illustrations/      # Generatore vettoriale delle scene (draw, props, scenes)
+├── scripts/audio/              # Estrazione testi, sintesi neurale, verifica pronuncia
 ├── desktop/
 │   ├── main.js                 # Processo principale Electron (finestra, menu, permessi)
 │   └── preload.js              # Bridge sicuro contextIsolation

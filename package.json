@@ -1,7 +1,7 @@
 {
   "name": "sillabe-in-gioco",
   "productName": "Sillabe in Gioco",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Laboratorio di letto-scrittura: impara a leggere e scrivere componendo frasi con le sillabe, con sintesi vocale italiana.",
   "author": {
     "name": "Livio Luppino",
@@ -26,12 +26,15 @@
     "serve": "node scripts/serve.js",
     "validate": "node scripts/validate.js",
     "illustrations": "node scripts/illustrations/generate.js",
+    "audio": "node scripts/audio/build.js",
+    "test:audio": "node scripts/audio/verify.js",
+    "test:pronuncia": "node scripts/audio/test-pronunciation.js",
     "test:illustrations": "node scripts/illustrations/verify.js",
     "test:release": "node scripts/verify-release.js",
     "test:smoke": "electron scripts/smoke-test.js",
     "test:layout": "electron scripts/layout-audit.js",
     "test:levels": "electron scripts/levels-audit.js",
-    "test": "npm run validate && npm run test:illustrations && npm run test:smoke && npm run test:levels && npm run test:layout",
+    "test": "npm run validate && npm run test:illustrations && npm run test:audio && npm run test:pronuncia && npm run test:smoke && npm run test:levels && npm run test:layout",
     "clean:volumes": "node scripts/clean-volumes.js",
     "make:dmg": "node scripts/make-dmg.js arm64 && node scripts/make-dmg.js x64",
     "screenshots": "electron scripts/screenshots.js",
@@ -65,6 +68,7 @@
       "sw.js",
       "icons/**/*",
       "illustrations/**/*",
+      "audio/**/*",
       "package.json"
     ],
     "compression": "maximum",

@@ -11,7 +11,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 |---|---|
 | **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
 | **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
-| **Windows** | Esegui `SillabeInGioco-Setup-2.0.2.exe` e segui la procedura |
+| **Windows** | Esegui `SillabeInGioco-Setup-2.1.0.exe` e segui la procedura |
 | **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
 | **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
 
@@ -133,7 +133,7 @@ Apri l'ingranaggio ⚙️ dalla home.
 |---|---|
 | **Dimensione testo** 90–150% | Ingrandisce tutto il testo senza rompere il layout |
 | **Velocità voce** | Rallenta la sintesi per chi ha bisogno di più tempo |
-| **Voce** | Sceglie tra le voci italiane installate nel sistema |
+| **Voce** | Sceglie la voce di sistema usata come riserva (i clip registrati restano quelli della voce neurale) |
 | **Tema scuro** | Riduce l'affaticamento visivo e l'abbagliamento |
 | **Effetti sonori** | Disattiva i suoni sintetici (la voce resta attiva) |
 | **Lettura automatica** | Legge la frase appena si apre un livello |
@@ -181,7 +181,7 @@ Tutte le scelte sono salvate automaticamente sul dispositivo.
 
 Nessuna connessione a internet, nessun account, nessuna pubblicità, nessuna statistica.
 I progressi restano in `localStorage` (web) o nella cartella dati dell'app (desktop).
-La sintesi vocale usa le voci del sistema operativo: il testo non viene inviato altrove.
+Le voci sono registrate e incluse nell'app: nessun testo viene inviato altrove e non serve alcuna voce italiana installata. Se un clip manca, l'app legge con la voce del sistema operativo.
 Dettagli completi in [PRIVACY.md](PRIVACY.md).
 
 ---

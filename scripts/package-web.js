@@ -55,6 +55,7 @@ fs.mkdirSync(web, { recursive: true });
 });
 copyDir("icons", path.join(web, "icons"));
 copyDir("illustrations", path.join(web, "illustrations"));
+copyDir("audio", path.join(web, "audio"));
 
 /* manifest specifico per il web: start_url relativo alla cartella */
 const webManifest = JSON.parse(fs.readFileSync(path.join(ROOT, "manifest.webmanifest"), "utf8"));
@@ -92,12 +93,13 @@ fs.mkdirSync(chr, { recursive: true });
 copy("index.html", chr);
 copyDir("icons", path.join(chr, "icons"));
 copyDir("illustrations", path.join(chr, "illustrations"));
+copyDir("audio", path.join(chr, "audio"));
 
 /* manifest dell'estensione: aggiunge le risorse web accessibili */
 const extManifest = JSON.parse(fs.readFileSync(path.join(ROOT, "chromeos", "manifest.json"), "utf8"));
 extManifest.version = VERSION;
 extManifest.web_accessible_resources = [{
-  resources: ["index.html", "icons/*", "illustrations/*"],
+  resources: ["index.html", "icons/*", "illustrations/*", "audio/*", "audio/*/*"],
   matches: ["<all_urls>"]
 }];
 fs.writeFileSync(path.join(chr, "manifest.json"), JSON.stringify(extManifest, null, 2));

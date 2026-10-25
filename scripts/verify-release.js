@@ -20,7 +20,8 @@ const { execFileSync } = require("child_process");
 const TAG = process.argv[2] || "v2.0.2";
 const KEEP = process.argv.includes("--keep");
 const REPO = "MaestroLivio/sillabe-in-gioco";
-const EXPECTED = 40;
+const EXPECTED = 40;            // illustrazioni attese in ogni artefatto
+const EXPECTED_AUDIO = 352;      // clip vocali attesi (166 sillabe + 40 frasi + 138 parole + 8 battute)
 
 const WORK = path.join(os.tmpdir(), `sillabe-release-${TAG.replace(/[^\w.]/g, "")}`);
 const ASAR = path.join(__dirname, "..", "node_modules", ".bin", "asar");
@@ -68,6 +69,12 @@ function countIllustrations(files) {
   return files.filter(f => /^\/illustrations\/\d\d\.png$/.test(f.trim())).length;
 }
 
+/** Conta i clip audio in una lista di percorsi asar. */
+function countAudioAsar(files) {
+  if (!files) return 0;
+  return files.filter(f => /^\/audio\/.*\.mp3$/.test(f.trim())).length;
+}
+
 /** Trova app.asar dentro una cartella estratta. */
 function findAsar(dir) {
   if (!dir || !fs.existsSync(dir)) return null;
@@ -88,6 +95,12 @@ function countLoose(dir) {
   return out ? out.split("\n").filter(Boolean).length : 0;
 }
 
+/** Conta i clip audio presenti come file sciolti. */
+function countAudioLoose(dir) {
+  const out = trySh("find", [dir, "-path", "*/audio/*.mp3"]);
+  return out ? out.split("\n").filter(Boolean).length : 0;
+}
+
 /* --- formati --- */
 
 /** Zip (PWA, ChromeOS, macOS zip): immagini sciolte oppure dentro app.asar. */
@@ -98,15 +111,18 @@ function checkZip(file) {
   trySh("unzip", ["-q", "-o", file, "-d", dir]);
 
   const loose = countLoose(dir);
+  const looseAudio = countAudioLoose(dir);
   if (loose >= EXPECTED) {
     if (!KEEP) fs.rmSync(dir, { recursive: true, force: true });
-    return { count: loose, where: "file sciolti" };
+    return { count: loose, audio: looseAudio, where: "file sciolti" };
   }
 
   const asarPath = findAsar(dir);
-  const n = asarPath ? countIllustrations(asarList(asarPath)) : loose;
+  const files = asarPath ? asarList(asarPath) : null;
+  const n = files ? countIllustrations(files) : loose;
+  const a = files ? countAudioAsar(files) : looseAudio;
   if (!KEEP) fs.rmSync(dir, { recursive: true, force: true });
-  return { count: n, where: asarPath ? "app.asar" : "nessun asar" };
+  return { count: n, audio: a, where: asarPath ? "app.asar" : "nessun asar" };
 }
 
 /**
@@ -138,9 +154,11 @@ function checkDeb(file) {
   trySh("tar", ["xf", tarPath, "-C", outDir]);
 
   const asarPath = findAsar(outDir);
-  const n = asarPath ? countIllustrations(asarList(asarPath)) : countLoose(outDir);
+  const files = asarPath ? asarList(asarPath) : null;
+  const n = files ? countIllustrations(files) : countLoose(outDir);
+  const a = files ? countAudioAsar(files) : countAudioLoose(outDir);
   if (!KEEP) fs.rmSync(outDir, { recursive: true, force: true });
-  return { count: n, where: asarPath ? "app.asar" : "nessun asar" };
+  return { count: n, audio: a, where: asarPath ? "app.asar" : "nessun asar" };
 }
 
 /**
@@ -177,9 +195,11 @@ function checkSevenZip(file) {
     }
   }
 
-  const n = asarPath ? countIllustrations(asarList(asarPath)) : countLoose(dir);
+  const files = asarPath ? asarList(asarPath) : null;
+  const n = files ? countIllustrations(files) : countLoose(dir);
+  const a = files ? countAudioAsar(files) : countAudioLoose(dir);
   if (!KEEP) fs.rmSync(dir, { recursive: true, force: true });
-  return { count: n, where: asarPath ? "app.asar" : "nessun asar" };
+  return { count: n, audio: a, where: asarPath ? "app.asar" : "nessun asar" };
 }
 
 /**
@@ -192,8 +212,10 @@ function checkDmg(file) {
   try {
     sh("hdiutil", ["attach", file, "-nobrowse", "-readonly", "-mountpoint", mnt]);
     const asarPath = findAsar(mnt);
-    const n = asarPath ? countIllustrations(asarList(asarPath)) : 0;
-    return { count: n, where: asarPath ? "app.asar" : "nessun asar" };
+    const files = asarPath ? asarList(asarPath) : null;
+    const n = files ? countIllustrations(files) : 0;
+    const a = files ? countAudioAsar(files) : 0;
+    return { count: n, audio: a, where: asarPath ? "app.asar" : "nessun asar" };
   } catch (e) {
     return { count: 0, where: "DMG non montabile" };
   } finally {
@@ -230,14 +252,15 @@ function checkDmg(file) {
     else if (/\.dmg$/i.test(name)) res = checkDmg(file);
     else res = checkSevenZip(file);
 
-    rows.push({ name, count: res.count, where: res.where, mb: (asset.size / 1048576).toFixed(0) });
+    rows.push({ name, count: res.count, audio: res.audio, where: res.where, mb: (asset.size / 1048576).toFixed(0) });
     if (res.count !== EXPECTED) problems.push(`${name}: ${res.count}/${EXPECTED} illustrazioni (${res.where})`);
+    if (res.audio !== EXPECTED_AUDIO) problems.push(`${name}: ${res.audio}/${EXPECTED_AUDIO} clip audio (${res.where})`);
   }
 
-  console.log("Artefatto".padEnd(42) + "PNG".padStart(5) + "  " + "Dove".padEnd(14) + "MB".padStart(4));
-  console.log("-".repeat(70));
+  console.log("Artefatto".padEnd(42) + "PNG".padStart(5) + "MP3".padStart(6) + "  " + "Dove".padEnd(14) + "MB".padStart(4));
+  console.log("-".repeat(76));
   rows.forEach(r => {
-    console.log(r.name.padEnd(42) + String(r.count).padStart(5) + "  " + r.where.padEnd(14) + String(r.mb).padStart(4));
+    console.log(r.name.padEnd(42) + String(r.count).padStart(5) + String(r.audio).padStart(6) + "  " + r.where.padEnd(14) + String(r.mb).padStart(4));
   });
 
   console.log("");
@@ -246,7 +269,7 @@ function checkDmg(file) {
     problems.forEach(p => console.error("  " + p));
     process.exitCode = 1;
   } else {
-    console.log(`✔ Tutti i ${rows.length} artefatti pubblicati contengono le ${EXPECTED} illustrazioni`);
+    console.log(`✔ Tutti i ${rows.length} artefatti pubblicati contengono le ${EXPECTED} illustrazioni e i ${EXPECTED_AUDIO} clip vocali`);
   }
 
   if (!KEEP) fs.rmSync(WORK, { recursive: true, force: true });

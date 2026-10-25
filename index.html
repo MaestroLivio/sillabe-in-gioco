@@ -858,9 +858,99 @@ function toast(msg, ms = 2200) {
 function announce(msg) { $("#live").textContent = msg; }
 
 /* ------------------------------------------------------------------
-   3. VOCE (Web Speech API, it-IT)
+   3. VOCE
+
+   Due sorgenti, in ordine di preferenza:
+   a) file preregistrati in audio/ (voce neurale italiana, identica su tutti
+      i dispositivi, nessuna dipendenza dal sistema);
+   b) sintesi di sistema (Web Speech API) come riserva, se un file manca.
+
+   Il percorso a file esiste perché la sintesi di sistema, su molte
+   configurazioni, legge le sillabe isolate come sigle: «ac», «ap», «ta»,
+   «uc» vengono compitate lettera per lettera invece di essere lette come
+   sillabe. I file preregistrati evitano il problema alla radice.
    ------------------------------------------------------------------ */
 const synth = window.speechSynthesis || null;
+
+/* Indice dei file audio: { "ac": "audio/syl/ac.mp3", ... }.
+   Costruito pigramente dal manifest, così l'app parte anche se il manifest
+   non è raggiungibile (in quel caso resta la sintesi di sistema). */
+const AUDIO_MANIFEST_URL = "audio/manifest.json";
+let audioIndex = null;          // { syl: {...}, parole: {...}, frasi: {...}, ui: {...} }
+let audioManifestPromise = null;
+let currentClip = null;         // Audio in riproduzione
+
+function loadAudioManifest() {
+  if (audioManifestPromise) return audioManifestPromise;
+  audioManifestPromise = fetch(AUDIO_MANIFEST_URL)
+    .then(r => (r.ok ? r.json() : null))
+    .then(data => {
+      audioIndex = {};
+      if (data && data.groups) {
+        for (const [group, entries] of Object.entries(data.groups)) {
+          audioIndex[group] = new Map();
+          for (const [key, info] of Object.entries(entries)) {
+            audioIndex[group].set(key, info.file);
+          }
+        }
+      }
+      return audioIndex;
+    })
+    .catch(() => { audioIndex = {}; return audioIndex; });
+  return audioManifestPromise;
+}
+
+/**
+ * Percorso del file per `text`, oppure null se non esiste un file.
+ * `group` può essere un nome solo o un array: si prova nell'ordine dato
+ * (serve al quiz, che legge sia parole intere sia sillabe).
+ */
+function audioFileFor(text, group) {
+  if (!audioIndex || !text) return null;
+  for (const name of Array.isArray(group) ? group : [group]) {
+    const g = audioIndex[name];
+    if (!g) continue;
+    const hit = g.get(text) || g.get(text.toLowerCase());
+    if (hit) return hit;
+  }
+  return null;
+}
+
+/** Ferma la riproduzione in corso (file o sintesi). */
+function stopAudio() {
+  if (currentClip) {
+    try { currentClip.pause(); } catch (e) { /* già fermo */ }
+    currentClip = null;
+  }
+  if (synth) synth.cancel();
+}
+
+/**
+ * Riproduce il file preregistrato di `text`; se manca, usa la sintesi.
+ * Ritorna una Promise risolta a fine riproduzione, così la lettura
+ * scandita può concatenare le sillabe.
+ */
+function playClip(file, opts = {}) {
+  return new Promise(resolve => {
+    const a = new Audio(file);
+    a.preload = "auto";
+    currentClip = a;
+    let done = false;
+    const end = ok => {
+      if (done) return;
+      done = true;
+      if (currentClip === a) currentClip = null;
+      resolve(ok);
+    };
+    a.onended = () => end(true);
+    a.onerror = () => end(false);
+    // il volume segue le impostazioni, il ritmo è già nel file
+    a.volume = 1;
+    const p = a.play();
+    if (p && p.catch) p.catch(() => end(false));
+  });
+}
+
 let voices = [];
 let itVoice = null;
 
@@ -869,15 +959,46 @@ function refreshVoices() {
   voices = synth.getVoices() || [];
   const italian = voices.filter(v => /it(-|_)?/i.test(v.lang));
   const saved = settings.voiceURI && voices.find(v => v.voiceURI === settings.voiceURI);
-  itVoice = saved || italian.find(v => /Alice|Elsa|Federica|Silvia|Luca|Google/i.test(v.name)) || italian[0] || null;
+  // preferisce le voci "neurali"/premium, che non compitano le sillabe
+  const neural = italian.find(v => /premium|enhanced|neural|siri/i.test(v.name));
+  itVoice = saved || neural
+    || italian.find(v => /Alice|Elsa|Federica|Silvia|Luca|Google/i.test(v.name))
+    || italian[0] || null;
 }
 if (synth) {
   refreshVoices();
   synth.onvoiceschanged = refreshVoices;
 }
 
+/**
+ * Legge `text`.
+ *   opts.group        "syl" | "parole" | "frasi" | "ui" — dove cercare il file
+ *   opts.fallbackText testo da passare alla sintesi se il file non esiste
+ *                     (serve quando la chiave del file è un id, non il testo)
+ *   opts.onend        chiamata a fine lettura (file o sintesi)
+ * Il file preregistrato ha la precedenza; la sintesi resta come riserva.
+ */
 function speak(text, opts = {}) {
-  if (!text || !synth) return;
+  if (!text) return;
+
+  // il manifest può non essere ancora arrivato: si aspetta, altrimenti la
+  // prima frase verrebbe letta con la voce di sistema (quella che compita)
+  const ready = (audioManifestPromise && audioIndex === null) ? audioManifestPromise : Promise.resolve(audioIndex);
+
+  ready.then(() => {
+    const file = audioFileFor(text, opts.group);
+    if (!file) { speakSynth(opts.fallbackText || text, opts); return; }
+    if (!opts.queue) stopAudio();
+    playClip(file).then(ok => {
+      if (!ok) { speakSynth(opts.fallbackText || text, opts); return; }
+      if (opts.onend) opts.onend();
+    });
+  });
+}
+
+/** Sintesi di sistema: riserva quando il file audio non c'è. */
+function speakSynth(text, opts = {}) {
+  if (!text || !synth) { if (opts.onend) opts.onend(); return; }
   const rate = opts.rate !== undefined ? opts.rate : settings.rate;
   const u = new SpeechSynthesisUtterance(text);
   u.lang = "it-IT";
@@ -894,13 +1015,37 @@ function speak(text, opts = {}) {
 
 /** Legge le sillabe una alla volta, con pausa: utile per la lettura scandita. */
 function speakSyllables(list) {
-  if (!synth) return;
-  synth.cancel();
+  if (!list || !list.length) return;
+  stopAudio();
   let i = 0;
   const next = () => {
     if (i >= list.length) return;
     const s = list[i++];
-    speak(s, { rate: Math.max(0.6, settings.rate - 0.15), onend: () => setTimeout(next, 130) });
+    speak(s, { group: "syl", rate: Math.max(0.6, settings.rate - 0.15), onend: () => setTimeout(next, 130) });
+  };
+  next();
+}
+
+/**
+ * Legge più frammenti in sequenza. Serve per le frasi che contengono un
+ * dato variabile (un numero, una sillaba): i frammenti fissi hanno un file
+ * preregistrato, il resto passa dalla sintesi. `parts` è un array di
+ * { text, group } letti nell'ordine dato.
+ */
+function speakSequence(parts, opts = {}) {
+  const list = (parts || []).filter(p => p && p.text);
+  if (!list.length) return;
+  stopAudio();
+  let i = 0;
+  const next = () => {
+    if (i >= list.length) return;
+    const p = list[i++];
+    const isLast = i >= list.length;
+    speak(p.text, {
+      group: p.group,
+      rate: opts.rate,
+      onend: () => setTimeout(next, isLast ? 0 : 90)
+    });
   };
   next();
 }
@@ -908,11 +1053,18 @@ function speakSyllables(list) {
 function speakSentence(level, scandito = false) {
   if (!level) return;
   if (scandito) { speakSyllables(level.syllables); return; }
+  // il file della frase è indicizzato per numero di livello (1..40)
   const full = level.sentence || level.parts.map(p => p.syllables.join("")).join(" " + (level.connector ? level.connector + " " : ""));
-  speak(full, { rate: Math.max(0.65, settings.rate - 0.05) });
+  speak(String(level.id), {
+    group: "frasi",
+    fallbackText: full,
+    rate: Math.max(0.65, settings.rate - 0.05)
+  });
   progress.listens = (progress.listens || 0) + 1;
   saveJSON(STORE_KEY, progress);
 }
+
+loadAudioManifest();
 
 /* ------------------------------------------------------------------
    4. EFFETTI SONORI (WebAudio, nessun file esterno)
@@ -1298,7 +1450,7 @@ function setMascot(text) {
 function onTileClick(tile, t) {
   if (L.completed) return;
   fx("click");
-  speak(t.text, { rate: Math.max(0.6, settings.rate - 0.2) });
+  speak(t.text, { group: "syl", rate: Math.max(0.6, settings.rate - 0.2) });
   if (tile.classList.contains("selected")) {
     tile.classList.remove("selected");
     L.selectedTile = null;
@@ -1331,7 +1483,7 @@ function startDrag(e, tile, data) {
   if (L.completed) return;
   if (e.pointerType === "mouse" && e.button !== 0) return;
   drag = { tile, data, startX: e.clientX, startY: e.clientY, moved: false, ghost: null, pointerId: e.pointerId };
-  speak(data.text, { rate: Math.max(0.6, settings.rate - 0.2) });
+  speak(data.text, { group: "syl", rate: Math.max(0.6, settings.rate - 0.2) });
   tile.setPointerCapture && tile.setPointerCapture(e.pointerId);
   document.addEventListener("pointermove", onDragMove);
   document.addEventListener("pointerup", onDragEnd);
@@ -1417,7 +1569,7 @@ function tryPlace(tileEl, data, slotEl) {
     setTimeout(() => tileEl.classList.remove("shake-anim"), 420);
     setMascot(`«${data.text}» non va bene qui. Riascolta la sillaba e riprova.`);
     announce(`Sbagliato: la sillaba ${data.text} non va in questa casella.`);
-    speak("Riprova", { rate: 1 });
+    speak("Riprova", { group: "ui", rate: 1 });
   }
 }
 
@@ -1430,7 +1582,7 @@ function placeSyllable(slotEl, slot, data) {
   const tile = $$(".tile").find(t => t.dataset.tile === String(L.tiles.indexOf(data)));
   if (tile) tile.remove();
   fx("place");
-  speak(slot.syllable, { rate: Math.max(0.6, settings.rate - 0.15) });
+  speak(slot.syllable, { group: "syl", rate: Math.max(0.6, settings.rate - 0.15) });
   setMascot(`Bravo! «${slot.syllable}» è al posto giusto.`);
   updateProgressText();
   checkCompletion();
@@ -1481,7 +1633,7 @@ function giveHint() {
     setTimeout(() => tileEl.classList.remove("blink"), 2000);
   }
   fx("hint");
-  speak(slot.syllable, { rate: Math.max(0.6, settings.rate - 0.25) });
+  speak(slot.syllable, { group: "syl", rate: Math.max(0.6, settings.rate - 0.25) });
   setMascot(`La prossima sillaba è «${slot.syllable}».`);
   announce(`Suggerimento: la prossima sillaba è ${slot.syllable}.`);
 }
@@ -1504,7 +1656,7 @@ function finishLevel() {
       const node = document.querySelector(`.slot[data-index="${slot.index}"]`);
       if (node) { node.classList.add("target"); setTimeout(() => node.classList.remove("target"), 2000); }
     }
-    speak(`Mancano ${missing} sillabe`);
+    speakSequence([{ text: "Mancano", group: "ui" }, { text: String(missing) }, { text: "sillabe", group: "ui" }]);
     return;
   }
 }
@@ -1552,7 +1704,12 @@ function showResults(stars, seconds) {
   $("#resultsNext").disabled = L.levelIndex >= LEVELS.length - 1;
   showScreen("results");
   announce(`Livello completato con ${starCount} stelle su 3.`);
-  if (settings.autoRead) setTimeout(() => speak("Bravo! " + lvl.parts.map(p => p.syllables.join("")).join(" ")), 300);
+  // "Bravo!" + la frase completa: il file della frase contiene già la
+  // lettura dell'intera frase, quindi non serve ricomporre le sillabe
+  if (settings.autoRead) setTimeout(() => speakSequence([
+    { text: "Bravo!", group: "ui" },
+    { text: String(lvl.id), group: "frasi" }
+  ]), 300);
 }
 
 /* ------------------------------------------------------------------
@@ -1630,7 +1787,7 @@ function renderQuestion() {
   radio.type = "button";
   radio.textContent = "🔊";
   radio.setAttribute("aria-label", "Ascolta di nuovo");
-  radio.onclick = () => speak(item.speak, { rate: Math.max(0.65, settings.rate - 0.1) });
+  radio.onclick = () => speak(item.speak, { group: ["parole", "syl"], rate: Math.max(0.65, settings.rate - 0.1) });
   audioWrap.appendChild(radio);
 
   const box = $("#quizOptions");
@@ -1642,7 +1799,7 @@ function renderQuestion() {
     box.appendChild(b);
   });
 
-  if (settings.autoRead) setTimeout(() => speak(item.speak, { rate: Math.max(0.65, settings.rate - 0.1) }), 320);
+  if (settings.autoRead) setTimeout(() => speak(item.speak, { group: ["parole", "syl"], rate: Math.max(0.65, settings.rate - 0.1) }), 320);
   announce(item.prompt);
 }
 
@@ -1655,7 +1812,7 @@ function answerQuiz(btn, opt, item) {
     quiz.score++;
     quiz.streak++;
     fx("place");
-    speak("Giusto!", { rate: 1.05 });
+    speak("Giusto!", { group: "ui", rate: 1.05 });
     announce("Risposta corretta.");
   } else {
     btn.classList.add("wrong");
@@ -1663,7 +1820,7 @@ function answerQuiz(btn, opt, item) {
     fx("wrong");
     const right = $$("#quizOptions .opt").find(b => b.textContent === item.answer);
     if (right) right.classList.add("correct");
-    speak("Quasi! Era " + item.answer, { rate: 1 });
+    speakSequence([{ text: "Quasi! Era", group: "ui" }, { text: item.answer, group: "syl" }], { rate: 1 });
     announce(`Sbagliato. La risposta giusta era ${item.answer}.`);
   }
   $("#quizScore").textContent = `Punteggio ${quiz.score}`;
@@ -1893,7 +2050,7 @@ $("#mascotBtn").onclick = () => {
   const firstMissing = L.slots.find(s => !s.filled);
   if (L.completed) { speak("Hai già finito questo livello. Bravo!"); setMascot("Livello finito, complimenti!"); return; }
   if (firstMissing) {
-    speak(`La prossima sillaba è ${firstMissing.syllable}`, { rate: 0.85 });
+    speakSequence([{ text: "La prossima sillaba è", group: "ui" }, { text: firstMissing.syllable, group: "syl" }], { rate: 0.85 });
     setMascot(`Ti serve «${firstMissing.syllable}»? Prova a cercarla.`);
   }
 };
@@ -1913,7 +2070,7 @@ $("#quizHomeBtn").onclick = () => showScreen("home");
 $("#quizCloseBtn").onclick = () => showScreen("home");
 $("#quizRepeatBtn").onclick = () => {
   const item = quiz.items[quiz.i];
-  if (item) speak(item.speak, { rate: Math.max(0.65, settings.rate - 0.1) });
+  if (item) speak(item.speak, { group: ["parole", "syl"], rate: Math.max(0.65, settings.rate - 0.1) });
 };
 $("#quizSkipBtn").onclick = () => { quiz.i++; if (quiz.i < quiz.items.length) renderQuestion(); else finishQuiz(); };
 

@@ -136,6 +136,29 @@ app.whenReady().then(async () => {
     out.slotsFocusable = Array.from(document.querySelectorAll('#slotsWrap .slot')).every(s => s.tagName === 'BUTTON');
     out.imagesWithAlt = Array.from(document.querySelectorAll('img')).every(i => i.alt !== undefined);
 
+    // AUDIO: l'indice dei clip preregistrati deve essere caricato e coprire
+    // le sillabe del livello e la frase (i file sono la voce neurale offline)
+    await loadAudioManifest();
+    out.audioGroups = audioIndex ? Object.keys(audioIndex).sort() : [];
+    out.audioSyl = audioIndex && audioIndex.syl ? audioIndex.syl.size : 0;
+    out.audioFrasi = audioIndex && audioIndex.frasi ? audioIndex.frasi.size : 0;
+    out.audioParole = audioIndex && audioIndex.parole ? audioIndex.parole.size : 0;
+    out.audioUi = audioIndex && audioIndex.ui ? audioIndex.ui.size : 0;
+    // ogni sillaba del livello 1 e la frase 1 devono avere un clip
+    out.audioSylL1 = LEVELS[0].syllables.every(s => audioFileFor(s, 'syl'));
+    out.audioFraseL1 = audioFileFor('1', 'frasi');
+    // il file dichiarato dal manifest deve essere raggiungibile
+    const probe = audioFileFor('a', 'syl');
+    if (probe) {
+      out.audioFileOk = await new Promise(res => {
+        const a = new Audio(probe);
+        a.oncanplaythrough = () => res(true);
+        a.onerror = () => res(false);
+        setTimeout(() => res(false), 3000);
+        a.load();
+      });
+    } else out.audioFileOk = false;
+
     return out;
   })()`);
 
@@ -186,6 +209,16 @@ app.whenReady().then(async () => {
   expect("scheda di stampa con caselle", results.printSlots === 8, results.printSlots);
   expect("scheda di stampa con tessere", results.printTiles > 0, results.printTiles);
   expect("progressi salvati", results.savedProgress >= 1, results.savedProgress);
+
+  console.log("\n— AUDIO PREREGISTRATO —");
+  expect("manifest audio con 4 gruppi", results.audioGroups.length === 4, results.audioGroups.join(","));
+  expect("clip delle sillabe presenti", results.audioSyl >= 160, results.audioSyl);
+  expect("clip delle 40 frasi", results.audioFrasi === 40, results.audioFrasi);
+  expect("clip delle parole degli esercizi", results.audioParole >= 130, results.audioParole);
+  expect("clip delle battute interfaccia", results.audioUi >= 5, results.audioUi);
+  expect("ogni sillaba del livello 1 ha il clip", results.audioSylL1);
+  expect("la frase 1 ha il clip", !!results.audioFraseL1, results.audioFraseL1);
+  expect("il file audio è leggibile", results.audioFileOk);
 
   console.log("\n— ACCESSIBILITÀ —");
   expect("le caselle sono <button>", results.slotsFocusable);

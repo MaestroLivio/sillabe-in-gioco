@@ -1,7 +1,7 @@
 # Informativa sulla privacy · Sillabe in Gioco
 
 **Ultimo aggiornamento:** 24 ottobre 2026
-**Versione applicazione:** 2.0.2
+**Versione applicazione:** 2.1.0
 **Titolare:** Livio Luppino
 
 ## In sintesi
@@ -39,14 +39,23 @@ identificatori del dispositivo. Non esiste alcun campo che raccolga dati del bam
 - Nessuna geolocalizzazione, nessun accesso a microfono o camera.
 - Nessuna sincronizzazione cloud e nessun backup remoto.
 
-## Sintesi vocale
+## Voce e audio
 
-La lettura ad alta voce usa la **Web Speech API** del sistema operativo con voce italiana
-(`it-IT`). Il testo viene passato al motore di sintesi locale del dispositivo. Se il sistema
-operativo dell'utente è configurato con una voce cloud (per esempio su alcune
-distribuzioni ChromeOS o Android), la sintesi può avvenire tramite il servizio del
-fornitore del sistema operativo: questa scelta dipende esclusivamente dalle impostazioni
-del dispositivo e non dall'applicazione. L'app non invia il testo a server propri.
+La lettura ad alta voce usa **file audio preregistrati**, inclusi nel pacchetto
+dell'applicazione: 166 sillabe, 40 frasi, 138 parole e le battute dell'interfaccia.
+Sono file statici, letti da disco o dal service worker: nessun testo viene inviato a
+un motore di sintesi e nessun dato esce dal dispositivo.
+
+Se un file audio non è disponibile, l'app ripiega sulla **Web Speech API** del sistema
+operativo con voce italiana (`it-IT`). In quel caso il testo viene passato al motore di
+sintesi locale del dispositivo; se il sistema operativo è configurato con una voce cloud
+(per esempio su alcune distribuzioni ChromeOS o Android), la sintesi può avvenire tramite
+il servizio del fornitore del sistema operativo. Questa scelta dipende esclusivamente
+dalle impostazioni del dispositivo e non dall'applicazione. L'app non invia il testo a
+server propri.
+
+I file audio sono generati in fase di sviluppo con una voce neurale italiana e non
+contengono dati dell'utente.
 
 ## Minori
 
@@ -67,7 +76,7 @@ di dati personali: non vi è trattamento.
 |---|---|---|
 | Web / PWA | Nessuno (solo storage locale) | Salvare i progressi |
 | Estensione ChromeOS | `storage` | Salvare i progressi |
-| App desktop | Nessun permesso di rete | Solo sintesi vocale in uscita |
+| App desktop | Nessun permesso di rete | Riproduzione dei clip audio inclusi nel pacchetto |
 
 ## Sicurezza
 

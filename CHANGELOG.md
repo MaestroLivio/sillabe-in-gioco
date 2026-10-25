@@ -4,6 +4,43 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.1.0] — 2026-10-25
+
+### Aggiunto
+- **Tutte le voci registrate con una voce neurale italiana e incluse nell'app.**
+  Al posto della sintesi di sistema a runtime, l'app porta con sé 166 sillabe,
+  40 frasi, 138 parole degli esercizi e le battute dell'interfaccia: 352 clip MP3
+  (≈1 MB in tutto), identici su ogni dispositivo e disponibili anche senza alcuna
+  voce italiana installata.
+- **Riproduzione offline dei clip**: il service worker mette in cache i file al
+  primo ascolto e li serve subito dopo; i clip sono inclusi nell'`app.asar` dei
+  pacchetti desktop, nello ZIP PWA e nell'estensione ChromeOS.
+- **Ripiego automatico**: se un file audio manca, l'app legge con la Web Speech
+  API del sistema, preferendo le voci neurali/premium quando disponibili. Un test
+  (`npm run test:audio`) verifica che nessuna sillaba, frase o parola resti senza clip.
+
+### Corretto
+- **Le sillabe non vengono più compitate come sigle.** Con la voce di sistema
+  italiana (Alice) le sillabe isolate **`ac`, `ap`, `ia`, `ta`, `uc`** venivano lette
+  lettera per lettera («a ci», «a pi», «i a», «ti a», «u ci»): un bambino sentiva
+  un acronimo invece di una sillaba. La causa è stata isolata confrontando l'audio
+  del token con quello delle lettere separate, che risultava **identico byte per byte**.
+  Con la voce neurale le stesse cinque sillabe sono lette come sillabe singole
+  (verificato: durata diversa e audio diverso dalla lettura compitata).
+- **Test di regressione sulla pronuncia** (`npm run test:pronuncia`): confronta ogni
+  sillaba critica con la sua lettura lettera per lettera e fallisce se l'audio
+  coincide o se la durata è compatibile con una compitazione. Il test è nella CI,
+  quindi una rigenerazione futura non può reintrodurre il difetto in silenzio.
+- **Collisioni nei nomi dei file audio**: `e`/`è` e `pa`/`pà` sono sillabe diverse
+  ma finivano nello stesso file; ora le vocali accentate hanno un suffisso dedicato.
+
+### Strumenti
+- `npm run audio` rigenera tutti i clip con la voce neurale (`--only=syl|frasi|parole|ui`
+  per un solo gruppo), in parallelo su 8 processi.
+- `npm run test:audio` valida copertura, durate, file mancanti e file orfani.
+- `scripts/audio/` contiene estrazione dei testi da `index.html` (sorgente unica di
+  verità), tabella delle correzioni di pronuncia, sintesi e verifica.
+
 ## [2.0.2] — 2026-10-25
 
 ### Aggiunto
