@@ -107,14 +107,14 @@ const allSyllables = [...new Set([...syllables, ...distractors, ...labUnits])]
   .sort((a, b) => a.localeCompare(b, "it"));
 
 module.exports = {
-  syllables: allSyllables,
-  levelSyllables: [...syllables].sort((a, b) => a.localeCompare(b, "it")),
+  syllables: allSyllables,  levelSyllables: [...syllables].sort((a, b) => a.localeCompare(b, "it")),
   distractors: [...new Set(distractors)].sort((a, b) => a.localeCompare(b, "it")),
   sentences,
   words,
   uiSource,
   wordLabWords,
   wordLabUnits: labUnits,
+  letterPool,
   soundWords,
   soundGroups
 };

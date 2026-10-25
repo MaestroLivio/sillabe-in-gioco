@@ -6,8 +6,8 @@
   "syl": {
    "a": {
     "file": "audio/syl/a.mp3",
-    "dur": 0.261,
-    "spoken": "a"
+    "dur": 0.601,
+    "spoken": "aaa"
    },
    "ab": {
     "file": "audio/syl/ab.mp3",
@@ -36,8 +36,8 @@
    },
    "b": {
     "file": "audio/syl/b.mp3",
-    "dur": 0.392,
-    "spoken": "b"
+    "dur": 0.522,
+    "spoken": "b (occlusiva ×2)"
    },
    "ba": {
     "file": "audio/syl/ba.mp3",
@@ -96,8 +96,8 @@
    },
    "c": {
     "file": "audio/syl/c.mp3",
-    "dur": 0.366,
-    "spoken": "c"
+    "dur": 0.418,
+    "spoken": "che (occlusiva ×3)"
    },
    "ca": {
     "file": "audio/syl/ca.mp3",
@@ -181,8 +181,8 @@
    },
    "d": {
     "file": "audio/syl/d.mp3",
-    "dur": 0.418,
-    "spoken": "d"
+    "dur": 0.601,
+    "spoken": "d (occlusiva ×2)"
    },
    "da": {
     "file": "audio/syl/da.mp3",
@@ -221,8 +221,8 @@
    },
    "e": {
     "file": "audio/syl/e.mp3",
-    "dur": 0.313,
-    "spoken": "e"
+    "dur": 0.549,
+    "spoken": "eee"
    },
    "è": {
     "file": "audio/syl/e1.mp3",
@@ -236,8 +236,8 @@
    },
    "f": {
     "file": "audio/syl/f.mp3",
-    "dur": 0.575,
-    "spoken": "f"
+    "dur": 1.567,
+    "spoken": "fff"
    },
    "fal": {
     "file": "audio/syl/fal.mp3",
@@ -281,8 +281,8 @@
    },
    "g": {
     "file": "audio/syl/g.mp3",
-    "dur": 0.444,
-    "spoken": "g"
+    "dur": 0.47,
+    "spoken": "ghe (occlusiva ×2)"
    },
    "gab": {
     "file": "audio/syl/gab.mp3",
@@ -361,8 +361,8 @@
    },
    "i": {
     "file": "audio/syl/i.mp3",
-    "dur": 0.235,
-    "spoken": "i"
+    "dur": 0.705,
+    "spoken": "iii"
    },
    "ia": {
     "file": "audio/syl/ia.mp3",
@@ -381,8 +381,8 @@
    },
    "l": {
     "file": "audio/syl/l.mp3",
-    "dur": 0.549,
-    "spoken": "l"
+    "dur": 1.437,
+    "spoken": "lll"
    },
    "l'om": {
     "file": "audio/syl/l-om.mp3",
@@ -441,8 +441,8 @@
    },
    "m": {
     "file": "audio/syl/m.mp3",
-    "dur": 0.549,
-    "spoken": "m"
+    "dur": 1.515,
+    "spoken": "mmm"
    },
    "ma": {
     "file": "audio/syl/ma.mp3",
@@ -486,8 +486,8 @@
    },
    "n": {
     "file": "audio/syl/n.mp3",
-    "dur": 0.549,
-    "spoken": "n"
+    "dur": 1.437,
+    "spoken": "nnn"
    },
    "na": {
     "file": "audio/syl/na.mp3",
@@ -526,8 +526,8 @@
    },
    "o": {
     "file": "audio/syl/o.mp3",
-    "dur": 0.261,
-    "spoken": "o"
+    "dur": 0.575,
+    "spoken": "ooo"
    },
    "om": {
     "file": "audio/syl/om.mp3",
@@ -536,8 +536,8 @@
    },
    "p": {
     "file": "audio/syl/p.mp3",
-    "dur": 0.313,
-    "spoken": "p"
+    "dur": 0.392,
+    "spoken": "p (occlusiva ×3)"
    },
    "pa": {
     "file": "audio/syl/pa.mp3",
@@ -641,8 +641,8 @@
    },
    "r": {
     "file": "audio/syl/r.mp3",
-    "dur": 0.549,
-    "spoken": "r"
+    "dur": 1.306,
+    "spoken": "rrr"
    },
    "ra": {
     "file": "audio/syl/ra.mp3",
@@ -691,8 +691,8 @@
    },
    "s": {
     "file": "audio/syl/s.mp3",
-    "dur": 0.601,
-    "spoken": "s"
+    "dur": 1.489,
+    "spoken": "sss"
    },
    "sa": {
     "file": "audio/syl/sa.mp3",
@@ -796,8 +796,8 @@
    },
    "t": {
     "file": "audio/syl/t.mp3",
-    "dur": 0.287,
-    "spoken": "t"
+    "dur": 0.392,
+    "spoken": "t (occlusiva ×3)"
    },
    "ta": {
     "file": "audio/syl/ta.mp3",
@@ -852,7 +852,7 @@
    "u": {
     "file": "audio/syl/u.mp3",
     "dur": 0.444,
-    "spoken": "u"
+    "spoken": "uuu"
    },
    "uc": {
     "file": "audio/syl/uc.mp3",
@@ -866,8 +866,8 @@
    },
    "v": {
     "file": "audio/syl/v.mp3",
-    "dur": 0.418,
-    "spoken": "v"
+    "dur": 0.914,
+    "spoken": "vvv"
    },
    "va": {
     "file": "audio/syl/va.mp3",
@@ -896,8 +896,8 @@
    },
    "z": {
     "file": "audio/syl/z.mp3",
-    "dur": 0.601,
-    "spoken": "z"
+    "dur": 1.776,
+    "spoken": "zzz"
    },
    "za": {
     "file": "audio/syl/za.mp3",

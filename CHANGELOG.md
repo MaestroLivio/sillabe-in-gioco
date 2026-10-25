@@ -4,6 +4,30 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.2.1] — 2026-10-25
+
+### Corretto
+- **Le singole lettere venivano lette con il loro nome.** Nel laboratorio
+  «Formazione di parole» la tessera `s` diceva «esse», la `z` «zeta», la `m`
+  «emme»: la voce di sistema legge una lettera isolata sempre come nome (la
+  forma `say -v Emma "s"` è identica byte per byte a `"esse"`). Ora i 19 clip
+  delle lettere sono il **fonema lento**, non il nome:
+  - i suoni che si possono tenere (vocali, `f l m n r s v z`) sono registrati
+    ripetendo la lettera (`sss`, `zzz`, `mmm`, `fff`…) con la voce al **30%
+    della velocità** (`-r 50`);
+  - le occlusive (`p b t d c g`) non si possono tenere: il clip è lo **scoppio**
+    della consonante, ricavato tagliando la vocale che la voce aggiunge e
+    ripetuto 2–3 volte con una pausa breve, senza la /i/ di «ti», «pi», «ci»;
+  - `c` e `g` usano il suono **duro** (`/k/`, `/g/` come in *casa*, *gatto*),
+    coerente con le parole della tappa «lettere».
+- **Regola unica e verificata.** La tabella `LETTER_PHONEMES` in
+  [pronunciation.js](scripts/audio/pronunciation.js) è la sola fonte di verità:
+  `build.js` genera i clip da lì, `verify.js` controlla che ogni lettera del
+  pool abbia il fonema e che il clip non sia il nome, `test-pronunciation.js`
+  confronta ogni lettera con la lettura del suo nome e — per i suoni tenuti —
+  pretende un clip più lungo del nome. Anche la riserva (sintesi di sistema)
+  usa la stessa forma e scende a velocità `0.3`.
+
 ## [2.2.0] — 2026-10-25
 
 ### Corretto

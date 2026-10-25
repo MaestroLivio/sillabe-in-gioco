@@ -23,7 +23,7 @@ const os = require("os");
 const { execFileSync } = require("child_process");
 
 const { syllables, sentences, words, uiSource } = require("./extract");
-const { OVERRIDES } = require("./pronunciation");
+const { OVERRIDES, LETTER_PHONEMES, LETTER_RATE, PHONEME_GAP } = require("./pronunciation");
 
 const ROOT = path.join(__dirname, "..", "..");
 const AUDIO = path.join(ROOT, "audio");
@@ -63,6 +63,51 @@ function synth(text, outMp3, { rate = RATE } = {}) {
     sh("ffmpeg", ["-y", "-loglevel", "error", "-i", wav,
       "-af", "silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.02," +
              "areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.05,areverse," +
+             "loudnorm=I=-16:TP=-1.5:LRA=11",
+      "-ac", "1", "-ar", "22050", "-b:a", MP3_KBPS + "k", outMp3]);
+    return +duration(outMp3).toFixed(3);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true });
+  }
+}
+
+/**
+ * Sintetizza il *fonema* di una singola lettera (vedi LETTER_PHONEMES).
+ *
+ * - i suoni continui sono già un suono tenuto: basta scrivere la lettera
+ *   ripetuta e abbassare la velocità al 30%;
+ * - le occlusive non si possono tenere: si sintetizza la lettera, si taglia
+ *   via la vocale aggiunta dalla voce e si ripete il frammento `reps` volte,
+ *   separato da una pausa breve, così il suono si sente come ritmo.
+ *
+ * `from`/`to` sono misurati sull'audio della voce, non stimati: sono i punti
+ * in cui finisce l'occlusione e comincia la vocale.
+ */
+function synthPhoneme(letter, outMp3) {
+  const rate = Math.round(RATE * LETTER_RATE);
+  const spec = LETTER_PHONEMES[letter];
+  if (typeof spec === "string") return synth(spec, outMp3, { rate });
+
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "sillabe-fon-"));
+  const aiff = path.join(tmp, "t.aiff");
+  const wav = path.join(tmp, "t.wav");
+  const seg = path.join(tmp, "seg.wav");
+  const { text, from, to, reps } = spec;
+  const len = Math.max(0.02, to - from);
+  const fade = Math.min(0.01, len / 3);
+  try {
+    sh("say", ["-v", VOICE, "-r", String(rate), "-o", aiff, text]);
+    sh("afconvert", ["-f", "WAVE", "-d", "LEI16@22050", "-c", "1", aiff, wav]);
+    // frammento: solo il rumore/scoppio, con la coda sfumata per non
+    // produrre un click; `apad` aggiunge la pausa che separa le ripetizioni
+    sh("ffmpeg", ["-y", "-loglevel", "error", "-i", wav,
+      "-af", `atrim=start=${from}:end=${to},asetpts=N/SR/TB,` +
+             `afade=t=out:st=${(len - fade).toFixed(3)}:d=${fade.toFixed(3)},` +
+             `apad=pad_dur=${PHONEME_GAP}`,
+      "-ac", "1", "-ar", "22050", seg]);
+    sh("ffmpeg", ["-y", "-loglevel", "error", "-stream_loop", String(Math.max(0, reps - 1)), "-i", seg,
+      "-af", "silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.01," +
+             "areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.03,areverse," +
              "loudnorm=I=-16:TP=-1.5:LRA=11",
       "-ac", "1", "-ar", "22050", "-b:a", MP3_KBPS + "k", outMp3]);
     return +duration(outMp3).toFixed(3);
@@ -130,6 +175,25 @@ function write(group, name, text, opts) {
   return { file: `audio/${group}/${name}.mp3`, dur, spoken: text };
 }
 
+/** Etichetta leggibile del fonema di una lettera, per il manifest. */
+function phonemeLabel(letter) {
+  const spec = LETTER_PHONEMES[letter];
+  if (typeof spec === "string") return spec;
+  return `${spec.text} (occlusiva ×${spec.reps})`;
+}
+
+/** Come `write`, ma per il fonema di una singola lettera. */
+function writeLetter(name, letter) {
+  const dir = path.join(AUDIO, "syl");
+  fs.mkdirSync(dir, { recursive: true });
+  const file = path.join(dir, name + ".mp3");
+  const spoken = phonemeLabel(letter);
+  if (onlyMissing && fs.existsSync(file) && fs.statSync(file).size > 800) {
+    return { file: `audio/syl/${name}.mp3`, dur: +duration(file).toFixed(3), spoken };
+  }
+  return { file: `audio/syl/${name}.mp3`, dur: synthPhoneme(letter, file), spoken };
+}
+
 /**
  * Ricostruisce `manifest.json` dai file già presenti su disco, senza
  * sintetizzare nulla. Serve dopo un aggiornamento dei testi (nuove sillabe o
@@ -150,7 +214,8 @@ function reindex() {
 
   const syl = {};
   for (const tok of syllables) {
-    const e = entry("syl", slug(tok), OVERRIDES[tok] || tok);
+    const spoken = LETTER_PHONEMES[tok] ? phonemeLabel(tok) : (OVERRIDES[tok] || tok);
+    const e = entry("syl", slug(tok), spoken);
     if (e) syl[tok] = e;
   }
   groups.syl = syl;
@@ -195,6 +260,15 @@ async function generate() {
     const syl = {};
     const rate = Math.round(RATE * 0.85);
     await pool(syllables, PARALLEL, tok => {
+      /* Le singole lettere non sono sillabe: la voce le leggerebbe con il
+         loro nome («esse», «zeta»). Nel laboratorio serve il *suono*, quindi
+         seguono la strada dedicata (fonema lento o occlusiva ritagliata). */
+      if (LETTER_PHONEMES[tok]) {
+        syl[tok] = checkOnly
+          ? { file: `audio/syl/${slug(tok)}.mp3`, spoken: phonemeLabel(tok) }
+          : writeLetter(slug(tok), tok);
+        return;
+      }
       const spoken = OVERRIDES[tok] || tok;
       syl[tok] = checkOnly
         ? { file: `audio/syl/${slug(tok)}.mp3`, spoken }

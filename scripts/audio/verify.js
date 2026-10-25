@@ -105,15 +105,33 @@ if (orphans.length) warn(`file non indicizzati nel manifest: ${orphans.length}`)
 
 /* --- 6. lo script non deve più compitare: controllo di forma --- */
 // una sillaba di 1-3 lettere non deve durare come tre lettere compitate
+const { LETTER_PHONEMES } = require("./pronunciation");
 for (const tok of data.syllables) {
   const info = (manifest.groups.syl || {})[tok];
   if (!info) continue;
   const abs = path.join(ROOT, info.file);
   if (!fs.existsSync(abs)) continue;
   const dur = duration(abs);
+  /* Le singole lettere hanno un clip di fonema, non una sillaba: durano di
+     più perché il suono è tenuto di proposito («sss», «mmm»). Si controlla
+     invece che il clip NON sia stato letto con il nome della lettera. */
+  if (LETTER_PHONEMES[tok]) {
+    if (!info.spoken || info.spoken === tok) {
+      fail(`lettera «${tok}»: clip letto come nome della lettera, non come fonema`);
+    }
+    continue;
+  }
   if (dur && /^[a-zàèéìòù]{1,3}$/.test(tok) && dur > 1.6) {
     fail(`sillaba «${tok}»: ${dur.toFixed(2)}s, sembra compitata lettera per lettera`);
   }
+}
+
+/* --- 6b. ogni lettera del laboratorio deve avere il suo fonema ---
+   `LETTER_PHONEMES` è la tabella di verità: se una lettera compare nel pool
+   delle tessere e non ha un fonema, il tap leggerebbe il nome («emme»). */
+const { LETTER_POOL } = require("./extract");
+for (const tok of LETTER_POOL || []) {
+  if (!LETTER_PHONEMES[tok]) fail(`lettera «${tok}»: nessun fonema in LETTER_PHONEMES`);
 }
 
 /* --- 7. i nomi dei file devono essere portabili su Windows ---

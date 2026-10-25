@@ -1210,6 +1210,28 @@ if (synth) {
 }
 
 /**
+ * Forma da far pronunciare alla voce di sistema per una singola lettera.
+ *
+ * Nel laboratorio la tessera mostra una lettera e deve suonare il *suono*,
+ * non il nome: la sintesi di sistema legge però «s» come «esse». La tabella
+ * qui sotto è la riserva usata solo quando il clip preregistrato manca; i
+ * clip veri seguono la stessa logica in `scripts/audio/pronunciation.js`.
+ * I suoni che si possono tenere sono scritti ripetuti; le occlusive no, e la
+ * sintesi non può ritagliarle, quindi si usa la forma più breve.
+ */
+const LETTER_SAY = {
+  a: "aaa", e: "eee", i: "iii", o: "ooo", u: "uuu",
+  f: "fff", l: "lll", m: "mmm", n: "nnn", r: "rrr", s: "sss", v: "vvv", z: "zzz",
+  b: "b", c: "che", d: "d", g: "ghe", p: "p", t: "t"
+};
+
+/** Testo di riserva per la sintesi: fonema per le lettere, il resto uguale. */
+function fallbackFor(text, group) {
+  if (group !== "syl" || !text || text.length !== 1) return text;
+  return LETTER_SAY[text.toLowerCase()] || text;
+}
+
+/**
  * Legge `text`.
  *   opts.group        "syl" | "parole" | "frasi" | "ui" — dove cercare il file
  *   opts.fallbackText testo da passare alla sintesi se il file non esiste
@@ -1226,10 +1248,20 @@ function speak(text, opts = {}) {
 
   ready.then(() => {
     const file = audioFileFor(text, opts.group);
-    if (!file) { speakSynth(opts.fallbackText || text, opts); return; }
+    /* una lettera isolata del laboratorio va letta al 30% della velocità: il
+       fonema deve durare, altrimenti il bambino non lo distingue dal nome.
+       Solo nel gruppo «syl»: «a», «e», «i» sono anche parole intere. */
+    const isLetter = opts.group === "syl" && text.length === 1 && !!LETTER_SAY[text.toLowerCase()];
+    const slow = isLetter
+      ? Object.assign({}, opts, {
+          rate: (opts.rate !== undefined ? opts.rate : settings.rate) * 0.3,
+          allowSlow: true
+        })
+      : opts;
+    if (!file) { speakSynth(slow.fallbackText || fallbackFor(text, opts.group), slow); return; }
     if (!opts.queue) stopAudio();
     playClip(file).then(ok => {
-      if (!ok) { speakSynth(opts.fallbackText || text, opts); return; }
+      if (!ok) { speakSynth(slow.fallbackText || fallbackFor(text, opts.group), slow); return; }
       if (opts.onend) opts.onend();
     });
   });
@@ -1241,7 +1273,8 @@ function speakSynth(text, opts = {}) {
   const rate = opts.rate !== undefined ? opts.rate : settings.rate;
   const u = new SpeechSynthesisUtterance(text);
   u.lang = "it-IT";
-  u.rate = Math.max(0.5, Math.min(1.6, rate));
+  // il limite inferiore scende per i fonemi: una lettera va tenuta lenta
+  u.rate = Math.max(opts.allowSlow ? 0.3 : 0.5, Math.min(1.6, rate));
   u.pitch = opts.pitch !== undefined ? opts.pitch : 1.05;
   u.volume = 1;
   if (itVoice) u.voice = itVoice;

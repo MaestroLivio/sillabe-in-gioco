@@ -116,6 +116,12 @@ Dal riquadro **PAROLE** in home, oppure toccando una parola dall'elenco «Formaz
 - La TV mostra la **figura** della parola (nessun testo nel disegno).
 - Sotto le caselle la parola **cresce** (`a ·· e` → `ape`) mentre la componi.
 - Ogni pezzo si ascolta toccandolo; la radio legge la parola intera.
+- **Le singole lettere si sentono come suono, non come nome.** Toccando la tessera
+  `s` non si sente «esse» ma il fonema tenuto e lento (`sss`), e così `z` → `zzz`,
+  `m` → `mmm`, `f` → `fff`, `r` → `rrr`. Le consonanti che non si possono tenere
+  (`t`, `p`, `b`, `d`, `c`, `g`) si sentono come il loro scoppio, ripetuto due o tre
+  volte con una pausa breve: è il ritmo del suono, senza la vocale che la voce
+  aggiungerebbe. Le lettere sono lette al **30% della velocità** normale.
 - Pulsanti in basso: **SUGGERIMENTO**, **ASCOLTA**, **RIFAI**, **← →** per cambiare parola.
 - Scorciatoie: `←` `→` cambiano parola, `H` suggerimento, `R` rifai.
 - Se la lettura delle parole è spenta nelle impostazioni, ASCOLTA lo segnala con un avviso.

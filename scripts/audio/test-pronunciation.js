@@ -17,6 +17,9 @@
  * anche in CI. Per rigenerare il riferimento compitato serve `say` (macOS);
  * senza `say` il test si limita ai controlli sui file.
  *
+ * Controlla anche le singole lettere del laboratorio «Formazione di parole»:
+ * devono essere il fonema (/s:/, /m:/), non il nome della lettera («esse»).
+ *
  * Uso: node scripts/audio/test-pronunciation.js
  */
 const fs = require("fs");
@@ -115,6 +118,58 @@ for (const token of KNOWN_TRAPS) {
   if (dur > 0.9) errors.push(`«${token}»: durata ${dur.toFixed(2)}s, compatibile con compitazione`);
 }
 
+/* --- 3. le singole lettere devono suonare come fonema, non come nome ---
+   Il laboratorio «Formazione di parole» mostra una lettera per volta: il tap
+   deve far sentire il *suono* (/s:/, /m:/, lo scoppio di /t/), non il nome
+   della lettera («esse», «emme», «ti»). La voce di sistema legge una lettera
+   isolata sempre con il nome, quindi il clip deve essere stato costruito con
+   `LETTER_PHONEMES`. Qui si verifica che:
+     - il manifest dichiari un `spoken` diverso dalla lettera (segnale che il
+       clip è stato costruito come fonema);
+     - il clip non sia identico alla lettura del nome (quando `say` c'è);
+     - i suoni tenuti (fricative, nasali, laterali, vibranti) durino più del
+       nome della lettera: un suono tenuto non può essere più corto. */
+const { LETTER_PHONEMES } = require("./pronunciation");
+const HELD = ["f", "l", "m", "n", "r", "s", "v", "z"];
+
+function nameRef(letter) {
+  const name = LETTERS[letter];
+  if (!name || !canSynth) return null;
+  const aiff = path.join(tmp, "name.aiff");
+  const wav = path.join(tmp, "name.wav");
+  try {
+    execFileSync("say", ["-v", manifest.voice || "Emma", "-o", aiff, name], { stdio: "ignore" });
+    execFileSync("afconvert", ["-f", "WAVE", "-d", "LEI16@22050", "-c", "1", aiff, wav], { stdio: "ignore" });
+    return wav;
+  } catch (e) { return null; }
+}
+
+const letters = Object.keys(LETTER_PHONEMES);
+let checkedLetters = 0;
+for (const letter of letters) {
+  const info = sylGroup[letter];
+  if (!info) { errors.push(`lettera «${letter}»: nessun clip preregistrato`); continue; }
+  const clip = path.join(ROOT, info.file);
+  if (!fs.existsSync(clip)) { errors.push(`lettera «${letter}»: file ${info.file} mancante`); continue; }
+  if (!info.spoken || info.spoken === letter) {
+    errors.push(`lettera «${letter}»: il manifest dichiara il nome, non il fonema`);
+    continue;
+  }
+  checkedLetters++;
+
+  if (!canSynth) continue;
+  const ref = nameRef(letter);
+  if (!ref) continue;
+  if (sameSamples(clip, ref)) {
+    errors.push(`lettera «${letter}»: il clip è identico al nome della lettera`);
+    continue;
+  }
+  const dc = duration(clip), dr = duration(ref);
+  if (HELD.includes(letter) && dc && dr && dc <= dr * 1.05) {
+    errors.push(`lettera «${letter}»: ${dc.toFixed(2)}s, non è un suono tenuto (nome: ${dr.toFixed(2)}s)`);
+  }
+}
+
 /* --- esito --- */
 fs.rmSync(tmp, { recursive: true, force: true });
 if (errors.length) {
@@ -123,4 +178,5 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(`✔ pronuncia: ${KNOWN_TRAPS.length} sillabe critiche lette come sillabe` +
-  (canSynth ? " (confronto con la lettura compitata)" : " (controllo di durata)"));
+  `, ${checkedLetters} lettere lette come fonema` +
+  (canSynth ? " (confronto con la lettura compitata)" : " (controllo di forma)"));
