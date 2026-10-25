@@ -11,7 +11,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 |---|---|
 | **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
 | **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
-| **Windows** | Esegui `SillabeInGioco-Setup-2.0.0.exe` e segui la procedura |
+| **Windows** | Esegui `SillabeInGioco-Setup-2.0.1.exe` e segui la procedura |
 | **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
 | **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
 

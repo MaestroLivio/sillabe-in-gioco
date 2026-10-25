@@ -132,8 +132,8 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.0.0-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.0.0.dmg` (Intel)
+- `Sillabe in Gioco-2.0.1-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.0.1.dmg` (Intel)
 - versioni `.zip` per gli aggiornamenti automatici
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
@@ -153,8 +153,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.0.0.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.0.0.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.0.1.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.0.1.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -172,7 +172,7 @@ Due strade, entrambe incluse.
 npm run build:chromeos
 ```
 
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.0.0.zip`.
+Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.0.1.zip`.
 
 Installazione in modalità sviluppatore:
 
@@ -196,7 +196,7 @@ privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
 ### Web / PWA
 
 ```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.0.0.zip
+npm run build:web      # crea dist/web + dist/sillabe-web-v2.0.1.zip
 npm run serve          # prova locale con service worker attivo
 ```
 

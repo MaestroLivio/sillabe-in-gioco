@@ -4,7 +4,7 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
-## [Non rilasciato]
+## [2.0.1] — 2026-10-25
 
 ### Corretto
 - **Diagnostica di layout fuorviante su schermo piccolo**: l'audit misurava la

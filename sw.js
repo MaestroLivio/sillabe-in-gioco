@@ -1,5 +1,5 @@
 /* Service worker — cache offline per l'app Sillabe in Gioco */
-const CACHE = "sillabe-v2.0.0";
+const CACHE = "sillabe-v2.0.1";
 const ASSETS = [
   "./",
   "./index.html",
