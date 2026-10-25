@@ -121,32 +121,102 @@ for (const token of KNOWN_TRAPS) {
 /* --- 3. le singole lettere devono suonare come fonema, non come nome ---
    Il laboratorio «Formazione di parole» mostra una lettera per volta: il tap
    deve far sentire il *suono* (/s:/, /m:/, lo scoppio di /t/), non il nome
-   della lettera («esse», «emme», «ti»). La voce di sistema legge una lettera
-   isolata sempre con il nome, quindi il clip deve essere stato costruito con
-   `LETTER_PHONEMES`. Qui si verifica che:
-     - il manifest dichiari un `spoken` diverso dalla lettera (segnale che il
-       clip è stato costruito come fonema);
-     - il clip non sia identico alla lettura del nome (quando `say` c'è);
-     - i suoni tenuti (fricative, nasali, laterali, vibranti) durino più del
-       nome della lettera: un suono tenuto non può essere più corto. */
-const { LETTER_PHONEMES } = require("./pronunciation");
-const HELD = ["f", "l", "m", "n", "r", "s", "v", "z"];
+   della lettera («esse», «emme», «ti»).
 
-function nameRef(letter) {
-  const name = LETTERS[letter];
-  if (!name || !canSynth) return null;
-  const aiff = path.join(tmp, "name.aiff");
-  const wav = path.join(tmp, "name.wav");
+   La versione 2.2.1 verificava solo che il clip fosse più lungo del nome.
+   Era un controllo sbagliato: la voce, scritta `"sss"`, compita il nome tre
+   volte («esse esse esse», 1.40 s) e il clip risultava correttamente «più
+   lungo del nome» mentre faceva esattamente quello che non doveva. Il test
+   passava, l'utente sentiva «esseesseesse».
+
+   Qui si guarda la FORMA D'ONDA, che è l'unica cosa che distingue un fonema
+   tenuto da un nome ripetuto:
+     - un suono tenuto è UN SOLO blocco di energia, senza pause interne;
+     - un'occlusiva sono `reps` scoppi separati dal silenzio;
+     - un nome ripetuto ha tre o più blocchi (o uno solo, ma troppo lungo:
+       il nome tenuto non è un fonema).
+   In più si misura il «flutter»: una modulazione periodica 2-12 Hz vuol dire
+   che il loop si sente girare. */
+const { LETTER_PHONEMES } = require("./pronunciation");
+
+/* Suoni che si tengono: vocali, fricative, nasali, laterale, vibrante.
+   Le occlusive non si possono tenere: restano `reps` scoppi. */
+const HELD = Object.keys(LETTER_PHONEMES).filter(l => !LETTER_PHONEMES[l].reps);
+
+/** Decodifica un MP3 in campioni mono 22.05 kHz, senza dipendenze npm.
+    Su macOS basta `afconvert` (sempre presente); altrove serve ffmpeg. */
+function decode(file) {
+  const wav = path.join(tmp, "dec.wav");
   try {
-    execFileSync("say", ["-v", manifest.voice || "Emma", "-o", aiff, name], { stdio: "ignore" });
-    execFileSync("afconvert", ["-f", "WAVE", "-d", "LEI16@22050", "-c", "1", aiff, wav], { stdio: "ignore" });
-    return wav;
+    if (process.platform === "darwin") {
+      execFileSync("afconvert", ["-f", "WAVE", "-d", "LEI16@22050", "-c", "1", file, wav], { stdio: "ignore" });
+    } else {
+      execFileSync("ffmpeg", ["-y", "-loglevel", "error", "-i", file,
+        "-ac", "1", "-ar", "22050", wav], { stdio: "ignore" });
+    }
   } catch (e) { return null; }
+  const buf = fs.readFileSync(wav);
+  const start = buf.indexOf("data");
+  if (start < 0) return null;
+  const pcm = buf.subarray(start + 8);
+  const out = new Float32Array(Math.floor(pcm.length / 2));
+  for (let i = 0; i < out.length; i++) out[i] = pcm.readInt16LE(i * 2) / 32768;
+  return out.length ? out : null;
 }
 
-const letters = Object.keys(LETTER_PHONEMES);
+/** Inviluppo RMS in dB, un valore ogni 2,5 ms (finestra 512 campioni).
+    Il passo è fine perché il flutter da misurare sta a 2-12 Hz: con un passo
+    grosso la modulazione della voce si confonde con quella del loop. */
+function envelope(s) {
+  const HOP = 55, WIN = 512, SR = 22050;
+  const env = [];
+  for (let p = 0; p + WIN <= s.length; p += HOP) {
+    let e = 0;
+    for (let i = 0; i < WIN; i++) e += s[p + i] * s[p + i];
+    env.push(20 * Math.log10(Math.sqrt(e / WIN) || 1e-9));
+  }
+  return { env, hopSec: HOP / SR };
+}
+
+/** Blocchi di suono separati da pause, con la stessa soglia usata in fase di
+    misura (picco −22 dB): un fonema tenuto ne ha uno, «esse esse esse» tre. */
+function blocks(env) {
+  const peak = Math.max(...env);
+  const thr = peak - 22;
+  const out = [];
+  let start = null;
+  env.forEach((db, i) => {
+    if (db > thr && start === null) start = i;
+    if (db <= thr && start !== null) { out.push([start, i]); start = null; }
+  });
+  if (start !== null) out.push([start, env.length]);
+  return out;
+}
+
+/** Ampiezza della modulazione periodica fra 2 e 12 Hz (dB).
+    Un loop mal sfumato «pompa» a ogni giro: qui si vede. I bordi si
+    escludono perché le sfumate di ingresso e uscita sono modulazione voluta. */
+function flutter(env, hopSec) {
+  const core = env.slice(Math.round(0.12 / hopSec), env.length - Math.round(0.15 / hopSec));
+  if (core.length < 8) return 0;
+  const mean = core.reduce((a, b) => a + b, 0) / core.length;
+  const d = core.map(v => v - mean);
+  let best = 0;
+  for (let f = 2; f <= 12; f += 0.1) {
+    let re = 0, im = 0;
+    for (let i = 0; i < d.length; i++) {
+      const a = 2 * Math.PI * f * i * hopSec;
+      re += d[i] * Math.cos(a);
+      im += d[i] * Math.sin(a);
+    }
+    best = Math.max(best, 2 * Math.hypot(re, im) / d.length);
+  }
+  return best;
+}
+
 let checkedLetters = 0;
-for (const letter of letters) {
+let measuredLetters = 0;
+for (const letter of Object.keys(LETTER_PHONEMES)) {
   const info = sylGroup[letter];
   if (!info) { errors.push(`lettera «${letter}»: nessun clip preregistrato`); continue; }
   const clip = path.join(ROOT, info.file);
@@ -157,16 +227,36 @@ for (const letter of letters) {
   }
   checkedLetters++;
 
-  if (!canSynth) continue;
-  const ref = nameRef(letter);
-  if (!ref) continue;
-  if (sameSamples(clip, ref)) {
-    errors.push(`lettera «${letter}»: il clip è identico al nome della lettera`);
+  const s = decode(clip);
+  if (!s) continue;   // senza decodificatore restano i controlli di forma
+  measuredLetters++;
+
+  const { env, hopSec } = envelope(s);
+  const nBlocks = blocks(env).length;
+  const dur = s.length / 22050;
+  const spec = LETTER_PHONEMES[letter];
+
+  if (spec.reps) {
+    /* occlusiva: tanti scoppi quante sono le ripetizioni volute */
+    if (nBlocks !== spec.reps) {
+      errors.push(`lettera «${letter}»: ${nBlocks} scoppi invece di ${spec.reps}`);
+    }
+    if (dur > 0.6) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, troppo lunga per uno scoppio`);
     continue;
   }
-  const dc = duration(clip), dr = duration(ref);
-  if (HELD.includes(letter) && dc && dr && dc <= dr * 1.05) {
-    errors.push(`lettera «${letter}»: ${dc.toFixed(2)}s, non è un suono tenuto (nome: ${dr.toFixed(2)}s)`);
+
+  /* suono tenuto: un blocco solo, di durata plausibile, senza pompaggio */
+  if (nBlocks !== 1) {
+    errors.push(`lettera «${letter}»: ${nBlocks} blocchi di suono, il fonema deve essere un suono solo (nome ripetuto?)`);
+    continue;
+  }
+  if (dur < 0.5) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, fonema troppo breve per essere tenuto`);
+  if (dur > 1.2) {
+    errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, troppo lunga: sembra il nome ripetuto, non un fonema`);
+  }
+  const fl = flutter(env, hopSec);
+  if (fl > 4.5) {
+    errors.push(`lettera «${letter}»: modulazione ${fl.toFixed(1)} dB a 2-12 Hz, il loop si sente girare`);
   }
 }
 
@@ -179,4 +269,5 @@ if (errors.length) {
 }
 console.log(`✔ pronuncia: ${KNOWN_TRAPS.length} sillabe critiche lette come sillabe` +
   `, ${checkedLetters} lettere lette come fonema` +
-  (canSynth ? " (confronto con la lettura compitata)" : " (controllo di forma)"));
+  (canSynth ? " (confronto con la lettura compitata)" : " (controllo di forma)") +
+  `, ${measuredLetters} forme d'onda analizzate`);

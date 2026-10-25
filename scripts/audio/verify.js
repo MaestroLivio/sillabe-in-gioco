@@ -103,24 +103,32 @@ const onDisk = [];
 const orphans = onDisk.filter(p => !referenced.has(p));
 if (orphans.length) warn(`file non indicizzati nel manifest: ${orphans.length}`);
 
-/* --- 6. lo script non deve più compitare: controllo di forma --- */
-// una sillaba di 1-3 lettere non deve durare come tre lettere compitate
+/* --- 6. le singole lettere del laboratorio ---
+   La durata da sola non basta a distinguere un fonema da un nome ripetuto:
+   la voce, scritta `"sss"`, compita «esse esse esse» e il clip risulta anzi
+   più lungo del nome. La verifica vera sulla forma d'onda è in
+   `test-pronunciation.js` (blocchi di suono e modulazione del loop); qui si
+   controlla che ogni lettera continui ad avere il suo clip e che il manifest
+   dichiari il fonema e non il nome. */
 const { LETTER_PHONEMES } = require("./pronunciation");
 for (const tok of data.syllables) {
   const info = (manifest.groups.syl || {})[tok];
   if (!info) continue;
   const abs = path.join(ROOT, info.file);
   if (!fs.existsSync(abs)) continue;
-  const dur = duration(abs);
-  /* Le singole lettere hanno un clip di fonema, non una sillaba: durano di
-     più perché il suono è tenuto di proposito («sss», «mmm»). Si controlla
-     invece che il clip NON sia stato letto con il nome della lettera. */
   if (LETTER_PHONEMES[tok]) {
+    const spec = LETTER_PHONEMES[tok];
+    const max = spec.reps ? 0.6 : 1.2;   // scoppio breve / fonema tenuto
+    const dur = duration(abs);
     if (!info.spoken || info.spoken === tok) {
       fail(`lettera «${tok}»: clip letto come nome della lettera, non come fonema`);
     }
+    if (dur !== null && dur > max) {
+      fail(`lettera «${tok}»: ${dur.toFixed(2)}s, troppo lungo per un fonema (nome ripetuto?)`);
+    }
     continue;
   }
+  const dur = duration(abs);
   if (dur && /^[a-zàèéìòù]{1,3}$/.test(tok) && dur > 1.6) {
     fail(`sillaba «${tok}»: ${dur.toFixed(2)}s, sembra compitata lettera per lettera`);
   }

@@ -4,29 +4,75 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.2.2] — 2026-10-25
+
+### Corretto
+- **Le lettere dicevano il nome tre volte («esse esse esse»).** La correzione
+  della 2.2.1 era sbagliata: scrivere la lettera ripetuta (`sss`, `mmm`, `fff`)
+  non produce un suono tenuto, perché la voce interpreta la stringa come una
+  sigla e compita il **nome** della lettera per ogni lettera scritta. Il clip
+  di `s` durava 1,40 s ed era «e-ss-e e-ss-e e-ss-e» (8 blocchi di suono
+  separati, misurati): il bambino sentiva esattamente ciò che non doveva.
+  Le sole stringhe ripetute che restano un suono unico sono quelle delle
+  vocali.
+
+  Ora i 19 clip delle lettere sono il fonema **ritagliato dall'audio della
+  voce** e allungato:
+  - **vocali** (`a e i o u`): la voce tiene già la vocale, si allunga la
+    stringa (`aaaaaa`) e si tiene una /a:/ sola;
+  - **continue** (`f l m n r s`): la geminata che ogni nome di lettera
+    contiene (*e**ss**e*, *e**mm**e*, *e**ll**e*, *e**nn**e*, *e**ff**e*,
+    *e**rr**e*) viene tagliata nei punti misurati sull'audio e allungata a
+    0,78 s con un **loop sfumato** (`acrossfade`): la vocale del nome non si
+    sente mai. Per `v` e `z`, il cui nome non ha la geminata, si parte da una
+    parola vera (*a**vv**io*, *pe**zz**o*);
+  - **occlusive** (`p b t d c g`): il clip è il solo **scoppio**, preso da una
+    parola con la doppia (*fa**tt**o*, *do**pp**io*, *se**cc**o*) e ripetuto
+    due volte, a picco uniforme: prima `/t/` usciva 30 dB sotto `/b/`.
+- **Il test non poteva accorgersene.** La verifica della 2.2.1 chiedeva solo
+  che il clip fosse *più lungo del nome della lettera*: «esse esse esse»
+  (1,40 s) è più lungo di «esse» (0,66 s), quindi passava. Ora
+  `test-pronunciation.js` analizza la **forma d'onda** dei clip: un fonema
+  tenuto deve essere **un solo blocco di suono** senza pause interne, di
+  durata fra 0,5 e 1,2 s, senza modulazione periodica 2–12 Hz (il «pompaggio»
+  del loop); un'occlusiva deve avere esattamente `reps` scoppi. Il test è
+  stato provato sui clip della 2.2.1 e li **boccia tutti** (`s`: 8 blocchi,
+  `z`: 5, `f`: 4, `i`: 3).
+- **Anche la riserva della sintesi di sistema ripeteva il nome.** `LETTER_SAY`
+  in [index.html](index.html) mappava `s` su `"sss"`: se il clip preregistrato
+  mancava, la sintesi diceva di nuovo «esse esse esse». Ora passa una lettera
+  sola.
+- **I fonemi erano troppo deboli.** `loudnorm` misura l'energia su tutto il
+  clip: su un rumore sordo come /s/ o /f/ sbaglia e li lasciava 10 dB sotto le
+  vocali (misurato: /s/ a −28,8 dB RMS contro −16/−17 delle vocali), con
+  l'MP3 a 32 kbps che toglieva altri 7 dB alle alte frequenze. Ora il livello
+  si misura **dopo la codifica**, si normalizza l'energia media e la codifica
+  si rifà una sola volta dal WAV (nessuna doppia generazione lossy).
+
+### Limite dichiarato
+- `/v/` non è una fricativa pura: questa voce produce una labiodentale
+  **approssimante** ([ʋ], centroide ~820 Hz), non un rumore in alta
+  frequenza. È il suono più vicino che la voce sappia fare; resta distinto da
+  `/b/`, `/f/` e `/l/`.
+
 ## [2.2.1] — 2026-10-25
 
 ### Corretto
 - **Le singole lettere venivano lette con il loro nome.** Nel laboratorio
   «Formazione di parole» la tessera `s` diceva «esse», la `z` «zeta», la `m`
   «emme»: la voce di sistema legge una lettera isolata sempre come nome (la
-  forma `say -v Emma "s"` è identica byte per byte a `"esse"`). Ora i 19 clip
-  delle lettere sono il **fonema lento**, non il nome:
-  - i suoni che si possono tenere (vocali, `f l m n r s v z`) sono registrati
-    ripetendo la lettera (`sss`, `zzz`, `mmm`, `fff`…) con la voce al **30%
-    della velocità** (`-r 50`);
-  - le occlusive (`p b t d c g`) non si possono tenere: il clip è lo **scoppio**
-    della consonante, ricavato tagliando la vocale che la voce aggiunge e
-    ripetuto 2–3 volte con una pausa breve, senza la /i/ di «ti», «pi», «ci»;
-  - `c` e `g` usano il suono **duro** (`/k/`, `/g/` come in *casa*, *gatto*),
-    coerente con le parole della tappa «lettere».
-- **Regola unica e verificata.** La tabella `LETTER_PHONEMES` in
-  [pronunciation.js](scripts/audio/pronunciation.js) è la sola fonte di verità:
-  `build.js` genera i clip da lì, `verify.js` controlla che ogni lettera del
-  pool abbia il fonema e che il clip non sia il nome, `test-pronunciation.js`
-  confronta ogni lettera con la lettura del suo nome e — per i suoni tenuti —
-  pretende un clip più lungo del nome. Anche la riserva (sintesi di sistema)
-  usa la stessa forma e scende a velocità `0.3`.
+  forma `say -v Emma "s"` è identica byte per byte a `"esse"`). I 19 clip delle
+  lettere sono stati riscritti come fonema: per i suoni continui ripetendo la
+  lettera (`sss`, `zzz`, `mmm`…) al 30% della velocità, per le occlusive
+  tenendo il solo scoppio.
+
+  **Attenzione:** la strategia dei suoni continui era sbagliata — `sss` non è un
+  suono tenuto, è il nome compitato tre volte. Corretto in [2.2.2].
+- **`c` e `g` usano il suono duro** (`/k/`, `/g/` come in *casa*, *gatto*),
+  coerente con le parole della tappa «lettere». (Tuttora valido.)
+- **Regola unica.** La tabella `LETTER_PHONEMES` in
+  [pronunciation.js](scripts/audio/pronunciation.js) è la sola fonte di verità,
+  letta da `build.js` e da `verify.js`. (Tuttora valido.)
 
 ## [2.2.0] — 2026-10-25
 

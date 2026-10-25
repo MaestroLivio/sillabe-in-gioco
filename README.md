@@ -64,12 +64,16 @@ fra quattro; la scheda del suono mostra il gruppo e la parola con il gruppo evid
   i clip preregistrati eliminano il problema alla radice. Un test di regressione
   (`npm run test:pronuncia`) confronta ogni sillaba critica con la sua lettura
   compitata e fallisce se le due coincidono.
-- **Le lettere suonano come fonema, non come nome.** La tessera `s` dice `sss`, non
-  «esse»; `z` dice `zzz`, non «zeta»; `m` dice `mmm`, non «emme». I suoni che si
-  possono tenere sono registrati ripetendo la lettera con la voce al 30% della
-  velocità; quelli che non si possono tenere (`t`, `p`, `b`, `d`, `c`, `g`) sono
-  ritagliati dalla voce togliendo la vocale e ripetuti due o tre volte, così si
-  sente lo scoppio senza la /i/ che la sintesi aggiungerebbe.
+- **Le lettere suonano come fonema, non come nome.** La tessera `s` fa sentire un /s/
+  tenuto, non «esse»; `m` un /m/ tenuto, non «emme». Attenzione: scrivere la lettera
+  ripetuta (`sss`) **non** funziona — la voce la legge come una sigla e compita il nome
+  tre volte («esse esse esse»). I clip si ricavano quindi **ritagliando** il fonema
+  dall'audio della voce — la geminata che ogni nome di lettera contiene (*e**ss**e*,
+  *e**mm**e*) o una parola vera per `v` e `z` (*a**vv**io*, *pe**zz**o*) — e
+  allungandolo con un loop sfumato; quelli che non si possono tenere (`t`, `p`, `b`,
+  `d`, `c`, `g`) sono il solo scoppio, ripetuto due volte senza la /i/ di «ti», «pi».
+  Il test `npm run test:pronuncia` analizza la forma d'onda e fallisce se un clip
+  contiene più di un blocco di suono.
 - **Sintesi di sistema come riserva** (Web Speech API, `it-IT`): se un file audio manca,
   l'app torna a leggere con la voce del dispositivo e preferisce le voci neurali/premium.
 - Lettura **scandita sillaba per sillaba** con la pausa giusta tra una sillaba e l'altra.

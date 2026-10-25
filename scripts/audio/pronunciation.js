@@ -27,52 +27,105 @@ const OVERRIDES = {
  *
  * Nel laboratorio la tessera mostra una lettera e il tap deve far sentire il
  * *suono* della lettera, non il suo nome: chi impara a leggere deve sentire
- * /s/ prolungato («sss»), non «esse». La voce di sistema però legge una
- * lettera isolata sempre con il nome italiano (verificato: `say -v Emma "s"`
- * è identico byte per byte a `say -v Emma "esse"`), e non accetta input
- * fonetico (`[[inpt PHON]]` viene letto come testo).
+ * /s/ tenuto, non «esse». La voce di sistema però legge una lettera isolata
+ * sempre con il nome italiano (`say -v Emma "s"` è identico byte per byte a
+ * `say -v Emma "esse"`) e non accetta input fonetico.
  *
- * Due famiglie di suoni, due strategie:
+ * ATTENZIONE — la soluzione «lettera ripetuta» NON funziona.
+ * Scrivere `"sss"`, `"mmm"`, `"fff"` non produce un suono tenuto: la voce
+ * interpreta la stringa come una sigla e compita il *nome* della lettera,
+ * tre volte («esse esse esse», tre blocchi di suono separati da pause). È il
+ * difetto corretto in 2.2.2: il bambino sentiva il nome ripetuto, non il
+ * fonema. Le sole stringhe ripetute che restano un suono unico sono quelle
+ * delle vocali («aaaaaa» è una /a:/ sola).
  *
- *  1. CONTINUI (vocali, fricative, nasali, laterali, vibranti): si possono
- *     tenere. Si scrive la lettera ripetuta, che la voce pronuncia come un
- *     suono unico prolungato: «sss» → /s:/, «mmm» → /m:/, «aaa» → /a:/.
- *  2. OCCLUSIVE (p, b, t, d, c dura, g dura): non si possono tenere, per
- *     definizione. Si sintetizza la lettera e si taglia via la vocale che la
- *     voce aggiunge, tenendo solo l'occlusione e lo scoppio; il frammento
- *     viene poi ripetuto, così il bambino sente il ritmo del suono.
- *     I punti di taglio sono misurati in secondi sull'audio della voce
- *     (`say -v Emma -r 50`) e verificati da `verify.js`.
+ * Metodo attuale: si parte da una parola vera (o dal nome della lettera) e si
+ * **ritaglia** il fonema misurando l'audio della voce:
  *
- * Velocità: 165 * 0.3 ≈ 50 parole al minuto, cioè il 30% del ritmo normale,
- * come chiesto: il suono è lento e isolato, non dentro una parola.
+ *  1. VOCALI — la voce tiene già la vocale: si scrive la lettera ripetuta
+ *     (`say`, campo `say`) e si tiene tutto il suono.
+ *  2. CONTINUE (fricative, nasali, laterali, vibrante) — in italiano la
+ *     consonante doppia è un suono tenuto: dentro «esse», «emme», «elle»,
+ *     «enne», «effe», «erre» c'è la geminata /s:/, /m:/, /l:/, /n:/, /f:/,
+ *     /r/ (con in mezzo il trillo). Si taglia quel tratto e lo si allunga con
+ *     un *loop sfumato* (`acrossfade`): la vocale del nome non si sente mai.
+ *     Per /v/ e /z/ il nome della lettera non contiene la geminata, quindi si
+ *     parte da una parola vera che ce l'ha in posizione intervocalica
+ *     («avvio», «pezzo»).
+ *  3. OCCLUSIVE (p, b, t, d, c dura, g dura) — non si possono tenere, per
+ *     definizione: si taglia il solo scoppio (il tratto non periodico subito
+ *     dopo l'occlusione) e lo si ripete `reps` volte, separate da una pausa,
+ *     così il bambino sente il ritmo del suono.
+ *
+ * `from`/`to` sono MISURATI sull'audio della voce alla velocità indicata, non
+ * stimati: sono i punti in cui finisce l'occlusione e comincia la vocale (o
+ * viceversa). Se si cambia voce o velocità vanno rimisurati: per questo
+ * `test-pronunciation.js` controlla la forma d'onda dei clip prodotti (un
+ * solo blocco di suono per i fonemi tenuti, nessuna ripetizione del nome).
+ *
+ * Campi:
+ *   say   = testo da far pronunciare alla voce (vocali)
+ *   word  = parola/nome da cui ritagliare il fonema (consonanti)
+ *   rate  = parole al minuto per `say`
+ *   from  = inizio del fonema da tenere (s)
+ *   to    = fine del fonema (s)
+ *   hold  = durata del fonema tenuto dopo il loop (s)
+ *   reps  = quante volte ripetere lo scoppio (occlusive)
  */
-const LETTER_RATE = 0.3;   // frazione della velocità base (RATE * 0.3 ≈ 50 wpm)
-
 const LETTER_PHONEMES = {
-  /* --- continui: lettera ripetuta, la voce tiene il suono --- */
-  a: "aaa", e: "eee", i: "iii", o: "ooo", u: "uuu",
-  f: "fff", l: "lll", m: "mmm", n: "nnn", r: "rrr", s: "sss", v: "vvv", z: "zzz",
+  /* --- vocali: la voce le tiene già, basta allungare la stringa --- */
+  a: { say: "aaaaaa", rate: 50 },
+  e: { say: "eeeeee", rate: 50 },
+  i: { say: "iiiiii", rate: 50 },   // «iii» si spezza in tre pezzi: servono almeno 4 i
+  o: { say: "oooooo", rate: 50 },
+  u: { say: "uuuuuu", rate: 50 },
 
-  /* --- occlusivi: si sintetizza la forma con vocale neutra e si taglia ---
-     `say` produce la vocale dopo lo scoppio: `to`/`co` servono solo a dare
-     allo scoppio un contesto stabile, poi viene eliminato.
-       text  = cosa far dire alla voce
-       from  = inizio del frammento da tenere (s)
-       to    = fine del frammento, prima della vocale (s)
-       reps  = quante volte ripetere il frammento */
-     /* `from`/`to` misurati sull'audio della voce: partono col murmure (per
-        le sonore) o con lo scoppio e finiscono appena prima della vocale. */
-  b: { text: "b", from: 0.000, to: 0.163, reps: 2 },   // murmure + scoppio
-  c: { text: "che", from: 0.004, to: 0.038, reps: 3 }, // /k/: sfregamento dello scoppio
-  d: { text: "d", from: 0.000, to: 0.198, reps: 2 },   // murmure + scoppio
-  g: { text: "ghe", from: 0.000, to: 0.136, reps: 2 }, // murmure + scoppio
-  p: { text: "p", from: 0.008, to: 0.030, reps: 3 },
-  t: { text: "t", from: 0.030, to: 0.054, reps: 3 }
+  /* --- continue: geminata ritagliata dal nome della lettera ---
+     «effe» /f:/, «elle» /l:/, «emme» /m:/, «enne» /n:/, «esse» /s:/.
+     Per «erre» il tratto centrale è il trillo: si tiene anche la prima
+     vibrazione (da 0.140) perché la sola occlusione sarebbe di 15 ms. */
+  f: { word: "effe", rate: 165, from: 0.145, to: 0.309, hold: 0.78 },
+  l: { word: "elle", rate: 165, from: 0.120, to: 0.244, hold: 0.78 },
+  m: { word: "emme", rate: 165, from: 0.115, to: 0.279, hold: 0.78 },
+  n: { word: "enne", rate: 165, from: 0.130, to: 0.279, hold: 0.78 },
+  r: { word: "erre", rate: 165, from: 0.140, to: 0.262, hold: 0.78 },
+  s: { word: "esse", rate: 165, from: 0.090, to: 0.264, hold: 0.78 },
+
+  /* /v/ e /z/: il nome della lettera non ha la geminata, si parte da una
+     parola vera. Nota onesta su /v/: la voce produce una labiodentale
+     *approssimante* ([ʋ], centroide ~850 Hz), non una fricativa con rumore
+     in alta frequenza: è il suono che questa voce sa fare, e resta ben
+     distinto da /b/ e da /f/. */
+  v: { word: "avvio", rate: 120, from: 0.394, to: 0.499, hold: 0.78 },
+  z: { word: "pezzo", rate: 120, from: 0.224, to: 0.349, hold: 0.78 },
+
+  /* --- occlusive: solo lo scoppio, ripetuto ---
+     `from`/`to` prendono il tratto non periodico dopo l'occlusione: per le
+     sonore è il burst vero e proprio, per le sorde anche l'aspirazione. */
+  b: { word: "gabbia",  rate: 120, from: 0.038, to: 0.058, reps: 2 },
+  c: { word: "secco",   rate: 120, from: 0.341, to: 0.360, reps: 2 },  // /k/
+  d: { word: "freddo",  rate: 120, from: 0.398, to: 0.414, reps: 2 },
+  g: { word: "agguato", rate: 120, from: 0.496, to: 0.516, reps: 2 },  // /g/
+  p: { word: "doppio",  rate: 120, from: 0.394, to: 0.414, reps: 2 },
+  t: { word: "fatto",   rate: 120, from: 0.416, to: 0.436, reps: 2 }
 };
 
-/** Pausa fra due ripetizioni di un'occlusiva (s). */
-const PHONEME_GAP = 0.11;
+/** Pausa fra due scoppi di un'occlusiva (s). */
+const PHONEME_GAP = 0.08;
+
+/** Loudness di ascolto dei fonemi tenuti, in LUFS (non in dB RMS).
+    Si normalizza la loudness e non il picco: /s/, /f/ e /z/ sono rumore con
+    un picco molto più alto della media, e a parità di picco suonerebbero
+    10 dB sotto le vocali (misurato prima della correzione: /s/ −25 LUFS
+    contro /m/ −14,5). Un fonema che non si sente non insegna niente. */
+const PHONEME_LUFS = -16;
+
+/** Tetto di picco (dBFS): nessun clip deve sfiorare il fondo scala. */
+const PHONEME_CEILING = -1.5;
+
+/** Picco a cui si porta uno scoppio (dBFS): le occlusive durano 30 ms e sono
+    impulsive, quindi si misurano di picco; `loudnorm` le lascerebbe mute. */
+const PHONEME_PEAK = -3;
 
 /* sillabe accentate: servono a evitare che la voce chiuda la vocale */
 const ACCENTS = {
@@ -82,4 +135,4 @@ const ACCENTS = {
   "pà": "pà"
 };
 
-module.exports = { OVERRIDES, ACCENTS, LETTER_PHONEMES, LETTER_RATE, PHONEME_GAP };
+module.exports = { OVERRIDES, ACCENTS, LETTER_PHONEMES, PHONEME_GAP, PHONEME_LUFS, PHONEME_CEILING, PHONEME_PEAK };

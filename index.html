@@ -1213,16 +1213,20 @@ if (synth) {
  * Forma da far pronunciare alla voce di sistema per una singola lettera.
  *
  * Nel laboratorio la tessera mostra una lettera e deve suonare il *suono*,
- * non il nome: la sintesi di sistema legge però «s» come «esse». La tabella
- * qui sotto è la riserva usata solo quando il clip preregistrato manca; i
- * clip veri seguono la stessa logica in `scripts/audio/pronunciation.js`.
- * I suoni che si possono tenere sono scritti ripetuti; le occlusive no, e la
- * sintesi non può ritagliarle, quindi si usa la forma più breve.
+ * non il nome. La sintesi di sistema non accetta input fonetico e legge
+ * sempre il nome, quindi questa è solo una riserva (i clip preregistrati
+ * hanno la precedenza e contengono il fonema vero).
+ *
+ * ATTENZIONE: NON usare grafie ripetute («sss», «mmm», «fff»). La voce le
+ * legge come sigle e compita il nome tre volte: «esse esse esse». È il
+ * difetto corretto in 2.2.2. Qui si passa una lettera sola: la sintesi
+ * dirà comunque il nome, ma almeno una volta, senza ripeterlo.
+ * Le occlusive restano la lettera: la sintesi non sa ritagliare lo scoppio.
  */
 const LETTER_SAY = {
-  a: "aaa", e: "eee", i: "iii", o: "ooo", u: "uuu",
-  f: "fff", l: "lll", m: "mmm", n: "nnn", r: "rrr", s: "sss", v: "vvv", z: "zzz",
-  b: "b", c: "che", d: "d", g: "ghe", p: "p", t: "t"
+  a: "a", e: "e", i: "i", o: "o", u: "u",
+  f: "f", l: "l", m: "m", n: "n", r: "r", s: "s", v: "v", z: "z",
+  b: "b", c: "c", d: "d", g: "g", p: "p", t: "t"
 };
 
 /** Testo di riserva per la sintesi: fonema per le lettere, il resto uguale. */

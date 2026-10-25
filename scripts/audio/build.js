@@ -20,10 +20,10 @@
 const fs = require("fs");
 const path = require("path");
 const os = require("os");
-const { execFileSync } = require("child_process");
+const { execFileSync, spawnSync } = require("child_process");
 
 const { syllables, sentences, words, uiSource } = require("./extract");
-const { OVERRIDES, LETTER_PHONEMES, LETTER_RATE, PHONEME_GAP } = require("./pronunciation");
+const { OVERRIDES, LETTER_PHONEMES, PHONEME_GAP, PHONEME_LUFS, PHONEME_CEILING, PHONEME_PEAK } = require("./pronunciation");
 
 const ROOT = path.join(__dirname, "..", "..");
 const AUDIO = path.join(ROOT, "audio");
@@ -71,49 +71,185 @@ function synth(text, outMp3, { rate = RATE } = {}) {
   }
 }
 
-/**
- * Sintetizza il *fonema* di una singola lettera (vedi LETTER_PHONEMES).
- *
- * - i suoni continui sono già un suono tenuto: basta scrivere la lettera
- *   ripetuta e abbassare la velocità al 30%;
- * - le occlusive non si possono tenere: si sintetizza la lettera, si taglia
- *   via la vocale aggiunta dalla voce e si ripete il frammento `reps` volte,
- *   separato da una pausa breve, così il suono si sente come ritmo.
- *
- * `from`/`to` sono misurati sull'audio della voce, non stimati: sono i punti
- * in cui finisce l'occlusione e comincia la vocale.
- */
-function synthPhoneme(letter, outMp3) {
-  const rate = Math.round(RATE * LETTER_RATE);
-  const spec = LETTER_PHONEMES[letter];
-  if (typeof spec === "string") return synth(spec, outMp3, { rate });
+/** Picco in dBFS di un file audio (decodifica PCM, nessuna dipendenza). */
+function peakDb(file) {
+  const buf = execFileSync("ffmpeg", ["-hide_banner", "-loglevel", "error", "-i", file,
+    "-ac", "1", "-ar", "22050", "-f", "s16le", "-"], { maxBuffer: 4e8 });
+  let max = 0;
+  for (let i = 0; i < buf.length / 2; i++) {
+    const v = Math.abs(buf.readInt16LE(i * 2));
+    if (v > max) max = v;
+  }
+  return 20 * Math.log10((max / 32768) || 1e-9);
+}
 
-  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "sillabe-fon-"));
+/** Picco e RMS in dBFS, in un solo passaggio di decodifica. */
+function levels(file) {
+  const buf = execFileSync("ffmpeg", ["-hide_banner", "-loglevel", "error", "-i", file,
+    "-ac", "1", "-ar", "22050", "-f", "s16le", "-"], { maxBuffer: 4e8 });
+  let max = 0, sum = 0;
+  const n = buf.length / 2;
+  for (let i = 0; i < n; i++) {
+    const v = buf.readInt16LE(i * 2) / 32768;
+    if (Math.abs(v) > max) max = Math.abs(v);
+    sum += v * v;
+  }
+  return { peak: 20 * Math.log10(max || 1e-9), rms: 10 * Math.log10((sum / n) || 1e-12) };
+}
+
+/** Guadagno che porta il clip a `target` RMS senza superare il tetto di picco. */
+function gainFor(file, target, ceiling) {
+  const { peak, rms } = levels(file);
+  return Math.min(target - rms, ceiling - peak);
+}
+
+/** Loudness integrata (LUFS) misurata con `ebur128`, cioè la misura che
+    corrisponde a come si sente il suono. `null` se il clip è troppo corto o
+    troppo debole perché il misuratore possa dare un valore. */
+function integratedLufs(file) {
+  // ebur128 scrive il riepilogo su stderr: execFileSync restituisce stdout
+  const r = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", file,
+    "-af", "ebur128", "-f", "null", "-"], { encoding: "utf8" });
+  const hits = (r.stderr || "").match(/I:\s*(-?[\d.]+)\s*LUFS/g);
+  if (!hits) return null;
+  const v = parseFloat(hits[hits.length - 1].replace(/[^\d.-]/g, ""));
+  return Number.isFinite(v) && v > -60 ? v : null;
+}
+
+/**
+ * Codifica `src` in MP3 al volume di ascolto voluto.
+ *
+ * La misura si fa DOPO la codifica, non prima, e sulla loudness invece che
+ * sul picco:
+ *  - a 32 kbps l'MP3 taglia le alte frequenze, e /s/, /f/, /z/ sono quasi
+ *    solo alte frequenze: un /s/ portato a −18 dB RMS sul WAV esce 7 dB più
+ *    basso dopo la codifica;
+ *  - a parità di picco o di RMS una fricativa e una nasale non si sentono
+ *    uguali: la loudness pesa le frequenze come l'orecchio. Misurato prima
+ *    della correzione: /s/ −25 LUFS contro /m/ −14,5, cioè 10 dB di
+ *    differenza fra due tessere toccate una dopo l'altra.
+ * Si itera sul file vero, rifacendo la codifica dal WAV originale: una sola
+ * generazione lossy, non due.
+ */
+function encodeAt(src, out, targetLufs, ceiling, gain) {
+  let g = gain;
+  for (let pass = 0; pass < 4; pass++) {
+    sh("ffmpeg", ["-y", "-loglevel", "error", "-i", src,
+      "-af", `volume=${g.toFixed(1)}dB`, "-ac", "1", "-ar", "22050",
+      "-b:a", MP3_KBPS + "k", out]);
+    const lufs = integratedLufs(out);
+    const { peak } = levels(out);
+    if (lufs === null) break;
+    const delta = targetLufs - lufs;
+    if (Math.abs(delta) < 0.4 || peak + delta > ceiling) break;
+    g += delta;
+  }
+}
+
+/** Sintetizza la parola (o la stringa di vocali) da cui ritagliare il fonema
+    e la riporta a WAV mono 22.05 kHz, che è il formato di lavoro. */
+function phonemeSource(spec, tmp) {
   const aiff = path.join(tmp, "t.aiff");
   const wav = path.join(tmp, "t.wav");
+  sh("say", ["-v", VOICE, "-r", String(spec.rate || RATE), "-o", aiff, spec.word || spec.say]);
+  sh("afconvert", ["-f", "WAVE", "-d", "LEI16@22050", "-c", "1", aiff, wav]);
+  return wav;
+}
+
+/**
+ * Fonema di una singola lettera (vedi LETTER_PHONEMES).
+ *
+ * Tre strade, perché i suoni sono di tre tipi:
+ *
+ *  - VOCALE (`say`): la voce tiene già la vocale, basta farle pronunciare la
+ *    lettera ripetuta e normalizzare il volume;
+ *  - CONTINUA (`hold`): si taglia la geminata misurata dentro la parola e la
+ *    si allunga con un loop sfumato. Il loop non è un `-stream_loop` secco
+ *    (farebbe «clic» a ogni giro) né un `atempo` (dimezza la frequenza
+ *    fondamentale: la voce diventa maschile): i pezzi si sovrappongono con
+ *    `acrossfade`, che conserva il timbro e il pitch;
+ *  - OCCLUSIVA (`reps`): si taglia il solo scoppio e lo si ripete, separato
+ *    da una pausa breve, così il suono ha un ritmo percepibile.
+ *
+ * `from`/`to` sono misurati sull'audio della voce, non stimati. Il volume si
+ * porta alla loudness di ascolto (`PHONEME_LUFS`) e non al picco:
+ * `loudnorm`/il picco su un suono sordo sbagliano la misura e lascerebbero il
+ * clip quasi muto o troppo forte rispetto alle vocali.
+ */
+function synthPhoneme(letter, outMp3) {
+  const spec = LETTER_PHONEMES[letter];
+  if (!spec) return synth(letter, outMp3);
+  if (spec.say) {
+    /* le vocali passano da `synth`, che normalizza già con loudnorm: su un
+       suono periodico la misura è affidabile */
+    return synth(spec.say, outMp3, { rate: spec.rate });
+  }
+
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "sillabe-fon-"));
   const seg = path.join(tmp, "seg.wav");
-  const { text, from, to, reps } = spec;
-  const len = Math.max(0.02, to - from);
-  const fade = Math.min(0.01, len / 3);
+  const loop = path.join(tmp, "loop.wav");
   try {
-    sh("say", ["-v", VOICE, "-r", String(rate), "-o", aiff, text]);
-    sh("afconvert", ["-f", "WAVE", "-d", "LEI16@22050", "-c", "1", aiff, wav]);
-    // frammento: solo il rumore/scoppio, con la coda sfumata per non
-    // produrre un click; `apad` aggiunge la pausa che separa le ripetizioni
+    const wav = phonemeSource(spec, tmp);
+    if (spec.reps) return synthBurst(spec, wav, tmp, outMp3);
+
+    /* 1. il fonema, ritagliato dalla parola */
     sh("ffmpeg", ["-y", "-loglevel", "error", "-i", wav,
-      "-af", `atrim=start=${from}:end=${to},asetpts=N/SR/TB,` +
-             `afade=t=out:st=${(len - fade).toFixed(3)}:d=${fade.toFixed(3)},` +
-             `apad=pad_dur=${PHONEME_GAP}`,
+      "-af", `atrim=start=${spec.from}:end=${spec.to},asetpts=N/SR/TB`,
       "-ac", "1", "-ar", "22050", seg]);
-    sh("ffmpeg", ["-y", "-loglevel", "error", "-stream_loop", String(Math.max(0, reps - 1)), "-i", seg,
-      "-af", "silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.01," +
-             "areverse,silenceremove=start_periods=1:start_threshold=-50dB:start_silence=0.03,areverse," +
-             "loudnorm=I=-16:TP=-1.5:LRA=11",
-      "-ac", "1", "-ar", "22050", "-b:a", MP3_KBPS + "k", outMp3]);
+    const len = duration(seg);
+    if (!len || len < 0.03) throw new Error(`${letter}: fonema troppo corto (${len}s)`);
+
+    /* 2. loop sfumato: ogni giro si sovrappone al precedente per D secondi.
+          D resta sotto metà del frammento, altrimenti il loop si annulla. */
+    const D = Math.min(0.12, len * 0.5);
+    const copies = Math.max(2, Math.ceil((spec.hold + D) / (len - D)) + 1);
+    const chain = [];
+    let last = "[0:a]";
+    for (let i = 1; i < copies; i++) {
+      chain.push(`${last}[0:a]acrossfade=d=${D.toFixed(3)}:c1=tri:c2=tri[a${i}]`);
+      last = `[a${i}]`;
+    }
+    /* 3. lunghezza esatta, bordi sfumati per non fare clic, poi volume:
+          loudness per l'ascolto, picco come tetto (vedi PHONEME_LUFS) */
+    chain.push(`${last}atrim=0:${spec.hold},asetpts=N/SR/TB,` +
+               `afade=t=in:st=0:d=0.03,afade=t=out:st=${(spec.hold - 0.06).toFixed(3)}:d=0.06[o]`);
+    sh("ffmpeg", ["-y", "-loglevel", "error", "-i", seg,
+      "-filter_complex", chain.join(";"), "-map", "[o]",
+      "-ac", "1", "-ar", "22050", loop]);
+    const gain = gainFor(loop, PHONEME_LUFS, PHONEME_CEILING);
+    encodeAt(loop, outMp3, PHONEME_LUFS, PHONEME_CEILING, gain);
     return +duration(outMp3).toFixed(3);
   } finally {
     fs.rmSync(tmp, { recursive: true, force: true });
   }
+}
+
+/**
+ * Scoppio di un'occlusiva: si tiene il solo tratto non periodico e lo si
+ * ripete `reps` volte con una pausa in mezzo.
+ *
+ * `adelay` iniziale di 60 ms: un click a inizio clip viene tagliato via da
+ * alcuni lettori audio; la pausa finale evita che il suono sia troncato.
+ */
+function synthBurst(spec, wav, tmp, outMp3) {
+  const seg = path.join(tmp, "burst.wav");
+  const padded = path.join(tmp, "padded.wav");
+  const len = spec.to - spec.from;
+  sh("ffmpeg", ["-y", "-loglevel", "error", "-i", wav,
+    "-af", `atrim=start=${spec.from}:end=${spec.to},asetpts=N/SR/TB,` +
+           `afade=t=in:st=0:d=0.0015,` +
+           `afade=t=out:st=${(len - 0.014).toFixed(3)}:d=0.014`,
+    "-ac", "1", "-ar", "22050", seg]);
+  // picco uniforme fra i sei scoppi: /t/ esce dalla voce 30 dB sotto /b/
+  const gain = PHONEME_PEAK - peakDb(seg);
+  sh("ffmpeg", ["-y", "-loglevel", "error", "-i", seg,
+    "-af", `volume=${gain.toFixed(1)}dB,apad=pad_dur=${PHONEME_GAP}`,
+    "-ac", "1", "-ar", "22050", padded]);
+  sh("ffmpeg", ["-y", "-loglevel", "error", "-stream_loop", String(Math.max(0, spec.reps - 1)),
+    "-i", padded,
+    "-af", "adelay=60:all=1,apad=pad_dur=0.09",
+    "-ac", "1", "-ar", "22050", "-b:a", MP3_KBPS + "k", outMp3]);
+  return +duration(outMp3).toFixed(3);
 }
 
 /**
@@ -175,11 +311,15 @@ function write(group, name, text, opts) {
   return { file: `audio/${group}/${name}.mp3`, dur, spoken: text };
 }
 
-/** Etichetta leggibile del fonema di una lettera, per il manifest. */
+/** Etichetta leggibile del fonema di una lettera, per il manifest.
+    Non deve coincidere con la lettera: `verify.js` la usa per riconoscere i
+    clip costruiti come fonema e non come nome della lettera. */
 function phonemeLabel(letter) {
   const spec = LETTER_PHONEMES[letter];
-  if (typeof spec === "string") return spec;
-  return `${spec.text} (occlusiva ×${spec.reps})`;
+  if (!spec) return letter;
+  if (spec.say) return `${letter} (${spec.say} a ${spec.rate} wpm)`;
+  if (spec.reps) return `${letter} (scoppio da «${spec.word}» ×${spec.reps})`;
+  return `${letter} (fonema tenuto da «${spec.word}»)`;
 }
 
 /** Come `write`, ma per il fonema di una singola lettera. */
