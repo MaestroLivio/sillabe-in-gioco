@@ -155,7 +155,7 @@
     "spoken": "co"
    },
    "con": {
-    "file": "audio/syl/con.mp3",
+    "file": "audio/syl/con_.mp3",
     "dur": 0.549,
     "spoken": "con"
    },
@@ -1159,7 +1159,7 @@
     "spoken": "classe"
    },
    "con": {
-    "file": "audio/parole/con.mp3",
+    "file": "audio/parole/con_.mp3",
     "dur": 0.549,
     "spoken": "con"
    },

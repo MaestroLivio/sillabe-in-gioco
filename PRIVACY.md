@@ -1,7 +1,7 @@
 # Informativa sulla privacy · Sillabe in Gioco
 
 **Ultimo aggiornamento:** 24 ottobre 2026
-**Versione applicazione:** 2.1.0
+**Versione applicazione:** 2.1.1
 **Titolare:** Livio Luppino
 
 ## In sintesi

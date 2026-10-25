@@ -142,8 +142,8 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.1.0-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.1.0.dmg` (Intel)
+- `Sillabe in Gioco-2.1.1-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.1.1.dmg` (Intel)
 - versioni `.zip` per gli aggiornamenti automatici
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
@@ -163,8 +163,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.1.0.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.1.0.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.1.1.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.1.1.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -182,7 +182,7 @@ Due strade, entrambe incluse.
 npm run build:chromeos
 ```
 
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.1.0.zip`.
+Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.1.1.zip`.
 
 Installazione in modalità sviluppatore:
 
@@ -206,7 +206,7 @@ privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
 ### Web / PWA
 
 ```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.1.0.zip
+npm run build:web      # crea dist/web + dist/sillabe-web-v2.1.1.zip
 npm run serve          # prova locale con service worker attivo
 ```
 
@@ -228,7 +228,7 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run audio -- --only=syl` | Rigenera solo un gruppo (`syl`, `frasi`, `parole`, `ui`) |
 | `npm run test:audio` | Verifica i clip: copertura di sillabe/frasi/parole, durate, file orfani |
 | `npm run test:pronuncia` | Controlla che le sillabe critiche non siano compitate lettera per lettera |
-| `npm run test:release -- v2.1.0` | Scarica gli artefatti pubblicati e verifica che contengano le 40 illustrazioni |
+| `npm run test:release -- v2.1.1` | Scarica gli artefatti pubblicati e verifica che contengano le 40 illustrazioni |
 | `npm run test:smoke` | Smoke test headless Electron: 30 controlli su schermate e flussi |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |

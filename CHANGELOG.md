@@ -4,6 +4,20 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.1.1] — 2026-10-25
+
+### Corretto
+- **Pacchetto Windows non più bloccante in CI**: le sillabe `con` producevano i file
+  `audio/syl/con.mp3` e `audio/parole/con.mp3`. `CON` è un nome di dispositivo
+  riservato di Windows, quindi il checkout del repository su `windows-latest`
+  falliva con `invalid path 'audio/parole/con.mp3'` e il pacchetto Windows non
+  veniva pubblicato. I file sono ora `con_.mp3` e lo slug del generatore
+  (`scripts/audio/build.js`) aggiunge un `_` finale a tutti i nomi riservati, così
+  una rigenerazione futura non può ricreare il problema.
+- **Controllo di portabilità dei nomi audio** (`scripts/audio/verify.js`, §7):
+  verifica nomi riservati (CON, PRN, AUX, NUL, COM1-9, LPT1-9), caratteri non
+  ammessi, punto o spazio finale e collisioni case-insensitive prima del commit.
+
 ## [2.1.0] — 2026-10-25
 
 ### Aggiunto

@@ -95,13 +95,22 @@ function pool(items, limit, task) {
 /** Nome file stabile e leggibile: traslitterazione ASCII del token.
     Le vocali accentate ricevono un suffisso numerico perché sono sillabe
     diverse dalla vocale semplice («e» congiunzione ≠ «è» verbo): senza il
-    suffisso i due token finirebbero nello stesso file. */
+    suffisso i due token finirebbero nello stesso file.
+
+    I nomi riservati di Windows (CON, PRN, AUX, NUL, COM1-9, LPT1-9) non
+    possono esistere come file: Git non riesce nemmeno a fare il checkout di
+    `con.mp3` su Windows, e la build falliva. A quei token si aggiunge un
+    underscore; il manifest resta la mappa vera, quindi il nome su disco è
+    indifferente all'app. */
+const RESERVED = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/;
+
 function slug(token) {
   const map = {
     "à": "a1", "è": "e1", "é": "e2", "ì": "i1", "ò": "o1", "ù": "u1",
     "'": "-", " ": "_"
   };
-  return token.toLowerCase().split("").map(c => map[c] !== undefined ? map[c] : c).join("");
+  const s = token.toLowerCase().split("").map(c => map[c] !== undefined ? map[c] : c).join("");
+  return RESERVED.test(s) ? s + "_" : s;
 }
 
 function write(group, name, text, opts) {

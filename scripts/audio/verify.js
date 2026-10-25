@@ -116,6 +116,25 @@ for (const tok of data.syllables) {
   }
 }
 
+/* --- 7. i nomi dei file devono essere portabili su Windows ---
+   Git non riesce a fare il checkout di un file chiamato `con.mp3`: CON è un
+   nome di dispositivo riservato e la build Windows fallisce con
+   "invalid path". Il controllo blocca il problema prima del push. */
+const RESERVED = /^(con|prn|aux|nul|com[1-9]|lpt[1-9])$/i;
+const BAD_CHARS = /[<>:"\\|?*\u0000-\u001f]/;
+const seenLower = new Map();
+for (const abs of onDisk) {
+  const base = path.basename(abs);
+  const stem = base.replace(/\.mp3$/i, "");
+  const dir = path.basename(path.dirname(abs));
+  if (RESERVED.test(stem)) fail(`${dir}/${base}: nome riservato di Windows (CON, PRN, AUX, NUL, COM1-9, LPT1-9)`);
+  if (BAD_CHARS.test(base)) fail(`${dir}/${base}: carattere non ammesso su Windows`);
+  if (/[. ]$/.test(stem)) fail(`${dir}/${base}: nome che termina con punto o spazio`);
+  const key = `${dir}/${base}`.toLowerCase();
+  if (seenLower.has(key)) fail(`${dir}: nomi che differiscono solo per maiuscole (${base}, ${seenLower.get(key)})`);
+  seenLower.set(key, base);
+}
+
 /* --- esito --- */
 for (const w of warnings) console.warn("! " + w);
 if (errors.length) {
