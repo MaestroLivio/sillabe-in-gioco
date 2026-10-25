@@ -42,6 +42,17 @@ app.whenReady().then(async () => {
   const results = await win.webContents.executeJavaScript(`(async () => {
     const out = {};
     const sleep = ms => new Promise(r => setTimeout(r, ms));
+    /* Attesa vera su una condizione: i tempi fissi non bastano perché in CI
+       il renderer è più lento e un timer dell'app può scattare in mezzo.
+       Con la condizione si aspetta quanto serve, non un numero indovinato. */
+    const waitFor = async (cond, ms = 2000, step = 40) => {
+      const end = Date.now() + ms;
+      while (Date.now() < end) {
+        if (cond()) return true;
+        await sleep(step);
+      }
+      return !!cond();
+    };
 
     out.levels = typeof LEVELS !== 'undefined' ? LEVELS.length : -1;
     out.uniqueSentences = new Set(LEVELS.map(l => l.sentence)).size;
@@ -121,8 +132,12 @@ app.whenReady().then(async () => {
     // dei suoni non catturano i timer di apertura della parola
     const autoReadBefore = settings.autoRead;
     settings.autoRead = false;
+    /* il completamento del livello 1 ha armato showResults a 1,5 s: se
+       scattasse dopo l'apertura del laboratorio riporterebbe la schermata
+       sui risultati. Lo si fa scattare adesso, prima di cambiare schermata. */
+    await waitFor(() => document.getElementById('screen-results').classList.contains('active'), 2500);
     startWord(0);
-    await sleep(150);
+    await waitFor(() => document.getElementById('screen-words').classList.contains('active'), 2000);
     out.wordsActive = document.getElementById('screen-words').classList.contains('active');
     out.wordsTitle = document.getElementById('wordsTitle').textContent;
     out.wordsSlots = document.querySelectorAll('#wordsSlotsWrap .slot').length;

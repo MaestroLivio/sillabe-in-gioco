@@ -107,9 +107,9 @@ if (orphans.length) warn(`file non indicizzati nel manifest: ${orphans.length}`)
    La durata da sola non basta a distinguere un fonema da un nome ripetuto:
    la voce, scritta `"sss"`, compita «esse esse esse» e il clip risulta anzi
    più lungo del nome. La verifica vera sulla forma d'onda è in
-   `test-pronunciation.js` (blocchi di suono e modulazione del loop); qui si
-   controlla che ogni lettera continui ad avere il suo clip e che il manifest
-   dichiari il fonema e non il nome. */
+   `test-pronunciation.js` (blocchi di suono e ripetizione dell'inviluppo); qui
+   si controlla che ogni lettera continui ad avere il suo clip e che il
+   manifest dichiari il fonema e non il nome. */
 const { LETTER_PHONEMES } = require("./pronunciation");
 for (const tok of data.syllables) {
   const info = (manifest.groups.syl || {})[tok];
@@ -118,13 +118,18 @@ for (const tok of data.syllables) {
   if (!fs.existsSync(abs)) continue;
   if (LETTER_PHONEMES[tok]) {
     const spec = LETTER_PHONEMES[tok];
-    const max = spec.reps ? 0.6 : 1.2;   // scoppio breve / fonema tenuto
+    /* la vocale ripetuta resta un suono unico e può durare più di un secondo;
+       un fonema ritagliato (`hold`) o uno scoppio stanno sotto i 0,6 s */
+    const max = spec.say ? 1.4 : spec.hold ? 0.75 : 0.45;
     const dur = duration(abs);
     if (!info.spoken || info.spoken === tok) {
       fail(`lettera «${tok}»: clip letto come nome della lettera, non come fonema`);
     }
     if (dur !== null && dur > max) {
       fail(`lettera «${tok}»: ${dur.toFixed(2)}s, troppo lungo per un fonema (nome ripetuto?)`);
+    }
+    if (dur !== null && !spec.say && dur < 0.12) {
+      fail(`lettera «${tok}»: ${dur.toFixed(2)}s, fonema troppo breve per essere udibile`);
     }
     continue;
   }

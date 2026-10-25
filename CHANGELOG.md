@@ -4,6 +4,25 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.2.4] — 2026-10-25
+
+### Corretto
+- **Il test headless aspettava un tempo fisso invece della schermata.** La
+  verifica «schermata parole attiva» falliva a intermittenza: dopo aver
+  completato il livello 1 l'app arma il passaggio ai risultati a 1,5 s, mentre
+  il test fra quel momento e il controllo dormiva in tutto 1,09 s. Finché il
+  codice in mezzo durava meno di ~0,4 s il timer scattava prima del cambio di
+  schermata e il test passava; su una macchina più lenta scattava dopo e
+  riportava la schermata sui risultati. Ora il test **aspetta la condizione**
+  (schermata dei risultati prima, schermata delle parole poi) invece di un
+  numero indovinato, e il controllo resta severo: rimuovendo l'apertura del
+  laboratorio il test fallisce ancora.
+- **La verifica dell'audio non conosceva i fonemi tenuti.** Le soglie di
+  durata di `verify.js` citavano ancora il vecchio campo `reps`, quindi un
+  fonema rallentato a 0,47 s non aveva un limite proprio; ora ogni tipo ha la
+  sua soglia (vocale 1,4 s, fonema tenuto 0,75 s, scoppio 0,45 s) e si
+  controlla anche che un fonema non sia **troppo corto** per essere udibile.
+
 ## [2.2.3] — 2026-10-25
 
 ### Corretto
