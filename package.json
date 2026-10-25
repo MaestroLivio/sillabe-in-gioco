@@ -1,7 +1,7 @@
 {
   "name": "sillabe-in-gioco",
   "productName": "Sillabe in Gioco",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "Laboratorio di letto-scrittura: impara a leggere e scrivere componendo frasi con le sillabe, con sintesi vocale italiana.",
   "author": {
     "name": "Livio Luppino",
@@ -39,9 +39,9 @@
     "make:dmg": "node scripts/make-dmg.js arm64 && node scripts/make-dmg.js x64",
     "screenshots": "electron scripts/screenshots.js",
     "build:web": "node scripts/package-web.js",
-    "build:mac": "npm run clean:volumes && electron-builder --mac --publish never && node scripts/make-dmg.js arm64 && node scripts/make-dmg.js x64",
-    "build:mac:arm64": "npm run clean:volumes && electron-builder --mac --arm64 --publish never && node scripts/make-dmg.js arm64",
-    "build:mac:x64": "npm run clean:volumes && electron-builder --mac --x64 --publish never && node scripts/make-dmg.js x64",
+    "build:mac": "npm run clean:volumes && electron-builder --mac --publish never && node scripts/sign-mac.js && node scripts/make-dmg.js arm64 && node scripts/make-dmg.js x64",
+    "build:mac:arm64": "npm run clean:volumes && electron-builder --mac --arm64 --publish never && node scripts/sign-mac.js arm64 && node scripts/make-dmg.js arm64",
+    "build:mac:x64": "npm run clean:volumes && electron-builder --mac --x64 --publish never && node scripts/sign-mac.js x64 && node scripts/make-dmg.js x64",
     "build:win": "electron-builder --win --publish never",
     "build:linux": "electron-builder --linux --publish never",
     "build:all": "npm run build:mac && npm run build:win && npm run build:linux",

@@ -36,16 +36,22 @@ const OVERRIDES = {
  * interpreta la stringa come una sigla e compita il *nome* della lettera,
  * tre volte («esse esse esse», tre blocchi di suono separati da pause). È il
  * difetto corretto in 2.2.2: il bambino sentiva il nome ripetuto, non il
- * fonema. Le sole stringhe ripetute che restano un suono unico sono quelle
- * delle vocali («aaaaaa» è una /a:/ sola).
+ * fonema. Anche le vocali ripetute (`"aaaaaa"`) NON vanno usate: la stringa
+ * non dà una vocale tenuta ma una grande arcata di intonazione, che è il
+ * tremolio segnalato in 2.2.5.
  *
  * Metodo attuale: si parte da una parola vera e si **ritaglia** il fonema
  * misurando l'audio della voce. Il tratto ritagliato viene poi **allungato
  * rallentandolo** (`atempo`), non ripetuto: il bambino sente un solo suono
  * continuo, lo stesso fonema pronunciato adagio.
  *
- *  1. VOCALI — la voce tiene già la vocale: si scrive la lettera ripetuta
- *     (`say`, campo `say`) e si tiene tutto il suono. Non serve allungare.
+ *  1. VOCALI — stessa strada delle consonanti: un tratto di vocale ritagliato
+ *     da una parola vera e rallentato. Misurata, la lettera ripetuta non
+ *     produce una vocale tenuta ma una **grande arcata di intonazione** (su
+ *     «aaaaaa» la F0 sale da 202 a 311 Hz e ridiscende), che all'orecchio è il
+ *     tremolio segnalato dall'utente. Ritagliando invece un tratto a F0 ferma
+ *     e livello pieno si ottiene una vocale dritta: misurato sul clip finito,
+ *     escursione di F0 3-9 Hz su 0,44 s, contro 100-160 Hz dell'arcata.
  *  2. CONTINUE (fricative, nasali, laterali, vibrante) — in italiano la
  *     consonante doppia è un suono tenuto: dentro «esse», «emme», «elle»,
  *     «enne», «effe», «erre» c'è la geminata /s:/, /m:/, /l:/, /n:/, /f:/,
@@ -79,21 +85,29 @@ const OVERRIDES = {
  * modulazione periodica, nessuna ripetizione del nome).
  *
  * Campi:
- *   say   = testo da far pronunciare alla voce (vocali)
- *   word  = parola/nome da cui ritagliare il fonema (consonanti)
+ *   word  = parola/nome da cui ritagliare il fonema
  *   rate  = parole al minuto per `say`
  *   from  = inizio del fonema da tenere (s)
  *   to    = fine del fonema (s)
- *   hold  = durata finale del fonema (s) — solo per i fonemi tenuti: il tratto
- *           ritagliato viene rallentato fino a questa lunghezza
+ *   hold  = durata finale del fonema (s): il tratto ritagliato viene
+ *           rallentato fino a questa lunghezza. Vale per le vocali e per le
+ *           continue; le occlusive non hanno `hold` (lo scoppio non si tiene).
  */
 const LETTER_PHONEMES = {
-  /* --- vocali: la voce le tiene già, basta allungare la stringa --- */
-  a: { say: "aaaaaa", rate: 50 },
-  e: { say: "eeeeee", rate: 50 },
-  i: { say: "iiiiii", rate: 50 },   // «iii» si spezza in tre pezzi: servono almeno 4 i
-  o: { say: "oooooo", rate: 50 },
-  u: { say: "uuuuuu", rate: 50 },
+  /* --- vocali: tratto di vocale a F0 ferma, ritagliato e rallentato ---
+     `from`/`to` sono MISURATI con la ricerca su 24-30 parole portatrici per
+     vocale, con tre criteri insieme: F0 piatta (escursione < 5 Hz), livello
+     pieno fino ai due bordi (mai una coda in dissolvenza), correlazione
+     spettrale ≥ 0,9 con la vocale isolata (per non tagliare una consonante
+     sonora vicina: in «lupo» /l/ e /u/ hanno la stessa altezza).
+     Misurato sul clip finito: `a` 1,3-2,0 Hz di deviazione, `e` 1,2, `i` 0,9,
+     `o` 3,2, `u` 4,6: prima della correzione erano 9-68 Hz, cioè l'arcata di
+     intonazione che si sentiva come tremolio. */
+  a: { word: "tappo", rate: 60, from: 0.020, to: 0.120, hold: 0.45 },
+  e: { word: "pelo",  rate: 60, from: 0.020, to: 0.120, hold: 0.45 },
+  i: { word: "tipo",  rate: 60, from: 0.030, to: 0.130, hold: 0.45 },
+  o: { word: "rosa",  rate: 60, from: 0.130, to: 0.230, hold: 0.45 },
+  u: { word: "lupo",  rate: 60, from: 0.030, to: 0.130, hold: 0.45 },
 
   /* --- continue: geminata ritagliata dal nome della lettera e rallentata ---
      «effe» /f:/, «elle» /l:/, «emme» /m:/, «enne» /n:/, «esse» /s:/.

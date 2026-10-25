@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Sillabe in Gioco",
   "short_name": "Sillabe",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "Laboratorio di letto-scrittura: impara a leggere e scrivere componendo frasi con le sillabe.",
   "default_locale": "it",
   "icons": {

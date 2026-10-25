@@ -181,16 +181,22 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.2.0-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.2.0.dmg` (Intel)
+- `Sillabe in Gioco-2.2.5-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.2.5.dmg` (Intel)
 - versioni `.zip` per gli aggiornamenti automatici
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
 
 > [!NOTE]
-> Le build non sono firmate con un certificato Apple Developer. Al primo avvio usa
-> tasto destro → **Apri**, oppure *Impostazioni di Sistema → Privacy e sicurezza → Apri comunque*.
-> Per firmare: imposta `CSC_LINK` e `CSC_KEY_PASSWORD` e rimuovi `gatekeeperAssess: false`.
+> Le build sono firmate **ad-hoc** (`scripts/sign-mac.js`), non con un
+> certificato Apple Developer: la firma è valida sul disco e sigilla il
+> pacchetto — è quello che serve a macOS su Apple Silicon per avviare l'app —
+> ma Gatekeeper non riconosce lo sviluppatore. Al primo avvio di un pacchetto
+> scaricato usa tasto destro → **Apri**, oppure *Impostazioni di Sistema →
+> Privacy e sicurezza → Apri comunque*.
+> Per la firma con un certificato vero: imposta `CSC_LINK` e
+> `CSC_KEY_PASSWORD`, togli `CSC_IDENTITY_AUTO_DISCOVERY: "false"` dal workflow
+> e togli la chiamata a `sign-mac.js` dagli script `build:mac*`.
 
 Requisiti: macOS 10.15 Catalina o successivo.
 

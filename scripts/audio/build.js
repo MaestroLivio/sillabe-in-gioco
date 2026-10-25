@@ -187,16 +187,15 @@ function phonemeSource(spec, tmp) {
 /**
  * Fonema di una singola lettera (vedi LETTER_PHONEMES).
  *
- * Tre strade, perché i suoni sono di tre tipi:
+ * Due strade, perché i suoni sono di due tipi:
  *
- *  - VOCALE (`say`): la voce tiene già la vocale, basta farle pronunciare la
- *    lettera ripetuta e normalizzare il volume;
- *  - CONTINUA (`hold`): si taglia la geminata misurata dentro la parola e la
- *    si **rallenta** con `atempo` fino a `hold` secondi, conservando l'altezza
+ *  - TENUTO (`hold`): si taglia il tratto misurato dentro la parola (per le
+ *    vocali un tratto a F0 ferma; per le continue la geminata) e lo si
+ *    **rallenta** con `atempo` fino a `hold` secondi, conservando l'altezza
  *    della voce. Il risultato è un solo suono continuo, lo stesso fonema
  *    pronunciato adagio: nessun loop (che produce una modulazione periodica,
  *    cioè una vibrazione udibile) e nessuna ripetizione;
- *  - OCCLUSIVA (senza `hold` né `say`): si tiene il solo scoppio, una volta.
+ *  - OCCLUSIVA (senza `hold`): si tiene il solo scoppio, una volta.
  *
  * `from`/`to` sono misurati sull'audio della voce, non stimati. Il volume si
  * porta alla loudness di ascolto (`PHONEME_LUFS`) e non al picco:

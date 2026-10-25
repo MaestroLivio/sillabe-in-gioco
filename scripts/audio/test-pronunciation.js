@@ -136,10 +136,9 @@ for (const token of KNOWN_TRAPS) {
        sentirebbe «b-b» invece di /b/;
      - un nome ripetuto ha tre o più blocchi (o uno solo, ma troppo lungo:
        il nome tenuto non è un fonema).
-   In più si misura la RIPETIZIONE dell'inviluppo: un loop rimette in fila lo
-   stesso frammento e si riconosce così. Non basta il «flutter» (modulazione
-   2-12 Hz), che sulla voce è rumore: sulla 2.2.2 il loop di /m/ aveva flutter
-   1,3 dB — indistinguibile dalla voce — mentre la ripetizione era 0,96. */
+   In più si misura la STABILITÀ DELL'ALTEZZA (vedi `f0Sd`): una vocale
+   costruita con la lettera ripetuta porta una grande arcata di intonazione,
+   che si sente come tremolio, e lì si vede. */
 const { LETTER_PHONEMES } = require("./pronunciation");
 
 /** Decodifica un MP3 in campioni mono 22.05 kHz, senza dipendenze npm.
@@ -213,36 +212,54 @@ function flutter(env, hopSec) {
   return best;
 }
 
-/** Quanto l'inviluppo si RIPETE, da 0 (nessuna somiglianza) a 1 (identico).
-    È il controllo che distingue un loop da un allungamento: un loop rimette
-    in fila lo stesso frammento, quindi l'inviluppo a `d` e a `d + periodo` è
-    quasi identico e l'autocorrelazione sale. `atempo` invece ricostruisce il
-    segnale e non ripete nulla.
+/** Stabilità dell'altezza della voce (Hz): deviazione standard della F0
+    misurata su frame da 40 ms con passo 10 ms, solo dove il segnale è
+    periodico (chiarezza ≥ 0,5) e sopra il 20 % del picco.
 
-    Serve perché il `flutter` da solo non basta: misurato sui clip, il loop
-    della 2.2.2 su /m/ aveva flutter 1,3 dB (sotto qualunque soglia) ma
-    ripetizione 0,96, mentre un `atempo` pulito su /s/ ha flutter 3,7 dB
-    (sopra soglia, per il normale tremolio della voce) e ripetizione 0,00.
-    Con la sola soglia sul flutter il test promuoveva i loop e bocciava i
-    clip corretti. */
-function repetition(env, hopSec) {
-  const core = env.slice(Math.round(0.06 / hopSec), env.length - Math.round(0.08 / hopSec));
-  if (core.length < 20) return 0;
-  const n = core.length;
-  const mean = core.reduce((a, b) => a + b, 0) / n;
-  const d = core.map(v => v - mean);
-  let e0 = 0;
-  for (const v of d) e0 += v * v;
-  if (e0 < 1e-9) return 0;
-  let best = 0;
-  const lo = Math.round(0.10 / hopSec), hi = Math.min(n - 4, Math.round(0.40 / hopSec));
-  for (let lag = lo; lag <= hi; lag++) {
-    let num = 0, m = 0;
-    for (let i = 0; i + lag < n; i++) { num += d[i] * d[i + lag]; m++; }
-    if (m < 8) continue;
-    best = Math.max(best, num / (m * (e0 / n)));
+    È il controllo che vede l'ARCATA DI INTONAZIONE, cioè il difetto che
+    l'utente sentiva come tremolio sulle vocali. La 2.2.4 costruiva le vocali
+    con la lettera ripetuta (`"aaaaaa"`), e quella stringa non dà una vocale
+    tenuta: la voce ci disegna sopra una grande arcata (misurato: 202 → 315 →
+    202 Hz, deviazione 45 Hz). Ritagliando un tratto a F0 ferma e rallentandolo
+    con `atempo` la deviazione scende sotto 5 Hz.
+
+    Misurato sui clip veri: vecchie vocali 20-45 Hz, nuove 0,9-4,8 Hz,
+    continue 2,9-5,6 Hz. Soglia 12 Hz, cioè il doppio delle continue peggiori
+    e metà della vecchia vocale meno sbilanciata.
+
+    Perché NON si usa più la ripetizione dell'inviluppo: su un suono
+    stazionario — che è il risultato voluto — la varianza dell'inviluppo è
+    quasi nulla e l'autocorrelazione non misura niente; con la
+    normalizzazione corretta dava 0,89-1,02 su vocali buone, con quella
+    sbagliata 0,96 su un loop vero e 0,00 su un `atempo` pulito, ma anche
+    0,47 sulla correlazione di forma d'onda di un clip corretto. Non separava
+    i due casi in modo affidabile, quindi è stata tolta. */
+function f0Sd(s) {
+  const SR = 22050, W = Math.round(0.04 * SR), step = Math.round(0.01 * SR);
+  const frames = [];
+  let peak = 0;
+  for (let i = 0; i + W <= s.length; i += step) {
+    let e = 0;
+    for (let j = i; j < i + W; j++) e += s[j] * s[j];
+    const rms = Math.sqrt(e / W);
+    peak = Math.max(peak, rms);
+    frames.push({ i, e, rms });
   }
-  return best;
+  const out = [];
+  for (const f of frames) {
+    if (f.rms < peak * 0.2) continue;
+    let best = 0, lag0 = 0;
+    for (let lag = Math.round(SR / 400); lag <= Math.round(SR / 70); lag++) {
+      let c = 0, e1 = 0;
+      for (let j = f.i; j + lag < f.i + W; j++) { c += s[j] * s[j + lag]; e1 += s[j + lag] * s[j + lag]; }
+      const n = c / Math.sqrt(f.e * e1 || 1);
+      if (n > best) { best = n; lag0 = lag; }
+    }
+    if (best >= 0.5 && lag0) out.push(SR / lag0);
+  }
+  if (out.length < 6) return null;
+  const m = out.reduce((a, b) => a + b, 0) / out.length;
+  return Math.sqrt(out.reduce((a, b) => a + (b - m) ** 2, 0) / out.length);
 }
 
 let checkedLetters = 0;
@@ -267,18 +284,6 @@ for (const letter of Object.keys(LETTER_PHONEMES)) {
   const dur = s.length / 22050;
   const spec = LETTER_PHONEMES[letter];
 
-  if (spec.say) {
-    /* vocale: un blocco solo, tenuto (0,4-1,3 s). Non è un fonema ritagliato,
-       quindi non si controlla la ripetizione: una vocale lunga è periodica
-       per natura e l'autocorrelazione dell'inviluppo non dice nulla. */
-    if (nBlocks !== 1) {
-      errors.push(`lettera «${letter}»: ${nBlocks} blocchi di suono, la vocale deve essere un suono solo`);
-    }
-    if (dur < 0.40) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, vocale troppo breve`);
-    if (dur > 1.30) errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, vocale troppo lunga`);
-    continue;
-  }
-
   if (!spec.hold) {
     /* occlusiva: un solo scoppio, corto. Due colpi si sentirebbero «b-b». */
     if (nBlocks !== 1) {
@@ -297,10 +302,15 @@ for (const letter of Object.keys(LETTER_PHONEMES)) {
   if (dur > 0.75) {
     errors.push(`lettera «${letter}»: ${dur.toFixed(2)}s, troppo lunga: sembra il nome ripetuto, non un fonema`);
   }
-  /* la ripetizione è il controllo decisivo: è quello che vede il loop */
-  const rep = repetition(env, hopSec);
-  if (rep > 0.55) {
-    errors.push(`lettera «${letter}»: inviluppo ripetuto (${rep.toFixed(2)}), il clip è un loop e non un fonema continuo`);
+  /* l'altezza della voce deve stare ferma: è il controllo che vede l'arcata
+     di intonazione, il difetto che si sente come tremolio (vedi f0Sd).
+     /r/ è esclusa: è un trillo, cioè un'interruzione periodica della voce,
+     e il misuratore di altezza su un trillo non misura l'intonazione
+     (deviazione 42 Hz anche sul clip corretto). */
+  const sd = letter === "r" ? null : f0Sd(s);
+  if (sd !== null && sd > 12) {
+    errors.push(`lettera «${letter}»: altezza della voce che si muove (deviazione ${sd.toFixed(1)} Hz),` +
+      ` è un'arcata di intonazione e si sente come tremolio`);
   }
   /* il flutter resta come rete di sicurezza per i tremolii non periodici,
      con soglia larga: la voce stessa ne produce 3-4 dB su /s/ */

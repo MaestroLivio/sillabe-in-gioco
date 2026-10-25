@@ -6,8 +6,8 @@
   "syl": {
    "a": {
     "file": "audio/syl/a.mp3",
-    "dur": 0.914,
-    "spoken": "a (aaaaaa a 50 wpm)"
+    "dur": 0.496,
+    "spoken": "a (fonema di «tappo» tenuto 0.45s)"
    },
    "ab": {
     "file": "audio/syl/ab.mp3",
@@ -221,8 +221,8 @@
    },
    "e": {
     "file": "audio/syl/e.mp3",
-    "dur": 0.836,
-    "spoken": "e (eeeeee a 50 wpm)"
+    "dur": 0.496,
+    "spoken": "e (fonema di «pelo» tenuto 0.45s)"
    },
    "è": {
     "file": "audio/syl/e1.mp3",
@@ -361,8 +361,8 @@
    },
    "i": {
     "file": "audio/syl/i.mp3",
-    "dur": 0.94,
-    "spoken": "i (iiiiii a 50 wpm)"
+    "dur": 0.496,
+    "spoken": "i (fonema di «tipo» tenuto 0.45s)"
    },
    "ia": {
     "file": "audio/syl/ia.mp3",
@@ -526,8 +526,8 @@
    },
    "o": {
     "file": "audio/syl/o.mp3",
-    "dur": 1.097,
-    "spoken": "o (oooooo a 50 wpm)"
+    "dur": 0.496,
+    "spoken": "o (fonema di «rosa» tenuto 0.45s)"
    },
    "om": {
     "file": "audio/syl/om.mp3",
@@ -851,8 +851,8 @@
    },
    "u": {
     "file": "audio/syl/u.mp3",
-    "dur": 0.914,
-    "spoken": "u (uuuuuu a 50 wpm)"
+    "dur": 0.496,
+    "spoken": "u (fonema di «lupo» tenuto 0.45s)"
    },
    "uc": {
     "file": "audio/syl/uc.mp3",

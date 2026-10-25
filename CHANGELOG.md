@@ -4,6 +4,70 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.2.5] — 2026-10-25
+
+### Corretto
+- **Il tremolio sulle vocali era un'arcata di intonazione, non un loop.** La
+  2.2.4 costruiva le vocali facendo pronunciare alla voce la lettera ripetuta
+  (`"aaaaaa"`), dando per buono che una vocale ripetuta resti un solo suono
+  tenuto. Misurata, quella stringa non produce affatto una vocale tenuta: la
+  voce ci disegna sopra una **grande arcata di intonazione** — su `/a/` la F0
+  sale da 202 a 315 Hz e ridiscende — e all'orecchio quell'onda è il tremolio
+  segnalato. Non era una ripetizione di blocchi (il clip era correttamente un
+  suono solo), quindi il controllo sui blocchi di 2.2.4 non poteva vederla.
+  - Le vocali ora seguono la stessa strada delle consonanti: si **ritaglia**
+    dalla parola portatrice un tratto di vocale a **F0 ferma e livello pieno**
+    e lo si **rallenta** con `atempo`. Il clip finito misura una deviazione di
+    F0 di 0,9–4,8 Hz contro 20–45 Hz di prima: una vocale dritta;
+  - le finestre di ritaglio sono state rimisurate su 24–30 parole portatrici
+    per vocale, con tre criteri insieme: F0 piatta (escursione < 5 Hz), livello
+    pieno fino ai bordi (mai una coda in dissolvenza) e **correlazione
+    spettrale ≥ 0,9** con la vocale isolata. Quest'ultimo serve perché in
+    «lupo» la /l/ e la /u/ hanno la stessa altezza: senza il confronto di
+    spettro si rischia di ritagliare la consonante;
+  - la lunghezza scende da 0,50 a 0,45 s: il tratto di partenza è più corto,
+    quindi il fattore di rallentamento è minore e `atempo` resta pulito.
+- **Il test di pronuncia controllava la cosa sbagliata.** La misura della
+  «ripetizione dell'inviluppo» non distingue un loop da una vocale **tenuta**:
+  su un suono stazionario — cioè esattamente il risultato voluto — la varianza
+  dell'inviluppo è quasi nulla e l'autocorrelazione non misura niente. Con la
+  normalizzazione dell'intera finestra dava 0,89–1,02 su vocali corrette,
+  quindi il test bocciava i clip giusti; con quella della sola sovrapposizione
+  non riconosceva più nemmeno un loop ricostruito apposta (0,32). Al suo posto
+  c'è un controllo che misura il difetto **reale**: la deviazione dell'altezza
+  della voce (F0), che sull'arcata di intonazione schizza a 45 Hz. Soglia
+  12 Hz, metà della vecchia vocale meno sbilanciata. `/r/` è esclusa perché è
+  un trillo e l'altezza su un trillo si muove per definizione.
+  Verificato in entrambe le direzioni: con il vecchio clip di `/a/` il test
+  fallisce (45,1 Hz), con i nuovi passa.
+- **La versione per Apple Silicon non si apriva.** La CI esporta
+  `CSC_IDENTITY_AUTO_DISCOVERY=false`, quindi electron-builder non firma affatto
+  il pacchetto: l'app usciva con la sola firma *linker-signed* che Electron si
+  porta dietro (`Info.plist` non legato, nessuna risorsa sigillata) e
+  `codesign --verify --deep --strict` la rifiutava. macOS su Apple Silicon
+  controlla la firma prima di avviare, mentre la build x86_64 parte anche sotto
+  Rosetta, che non fa lo stesso controllo: da qui «la versione per Apple Silicon
+  non si apre, quella universal sì».
+  - nuovo `scripts/sign-mac.js`, chiamato da `build:mac`, `build:mac:arm64` e
+    `build:mac:x64` **dopo** electron-builder e **prima** di `make-dmg.js` (che
+    altrimenti impacchetterebbe la copia non firmata): firma ad-hoc con
+    `--options runtime` e le entitlements di Electron, verifica con
+    `codesign --verify --deep --strict` e rigenera lo ZIP, che electron-builder
+    aveva creato prima della firma;
+  - la firma è **ad-hoc** (`--sign -`): non avendo un certificato Apple
+    Developer non è riconosciuta da Gatekeeper come sviluppatore, ma è valida
+    sul disco, lega l'`Info.plist` e sigilla le risorse. **Gatekeeper chiederà
+    comunque conferma al primo avvio** di un pacchetto scaricato.
+
+### Nota di onestà
+Il crash della versione arm64 **non è stato riprodotto** su questa macchina:
+anche la build non firmata si avviava. È provato solo il fatto oggettivo che la
+firma pubblicata era invalida (`codesign --verify` falliva, `Info.plist` non
+legato, nessuna risorsa sigillata). La correzione rende il pacchetto firmato e
+verificabile, ma non è possibile affermare che la causa del mancato avvio fosse
+solo quella finché qualcuno non riprova su un Mac Apple Silicon che prima
+falliva.
+
 ## [2.2.4] — 2026-10-25
 
 ### Corretto

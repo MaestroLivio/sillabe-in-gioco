@@ -118,9 +118,11 @@ for (const tok of data.syllables) {
   if (!fs.existsSync(abs)) continue;
   if (LETTER_PHONEMES[tok]) {
     const spec = LETTER_PHONEMES[tok];
-    /* la vocale ripetuta resta un suono unico e può durare più di un secondo;
-       un fonema ritagliato (`hold`) o uno scoppio stanno sotto i 0,6 s */
-    const max = spec.say ? 1.4 : spec.hold ? 0.75 : 0.45;
+    /* tutte le lettere del laboratorio sono fonemi ritagliati: le vocali e le
+       continue hanno `hold`, le occlusive sono corte. Le vocali durano ~0,44 s
+       e le continue 0,36-0,40 s, quindi lo stesso tetto vale per entrambe;
+       uno scoppio sta sotto i 0,3 s. */
+    const max = spec.hold ? 0.75 : 0.45;
     const dur = duration(abs);
     if (!info.spoken || info.spoken === tok) {
       fail(`lettera «${tok}»: clip letto come nome della lettera, non come fonema`);
@@ -128,7 +130,7 @@ for (const tok of data.syllables) {
     if (dur !== null && dur > max) {
       fail(`lettera «${tok}»: ${dur.toFixed(2)}s, troppo lungo per un fonema (nome ripetuto?)`);
     }
-    if (dur !== null && !spec.say && dur < 0.12) {
+    if (dur !== null && dur < 0.12) {
       fail(`lettera «${tok}»: ${dur.toFixed(2)}s, fonema troppo breve per essere udibile`);
     }
     continue;
