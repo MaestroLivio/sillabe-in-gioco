@@ -352,6 +352,55 @@ select{font-family:inherit;padding:8px;border-radius:10px;border:2px solid var(-
 .switch input:checked+span::before{transform:translateX(22px)}
 .switch input:focus-visible+span{outline:3px solid var(--orange);outline-offset:2px}
 
+/* Tutto maiuscolo: si applica solo ai testi che il bambino deve leggere,
+   non alle etichette dell'interfaccia, così i pulsanti restano riconoscibili. */
+body.all-caps .tile,
+body.all-caps .slot,
+body.all-caps .opt,
+body.all-caps .hintline b,
+body.all-caps .soundcard .w,
+body.all-caps .wordbig,
+body.all-caps .quiz-q b{text-transform:uppercase}
+
+/* Scheda del suono difficile: al posto dell'illustrazione la TV mostra il
+   gruppo di lettere da riconoscere e la parola che lo contiene, con il
+   suono evidenziato. */
+.soundcard{
+  background:linear-gradient(160deg,#f2f9ff,#d6ebff);border:3px solid #b9dcf7;border-radius:16px;
+  padding:20px 14px;text-align:center
+}
+body.theme-night .soundcard{background:linear-gradient(160deg,#22334a,#1a2839);border-color:#3a5876}
+.soundcard .focus{
+  display:inline-block;font-size:2.5rem;font-weight:800;letter-spacing:3px;color:var(--blue-d);
+  background:var(--paper);border-radius:14px;padding:4px 20px;box-shadow:0 5px 0 rgba(47,108,179,.25);
+  line-height:1.2
+}
+body.theme-night .soundcard .focus{color:#bcdcff;box-shadow:0 5px 0 rgba(0,0,0,.35)}
+.soundcard .w{font-size:1.3rem;margin-top:14px;font-weight:700;letter-spacing:.5px}
+.soundcard .w em{font-style:normal;color:var(--red-d);text-decoration:underline;text-decoration-thickness:3px}
+.soundcard .cap{font-size:.7rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
+
+/* Riga della parola intera: mostrata sotto le caselle nelle esercitazioni
+   di composizione, così il bambino vede crescere la parola. */
+.wordbig{
+  text-align:center;font-size:1.15rem;font-weight:700;letter-spacing:2px;color:var(--blue-d);
+  margin:10px 0 2px;min-height:1.4em
+}
+body.theme-night .wordbig{color:#bcdcff}
+
+/* Elenco delle 20 parole nella home: ogni riquadro apre il laboratorio. */
+.wordlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.wordchip{
+  display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;
+  border-radius:12px;background:var(--cream);border:2px solid var(--line);
+  font-weight:700;font-size:.84rem;transition:transform .12s,border-color .12s
+}
+.wordchip:hover{transform:translateY(-2px);border-color:var(--orange)}
+.wordchip .we{font-size:1.3rem;line-height:1}
+.wordchip .ws{font-size:.6rem;font-weight:700;letter-spacing:.4px;color:var(--ink-soft)}
+.wordchip.done{border-color:var(--green);background:#eaf9ee}
+body.theme-night .wordchip.done{background:#22402c}
+
 .toast{
   position:fixed;left:50%;bottom:118px;transform:translate(-50%,20px);z-index:200;
   background:#25384d;color:#fff;padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:700;
@@ -464,13 +513,21 @@ body.theme-night .trophy.unlocked{background:#3a3222}
 
     <div class="card">
       <h2>Strumenti</h2>
-      <p class="muted" style="margin-bottom:10px">Esercizi, schede da stampare, trofei e impostazioni di accessibilità.</p>
+      <p class="muted" style="margin-bottom:10px">Formazione di parole, suoni difficili, esercizi, schede da stampare, trofei e aiuto.</p>
       <div class="tool-grid">
+        <button class="tool-btn" id="toolWords"><span class="ti">🔤</span><span class="tl">PAROLE</span></button>
+        <button class="tool-btn" id="toolSounds"><span class="ti">👂</span><span class="tl">SUONI DIFFICILI</span></button>
         <button class="tool-btn" id="toolExercises"><span class="ti">🧰</span><span class="tl">ESERCIZI</span></button>
         <button class="tool-btn" id="toolPrint"><span class="ti">🖨️</span><span class="tl">STAMPA</span></button>
         <button class="tool-btn" id="toolTrophies"><span class="ti">🏆</span><span class="tl">TROFEI</span></button>
         <button class="tool-btn" id="toolHelp"><span class="ti">❓</span><span class="tl">AIUTO</span></button>
       </div>
+    </div>
+
+    <div class="card">
+      <h2>Formazione di parole</h2>
+      <p class="muted" style="margin-bottom:10px">Prima si uniscono le lettere, poi le sillabe. Ogni parola ha la sua figura.</p>
+      <div class="wordlist" id="wordList"></div>
     </div>
 
     <div class="card">
@@ -556,6 +613,80 @@ body.theme-night .trophy.unlocked{background:#3a3222}
   </footer>
 </section>
 
+<section id="screen-words" class="screen" aria-label="Formazione di parole">
+  <header class="topbar">
+    <div class="titlewrap">
+      <span class="badge" id="wordsStageBadge">Unisco le lettere</span>
+      <h1 id="wordsTitle">1. ape</h1>
+    </div>
+    <div class="topActions">
+      <button class="icon-btn" id="wordsHomeBtn" aria-label="Torna alla home">🏠</button>
+      <button class="btn-close" id="wordsCloseBtn" aria-label="Chiudi formazione parole">✕</button>
+    </div>
+  </header>
+
+  <div class="stage">
+    <div>
+      <div class="tv">
+        <div class="tv-screen">
+          <div id="wordsImage" aria-live="polite"></div>
+          <div class="tv-glare"></div>
+        </div>
+        <div class="tv-knobs" aria-hidden="true"><i class="knob"></i><i class="knob"></i></div>
+        <span class="tv-label">Parole TV</span>
+      </div>
+      <div class="tv-legs" aria-hidden="true"><i></i><i></i></div>
+    </div>
+
+    <aside class="radio-panel">
+      <button class="radio" id="wordsRadioBtn" aria-label="Ascolta la parola intera">
+        <span class="speaker" aria-hidden="true">🔊</span>
+        <span class="rlabel">ASCOLTA</span>
+        <span class="rsub">la parola intera</span>
+      </button>
+      <div class="info-card">
+        <strong>Come si gioca</strong>
+        Metti i pezzi nell'ordine giusto: prima si formano le lettere, poi le sillabe.
+        <span id="wordsModeNote"></span>
+      </div>
+      <div class="info-card" id="wordsProgressCard">
+        <strong>Questa parola</strong>
+        <span id="wordsProgressText">0 di 0 pezzi</span>
+      </div>
+    </aside>
+  </div>
+
+  <div id="wordsSlotsWrap" aria-label="Area di composizione della parola"></div>
+  <div class="wordbig" id="wordsWordBig" aria-live="polite"></div>
+
+  <div id="wordsTilesWrap">
+    <div class="tiles-head">
+      <h2 id="wordsTilesHead">Pezzi della parola</h2>
+      <button class="btn ghost small" id="wordsShuffleBtn" aria-label="Mescola i pezzi">🔀 Mescola</button>
+    </div>
+    <div class="tile-pool" id="wordsTilePool" role="group" aria-label="Pezzi disponibili"></div>
+  </div>
+
+  <footer class="bottombar">
+    <div class="bottombar-inner">
+      <button class="mascot-btn" id="wordsMascotBtn" aria-label="La mascotte ti dà un consiglio">
+        <span class="m" aria-hidden="true">🐻</span>
+        <span class="mtext"><b>Orsetto Lino</b><span id="wordsMascotText">Tocca un pezzo per ascoltarlo</span></span>
+      </button>
+      <div class="toolrow">
+        <button class="tool" id="wordsHintBtn" aria-label="Suggerimento"><span class="ti">💡</span><span class="tl">SUGGERIMENTO</span></button>
+        <button class="tool" id="wordsReadBtn" aria-label="Ascolta la parola"><span class="ti">🔊</span><span class="tl">ASCOLTA</span></button>
+        <button class="tool" id="wordsResetBtn" aria-label="Rifai la parola"><span class="ti">🔄</span><span class="tl">RIFAI</span></button>
+      </div>
+      <div class="navrow">
+        <button class="nav-btn" id="wordsPrevBtn" aria-label="Parola precedente">←</button>
+        <span class="counter" id="wordsCounter">1 / 20</span>
+        <button class="nav-btn" id="wordsNextBtn" aria-label="Parola successiva">→</button>
+      </div>
+    </div>
+  </footer>
+</section>
+
 <section id="screen-exercises" class="screen" aria-label="Esercizi">
   <header class="topbar">
     <div class="titlewrap">
@@ -573,6 +704,7 @@ body.theme-night .trophy.unlocked{background:#3a3222}
       <span id="quizScore">Punteggio 0</span>
     </div>
     <div class="quiz-audio" id="quizAudioWrap"></div>
+    <div id="quizFocus"></div>
     <p class="quiz-q" id="quizQuestion">…</p>
     <div class="quiz-options" id="quizOptions"></div>
     <div class="row" style="justify-content:center;margin-top:18px">
@@ -787,6 +919,99 @@ const LEVELS = RAW.map((r, i) => {
 });
 
 /* ------------------------------------------------------------------
+   1b. FORMAZIONE DI PAROLE — 20 parole illustrate
+
+   Due tappe progressive:
+     «letters»   → si uniscono le singole lettere (parole corte e regolari)
+     «syllables» → si uniscono le sillabe (parole più lunghe)
+
+   `units` sono i pezzi da mettere in ordine, `img` è il numero
+   dell'illustrazione (41-60), disegnata senza testo come le altre.
+   ------------------------------------------------------------------ */
+const WORD_LAB = [
+  /* --- tappa 1: lettere --- */
+  { word:"ape",   stage:"letters",  units:["a","p","e"],           img:41, emo:["🐝"] },
+  { word:"mela",  stage:"letters",  units:["m","e","l","a"],       img:42, emo:["🍎"] },
+  { word:"sole",  stage:"letters",  units:["s","o","l","e"],       img:43, emo:["☀️"] },
+  { word:"luna",  stage:"letters",  units:["l","u","n","a"],       img:44, emo:["🌙"] },
+  { word:"pane",  stage:"letters",  units:["p","a","n","e"],       img:45, emo:["🍞"] },
+  { word:"casa",  stage:"letters",  units:["c","a","s","a"],       img:46, emo:["🏠"] },
+  { word:"dado",  stage:"letters",  units:["d","a","d","o"],       img:47, emo:["🎲"] },
+  { word:"faro",  stage:"letters",  units:["f","a","r","o"],       img:48, emo:["🗼"] },
+
+  /* --- tappa 2: sillabe --- */
+  { word:"gatto",    stage:"syllables", units:["gat","to"],         img:49, emo:["🐱"] },
+  { word:"cane",     stage:"syllables", units:["ca","ne"],          img:50, emo:["🐶"] },
+  { word:"pesce",    stage:"syllables", units:["pe","sce"],         img:51, emo:["🐟"] },
+  { word:"rana",     stage:"syllables", units:["ra","na"],          img:52, emo:["🐸"] },
+  { word:"topo",     stage:"syllables", units:["to","po"],          img:53, emo:["🐭"] },
+  { word:"fiore",    stage:"syllables", units:["fio","re"],         img:54, emo:["🌸"] },
+  { word:"palla",    stage:"syllables", units:["pal","la"],         img:55, emo:["⚽"] },
+  { word:"treno",    stage:"syllables", units:["tre","no"],         img:56, emo:["🚂"] },
+  { word:"nave",     stage:"syllables", units:["na","ve"],          img:57, emo:["🚢"] },
+  { word:"libro",    stage:"syllables", units:["li","bro"],         img:58, emo:["📖"] },
+  { word:"ombrello", stage:"syllables", units:["om","brel","lo"],   img:59, emo:["☂️"] },
+  { word:"campana",  stage:"syllables", units:["cam","pa","na"],    img:60, emo:["🔔"] }
+];
+
+/* Distrattori della tappa «lettere»: lettere che non compaiono nella parola. */
+const LETTER_POOL = ["a","b","c","d","e","f","g","i","l","m","n","o","p","r","s","t","u","v","z"];
+
+const WORDS = WORD_LAB.map((w, i) => {
+  const pool = w.stage === "letters" ? LETTER_POOL : DISTRACTOR_POOL;
+  const lower = w.units.map(u => u.toLowerCase());
+  return {
+    id: i + 1,
+    index: i,
+    word: w.word,
+    stage: w.stage,
+    units: w.units,
+    img: w.img,
+    emo: w.emo,
+    title: `${i + 1}. ${w.word}`,
+    distractors: shuffleArr(pool.filter(u => !lower.includes(u.toLowerCase()))).slice(0, 3)
+  };
+});
+
+/* ------------------------------------------------------------------
+   1c. SUONI DIFFICILI — 20 esercizi finali
+
+   Ogni voce è una parola che contiene un gruppo ortografico difficile.
+   `wrong` sono i gruppi alternativi plausibili: il bambino ascolta la
+   parola e sceglie la grafia giusta. Dopo la risposta la scheda del
+   suono mostra il gruppo e la parola con il suono evidenziato.
+   ------------------------------------------------------------------ */
+const SOUND_ITEMS = [
+  { sound:"che", word:"formiche", wrong:["ce", "cie", "ge"] },
+  { sound:"chi", word:"chitarra", wrong:["ci", "ghi", "gi"] },
+  { sound:"ce",  word:"cesto",    wrong:["che", "cie", "ge"] },
+  { sound:"ci",  word:"città",    wrong:["chi", "gi", "ciu"] },
+  { sound:"cia", word:"camicia",  wrong:["ca", "cha", "ce"] },
+  { sound:"cio", word:"ciotola",  wrong:["co", "cho", "ciu"] },
+  { sound:"ciu", word:"ciuffo",   wrong:["cu", "chu", "cio"] },
+  { sound:"ge",  word:"gelato",   wrong:["ghe", "gi", "ce"] },
+  { sound:"gi",  word:"giraffa",  wrong:["ghi", "ge", "chi"] },
+  { sound:"ghe", word:"alghe",    wrong:["ge", "ghi", "gue"] },
+  { sound:"ghi", word:"ghiaccio", wrong:["gi", "ghe", "chi"] },
+  { sound:"gli", word:"aglio",    wrong:["li", "gni", "lli"] },
+  { sound:"gn",  word:"bagno",    wrong:["ni", "gni", "gli"] },
+  { sound:"gno", word:"ragno",    wrong:["no", "gni", "nio"] },
+  { sound:"sci", word:"sciarpa",  wrong:["si", "sce", "ci"] },
+  { sound:"sce", word:"pesce",    wrong:["se", "sci", "scie"] },
+  { sound:"spr", word:"spremuta", wrong:["sper", "scr", "sp"] },
+  { sound:"str", word:"strada",   wrong:["ster", "scr", "stt"] },
+  { sound:"squ", word:"squalo",   wrong:["sgu", "cu", "quo"] },
+  { sound:"qua", word:"quaderno", wrong:["cua", "gua", "cuo"] }
+];
+
+const SOUNDS = SOUND_ITEMS.map((it, i) => ({
+  id: i + 1,
+  sound: it.sound,
+  word: it.word,
+  options: shuffleArr([it.sound].concat(it.wrong))
+}));
+
+/* ------------------------------------------------------------------
    2. STATO E PERSISTENZA
    ------------------------------------------------------------------ */
 const STORE_KEY = "sillabe.progress.v2";
@@ -800,7 +1025,10 @@ const DEFAULT_SETTINGS = {
   soundOn: true,
   autoRead: true,
   showHints: true,
-  reduceMotion: false
+  reduceMotion: false,
+  allCaps: false,
+  readWords: true,
+  exercise: "all"
 };
 
 function loadJSON(key, fallback) {
@@ -829,6 +1057,17 @@ const L = {
   selectedTile: null,
   completed: false,
   listenCount: 0
+};
+
+/* Stato del laboratorio di formazione parole (schermata «Parole»). */
+const W = {
+  index: 0,
+  slots: [],
+  tiles: [],
+  selectedTile: null,
+  completed: false,
+  mistakes: 0,
+  hints: 0
 };
 
 const $ = sel => document.querySelector(sel);
@@ -1175,7 +1414,7 @@ function illustrationSVG(level) {
 /* ------------------------------------------------------------------
    6. NAVIGAZIONE SCHERMATE
    ------------------------------------------------------------------ */
-const SCREENS = ["home", "level", "exercises", "results", "trophies"];
+const SCREENS = ["home", "words", "level", "exercises", "results", "trophies"];
 function showScreen(name) {
   SCREENS.forEach(s => {
     const node = $("#screen-" + s);
@@ -1183,6 +1422,10 @@ function showScreen(name) {
   });
   L.screen = name;
   window.scrollTo({ top: 0, behavior: settings.reduceMotion ? "auto" : "smooth" });
+  // ogni schermata ha la sua barra inferiore, di altezza diversa: si ricalcola
+  // la variabile --bar-h dopo lo scambio, altrimenti il padding resta quello
+  // della schermata precedente e l'ultima tessera finisce sotto la barra
+  syncBottomBarHeight();
   if (name === "home") renderHome();
   if (name === "trophies") renderTrophies();
 }
@@ -1244,6 +1487,22 @@ function renderHome() {
       startLevel(target);
     });
     list.appendChild(b);
+  });
+
+  /* elenco delle 20 parole del laboratorio: un riquadro per parola */
+  const wl = $("#wordList");
+  wl.innerHTML = "";
+  progress.words = progress.words || {};
+  WORDS.forEach(w => {
+    const done = !!progress.words[w.id];
+    const b = el("button", "wordchip" + (done ? " done" : ""));
+    b.type = "button";
+    b.innerHTML = `<span class="we" aria-hidden="true">${w.emo[0]}</span>
+      <span class="wn">${w.word}</span>
+      <span class="ws">${w.stage === "letters" ? "lettere" : "sillabe"}</span>`;
+    b.setAttribute("aria-label", `${w.word}, ${w.stage === "letters" ? "lettere" : "sillabe"}${done ? ", completata" : ""}. Apri il laboratorio.`);
+    b.addEventListener("click", () => { fx("click"); startWord(w.index); });
+    wl.appendChild(b);
   });
 
   $("#homeStats").innerHTML = `
@@ -1424,7 +1683,10 @@ function updateProgressText() {
     così il contenuto non finisce mai sotto la barra, a nessuna larghezza. */
 let barObserver = null;
 function syncBottomBarHeight() {
-  const bar = document.querySelector(".bottombar");
+  // ogni schermata (livello, parole) ha la sua barra fissa: si misura quella
+  // visibile, non la prima del documento, che potrebbe essere nascosta
+  const active = document.querySelector(".screen.active");
+  const bar = (active && active.querySelector(".bottombar")) || document.querySelector(".bottombar");
   if (!bar) return;
   const apply = () => {
     const h = Math.ceil(bar.getBoundingClientRect().height);
@@ -1432,7 +1694,14 @@ function syncBottomBarHeight() {
   };
   apply();
   if (!barObserver && "ResizeObserver" in window) {
-    barObserver = new ResizeObserver(apply);
+    barObserver = new ResizeObserver(() => {
+      // la barra osservata può cambiare quando si cambia schermata
+      const now = document.querySelector(".screen.active .bottombar");
+      if (!now) return;
+      if (now !== bar) { barObserver.unobserve(bar); barObserver.observe(now); }
+      const h = Math.ceil(now.getBoundingClientRect().height);
+      if (h > 0) document.documentElement.style.setProperty("--bar-h", h + "px");
+    });
     barObserver.observe(bar);
   }
 }
@@ -1442,6 +1711,226 @@ window.addEventListener("orientationchange", () => setTimeout(syncBottomBarHeigh
 function setMascot(text) {
   const node = $("#mascotText");
   if (node) node.textContent = text;
+}
+
+/* ------------------------------------------------------------------
+   8b. FORMAZIONE DI PAROLE — lettere prima, sillabe poi
+
+   Riusa la stessa grammatica visiva del livello (caselle + tessere), ma
+   con una fila sola: la parola da comporre. La riga `.wordbig` mostra la
+   parola mentre cresce. Le lettere singole stanno nel gruppo audio «syl»,
+   le parole intere nel gruppo «parole».
+   ------------------------------------------------------------------ */
+function startWord(index) {
+  W.index = Math.max(0, Math.min(WORDS.length - 1, index));
+  const w = WORDS[W.index];
+  buildWordLab();
+  showScreen("words");
+  if (settings.autoRead) setTimeout(() => speakWord(w), 380);
+}
+
+function currentWord() { return WORDS[W.index]; }
+
+/** Legge la parola intera, se la lettura delle parole è attiva. */
+function speakWord(w) {
+  if (!w || !settings.readWords) return;
+  speak(w.word, { group: "parole", rate: Math.max(0.6, settings.rate - 0.1) });
+}
+
+function buildWordLab() {
+  const w = currentWord();
+  W.slots = [];
+  W.tiles = [];
+  W.selectedTile = null;
+  W.completed = false;
+  W.mistakes = 0;
+  W.hints = 0;
+
+  $("#wordsTitle").textContent = w.title;
+  $("#wordsStageBadge").textContent = w.stage === "letters" ? "Unisco le lettere" : "Unisco le sillabe";
+  $("#wordsCounter").textContent = `${w.id} / ${WORDS.length}`;
+  $("#wordsPrevBtn").disabled = W.index === 0;
+  $("#wordsNextBtn").disabled = W.index === WORDS.length - 1;
+  $("#wordsTilesHead").textContent = w.stage === "letters" ? "Lettere" : "Sillabe";
+  $("#wordsModeNote").textContent = w.stage === "letters"
+    ? " Una lettera alla volta: la parola cresce sotto le caselle."
+    : " Un pezzo (una sillaba) alla volta: la parola cresce sotto le caselle.";
+
+  // illustrazione della parola (PNG 41-60, nessun testo)
+  const tv = $("#wordsImage");
+  tv.innerHTML = "";
+  const img = new Image();
+  img.alt = `Illustrazione della parola ${w.word}`;
+  img.style.width = "100%";
+  img.style.display = "block";
+  img.style.borderRadius = "10px";
+  img.src = `illustrations/${String(w.img).padStart(2, "0")}.png`;
+  tv.appendChild(img);
+
+  // caselle
+  const wrap = $("#wordsSlotsWrap");
+  wrap.innerHTML = "";
+  const row = el("div", "slotrow");
+  row.setAttribute("role", "group");
+  row.setAttribute("aria-label", `La parola ${w.word}: ${w.units.length} caselle`);
+  w.units.forEach((unit, i) => {
+    const slot = el("button", "slot");
+    slot.type = "button";
+    slot.dataset.index = String(i);
+    slot.dataset.pos = String(i);
+    slot.setAttribute("aria-label", `Casella ${i + 1}, vuota`);
+    slot.addEventListener("click", () => onWordSlotClick(slot));
+    slot.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onWordSlotClick(slot); }
+    });
+    slot.addEventListener("dragover", e => { e.preventDefault(); slot.classList.add("drop-hover"); });
+    slot.addEventListener("dragleave", () => slot.classList.remove("drop-hover"));
+    row.appendChild(slot);
+    W.slots.push({ index: i, unit, filled: false });
+  });
+  wrap.appendChild(row);
+
+  // tessere: i pezzi giusti + 3 distrattori
+  W.tiles = shuffleArr(
+    w.units.map(u => ({ text: u, correct: true }))
+      .concat(w.distractors.map(d => ({ text: d, correct: false })))
+  );
+  renderWordTiles();
+  updateWordProgress();
+  $("#wordsMascotText").textContent = w.stage === "letters"
+    ? "Tocca una lettera per ascoltarla."
+    : "Tocca una sillaba per ascoltarla.";
+  syncBottomBarHeight();
+}
+
+function renderWordTiles() {
+  const pool = $("#wordsTilePool");
+  pool.innerHTML = "";
+  W.tiles.forEach((t, i) => {
+    if (t.used) return;
+    const tile = el("button", "tile", t.text);
+    tile.type = "button";
+    tile.dataset.tile = String(i);
+    tile.setAttribute("aria-label", `Pezzo ${t.text}. Premi Invio per selezionarlo, oppure trascinalo in una casella.`);
+    tile.addEventListener("click", () => onWordTileClick(tile, t));
+    tile.addEventListener("pointerdown", e => startDrag(e, tile, t, "words"));
+    pool.appendChild(tile);
+  });
+  if (!pool.children.length) {
+    pool.appendChild(el("p", "muted", "Tutti i pezzi sono al loro posto. Controlla la parola!"));
+  }
+}
+
+function updateWordProgress() {
+  const done = W.slots.filter(s => s.filled).length;
+  $("#wordsProgressText").textContent = `${done} di ${W.slots.length} pezzi`;
+  $("#wordsWordBig").textContent = W.slots.map(s => s.filled ? s.unit : "·").join("");
+}
+
+function onWordTileClick(tile, t) {
+  if (W.completed) return;
+  fx("click");
+  // una sola lettura per gesto: il pointerdown non parla (vedi startDrag)
+  speak(t.text, { group: "syl", rate: Math.max(0.6, settings.rate - 0.2) });
+  if (tile.classList.contains("selected")) {
+    tile.classList.remove("selected");
+    W.selectedTile = null;
+    return;
+  }
+  $$("#wordsTilePool .tile.selected").forEach(n => n.classList.remove("selected"));
+  tile.classList.add("selected");
+  W.selectedTile = { tile, data: t };
+  $("#wordsMascotText").textContent = `Hai scelto «${t.text}»: tocca la casella giusta.`;
+  announce(`Pezzo ${t.text} selezionato. Scegli una casella.`);
+}
+
+function onWordSlotClick(slot) {
+  if (W.completed || !W.selectedTile) {
+    if (!W.selectedTile) $("#wordsMascotText").textContent = "Prima scegli un pezzo, poi tocca la casella.";
+    return;
+  }
+  const sel = W.selectedTile;
+  tryPlaceWord(sel.tile, sel.data, slot);
+  W.selectedTile = null;
+  $$("#wordsTilePool .tile.selected").forEach(n => n.classList.remove("selected"));
+}
+
+function tryPlaceWord(tileEl, data, slotEl) {
+  if (!slotEl || W.completed) return;
+  const slot = W.slots[Number(slotEl.dataset.index)];
+  if (!slot || slot.filled) {
+    slotEl.classList.add("shake");
+    setTimeout(() => slotEl.classList.remove("shake"), 400);
+    $("#wordsMascotText").textContent = "Questa casella è già occupata: scegline un'altra.";
+    return;
+  }
+  if (slot.unit.toLowerCase() === data.text.toLowerCase()) {
+    placeWordUnit(slotEl, slot, data);
+  } else {
+    W.mistakes++;
+    fx("wrong");
+    slotEl.classList.add("shake");
+    setTimeout(() => slotEl.classList.remove("shake"), 420);
+    tileEl.classList.add("shake-anim");
+    setTimeout(() => tileEl.classList.remove("shake-anim"), 420);
+    $("#wordsMascotText").textContent = `«${data.text}» non va bene qui. Riascolta e riprova.`;
+    speak("Riprova", { group: "ui", rate: 1 });
+  }
+}
+
+function placeWordUnit(slotEl, slot, data) {
+  slotEl.textContent = slot.unit;
+  slotEl.classList.add("filled");
+  slotEl.setAttribute("aria-label", `Casella ${slot.index + 1}: ${slot.unit}`);
+  slot.filled = true;
+  data.used = true;
+  const tile = $$("#wordsTilePool .tile").find(t => t.dataset.tile === String(W.tiles.indexOf(data)));
+  if (tile) tile.remove();
+  fx("place");
+  speak(slot.unit, { group: "syl", rate: Math.max(0.6, settings.rate - 0.15) });
+  $("#wordsMascotText").textContent = `Bravo! «${slot.unit}» è al posto giusto.`;
+  updateWordProgress();
+  checkWordCompletion();
+}
+
+function checkWordCompletion() {
+  if (W.completed || !W.slots.every(s => s.filled)) return;
+  W.completed = true;
+  const w = currentWord();
+  $$("#wordsSlotsWrap .slot.filled").forEach(s => s.classList.add("done"));
+  fx("win");
+  confetti();
+  progress.words = progress.words || {};
+  const prev = progress.words[w.id];
+  const stars = W.mistakes === 0 ? 3 : W.mistakes <= 2 ? 2 : 1;
+  progress.words[w.id] = { stars: Math.max(stars, prev ? prev.stars : 0), mistakes: W.mistakes };
+  saveJSON(STORE_KEY, progress);
+  $("#wordsWordBig").textContent = w.word;
+  $("#wordsMascotText").textContent = `Hai formato «${w.word}»! Complimenti.`;
+  setTimeout(() => speakWord(w), 420);
+}
+
+function wordHint() {
+  if (W.completed) { toast("Parola già completata! 🎉"); return; }
+  const slot = W.slots.find(s => !s.filled);
+  if (!slot) return;
+  W.hints++;
+  const slotEl = document.querySelector(`#wordsSlotsWrap .slot[data-index="${slot.index}"]`);
+  const tileEl = Array.from(document.querySelectorAll("#wordsTilePool .tile")).find(t => t.textContent === slot.unit);
+  if (slotEl) { slotEl.classList.add("target"); setTimeout(() => slotEl.classList.remove("target"), 2600); }
+  if (tileEl) {
+    tileEl.classList.add("blink");
+    tileEl.scrollIntoView({ block: "nearest", behavior: settings.reduceMotion ? "auto" : "smooth" });
+    setTimeout(() => tileEl.classList.remove("blink"), 2000);
+  }
+  fx("hint");
+  speak(slot.unit, { group: "syl", rate: Math.max(0.6, settings.rate - 0.25) });
+  $("#wordsMascotText").textContent = `Il prossimo pezzo è «${slot.unit}».`;
+}
+
+function wordReset() {
+  buildWordLab();
+  toast("Parola ricominciata da capo");
 }
 
 /* ------------------------------------------------------------------
@@ -1476,14 +1965,26 @@ function onSlotClick(slot) {
   $$(".tile.selected").forEach(n => n.classList.remove("selected"));
 }
 
-/* --- drag con Pointer Events (funziona con mouse, dito, penna) --- */
+/* --- drag con Pointer Events (funziona con mouse, dito, penna) ---
+   ATTENZIONE: qui NON si parla. Un tap produce pointerdown *seguito* da
+   click: se entrambi chiamassero speak(), la sillaba verrebbe letta due
+   volte (era il bug delle «sillabe doppie»). Il suono parte dal click
+   per il tap e da onDragMove quando il trascinamento comincia davvero. */
 let drag = null;
 
-function startDrag(e, tile, data) {
-  if (L.completed) return;
+/**
+ * Inizio del trascinamento. `area` vale "level" (default) oppure "words":
+ * serve a scegliere il gestore giusto al rilascio.
+ */
+function startDrag(e, tile, data, area) {
+  const scope = area || "level";
+  const done = scope === "words" ? W.completed : L.completed;
+  if (done) return;
   if (e.pointerType === "mouse" && e.button !== 0) return;
-  drag = { tile, data, startX: e.clientX, startY: e.clientY, moved: false, ghost: null, pointerId: e.pointerId };
-  speak(data.text, { group: "syl", rate: Math.max(0.6, settings.rate - 0.2) });
+  drag = {
+    tile, data, area: scope,
+    startX: e.clientX, startY: e.clientY, moved: false, ghost: null, pointerId: e.pointerId
+  };
   tile.setPointerCapture && tile.setPointerCapture(e.pointerId);
   document.addEventListener("pointermove", onDragMove);
   document.addEventListener("pointerup", onDragEnd);
@@ -1508,6 +2009,10 @@ function onDragMove(e) {
     drag.offsetY = drag.startY - rect.top;
     drag.tile.classList.add("dragging");
     document.body.style.cursor = "grabbing";
+    // il trascinamento è iniziato davvero: qui parte l'unico suono della
+    // tessera (il click non arriva, perché il dito si è mosso)
+    fx("click");
+    speak(drag.data.text, { group: "syl", rate: Math.max(0.6, settings.rate - 0.2) });
   }
   if (drag.ghost) {
     drag.ghost.style.left = (e.clientX - drag.offsetX + drag.ghost.offsetWidth / 2) + "px";
@@ -1538,12 +2043,14 @@ function onDragEnd(e) {
   if (!d.moved) return; // è stato un tap: gestisce il click
   const slot = slotAt(e.clientX, e.clientY);
   if (slot && !slot.disabled) {
-    tryPlace(d.tile, d.data, slot);
+    if (d.area === "words") tryPlaceWord(d.tile, d.data, slot);
+    else tryPlace(d.tile, d.data, slot);
   } else {
     // fuori da uno slot: la tessera torna al suo posto
     d.tile.classList.add("shake-anim");
     setTimeout(() => d.tile.classList.remove("shake-anim"), 420);
-    setMascot("La tessera è tornata al suo posto: prova in una casella.");
+    if (d.area === "words") $("#wordsMascotText").textContent = "Il pezzo è tornato al suo posto: prova in una casella.";
+    else setMascot("La tessera è tornata al suo posto: prova in una casella.");
   }
 }
 
@@ -1728,9 +2235,47 @@ function pick(arr, n, exclude) {
   return shuffleArr(pool).slice(0, n);
 }
 
+/* --- esercizi scelti dal docente ---
+   `settings.exercise` vale "all" (quiz misto), "sounds" (tutti i 20 suoni
+   difficili) oppure "sound:<id>" (una sola scheda). La funzione è chiamata
+   dal pulsante «Avvia l'esercizio» nelle impostazioni e dai pulsanti
+   ESERCIZI della home e del livello. */
+function startChosenExercise() {
+  const ex = settings.exercise || "all";
+  if (ex === "sounds") { buildSoundQuiz(null); return; }
+  if (ex.startsWith("sound:")) {
+    buildSoundQuiz(Number(ex.slice(6)));
+    return;
+  }
+  buildQuiz();
+}
+
+/**
+ * Quiz sui suoni difficili: si ascolta la parola intera e si sceglie il
+ * gruppo di lettere che la scrive. `onlyId` limita il quiz a una scheda.
+ */
+function buildSoundQuiz(onlyId) {
+  const pool = onlyId ? SOUNDS.filter(s => s.id === onlyId) : SOUNDS;
+  const list = pool.length ? pool : SOUNDS;
+  quiz.items = list.map(s => ({
+    type: "sound",
+    prompt: `Ascolta la parola e scegli il gruppo giusto.`,
+    speak: s.word,
+    answer: s.sound,
+    options: s.options.slice(),
+    sound: s.sound,
+    word: s.word
+  }));
+  quiz.i = 0; quiz.score = 0; quiz.streak = 0;
+  $("#quizTitle").textContent = onlyId ? `Suono ${list[0].sound}` : "Suoni difficili";
+  showScreen("exercises");
+  renderQuestion();
+}
+
 function buildQuiz() {
   const syls = allSyllables();
   const words = LEVELS.map(l => l.syllables).filter(a => a.length >= 3 && a.length <= 9);
+  $("#quizTitle").textContent = "Allenamento sillabe";
   quiz.items = [];
   for (let i = 0; i < QUIZ_LEN; i++) {
     const type = ["listen", "first", "count", "missing"][i % 4];
@@ -1773,6 +2318,31 @@ function buildQuiz() {
   renderQuestion();
 }
 
+/* Scheda del suono difficile: TV con il gruppo da riconoscere e la parola
+   che lo contiene, con il gruppo evidenziato. Per gli altri quiz il riquadro
+   resta vuoto (l'illustrazione non serve: conta l'ascolto). */
+function renderQuizFocus(item) {
+  const box = $("#quizFocus");
+  box.innerHTML = "";
+  if (!item || item.type !== "sound") return;
+  const card = el("div", "soundcard");
+  const focus = el("div", "focus", item.sound);
+  const word = el("div", "w");
+  const at = item.word.toLowerCase().indexOf(item.sound.toLowerCase());
+  if (at < 0) {
+    word.textContent = item.word;
+  } else {
+    // il gruppo è evidenziato dentro la parola: aiuta a vederlo, non solo a sentirlo
+    word.appendChild(document.createTextNode(item.word.slice(0, at)));
+    word.appendChild(el("em", "", item.word.slice(at, at + item.sound.length)));
+    word.appendChild(document.createTextNode(item.word.slice(at + item.sound.length)));
+  }
+  card.appendChild(focus);
+  card.appendChild(word);
+  card.appendChild(el("div", "cap", "Suono difficile"));
+  box.appendChild(card);
+}
+
 function renderQuestion() {
   const item = quiz.items[quiz.i];
   if (!item) { finishQuiz(); return; }
@@ -1780,6 +2350,7 @@ function renderQuestion() {
   $("#quizCounter").textContent = `Domanda ${quiz.i + 1} di ${quiz.items.length}`;
   $("#quizScore").textContent = `Punteggio ${quiz.score}`;
   $("#quizQuestion").textContent = item.prompt;
+  renderQuizFocus(item);
 
   const audioWrap = $("#quizAudioWrap");
   audioWrap.innerHTML = "";
@@ -1820,7 +2391,13 @@ function answerQuiz(btn, opt, item) {
     fx("wrong");
     const right = $$("#quizOptions .opt").find(b => b.textContent === item.answer);
     if (right) right.classList.add("correct");
-    speakSequence([{ text: "Quasi! Era", group: "ui" }, { text: item.answer, group: "syl" }], { rate: 1 });
+    // nei suoni difficili si rilegge la parola intera: il gruppo da solo non
+    // è un file preregistrato e la sintesi lo compiterebbe
+    if (item.type === "sound") {
+      speakSequence([{ text: "Quasi! Era", group: "ui" }, { text: item.word, group: "parole" }], { rate: 1 });
+    } else {
+      speakSequence([{ text: "Quasi! Era", group: "ui" }, { text: item.answer, group: "syl" }], { rate: 1 });
+    }
     announce(`Sbagliato. La risposta giusta era ${item.answer}.`);
   }
   $("#quizScore").textContent = `Punteggio ${quiz.score}`;
@@ -1936,12 +2513,23 @@ function applySettings() {
   document.documentElement.style.setProperty("--font-scale", settings.fontScale);
   document.body.classList.toggle("theme-night", settings.theme === "night");
   document.body.classList.toggle("reduce-motion", !!settings.reduceMotion);
+  // tutto maiuscolo: agisce solo sui testi da leggere (tessere, caselle,
+  // opzioni), non sulle etichette dei pulsanti
+  document.body.classList.toggle("all-caps", !!settings.allCaps);
 }
 
 function openSettings() {
   const voiceOpts = (voices.filter(v => /it/i.test(v.lang)).length ? voices.filter(v => /it/i.test(v.lang)) : voices)
     .map(v => `<option value="${v.voiceURI}" ${settings.voiceURI === v.voiceURI ? "selected" : ""}>${v.name} (${v.lang})</option>`)
     .join("");
+  /* Scelta dell'esercizio da parte del docente: le prime voci sono i
+     blocchi, poi i singoli esercizi. Il valore è salvato fra le
+     impostazioni, così resta selezionato anche dopo il riavvio. */
+  const exOpts = [
+    `<option value="all" ${settings.exercise === "all" ? "selected" : ""}>Tutti gli esercizi (8 domande)</option>`,
+    `<option value="sounds" ${settings.exercise === "sounds" ? "selected" : ""}>Suoni difficili · tutti i 20</option>`,
+    ...SOUNDS.map(s => `<option value="sound:${s.id}" ${settings.exercise === "sound:" + s.id ? "selected" : ""}>Suono ${s.sound} · ${s.word}</option>`)
+  ].join("");
   openSheet("Impostazioni", `
     <div class="field"><label for="setFont">Dimensione testo<span class="hint">Più grande per leggere meglio</span></label>
       <input id="setFont" type="range" min="0.9" max="1.5" step="0.05" value="${settings.fontScale}"></div>
@@ -1949,6 +2537,10 @@ function openSettings() {
       <input id="setRate" type="range" min="0.6" max="1.4" step="0.05" value="${settings.rate}"></div>
     <div class="field"><label for="setVoice">Voce italiana<span class="hint">Dipende dal sistema</span></label>
       <select id="setVoice"><option value="">Automatica</option>${voiceOpts}</select></div>
+    <div class="field"><label for="setCaps">Tutto maiuscolo<span class="hint">Tessere, caselle e parole in MAIUSCOLO</span></label>
+      <span class="switch"><input id="setCaps" type="checkbox" ${settings.allCaps ? "checked" : ""}><span></span></span></div>
+    <div class="field"><label for="setReadWords">Leggi le parole<span class="hint">La voce legge la parola intera</span></label>
+      <span class="switch"><input id="setReadWords" type="checkbox" ${settings.readWords ? "checked" : ""}><span></span></span></div>
     <div class="field"><label for="setTheme">Tema scuro<span class="hint">Meno luce, stesso divertimento</span></label>
       <span class="switch"><input id="setTheme" type="checkbox" ${settings.theme === "night" ? "checked" : ""}><span></span></span></div>
     <div class="field"><label for="setSound">Effetti sonori<span class="hint">Suoni di conferma e vittoria</span></label>
@@ -1959,7 +2551,10 @@ function openSettings() {
       <span class="switch"><input id="setHints" type="checkbox" ${settings.showHints ? "checked" : ""}><span></span></span></div>
     <div class="field"><label for="setMotion">Riduci animazioni<span class="hint">Per chi preferisce meno movimento</span></label>
       <span class="switch"><input id="setMotion" type="checkbox" ${settings.reduceMotion ? "checked" : ""}><span></span></span></div>
+    <div class="field"><label for="setExercise">Esercizio scelto dal docente<span class="hint">Su cosa lavorare adesso</span></label>
+      <select id="setExercise">${exOpts}</select></div>
     <div class="row" style="justify-content:flex-end;margin-top:14px">
+      <button class="btn small" id="settingsStart">▶ Avvia l'esercizio</button>
       <button class="btn ghost small" id="settingsDone">Chiudi</button>
     </div>
     <p class="muted" style="margin-top:8px;font-size:.72rem">Le impostazioni sono salvate automaticamente su questo dispositivo.</p>
@@ -1977,12 +2572,16 @@ function openSettings() {
   bind("setFont", "fontScale", i => parseFloat(i.value));
   bind("setRate", "rate", i => parseFloat(i.value));
   bind("setVoice", "voiceURI", i => { refreshVoices(); return i.value; });
+  bind("setCaps", "allCaps", i => i.checked);
+  bind("setReadWords", "readWords", i => i.checked);
   bind("setTheme", "theme", i => i.checked ? "night" : "day");
   bind("setSound", "soundOn", i => i.checked);
   bind("setAuto", "autoRead", i => i.checked);
   bind("setHints", "showHints", i => { if (L.screen === "level") buildLevel(); return i.checked; });
   bind("setMotion", "reduceMotion", i => i.checked);
+  bind("setExercise", "exercise", i => i.value);
 
+  $("#settingsStart").onclick = () => { closeSheet(); startChosenExercise(); };
   $("#settingsDone").onclick = closeSheet;
 }
 
@@ -1996,9 +2595,12 @@ function openHelp() {
       <li><b>2. Trascina</b> ogni tessera nella casella giusta (con il dito o con il mouse).</li>
       <li><b>3. Tocca</b> una tessera per ascoltarne il suono; toccala e poi tocca la casella per inserirla.</li>
       <li><b>4. Suggerimento</b> fa lampeggiare la sillaba giusta; <b>Rifai</b> ricomincia il livello.</li>
-      <li><b>5. Esercizi</b> propone 8 domande su sillabe, parole e conteggi.</li>
+      <li><b>5. Formazione di parole</b>: 20 parole da comporre, prima con le lettere poi con le sillabe.</li>
+      <li><b>6. Suoni difficili</b>: 20 schede finali su <i>che, chi, ce, ci, cia, cio, sci, sce, gn, gli, str, spr…</i></li>
+      <li><b>7. Esercizi</b> propone 8 domande su sillabe, parole e conteggi; il docente può
+        scegliere dal menu impostazioni quale esercizio avviare.</li>
     </ul>
-    <p class="muted" style="font-size:.78rem">Scorciatoie da tastiera: ← → per cambiare livello, H per il suggerimento, R per rifare, Esc per tornare alla home.</p>
+    <p class="muted" style="font-size:.78rem">Scorciatoie da tastiera: ← → per cambiare livello o parola, H per il suggerimento, R per rifare, Esc per tornare alla home.</p>
     <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn ghost small" id="helpDone">Ho capito</button></div>
   `);
   $("#helpDone").onclick = closeSheet;
@@ -2017,7 +2619,15 @@ $("#homeCloseBtn").onclick = () => {
   if (window.desktopAPI && window.desktopAPI.close) window.desktopAPI.close();
   else if (window.close) { window.close(); toast("Puoi chiudere la scheda del browser 🙂"); }
 };
-$("#toolExercises").onclick = buildQuiz;
+$("#toolExercises").onclick = startChosenExercise;
+/* laboratorio parole: apre la prima parola non ancora completata */
+$("#toolWords").onclick = () => {
+  fx("click");
+  progress.words = progress.words || {};
+  const next = WORDS.find(w => !progress.words[w.id]) || WORDS[0];
+  startWord(next.index);
+};
+$("#toolSounds").onclick = () => { fx("click"); buildSoundQuiz(null); };
 $("#toolPrint").onclick = () => { buildPrintSheet(LEVELS[Math.max(0, (progress.lastLevel || 1) - 1)]); setTimeout(() => window.print(), 120); };
 $("#toolTrophies").onclick = () => showScreen("trophies");
 $("#toolHelp").onclick = openHelp;
@@ -2039,7 +2649,7 @@ $("#hintBtn").onclick = giveHint;
 $("#resetBtn").onclick = resetLevel;
 $("#printBtn").onclick = printCurrent;
 $("#finishBtn").onclick = finishLevel;
-$("#exercisesBtn").onclick = buildQuiz;
+$("#exercisesBtn").onclick = startChosenExercise;
 $("#shuffleBtn").onclick = () => {
   L.tiles = shuffleArr(L.tiles);
   renderTiles();
@@ -2058,7 +2668,7 @@ $("#prevBtn").onclick = () => { if (L.levelIndex > 0) startLevel(L.levelIndex - 
 $("#nextBtn").onclick = () => { if (L.levelIndex < LEVELS.length - 1) startLevel(L.levelIndex + 1); };
 
 $("#resultsNext").onclick = () => {
-  if ($("#resultsBadge").textContent === "Esercizi") { buildQuiz(); return; }
+  if ($("#resultsBadge").textContent === "Esercizi") { startChosenExercise(); return; }
   if (L.levelIndex < LEVELS.length - 1) startLevel(L.levelIndex + 1);
   else showScreen("home");
 };
@@ -2068,6 +2678,40 @@ $("#resultsCloseBtn").onclick = () => showScreen("home");
 
 $("#quizHomeBtn").onclick = () => showScreen("home");
 $("#quizCloseBtn").onclick = () => showScreen("home");
+
+/* --- laboratorio «Formazione di parole» --- */
+$("#wordsHomeBtn").onclick = () => { switchScreenCleanup(); showScreen("home"); };
+$("#wordsCloseBtn").onclick = () => { switchScreenCleanup(); showScreen("home"); };
+$("#wordsRadioBtn").onclick = () => {
+  const btn = $("#wordsRadioBtn");
+  btn.classList.add("playing");
+  setTimeout(() => btn.classList.remove("playing"), 1400);
+  // la radio legge sempre, anche se la lettura automatica delle parole è spenta
+  const w = currentWord();
+  if (w) speak(w.word, { group: "parole", rate: Math.max(0.6, settings.rate - 0.1) });
+  announce("Ascolto della parola.");
+};
+$("#wordsReadBtn").onclick = () => {
+  const w = currentWord();
+  if (!w) return;
+  if (!settings.readWords) {
+    // lettura disattivata: lo diciamo, senza contraddire l'impostazione
+    toast("La lettura delle parole è disattivata nelle impostazioni");
+    return;
+  }
+  speak(w.word, { group: "parole", rate: Math.max(0.6, settings.rate - 0.1) });
+};
+$("#wordsShuffleBtn").onclick = () => {
+  W.tiles = shuffleArr(W.tiles);
+  renderWordTiles();
+  toast("Pezzi mescolati");
+};
+$("#wordsMascotBtn").onclick = wordHint;
+$("#wordsHintBtn").onclick = wordHint;
+$("#wordsResetBtn").onclick = wordReset;
+$("#wordsPrevBtn").onclick = () => { if (W.index > 0) startWord(W.index - 1); };
+$("#wordsNextBtn").onclick = () => { if (W.index < WORDS.length - 1) startWord(W.index + 1); };
+
 $("#quizRepeatBtn").onclick = () => {
   const item = quiz.items[quiz.i];
   if (item) speak(item.speak, { group: ["parole", "syl"], rate: Math.max(0.65, settings.rate - 0.1) });
@@ -2090,11 +2734,19 @@ $("#overlay").addEventListener("click", e => { if (e.target.id === "overlay") cl
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     if ($("#overlay").classList.contains("open")) { closeSheet(); return; }
-    if (L.screen === "level") { switchScreenCleanup(); showScreen("home"); }
+    if (L.screen === "level" || L.screen === "words") { switchScreenCleanup(); showScreen("home"); }
+    return;
+  }
+  if (e.target.matches("input, select, textarea")) return;
+  // laboratorio parole: frecce per cambiare parola, H e R come nei livelli
+  if (L.screen === "words") {
+    if (e.key === "ArrowRight") { if (W.index < WORDS.length - 1) startWord(W.index + 1); }
+    if (e.key === "ArrowLeft") { if (W.index > 0) startWord(W.index - 1); }
+    if (e.key.toLowerCase() === "h") wordHint();
+    if (e.key.toLowerCase() === "r") wordReset();
     return;
   }
   if (L.screen !== "level" || $("#overlay").classList.contains("open")) return;
-  if (e.target.matches("input, select, textarea")) return;
   if (e.key === "ArrowRight") { if (L.levelIndex < LEVELS.length - 1) startLevel(L.levelIndex + 1); }
   if (e.key === "ArrowLeft") { if (L.levelIndex > 0) startLevel(L.levelIndex - 1); }
   if (e.key.toLowerCase() === "h") giveHint();

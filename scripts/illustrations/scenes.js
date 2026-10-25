@@ -1027,6 +1027,459 @@ SCENES.push(() => {
 });
 
 /* ==================================================================
+   FORMAZIONE DI PAROLE · 20 figure (41-60)
+
+   Una figura per parola del laboratorio «Formazione di parole». Ogni
+   scena mostra l'oggetto o l'animale della parola, senza testo: il
+   bambino deve riconoscere il significato, non leggere la scritta.
+   ================================================================== */
+
+/* 41 · ape */
+SCENES.push(() => {
+  const b = outdoor(1, { sunX: 520, sunY: 58, sunR: 26 });
+  // ape: corpo a strisce, ali chiare, antenne
+  const bee =
+    ell(322, 232, 42, 30, "#f6bf4a") +
+    rect(300, 216, 10, 32, 5, "#33475b") +
+    rect(318, 212, 10, 40, 5, "#33475b") +
+    rect(336, 216, 10, 32, 5, "#33475b") +
+    circ(360, 232, 18, "#33475b") +
+    circ(364, 228, 4, "#ffffff") +
+    line(`M${n(372)} ${n(214)} q${n(8)} ${n(-10)} ${n(16)} ${n(-4)}`, "#33475b", 3) +
+    line(`M${n(360)} ${n(212)} q${n(2)} ${n(-12)} ${n(10)} ${n(-14)}`, "#33475b", 3) +
+    ell(316, 200, 22, 13, "#e8f6ff", { opacity: 0.85, rotate: -18 }) +
+    ell(306, 214, 18, 10, "#e8f6ff", { opacity: 0.7, rotate: 12 }) +
+    // scia di volo
+    line(`M${n(430)} ${n(250)} q${n(-26)} ${n(6)} ${n(-42)} ${n(0)}`, "#ffffff", 5, { opacity: 0.6 });
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      bee +
+      P.flower(180, 320, 1.1, "#f58ba8", "#f6bf4a") +
+      P.flower(250, 336, 0.85, "#ffffff", "#ffd257") +
+      P.flowerPatch(520, 330, 1.05)
+  };
+});
+
+/* 42 · mela */
+SCENES.push(() => {
+  const b = outdoor(1, { sun: false });
+  return {
+    sky: ["#e8f7e4", "#cfe9d6"],
+    body:
+      b.body +
+      sun(88, 54, 28) +
+      // mela grande, con picciolo e foglia
+      circ(320, 226, 74, "#e0574f") +
+      circ(300, 202, 18, "#f58b84", { opacity: 0.45 }) +
+      path(`M${n(320)} ${n(154)} q${n(4)} ${n(-24)} ${n(18)} ${n(-30)}`, "none", { stroke: "#8d6a45", sw: 7 }) +
+      ell(356, 130, 24, 12, "#5cc47f", { rotate: -26 }) +
+      line(`M${n(356)} ${n(126)} q${n(-10)} ${n(2)} ${n(-18)} ${n(2)}`, "#3ea363", 2.6) +
+      shadow(320, 306, 66) +
+      P.basket(510, 314, 1.1) +
+      P.flowerPatch(120, 334, 0.9)
+  };
+});
+
+/* 43 · sole */
+SCENES.push(() => {
+  return {
+    sky: ["#ffeccb", "#ffd9a0"],
+    body:
+      sun(320, 168, 92) +
+      // raggi lunghi
+      (() => {
+        let r = "";
+        for (let i = 0; i < 12; i++) {
+          const a = (i * Math.PI * 2) / 12;
+          r += line(
+            `M${n(320 + Math.cos(a) * 118)} ${n(168 + Math.sin(a) * 118)} l${n(Math.cos(a) * 26)} ${n(Math.sin(a) * 26)}`,
+            "#ffd257", 7, { opacity: 0.6 }
+          );
+        }
+        return r;
+      })() +
+      cloud(96, 74, 0.8, "#ffffff", 0.85) +
+      cloud(546, 96, 0.62, "#ffffff", 0.7) +
+      meadow(268) +
+      P.flowerPatch(90, 336, 1.05) +
+      P.flowerPatch(556, 330, 0.95)
+  };
+});
+
+/* 44 · luna */
+SCENES.push(() => {
+  let st = "";
+  [[70, 52, 6], [140, 96, 4], [216, 44, 5], [286, 88, 3.4], [510, 50, 5.5], [578, 104, 4],
+   [46, 138, 3.6], [608, 60, 3]].forEach(([sx, sy, sr]) => { st += star(sx, sy, sr); });
+  return {
+    sky: NIGHT_SKY,
+    body:
+      st +
+      ell(400, 216, 128, 128, "#fff4c9", { opacity: 0.12 }) +
+      moon(400, 216, 86) +
+      hill(276, "#2f4a52", 26, 1) +
+      hill(306, "#26404a", 16, 1) +
+      // casetta illuminata in basso a sinistra
+      poly([[110, 262], [176, 210], [242, 262]], "#8d5a3c") +
+      rect(124, 258, 104, 70, 5, "#f3e0ba") +
+      rect(146, 282, 26, 46, 3, "#8d6a45") +
+      rect(190, 274, 26, 24, 3, "#ffd257") +
+      line(`M${n(203)} ${n(274)} v${n(24)}`, "#8d6a45", 2.4) +
+      line(`M${n(190)} ${n(286)} h${n(26)}`, "#8d6a45", 2.4)
+  };
+});
+
+/* 45 · pane */
+SCENES.push(() => {
+  const b = indoor("#fdf3e3", "#e8cfae");
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      P.window(58, 44, 96, 84, { curtain: "#f6bf4a" }) +
+      P.table(340, 300, 250, 1.5) +
+      P.bread(272, 292, 1.7) +
+      P.basket(432, 296, 1.2) +
+      P.plate(560, 296, 1.15, "#ffffff") +
+      // farina sparsa sul tavolo
+      circ(220, 296, 5, "#ffffff") + circ(238, 300, 3.4, "#ffffff") + circ(204, 300, 3, "#ffffff")
+  };
+});
+
+/* 46 · casa */
+SCENES.push(() => {
+  return {
+    sky: ["#d7f0ff", "#cfeaff"],
+    body:
+      sun(78, 52, 26) +
+      cloud(214, 44, 0.78) +
+      cloud(520, 58, 0.64, "#ffffff", 0.8) +
+      meadow(266) +
+      // casa: muri, tetto, porta, finestre, comignolo
+      rect(186, 176, 268, 152, 6, "#f3e0ba") +
+      poly([[166, 180], [320, 92], [474, 180]], "#d9705f") +
+      rect(376, 108, 26, 46, 4, "#b0b7be") +
+      ell(402, 106, 12, 7, "#e7edf2", { opacity: 0.7 }) +
+      rect(288, 248, 56, 80, 4, "#8d6a45") +
+      circ(334, 288, 5, "#f6bf4a") +
+      rect(214, 210, 44, 40, 4, "#cfe3f2") +
+      rect(384, 210, 44, 40, 4, "#cfe3f2") +
+      line(`M${n(236)} ${n(210)} v${n(40)}`, "#f3e0ba", 3) +
+      line(`M${n(214)} ${n(230)} h${n(44)}`, "#f3e0ba", 3) +
+      line(`M${n(406)} ${n(210)} v${n(40)}`, "#f3e0ba", 3) +
+      line(`M${n(384)} ${n(230)} h${n(44)}`, "#f3e0ba", 3) +
+      P.fence(20, 300, 130, 0.8) +
+      P.flowerPatch(536, 330, 1.0)
+  };
+});
+
+/* 47 · dado */
+SCENES.push(() => {
+  const b = indoor("#fdf3e6", "#e8cfae");
+  const cx = 320, cy = 240, r = 92;
+  // cinque punti rossi come su un dado a cinque
+  const dots = [[0, 0], [-46, -46], [46, -46], [-46, 46], [46, 46]];
+  let pip = "";
+  dots.forEach(([dx, dy]) => { pip += circ(cx + dx, cy + dy, 15, "#ee5f5f"); });
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      P.rug(320, 336, 190, "#d8e8f5") +
+      shadow(cx, cy + r + 8, 84) +
+      rect(cx - r, cy - r, r * 2, r * 2, 26, "#ffffff") +
+      rect(cx - r, cy - r, r * 2, 22, 26, "#eef4f9") +
+      circ(cx, cy, r, "none", { stroke: "#c3ccd6", sw: 4 }) +
+      pip +
+      // secondo dado piccolo accanto
+      shadow(508, 300, 40) +
+      rect(478, 244, 60, 60, 14, "#fff8ec") +
+      circ(494, 260, 8, "#ee5f5f") +
+      circ(522, 288, 8, "#ee5f5f") +
+      P.table(120, 306, 130, 1)
+  };
+});
+
+/* 48 · faro */
+SCENES.push(() => {
+  const sea = rect(-10, 254, 660, 120, 0, "#4fa8d8");
+  let waves = "";
+  for (let i = 0; i < 3; i++) {
+    const wy = 276 + i * 26;
+    waves += line(`M40 ${wy} q26 -10 52 0 t52 0 t52 0 t52 0 t52 0 t52 0 t52 0 t52 0`, "#2f8cbd", 5, { opacity: 0.4 - i * 0.07 });
+  }
+  return {
+    sky: ["#bfe4f7", "#e8f4fb"],
+    body:
+      cloud(96, 52, 0.8) +
+      cloud(520, 44, 0.62, "#ffffff", 0.72) +
+      sea +
+      waves +
+      // scogliera
+      poly([[196, 262], [252, 230], [322, 250], [374, 268], [374, 300], [196, 300]], "#8d949c") +
+      // torre a fasce
+      poly([[288, 240], [352, 240], [340, 92], [300, 92]], "#ffffff") +
+      poly([[288, 240], [352, 240], [350.6, 214], [289.4, 214]], "#ee5f5f") +
+      poly([[297, 168], [343, 168], [341, 142], [299, 142]], "#ee5f5f") +
+      // lanterna
+      rect(296, 66, 48, 28, 6, "#ffd257") +
+      poly([[292, 66], [320, 42], [348, 66]], "#b03a35") +
+      // fasci di luce
+      poly([[344, 66], [500, 24], [500, 108]], "#ffe38a", { opacity: 0.35 }) +
+      poly([[296, 66], [140, 24], [140, 108]], "#ffe38a", { opacity: 0.25 }) +
+      seagull(486, 168, 1.15)
+  };
+});
+
+/* 49 · gatto */
+SCENES.push(() => {
+  const b = outdoor(1, { sunX: 92, sunY: 58, sunR: 28 });
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      P.ball(462, 300, 34, "#5aa9e6", "#f6bf4a") +
+      cat(260, 306, 1.45, { pose: "sit", tilt: -4, happy: true }) +
+      // ciotola dell'acqua accanto
+      ell(396, 310, 34, 10, "#d8ecf6") +
+      ell(396, 306, 26, 7, "#7cc0ea") +
+      P.flowerPatch(90, 336, 1.0)
+  };
+});
+
+/* 50 · cane */
+SCENES.push(() => {
+  const b = outdoor(1, { sun: false });
+  return {
+    sky: ["#e6f4ff", "#d3ecff"],
+    body:
+      b.body +
+      sun(556, 56, 26) +
+      dog(300, 304, 1.55, { pose: "sit", color: "#c98a5a" }) +
+      P.bone(468, 312, 1.3, -14) +
+      P.fence(40, 288, 150, 0.85) +
+      P.flowerPatch(560, 332, 0.95)
+  };
+});
+
+/* 51 · pesce */
+SCENES.push(() => {
+  let bubbles = "";
+  [[250, 128, 6], [274, 106, 4.6], [238, 88, 3.4], [296, 74, 3]].forEach(([bx, by, br]) => {
+    bubbles += circ(bx, by, br, "#d8f0fa", { opacity: 0.7 });
+  });
+  let weed = "";
+  [86, 132, 486, 536].forEach((wx, i) => {
+    weed += path(
+      `M${n(wx)} ${n(318)} q${n(i % 2 ? 20 : -20)} ${n(-28)} 0 ${n(-56)} q${n(i % 2 ? -18 : 18)} ${n(-24)} 0 ${n(-46)}`,
+      "none", { stroke: i % 2 ? "#4ea24d" : "#3ea363", sw: 9 }
+    );
+  });
+  return {
+    sky: ["#7fd0f0", "#18618a"],
+    body:
+      poly([[160, 0], [256, 0], [136, 336], [46, 336]], "#ffffff", { opacity: 0.13 }) +
+      poly([[340, 0], [412, 0], [336, 336], [262, 336]], "#ffffff", { opacity: 0.09 }) +
+      rect(-10, 314, 660, 70, 0, "#f3e0ba") +
+      weed +
+      fish(330, 214, 2.1, { color: "#f2884b", dark: "#d96a2f" }) +
+      bubbles
+  };
+});
+
+/* 52 · rana */
+SCENES.push(() => {
+  let ripples = "";
+  [[220, 306, 60], [220, 306, 92], [220, 306, 124]].forEach(([rx, ry, rr], i) => {
+    ripples += ell(rx, ry, rr, rr * 0.24, "none", { stroke: "#ffffff", sw: 4, opacity: 0.35 - i * 0.08 });
+  });
+  return {
+    sky: ["#d9f2ff", "#bfe4f7"],
+    body:
+      sun(556, 56, 28) +
+      cloud(120, 48, 0.82) +
+      cloud(320, 38, 0.6, "#ffffff", 0.7) +
+      meadow(238) +
+      water(288, "#63b9e6", "#3f9ccb") +
+      // ninfee
+      ell(120, 300, 40, 13, "#5cc47f") +
+      ell(432, 318, 34, 11, "#4eb26c") +
+      ell(120, 300, 40, 13, "none", { stroke: "#3ea363", sw: 2.6 }) +
+      ripples +
+      frog(220, 302, 1.5, { color: "#6ec46b" }) +
+      butterfly(470, 176, 1.2, { c1: "#f58ba8", c2: "#f6bf4a" })
+  };
+});
+
+/* 53 · topo */
+SCENES.push(() => {
+  const b = indoor("#fdf5ea", "#e3c9a6");
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      P.rug(300, 332, 150, "#e6d6c2") +
+      P.table(452, 300, 170, 1.35) +
+      // pezzo di formaggio con i buchi
+      poly([[400, 300], [470, 262], [522, 300]], "#f6d47a") +
+      rect(400, 300, 122, 4, 2, "#e0bb5c") +
+      circ(438, 288, 7, "#e0bb5c") + circ(474, 296, 5, "#e0bb5c") + circ(496, 284, 4, "#e0bb5c") +
+      mouse(232, 308, 1.7, { color: "#a8b3c0" })
+  };
+});
+
+/* 54 · fiore */
+SCENES.push(() => {
+  const b = outdoor(1, { sun: false });
+  let petals = "";
+  for (let i = 0; i < 8; i++) {
+    const a = (i * Math.PI * 2) / 8;
+    petals += ell(320 + Math.cos(a) * 48, 206 + Math.sin(a) * 48, 30, 24, "#f58ba8", { rotate: (a * 180) / Math.PI });
+  }
+  return {
+    sky: ["#eafaf1", "#d3f0dd"],
+    body:
+      b.body +
+      sun(80, 52, 26) +
+      // stelo e foglie
+      line(`M${n(320)} ${n(232)} v${n(104)}`, "#3ea363", 10) +
+      ell(288, 288, 30, 14, "#5cc47f", { rotate: -24 }) +
+      ell(352, 306, 28, 13, "#5cc47f", { rotate: 22 }) +
+      petals +
+      circ(320, 206, 26, "#f6bf4a") +
+      circ(320, 206, 13, "#e8a83a") +
+      butterfly(486, 168, 1.35, { c1: "#f6bf4a", c2: "#5aa9e6" })
+  };
+});
+
+/* 55 · palla */
+SCENES.push(() => {
+  const b = outdoor(1, { sunX: 92, sunY: 56, sunR: 28 });
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      P.ball(320, 234, 96, "#ee5f5f", "#f6bf4a") +
+      // rimbalzo
+      line(`M${n(210)} ${n(300)} q${n(40)} ${n(-26)} ${n(84)} ${n(-16)}`, "#ffffff", 5, { opacity: 0.55 }) +
+      ell(320, 336, 76, 14, "#2f4459", { opacity: 0.12 }) +
+      P.flowerPatch(88, 334, 1.0) +
+      P.flowerPatch(556, 330, 0.9)
+  };
+});
+
+/* 56 · treno */
+SCENES.push(() => {
+  return {
+    sky: ["#dcefff", "#eef7ff"],
+    body:
+      sun(78, 50, 24) +
+      cloud(270, 44, 0.74) +
+      cloud(500, 58, 0.6, "#ffffff", 0.7) +
+      meadow(262) +
+      street(300) +
+      P.train(140, 296, 1.45) +
+      // segnale
+      line(`M${n(578)} ${n(296)} v${n(-70)}`, "#8d99a6", 7) +
+      circ(578, 218, 11, "#57bf7a")
+  };
+});
+
+/* 57 · nave */
+SCENES.push(() => {
+  let waves = "";
+  for (let i = 0; i < 4; i++) {
+    const wy = 268 + i * 26;
+    waves += line(`M30 ${wy} q26 -10 52 0 t52 0 t52 0 t52 0 t52 0 t52 0 t52 0 t52 0 t52 0`,
+      "#2f8cbd", 5, { opacity: 0.4 - i * 0.06 });
+  }
+  return {
+    sky: ["#bfe4f7", "#e8f4fb"],
+    body:
+      sun(560, 54, 30) +
+      cloud(130, 50, 0.8) +
+      cloud(300, 36, 0.6, "#ffffff", 0.7) +
+      rect(-10, 248, 660, 120, 0, "#4fa8d8") +
+      waves +
+      P.ship(120, 272, 1.42) +
+      // scia
+      line(`M${n(66)} ${n(296)} q${n(-22)} ${n(5)} ${n(-40)} ${n(2)}`, "#ffffff", 6, { opacity: 0.7 }) +
+      seagull(486, 132, 1.2)
+  };
+});
+
+/* 58 · libro */
+SCENES.push(() => {
+  const b = indoor("#fdf3e3", "#e5c9a6");
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      P.window(66, 46, 92, 82, { curtain: "#5aa9e6" }) +
+      P.table(320, 306, 230, 1.5) +
+      P.book(320, 276, 2.1, 3) +
+      // libreria sullo sfondo
+      rect(540, 132, 74, 156, 6, "#c99a66") +
+      rect(548, 142, 58, 40, 3, "#a97a4e") +
+      rect(548, 190, 58, 40, 3, "#a97a4e") +
+      rect(548, 238, 58, 40, 3, "#a97a4e") +
+      rect(552, 148, 9, 28, 2, "#ee5f5f") +
+      rect(566, 146, 9, 30, 2, "#57bf7a") +
+      rect(580, 150, 9, 26, 2, "#f6bf4a") +
+      rect(552, 196, 9, 28, 2, "#5aa9e6") +
+      rect(566, 198, 9, 26, 2, "#c39bea")
+  };
+});
+
+/* 59 · ombrello */
+SCENES.push(() => {
+  let rain = "";
+  for (let i = 0; i < 18; i++) {
+    const rx = 14 + i * 36;
+    const ry = 112 + (i % 5) * 26;
+    rain += line(`M${n(rx)} ${n(ry)} l${n(-5)} ${n(20)}`, "#7cb6d8", 5, { opacity: 0.7 });
+  }
+  return {
+    sky: ["#9fb4c6", "#c6d5e0"],
+    body:
+      rainCloud(120, 24, 1.15) +
+      rainCloud(392, 18, 1.05) +
+      rainCloud(572, 40, 0.8) +
+      rain +
+      meadow(276) +
+      P.puddle(140, 348, 54) +
+      P.puddle(512, 344, 46) +
+      P.umbrella(320, 306, 1.9, true, "#ee5f5f") +
+      // stivaletti sotto l'ombrello
+      ell(292, 312, 14, 7, "#3c5a78") +
+      ell(348, 312, 14, 7, "#3c5a78")
+  };
+});
+
+/* 60 · campana */
+SCENES.push(() => {
+  return {
+    sky: ["#ffeccb", "#ffd9a0"],
+    body:
+      sun(90, 54, 24) +
+      cloud(230, 42, 0.72) +
+      cloud(500, 52, 0.6, "#ffffff", 0.7) +
+      // trave di legno con corda
+      rect(140, 92, 360, 18, 6, "#a86c33") +
+      line(`M${n(320)} ${n(110)} v${n(38)}`, "#8d6a45", 6) +
+      P.bell(320, 268, 3.0) +
+      // onde sonore
+      line(`M${n(196)} ${n(210)} q${n(-22)} ${n(26)} ${n(0)} ${n(52)}`, "#8fa3b8", 5, { opacity: 0.55 }) +
+      line(`M${n(160)} ${n(192)} q${n(-34)} ${n(42)} ${n(0)} ${n(86)}`, "#8fa3b8", 4, { opacity: 0.4 }) +
+      line(`M${n(444)} ${n(210)} q${n(22)} ${n(26)} ${n(0)} ${n(52)}`, "#8fa3b8", 5, { opacity: 0.55 }) +
+      line(`M${n(480)} ${n(192)} q${n(34)} ${n(42)} ${n(0)} ${n(86)}`, "#8fa3b8", 4, { opacity: 0.4 }) +
+      meadow(298)
+  };
+});
+
+/* ==================================================================
    Documento SVG
    ================================================================== */
 

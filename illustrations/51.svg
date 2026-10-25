@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#7fd0f0"/>
+<stop offset="100%" stop-color="#18618a"/>
+</linearGradient>
+</defs>
+<rect width="640" height="360" fill="url(#bg)"/>
+<polygon points="160,0 256,0 136,336 46,336" fill="#ffffff" opacity="0.13"/><polygon points="340,0 412,0 336,336 262,336" fill="#ffffff" opacity="0.09"/><rect x="-10" y="314" width="660" height="70" rx="0" fill="#f3e0ba"/><path d="M86 318 q-20 -28 0 -56 q18 -24 0 -46" fill="none" stroke="#3ea363" stroke-width="9" stroke-linecap="round"/><path d="M132 318 q20 -28 0 -56 q-18 -24 0 -46" fill="none" stroke="#4ea24d" stroke-width="9" stroke-linecap="round"/><path d="M486 318 q-20 -28 0 -56 q18 -24 0 -46" fill="none" stroke="#3ea363" stroke-width="9" stroke-linecap="round"/><path d="M536 318 q20 -28 0 -56 q-18 -24 0 -46" fill="none" stroke="#4ea24d" stroke-width="9" stroke-linecap="round"/><ellipse cx="330" cy="277" rx="71.4" ry="22.85" fill="#2f4459" opacity="0.1"/><polygon points="384.6,214 430.8,176.2 430.8,251.8" fill="#d96a2f"/><ellipse cx="330" cy="214" rx="67.2" ry="44.1" fill="#f2884b"/><path d="M321.6 172 q21 -25.2 42 4.2" fill="none" stroke="#d96a2f" stroke-width="12.6" stroke-linecap="round"/><ellipse cx="325.8" cy="230.8" rx="37.8" ry="18.9" fill="#ffd9bd" opacity="0.6"/><circle cx="292.2" cy="205.6" r="8.4" fill="#33475b"/><circle cx="289.26" cy="202.66" r="2.94" fill="#ffffff"/><path d="M342.6 218.2 q12.6 12.6 0 16.8" fill="none" stroke="#d96a2f" stroke-width="5.46" stroke-linecap="round"/><circle cx="250" cy="128" r="6" fill="#d8f0fa" opacity="0.7"/><circle cx="274" cy="106" r="4.6" fill="#d8f0fa" opacity="0.7"/><circle cx="238" cy="88" r="3.4" fill="#d8f0fa" opacity="0.7"/><circle cx="296" cy="74" r="3" fill="#d8f0fa" opacity="0.7"/>
+</svg>

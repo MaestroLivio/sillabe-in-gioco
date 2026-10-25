@@ -11,7 +11,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 |---|---|
 | **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
 | **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
-| **Windows** | Esegui `SillabeInGioco-Setup-2.1.1.exe` e segui la procedura |
+| **Windows** | Esegui `SillabeInGioco-Setup-2.2.0.exe` e segui la procedura |
 | **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
 | **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
 
@@ -26,7 +26,9 @@ Per l'installazione tecnica vedi [README.md](README.md).
 - **Continua** riprende il livello dove eri rimasto.
 - **Livello a caso** propone un esercizio qualsiasi tra i 40.
 - **I quattro percorsi** mostrano 10 livelli ciascuno con le stelle ottenute; tocca un percorso per aprire il primo livello non ancora completato.
-- **Strumenti**: Esercizi, Stampa, Trofei, Aiuto.
+- **Strumenti**: Parole, Suoni difficili, Esercizi, Stampa, Trofei, Aiuto.
+- **Formazione di parole**: le 20 parole da comporre, con la figura e lo stato di completamento;
+  tocca una parola per aprirla.
 - **Il tuo progresso**: livelli completati, stelle, precisione, tempo di gioco.
 - L'ingranaggio in alto a destra apre le **impostazioni**; la ✕ chiude l'app (nel browser torna alla scheda precedente).
 
@@ -60,7 +62,8 @@ Per l'installazione tecnica vedi [README.md](README.md).
 
 Ogni frase ha il suo disegno, in alto sopra le caselle: il gatto con la ciotola
 di latte, la mamma ai fornelli, il treno in stazione, la luna sul mare, la festa
-a scuola. Sono 40 scene diverse, una per livello.
+a scuola. Sono 40 scene diverse, una per livello, più le 20 figure delle parole.
+In tutto 60 illustrazioni originali.
 
 > [!NOTE]
 > I disegni **non contengono lettere né parole**: mostrano il significato della
@@ -99,7 +102,43 @@ precisione negli esercizi, uso della voce, livello completato senza suggerimenti
 
 ---
 
-## 5. Esercizi
+## 5. Formazione di parole e suoni difficili
+
+### 5a. Formazione di parole (20 parole)
+
+Dal riquadro **PAROLE** in home, oppure toccando una parola dall'elenco «Formazione di parole».
+
+| Tappa | Parole | Cosa si unisce |
+|---|---|---|
+| **Unisco le lettere** | ape, mela, sole, luna, pane, casa, dado, faro | una lettera alla volta |
+| **Unisco le sillabe** | gatto, cane, pesce, rana, topo, fiore, palla, treno, nave, libro, ombrello, campana | una sillaba alla volta |
+
+- La TV mostra la **figura** della parola (nessun testo nel disegno).
+- Sotto le caselle la parola **cresce** (`a ·· e` → `ape`) mentre la componi.
+- Ogni pezzo si ascolta toccandolo; la radio legge la parola intera.
+- Pulsanti in basso: **SUGGERIMENTO**, **ASCOLTA**, **RIFAI**, **← →** per cambiare parola.
+- Scorciatoie: `←` `→` cambiano parola, `H` suggerimento, `R` rifai.
+- Se la lettura delle parole è spenta nelle impostazioni, ASCOLTA lo segnala con un avviso.
+
+### 5b. Suoni difficili (20 esercizi finali)
+
+Dal riquadro **SUONI DIFFICILI** in home. Si ascolta una parola e si sceglie **come si scrive**:
+
+| Suoni | Parole |
+|---|---|
+| `che` `chi` `ce` `ci` | formiche, chitarra, cesto, città |
+| `cia` `cio` `ciu` | camicia, ciotola, ciuffo |
+| `ge` `gi` `ghe` `ghi` | gelato, giraffa, alghe, ghiaccio |
+| `gli` `gn` `gno` | aglio, bagno, ragno |
+| `sci` `sce` | sciarpa, pesce |
+| `spr` `str` `squ` `qua` | spremuta, strada, squalo, quaderno |
+
+Per ogni domanda la scheda mostra il **gruppo da riconoscere** e la parola con il gruppo
+evidenziato. Quattro opzioni: una sola grafia è giusta.
+
+---
+
+## 6. Esercizi
 
 Otto domande per sessione, scelte a caso tra quattro tipi:
 
@@ -110,9 +149,13 @@ Otto domande per sessione, scelte a caso tra quattro tipi:
 
 Alla fine: punteggio, precisione, record personale e pulsanti per ripetere o tornare alla home.
 
+**Il docente sceglie l'esercizio** dal menu impostazioni (*Esercizio scelto dal docente*):
+quiz misto, tutti e 20 i suoni difficili, oppure un singolo suono. Il pulsante
+**▶ Avvia l'esercizio** apre subito la sessione scelta.
+
 ---
 
-## 6. Stampa
+## 7. Stampa
 
 La scheda A4 contiene:
 
@@ -125,7 +168,7 @@ Suggerimento: stampa in **bianco e nero** per risparmiare inchiostro; le caselle
 
 ---
 
-## 7. Impostazioni di accessibilità
+## 8. Impostazioni di accessibilità
 
 Apri l'ingranaggio ⚙️ dalla home.
 
@@ -134,11 +177,14 @@ Apri l'ingranaggio ⚙️ dalla home.
 | **Dimensione testo** 90–150% | Ingrandisce tutto il testo senza rompere il layout |
 | **Velocità voce** | Rallenta la sintesi per chi ha bisogno di più tempo |
 | **Voce** | Sceglie la voce di sistema usata come riserva (i clip registrati restano quelli della voce neurale) |
+| **Tutto maiuscolo** | Tessere, caselle e parole in MAIUSCOLO; le etichette dei pulsanti restano normali |
+| **Leggi le parole** | Accende o spegne la voce sulle parole intere (le sillabe restano leggibili) |
 | **Tema scuro** | Riduce l'affaticamento visivo e l'abbagliamento |
 | **Effetti sonori** | Disattiva i suoni sintetici (la voce resta attiva) |
 | **Lettura automatica** | Legge la frase appena si apre un livello |
 | **Riga suggerimento** | Mostra o nasconde la frase guida nei livelli 1–10 |
 | **Riduci animazioni** | Meno movimento per chi è sensibile |
+| **Esercizio scelto dal docente** | Quiz misto, tutti i suoni difficili o un singolo suono |
 
 Tutte le scelte sono salvate automaticamente sul dispositivo.
 
@@ -146,25 +192,30 @@ Tutte le scelte sono salvate automaticamente sul dispositivo.
 
 | Tasto | Azione |
 |---|---|
-| `←` `→` | Livello precedente / successivo |
+| `←` `→` | Livello precedente / successivo (o parola precedente / successiva) |
 | `H` | Suggerimento |
 | `R` | Rifai |
 | `Esc` | Torna alla home |
 
 ---
 
-## 8. Consigli didattici
+## 9. Consigli didattici
 
 - **Prima l'ascolto**: fai ascoltare la frase 2–3 volte prima di toccare le tessere.
 - **Una sillaba alla volta**: nei livelli 11–40 conviene procedere da sinistra a destra.
+- **Parti dalle parole**: le 8 parole della tappa «lettere» (ape, mela, sole…) preparano
+  alla lettura sillabica; le 12 della tappa «sillabe» consolidano i gruppi complessi
+  (`sce`, `tre`, `brel`, `cam`).
 - **Gli errori sono utili**: il suono grave e il ritorno della tessera insegnano senza punire.
 - **Usa i distrattori**: chiedi «perché *co* non va bene?» per far emergere la regola.
+- **Suoni difficili in chiusura**: dopo i 40 livelli, le 20 schede finali verificano i gruppi
+  che generano più errori; il docente può assegnarne uno solo a chi ne ha bisogno.
 - **Scheda stampata**: dopo il livello digitale, la scheda A4 consolida la scrittura a mano.
 - **Sessioni brevi**: 10–15 minuti sono più efficaci di 40, soprattutto nei percorsi 3 e 4.
 
 ---
 
-## 9. Problemi frequenti
+## 10. Problemi frequenti
 
 | Problema | Soluzione |
 |---|---|
@@ -177,7 +228,7 @@ Tutte le scelte sono salvate automaticamente sul dispositivo.
 
 ---
 
-## 10. Privacy
+## 11. Privacy
 
 Nessuna connessione a internet, nessun account, nessuna pubblicità, nessuna statistica.
 I progressi restano in `localStorage` (web) o nella cartella dati dell'app (desktop).

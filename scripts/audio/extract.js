@@ -5,7 +5,9 @@
  *  - i token sillabici dei livelli (40 frasi, 443 istanze),
  *  - i distrattori del pool,
  *  - le frasi complete,
- *  - le frasi fisse dell'interfaccia (Bravo!, Riprova, ...).
+ *  - le frasi fisse dell'interfaccia (Bravo!, Riprova, ...),
+ *  - i pezzi del laboratorio «Formazione di parole» (lettere e sillabe),
+ *  - le parole illustrate (laboratorio + suoni difficili).
  *
  * Uso: node scripts/audio/extract.js
  * Output (stdout, JSON):
@@ -66,14 +68,43 @@ const uiSource = [
   "sillabe"
 ];
 
+/* --- 4b. laboratorio «Formazione di parole» ---
+   Le tappe uniscono lettere e sillabe: ogni pezzo viene letto da solo, quindi
+   deve avere il proprio clip. Le lettere vivono nello stesso gruppo delle
+   sillabe (`syl`), così il tap su una tessera trova sempre il file. */
+const wordLabSrc = block("const WORD_LAB = [", "/* Distrattori della tappa");
+const wordLabWords = [];
+const wordLabUnits = [];
+for (const m of wordLabSrc.matchAll(
+  /\{\s*word:\s*"([^"]*)",\s*stage:\s*"[^"]*",\s*units:\s*\[([^\]]*)\]/g
+)) {
+  wordLabWords.push(m[1]);
+  strings("[" + m[2] + "]").forEach(u => wordLabUnits.push(u));
+}
+
+/* tutte le lettere del pool dei distrattori: servono ai tap delle tessere */
+const letterPool = strings(block("const LETTER_POOL = [", "];"));
+
+/* --- 4c. suoni difficili: le 20 parole finali ---
+   Nel quiz il bambino ascolta la parola intera e sceglie la grafia giusta. */
+const soundSrc = block("const SOUND_ITEMS = [", "const SOUNDS =");
+const soundWords = [...soundSrc.matchAll(/word:\s*"([^"]*)"/g)].map(m => m[1]);
+const soundGroups = [...soundSrc.matchAll(/sound:\s*"([^"]*)"/g)].map(m => m[1]);
+
+const labUnits = [...new Set([...wordLabUnits, ...letterPool])]
+  .sort((a, b) => a.localeCompare(b, "it"));
+
 /* --- 5. parole intere ---
    Gli esercizi chiedono "Quante sillabe ha la parola «gatto»?" e leggono la
-   parola intera: serve un file anche per quelle. */
+   parola intera: serve un file anche per quelle. Le parole del laboratorio
+   e dei suoni difficili non compaiono nelle frasi, quindi vanno aggiunte. */
 const words = [...new Set(
   sentences.flatMap(s => s.toLowerCase().split(/\s+/)).filter(Boolean)
+    .concat(wordLabWords, soundWords)
 )].sort((a, b) => a.localeCompare(b, "it"));
 
-const allSyllables = [...new Set([...syllables, ...distractors])].sort((a, b) => a.localeCompare(b, "it"));
+const allSyllables = [...new Set([...syllables, ...distractors, ...labUnits])]
+  .sort((a, b) => a.localeCompare(b, "it"));
 
 module.exports = {
   syllables: allSyllables,
@@ -81,13 +112,26 @@ module.exports = {
   distractors: [...new Set(distractors)].sort((a, b) => a.localeCompare(b, "it")),
   sentences,
   words,
-  uiSource
+  uiSource,
+  wordLabWords,
+  wordLabUnits: labUnits,
+  soundWords,
+  soundGroups
 };
 
 if (require.main === module) {
   const d = module.exports;
   console.log(JSON.stringify({
-    counts: { syllables: d.syllables.length, levelSyllables: d.levelSyllables.length, distractors: d.distractors.length, sentences: d.sentences.length, words: d.words.length },
+    counts: {
+      syllables: d.syllables.length,
+      levelSyllables: d.levelSyllables.length,
+      distractors: d.distractors.length,
+      sentences: d.sentences.length,
+      words: d.words.length,
+      wordLab: d.wordLabWords.length,
+      labUnits: d.wordLabUnits.length,
+      soundWords: d.soundWords.length
+    },
     syllables: d.syllables
   }, null, 1));
 }

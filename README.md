@@ -4,7 +4,7 @@ App didattica per l'apprendimento della letto‑scrittura in italiano: si compon
 trascinando tessere sillabiche, con sintesi vocale, illustrazioni generate al volo,
 esercizi, schede stampabili e trofei.
 
-**40 livelli · 4 percorsi · 443 sillabe · 40 frasi diverse · nessun dato che lascia il dispositivo.**
+**40 livelli · 4 percorsi · 20 parole da comporre · 20 suoni difficili · nessun dato che lascia il dispositivo.**
 
 ![Home](build/screenshots/01-home.png)
 
@@ -31,14 +31,34 @@ esercizi, schede stampabili e trofei.
 ### Gioco
 - **Trascinamento delle sillabe** con snap‑in magnetico nella casella corretta.
 - Tre modalità d'ingresso alla tessera: **drag & drop** (mouse, dito, penna), **tap su tessera + tap sulla casella**, **tastiera** (Invio/Spazio).
-- **Un'illustrazione originale per ognuna delle 40 frasi**: scene vettoriali da libro illustrato (personaggi, animali, arredi, paesaggi) in 1280×720, senza alcun testo dentro il disegno.
+- **Un'illustrazione originale per ognuna delle 40 frasi e per ognuna delle 20 parole**: scene vettoriali da libro illustrato (personaggi, animali, arredi, paesaggi) in 1280×720, senza alcun testo dentro il disegno.
 - Tessere **distrattore** sempre presenti, rimescolabili con un tocco.
 - Animazioni di conferma, errore (shake), completamento (pop + coriandoli).
 
+### Formazione di parole
+Una sezione propedeutica in due tappe, con **20 parole illustrate**:
+
+| Tappa | Parole | Pezzi |
+|---|---|---|
+| 1 · Unisco le lettere | ape, mela, sole, luna, pane, casa, dado, faro | una lettera alla volta |
+| 2 · Unisco le sillabe | gatto, cane, pesce, rana, topo, fiore, palla, treno, nave, libro, ombrello, campana | una sillaba alla volta |
+
+- La parola **cresce sotto le caselle** mentre il bambino la compone.
+- Ogni parola ha la sua **figura** (nessun testo nel disegno) e la sua voce.
+- 3 distrattori per parola, sempre diversi dai pezzi corretti.
+- Tappa successiva/precedente, mescola, suggerimento, rifai.
+
+### Suoni difficili
+**20 esercizi finali** sui gruppi ortografici che creano più errori:
+`che · chi · ce · ci · cia · cio · ciu · ge · gi · ghe · ghi · gli · gn · gno · sci · sce · spr · str · squ · qua`.
+
+Si ascolta la parola intera (*formiche, chitarra, cesto, città…*) e si sceglie la grafia giusta
+fra quattro; la scheda del suono mostra il gruppo e la parola con il gruppo evidenziato.
+
 ### Voce
-- **Voci preregistrate con voce neurale italiana**, incluse nel pacchetto: 166 sillabe,
-  40 frasi, 138 parole e le battute dell'interfaccia. Identiche su ogni dispositivo,
-  anche senza voci italiane installate nel sistema.
+- **Voci preregistrate con voce neurale italiana**, incluse nel pacchetto: 182 sillabe e lettere,
+  40 frasi, 163 parole e le battute dell'interfaccia (393 clip, ≈1 MB). Identiche su ogni
+  dispositivo, anche senza voci italiane installate nel sistema.
 - **Le sillabe non vengono più compitate.** Con la sintesi di sistema alcune sillabe
   isolate (`ac`, `ap`, `ia`, `ta`, `uc`) venivano lette come sigle, lettera per lettera;
   i clip preregistrati eliminano il problema alla radice. Un test di regressione
@@ -47,7 +67,10 @@ esercizi, schede stampabili e trofei.
 - **Sintesi di sistema come riserva** (Web Speech API, `it-IT`): se un file audio manca,
   l'app torna a leggere con la voce del dispositivo e preferisce le voci neurali/premium.
 - Lettura **scandita sillaba per sillaba** con la pausa giusta tra una sillaba e l'altra.
-- Voce, velocità e lettura automatica configurabili.
+- **Un solo suono per gesto**: un tocco legge la sillaba una volta sola (il *pointerdown* non
+  parla, parlano il *click* per il tap e l'inizio del trascinamento).
+- Voce, velocità e lettura automatica configurabili. La lettura delle parole intere si può
+  spegnere: in quel caso la radio resta muta e i pulsanti lo dicono.
 - Tasto **ASCOLTA** (radio vintage) per riascoltare la frase in qualsiasi momento.
 
 ### Supporto didattico
@@ -78,6 +101,11 @@ Scheda di lavoro A4 pronta per la classe: frase, caselle da riempire, tessere da
 ### Personalizzazione
 - Dimensione del testo (90%–150%).
 - Velocità della voce e scelta della voce italiana di sistema.
+- **Tutto maiuscolo on/off**: tessere, caselle e parole in MAIUSCOLO per chi sta imparando
+  a riconoscere le lettere; le etichette dell'interfaccia restano in minuscolo leggibile.
+- **Lettura delle parole on/off**: spegne la voce sulle parole intere (restano le sillabe).
+- **Esercizio scelto dal docente**: dal menu impostazioni si sceglie il quiz misto, tutti e
+  20 i suoni difficili oppure un singolo suono, e si avvia subito con ▶.
 - **Tema scuro** per ridurre l'affaticamento visivo.
 - Effetti sonori on/off, lettura automatica on/off, riga suggerimento on/off.
 - Riduzione delle animazioni.
@@ -142,8 +170,8 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.1.1-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.1.1.dmg` (Intel)
+- `Sillabe in Gioco-2.2.0-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.2.0.dmg` (Intel)
 - versioni `.zip` per gli aggiornamenti automatici
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
@@ -163,8 +191,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.1.1.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.1.1.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.2.0.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.2.0.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -182,7 +210,7 @@ Due strade, entrambe incluse.
 npm run build:chromeos
 ```
 
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.1.1.zip`.
+Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.2.0.zip`.
 
 Installazione in modalità sviluppatore:
 
@@ -206,7 +234,7 @@ privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
 ### Web / PWA
 
 ```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.1.1.zip
+npm run build:web      # crea dist/web + dist/sillabe-web-v2.2.0.zip
 npm run serve          # prova locale con service worker attivo
 ```
 
@@ -222,14 +250,14 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm start` | Avvia l'app desktop Electron in sviluppo |
 | `npm run serve` | Server statico locale su `:4321` (service worker attivo) |
 | `npm run validate` | Verifica i 40 livelli: unicità frasi, sillabe, distrattori, gruppi |
-| `npm run illustrations` | Rigenera le 40 illustrazioni (SVG + PNG) dal generatore vettoriale |
+| `npm run illustrations` | Rigenera le 60 illustrazioni (SVG + PNG) dal generatore vettoriale |
 | `npm run test:illustrations` | Valida le illustrazioni: dimensione, soggetti attesi, nessun duplicato |
 | `npm run audio` | Rigenera tutti i clip vocali (sillabe, frasi, parole, interfaccia) con la voce neurale |
 | `npm run audio -- --only=syl` | Rigenera solo un gruppo (`syl`, `frasi`, `parole`, `ui`) |
 | `npm run test:audio` | Verifica i clip: copertura di sillabe/frasi/parole, durate, file orfani |
 | `npm run test:pronuncia` | Controlla che le sillabe critiche non siano compitate lettera per lettera |
-| `npm run test:release -- v2.1.1` | Scarica gli artefatti pubblicati e verifica che contengano le 40 illustrazioni |
-| `npm run test:smoke` | Smoke test headless Electron: 30 controlli su schermate e flussi |
+| `npm run test:release -- v2.2.0` | Scarica gli artefatti pubblicati e verifica che contengano le 60 illustrazioni e i 393 clip |
+| `npm run test:smoke` | Smoke test headless Electron: 48 controlli su schermate, laboratorio parole e suoni |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |
 | `npm test` | Esegue validazione + illustrazioni + audio + pronuncia + smoke + livelli + layout (usato dalla CI) |
@@ -257,12 +285,12 @@ sillabe-in-gioco/
 ├── sw.js                       # Service worker (offline)
 ├── favicon.png
 ├── icons/                      # Icone PNG 16→1024 + maskable
-├── illustrations/              # 40 illustrazioni: NN.png (1280×720) + NN.svg (sorgente)
+├── illustrations/              # 60 illustrazioni: NN.png (1280×720) + NN.svg (sorgente)
 ├── audio/                      # Voci preregistrate (voce neurale, offline)
 │   ├── manifest.json           # Indice: token -> file, con durata e forma pronunciata
-│   ├── syl/                    # 166 sillabe
+│   ├── syl/                    # 182 sillabe e lettere
 │   ├── frasi/                  # 40 frasi complete (01.mp3 … 40.mp3)
-│   ├── parole/                 # 138 parole degli esercizi
+│   ├── parole/                 # 163 parole degli esercizi
 │   └── ui/                     # Battute fisse dell'interfaccia
 ├── scripts/illustrations/      # Generatore vettoriale delle scene (draw, props, scenes)
 ├── scripts/audio/              # Estrazione testi, sintesi neurale, verifica pronuncia
@@ -305,14 +333,14 @@ sillabe-in-gioco/
 ┌──────────────────────────────────────────────────────────┐
 │  index.html  (single file, nessuna dipendenza esterna)   │
 │                                                          │
-│  DATI          RAW[40] → LEVELS[40] → SENTENCES[40]      │
+│  DATI          RAW[40] → LEVELS · WORDS[20] · SOUNDS[20] │
 │  STATO         localStorage (progressi + impostazioni)   │
-│  VOCE          Web Speech API · it-IT · utterance queue  │
+│  VOCE          clip MP3 preregistrati · sintesi di riserva│
 │  SUONI         WebAudio API · oscillatori sintetici      │
-│  GRAFICA       SVG inline generato per ogni frase        │
+│  GRAFICA       60 PNG/SVG pre-generati, nessun testo     │
 │  INPUT         Pointer Events (mouse/penna/dito) + HTML5 │
-│  SCHERMATE     home · livello · esercizi · risultati ·   │
-│                trofei (SPA, cambio di classe .active)    │
+│  SCHERMATE     home · parole · livello · esercizi ·      │
+│                risultati · trofei (classe .active)       │
 └──────────────────────────────────────────────────────────┘
         │                    │                    │
         ▼                    ▼                    ▼
@@ -325,7 +353,7 @@ Scelte tecniche rilevanti:
 - **Nessuna libreria esterna**: zero CDN, zero npm a runtime, quindi nessuna chiamata di rete.
 - **Un solo file HTML** per l'app: facile da distribuire, copiare su LIM o condividere via email.
 - **Pointer Events** invece dei soli eventi touch/mouse: un unico percorso per dito, penna e mouse, con fallback HTML5 Drag and Drop.
-- **Illustrazioni vettoriali originali**: 40 scene da libro illustrato, sorgenti SVG versionati nel repository e rasterizzati in PNG ad alta risoluzione. Nuove, senza diritti di terzi, incluse nell'app e disponibili offline.
+- **Illustrazioni vettoriali originali**: 60 scene da libro illustrato (40 frasi + 20 parole), sorgenti SVG versionati nel repository e rasterizzati in PNG ad alta risoluzione. Nuove, senza diritti di terzi, incluse nell'app e disponibili offline.
 - **Contesto sicuro** in Electron: `contextIsolation`, `sandbox`, `nodeIntegration: false`, navigazione esterna bloccata, permessi in allowlist.
 
 ---
@@ -334,7 +362,7 @@ Scelte tecniche rilevanti:
 
 Nessuna raccolta dati, nessun analytics, nessuna pubblicità, nessuna connessione remota.
 I progressi restano in `localStorage` (web) o nella cartella dati dell'app (desktop).
-La sintesi vocale usa le voci installate nel sistema operativo: il testo non viene inviato altrove.
+La voce usa clip MP3 preregistrati inclusi nell'app; solo come riserva l'app passa al motore di sintesi del sistema operativo, senza inviare dati altrove.
 
 Dettagli in [PRIVACY.md](PRIVACY.md).
 

@@ -24,7 +24,11 @@ if (start < 0 || end < 0) {
   process.exit(1);
 }
 
-const dataCode = script.slice(start, end).replace(/const LEVELS = RAW\.map/, "globalThis.LEVELS = RAW.map");
+const dataCode = script.slice(start, end)
+  .replace(/const LEVELS = RAW\.map/, "globalThis.LEVELS = RAW.map")
+  // WORDS e SOUNDS servono ai controlli: `const` in sandbox non finisce su globalThis
+  .replace(/^const WORDS = /m, "globalThis.WORDS = ")
+  .replace(/^const SOUNDS = /m, "globalThis.SOUNDS = ");
 
 const sandbox = {
   console,
@@ -90,11 +94,57 @@ LEVELS.forEach((l, i) => {
 const lower = LEVELS.map(l => l.text.toLowerCase());
 if (new Set(lower).size !== lower.length) errors.push("Ci sono frasi duplicate (confronto senza maiuscole)");
 
+/* --- laboratorio «Formazione di parole»: 20 parole illustrate --- */
+const WORDS = sandbox.WORDS || [];
+if (WORDS.length !== 20) errors.push(`Attese 20 parole del laboratorio, trovate ${WORDS.length}`);
+const wordSeen = new Set();
+WORDS.forEach((w, i) => {
+  const n = i + 1;
+  if (w.id !== n) errors.push(`Parola ${n}: id errato (${w.id})`);
+  if (wordSeen.has(w.word)) errors.push(`Parola ${n}: «${w.word}» duplicata`);
+  wordSeen.add(w.word);
+  if (w.word !== w.units.join("")) {
+    errors.push(`Parola «${w.word}»: i pezzi (${w.units.join("-")}) non ricompongono la parola`);
+  }
+  if (!w.units.length) errors.push(`Parola «${w.word}»: nessun pezzo`);
+  w.units.forEach(u => {
+    if (!u.length) errors.push(`Parola «${w.word}»: pezzo vuoto`);
+    if (/\s/.test(u)) errors.push(`Parola «${w.word}»: il pezzo «${u}» contiene spazi`);
+  });
+  w.distractors.forEach(d => {
+    if (w.units.some(u => u.toLowerCase() === d.toLowerCase())) {
+      errors.push(`Parola «${w.word}»: distrattore «${d}» coincide con un pezzo corretto`);
+    }
+  });
+  if (w.img == null) errors.push(`Parola «${w.word}»: manca l'illustrazione`);
+});
+if (WORDS.filter(w => w.stage === "letters").length < 8) errors.push("Meno di 8 parole della tappa «lettere»");
+if (WORDS.filter(w => w.stage === "syllables").length < 12) errors.push("Meno di 12 parole della tappa «sillabe»");
+
+/* --- suoni difficili: 20 schede finali --- */
+const SOUNDS = sandbox.SOUNDS || [];
+if (SOUNDS.length !== 20) errors.push(`Attese 20 schede sui suoni difficili, trovate ${SOUNDS.length}`);
+const soundSeen = new Set();
+SOUNDS.forEach((s, i) => {
+  const n = i + 1;
+  if (s.id !== n) errors.push(`Suono ${n}: id errato (${s.id})`);
+  if (soundSeen.has(s.sound)) errors.push(`Suono ${n}: «${s.sound}» duplicato`);
+  soundSeen.add(s.sound);
+  if (!s.word.toLowerCase().includes(s.sound.toLowerCase())) {
+    errors.push(`Suono «${s.sound}»: la parola «${s.word}» non lo contiene`);
+  }
+  if (s.options.length !== 4) errors.push(`Suono «${s.sound}»: ${s.options.length} opzioni invece di 4`);
+  const hits = s.options.filter(o => o === s.sound).length;
+  if (hits !== 1) errors.push(`Suono «${s.sound}»: compare ${hits} volte fra le opzioni`);
+});
+
 /* report */
 console.log(`Livelli: ${LEVELS.length}`);
 console.log(`Gruppi: ${groups.join(" · ")}`);
 console.log(`Sillabe totali: ${LEVELS.reduce((a, l) => a + l.syllables.length, 0)}`);
 console.log(`Frasi uniche: ${texts.size}`);
+console.log(`Parole del laboratorio: ${WORDS.length} (${WORDS.filter(w => w.stage === "letters").length} lettere · ${WORDS.filter(w => w.stage === "syllables").length} sillabe)`);
+console.log(`Suoni difficili: ${SOUNDS.length}`);
 LEVELS.slice(0, 3).forEach(l => console.log(`  es. ${l.id}: ${l.text}  [${l.syllables.join("-")}]`));
 LEVELS.slice(-2).forEach(l => console.log(`  es. ${l.id}: ${l.text}  [${l.syllables.join("-")}]`));
 

@@ -1,7 +1,7 @@
 # Informativa sulla privacy · Sillabe in Gioco
 
 **Ultimo aggiornamento:** 24 ottobre 2026
-**Versione applicazione:** 2.1.1
+**Versione applicazione:** 2.2.0
 **Titolare:** Livio Luppino
 
 ## In sintesi
@@ -12,7 +12,7 @@ dell'utente e non effettua connessioni di rete verso servizi remoti.
 
 ## Immagini e asset
 
-Le 40 illustrazioni delle frasi sono **disegni vettoriali originali inclusi nel
+Le 60 illustrazioni (40 frasi + 20 parole) sono **disegni vettoriali originali inclusi nel
 pacchetto dell'app** (`illustrations/`). Vengono caricate dal disco del
 dispositivo: nessuna immagine è richiesta a un server, a un CDN o a un servizio
 di intelligenza artificiale, e nessun dato dell'utente viene inviato altrove per
@@ -25,7 +25,7 @@ L'app salva **solo sul dispositivo** due categorie di informazioni:
 | Dato | Dove | Perché | Chi può vederlo |
 |---|---|---|---|
 | Progressi di gioco (livelli completati, stelle, errori, tempi, trofei) | `localStorage` del browser o cartella dati dell'app | Mostrare avanzamento, statistiche e trofei | Solo chi usa quel dispositivo |
-| Impostazioni (dimensione testo, velocità voce, tema, suoni) | `localStorage` del browser o cartella dati dell'app | Ricordare le preferenze di accessibilità | Solo chi usa quel dispositivo |
+| Impostazioni (dimensione testo, velocità voce, tema, suoni, maiuscolo, lettura parole, esercizio scelto) | `localStorage` del browser o cartella dati dell'app | Ricordare le preferenze di accessibilità | Solo chi usa quel dispositivo |
 
 Non vengono salvati nomi, età, email, indirizzi, foto, testi digitati liberamente né
 identificatori del dispositivo. Non esiste alcun campo che raccolga dati del bambino.
@@ -42,7 +42,8 @@ identificatori del dispositivo. Non esiste alcun campo che raccolga dati del bam
 ## Voce e audio
 
 La lettura ad alta voce usa **file audio preregistrati**, inclusi nel pacchetto
-dell'applicazione: 166 sillabe, 40 frasi, 138 parole e le battute dell'interfaccia.
+dell'applicazione: 182 sillabe e lettere, 40 frasi, 163 parole e le battute dell'interfaccia
+(393 clip in tutto).
 Sono file statici, letti da disco o dal service worker: nessun testo viene inviato a
 un motore di sintesi e nessun dato esce dal dispositivo.
 

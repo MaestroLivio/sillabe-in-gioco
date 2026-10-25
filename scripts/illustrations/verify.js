@@ -11,7 +11,7 @@
  * Verifica inoltre:
  *  - dimensione 1280×720 e trasparenza assente
  *  - nessuna tessera vuota o monocroma (soglia di colori distinti)
- *  - nessun PNG duplicato (le 40 scene devono essere tutte diverse)
+ *  - nessun PNG duplicato (60 scene tutte diverse)
  *
  * Uso: node scripts/illustrations/verify.js
  */
@@ -19,6 +19,8 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const sharp = require("sharp");
+
+const { SCENES } = require("./scenes");
 
 const ROOT = path.join(__dirname, "..", "..");
 const DIR = path.join(ROOT, "illustrations");
@@ -67,7 +69,29 @@ const SIGNATURE = {
   37: ["#f2884b", "#7cc0ea"],     // maglia + acqua nel bicchiere
   38: ["#4a90e2", "#cf9a63"],     // cappotto + porta
   39: ["#f7e9d3", "#f6bf4a"],     // scuola + campana
-  40: ["#d9705f", "#ee5f5f"]      // tetto scuola + palloncino
+  40: ["#d9705f", "#ee5f5f"],     // tetto scuola + palloncino
+
+  /* --- formazione di parole (41-60): una figura per parola --- */
+  41: ["#f6bf4a", "#f58ba8"],     // ape + fiore
+  42: ["#e0574f", "#6cc47a"],     // mela + prato
+  43: ["#ffd257", "#6cc47a"],     // sole + prato
+  44: ["#fff4c9", "#2b3566"],     // luna + cielo notturno
+  45: ["#e6b06a", "#cd9053"],     // pagnotta + tavolo
+  46: ["#d9705f", "#f3e0ba"],     // tetto + muri della casa
+  47: ["#ee5f5f", "#ffffff"],     // punti del dado + faccia
+  48: ["#ee5f5f", "#4fa8d8"],     // fasce del faro + mare
+  49: ["#f0a355", "#5aa9e6"],     // gatto + palla
+  50: ["#c98a5a", "#8fd694"],     // cane + prato
+  51: ["#f2884b", "#f3e0ba"],     // pesce + sabbia
+  52: ["#6ec46b", "#63b9e6"],     // rana + acqua
+  53: ["#a8b3c0", "#f6d47a"],     // topo + formaggio
+  54: ["#f58ba8", "#f6bf4a"],     // petali + centro del fiore
+  55: ["#ee5f5f", "#f6bf4a"],     // palla rossa e gialla
+  56: ["#57bf7a", "#ee5f5f"],     // vagone + caldaia del treno
+  57: ["#3c5a78", "#4fa8d8"],     // scafo + mare
+  58: ["#f58ba8", "#ffffff"],     // copertina + pagine
+  59: ["#ee5f5f", "#9fb4c6"],     // ombrello + cielo di pioggia
+  60: ["#f6bf4a", "#a86c33"]      // campana + trave di legno
 };
 
 function hexToRgb(h) {
@@ -77,8 +101,9 @@ function hexToRgb(h) {
 
 (async () => {
   const files = fs.readdirSync(DIR).filter(f => f.endsWith(".png")).sort();
-  if (files.length !== 40) {
-    console.error(`✖ Attesi 40 PNG, trovati ${files.length}`);
+  const expected = SCENES.length;
+  if (files.length !== expected) {
+    console.error(`✖ Attesi ${expected} PNG, trovati ${files.length}`);
     process.exit(1);
   }
 
@@ -141,7 +166,7 @@ function hexToRgb(h) {
     errors.forEach(e => console.error("  " + e));
     process.exit(1);
   }
-  console.log("✔ 40/40 illustrazioni valide, distinte e con i soggetti attesi");
+  console.log("✔ " + `${files.length}/${expected}` + " illustrazioni valide, distinte e con i soggetti attesi");
 })().catch(e => {
   console.error(e);
   process.exit(1);

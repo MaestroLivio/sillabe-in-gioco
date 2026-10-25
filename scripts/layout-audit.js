@@ -46,15 +46,20 @@ app.whenReady().then(async () => {
 
       const doc = document.documentElement;
       const overflowX = doc.scrollWidth - doc.clientWidth;
-      const bottomBar = document.querySelector('.bottombar');
+      const bottomBar = document.querySelector('.screen.active .bottombar') || document.querySelector('.bottombar');
       const barRect = bottomBar ? bottomBar.getBoundingClientRect() : null;
       const barTop = barRect ? Math.round(barRect.top) : window.innerHeight;
       const app = document.querySelector('.app');
       const paddingBottom = app ? parseFloat(getComputedStyle(app).paddingBottom) : 0;
 
-      // scostamento dal fondo: se positivo, l'ultimo contenuto resta sotto la barra
+      // scostamento dal fondo: se positivo, l'ultimo contenuto resta sotto la barra.
+      // Si guarda il vassoio della schermata attiva (#tilePool nei livelli,
+      // #wordsTilePool nel laboratorio parole).
       const pool = document.querySelector('#tilePool');
-      const poolRect = pool && pool.offsetParent ? pool.getBoundingClientRect() : null;
+      const poolNode = pool && pool.offsetParent
+        ? pool
+        : document.querySelector('#wordsTilePool');
+      const poolRect = poolNode && poolNode.offsetParent ? poolNode.getBoundingClientRect() : null;
       const lastTile = poolRect ? Math.round(poolRect.bottom) : 0;
       const clearance = poolRect ? Math.round(barTop - poolRect.bottom) : null;
 
@@ -107,6 +112,15 @@ app.whenReady().then(async () => {
 
   const quiz = await audit("ESERCIZI desktop", `buildQuiz();`);
   if (quiz.overflowX > 0) problems.push("esercizi: overflow orizzontale");
+
+  /* scheda del suono difficile: il gruppo in grande non deve allargare la pagina */
+  const snd = await audit("SUONI DIFFICILI desktop", `settings.exercise = 'sounds'; startChosenExercise();`);
+  if (snd.overflowX > 0) problems.push("suoni difficili: overflow orizzontale");
+
+  /* laboratorio «Formazione di parole»: la barra inferiore non deve coprire i pezzi */
+  const lab = await audit("PAROLE desktop", `startWord(0);`);
+  if (lab.overflowX > 0) problems.push("parole: overflow orizzontale");
+  if (!lab.tileCleared) problems.push("parole: la barra inferiore copre le tessere");
 
   const troph = await audit("TROFEI desktop", `showScreen('trophies');`);
   if (troph.overflowX > 0) problems.push("trofei: overflow orizzontale");

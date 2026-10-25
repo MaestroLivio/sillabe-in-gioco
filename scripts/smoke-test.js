@@ -116,11 +116,83 @@ app.whenReady().then(async () => {
     await sleep(80);
     out.trophyCards = document.querySelectorAll('#trophyGrid .trophy').length;
 
+    // LABORATORIO PAROLE: prima parola (tappa lettere)
+    // la lettura automatica resta spenta durante il test, così i conteggi
+    // dei suoni non catturano i timer di apertura della parola
+    const autoReadBefore = settings.autoRead;
+    settings.autoRead = false;
+    startWord(0);
+    await sleep(150);
+    out.wordsActive = document.getElementById('screen-words').classList.contains('active');
+    out.wordsTitle = document.getElementById('wordsTitle').textContent;
+    out.wordsSlots = document.querySelectorAll('#wordsSlotsWrap .slot').length;
+    out.wordsUnits = WORDS[0].units.length;
+    out.wordsTiles = document.querySelectorAll('#wordsTilePool .tile').length;
+    out.wordsImg = (document.querySelector('#wordsImage img') || {}).getAttribute('src') || '';
+    out.wordsStage = document.getElementById('wordsStageBadge').textContent;
+    out.wordListChips = document.querySelectorAll('#wordList .wordchip').length;
+
+    // risolvi la parola programmaticamente
+    const wSlots = W.slots.filter(s => !s.filled);
+    wSlots.forEach(s => {
+      const node = document.querySelector('#wordsSlotsWrap .slot[data-index="' + s.index + '"]');
+      const tile = Array.from(document.querySelectorAll('#wordsTilePool .tile')).find(t => t.textContent === s.unit);
+      if (tile && node) { W.selectedTile = { tile, data: W.tiles[Number(tile.dataset.tile)] }; onWordSlotClick(node); }
+    });
+    await sleep(200);
+    out.wordsCompleted = W.completed;
+    out.wordsFilled = document.querySelectorAll('#wordsSlotsWrap .slot.filled').length;
+    out.wordsBig = document.getElementById('wordsWordBig').textContent;
+
+    // parola della tappa sillabe
+    startWord(12);
+    await sleep(150);
+    out.wordsStage2 = document.getElementById('wordsStageBadge').textContent;
+    out.wordsSlots2 = document.querySelectorAll('#wordsSlotsWrap .slot').length;
+    out.wordsUnits2 = WORDS[12].units.length;
+
+    // UNA SOLA LETTURA PER TAP: il pointerdown non deve parlare
+    startWord(0);
+    await sleep(150);
+    let spoken = 0;
+    const realSpeak = window.speak;
+    window.speak = function () { spoken++; return realSpeak.apply(this, arguments); };
+    const tapTile = document.querySelector('#wordsTilePool .tile');
+    if (tapTile) {
+      tapTile.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 1 }));
+      document.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 1 }));
+      tapTile.click();
+    }
+    await sleep(120);
+    window.speak = realSpeak;
+    out.tapSpeaks = spoken;
+    settings.autoRead = autoReadBefore;
+
+    // SUONI DIFFICILI: quiz con la scheda del gruppo
+    settings.exercise = 'sounds';
+    startChosenExercise();
+    await sleep(150);
+    out.soundItems = quiz.items.length;
+    out.soundCard = !!document.querySelector('#quizFocus .soundcard');
+    out.soundFocus = (document.querySelector('#quizFocus .soundcard .focus') || {}).textContent || '';
+    out.soundOptions = document.querySelectorAll('#quizOptions .opt').length;
+    out.soundAllType = quiz.items.every(i => i.type === 'sound');
+    // singolo esercizio scelto dal docente
+    settings.exercise = 'sound:5';
+    startChosenExercise();
+    await sleep(120);
+    out.singleItems = quiz.items.length;
+    out.singleAnswer = quiz.items[0] ? quiz.items[0].answer : '';
+    settings.exercise = 'all';
+
     // impostazioni
     showScreen('home');
     openSettings();
     await sleep(100);
     out.settingsFields = document.querySelectorAll('#overlayBody .field').length;
+    out.settingsCaps = !!document.getElementById('setCaps');
+    out.settingsReadWords = !!document.getElementById('setReadWords');
+    out.settingsExerciseOpts = document.querySelectorAll('#setExercise option').length;
     closeSheet();
     await sleep(60);
 
@@ -178,6 +250,7 @@ app.whenReady().then(async () => {
   expect("home visibile", results.homeActive);
   expect("4 card percorso", results.groupCards === 4, results.groupCards);
   expect("4 statistiche", results.homeStats === 4, results.homeStats);
+  expect("20 parole nel laboratorio", results.wordListChips === 20, results.wordListChips);
 
   console.log("\n— LIVELLO 1 (guidato) —");
   expect("schermata livello attiva", results.levelActive);
@@ -205,7 +278,35 @@ app.whenReady().then(async () => {
   expect("4 opzioni per domanda", results.quizOptions === 4, results.quizOptions);
   expect("risposta registrata", results.quizAnswered);
   expect("8 trofei", results.trophyCards === 8, results.trophyCards);
-  expect("impostazioni con 8 campi", results.settingsFields === 8, results.settingsFields);
+
+  console.log("\n— LABORATORIO PAROLE —");
+  expect("schermata parole attiva", results.wordsActive);
+  expect("titolo della parola", /^1\. ape$/.test(results.wordsTitle), results.wordsTitle);
+  expect("caselle = pezzi della parola", results.wordsSlots === results.wordsUnits, `${results.wordsSlots}/${results.wordsUnits}`);
+  expect("tessere = pezzi + 3 distrattori", results.wordsTiles === results.wordsUnits + 3, results.wordsTiles);
+  expect("illustrazione della parola", /illustrations\/41\.png$/.test(results.wordsImg), results.wordsImg);
+  expect("tappa lettere dichiarata", /lettere/i.test(results.wordsStage), results.wordsStage);
+  expect("parola completabile", results.wordsCompleted);
+  expect("la parola cresce sotto le caselle", results.wordsBig === "ape", results.wordsBig);
+  expect("tappa sillabe per la parola 13", /sillabe/i.test(results.wordsStage2), results.wordsStage2);
+  expect("caselle della tappa sillabe", results.wordsSlots2 === results.wordsUnits2, `${results.wordsSlots2}/${results.wordsUnits2}`);
+  expect("un solo suono per tap (niente doppioni)", results.tapSpeaks === 1, results.tapSpeaks);
+
+  console.log("\n— SUONI DIFFICILI —");
+  expect("20 schede", results.soundItems === 20, results.soundItems);
+  expect("scheda del gruppo visibile", results.soundCard);
+  expect("il gruppo mostrato è quello giusto", results.soundFocus.length > 0, results.soundFocus);
+  expect("4 opzioni", results.soundOptions === 4, results.soundOptions);
+  expect("tutte le domande sono di tipo suono", results.soundAllType);
+  expect("esercizio singolo scelto dal docente", results.singleItems === 1 && results.singleAnswer === "cia", `${results.singleItems}/${results.singleAnswer}`);
+
+  console.log("\n— IMPOSTAZIONI —");
+  expect("11 campi", results.settingsFields === 11, results.settingsFields);
+  expect("interruttore tutto maiuscolo", results.settingsCaps);
+  expect("interruttore lettura parole", results.settingsReadWords);
+  expect("scelta esercizio con 22 voci", results.settingsExerciseOpts === 22, results.settingsExerciseOpts);
+
+  console.log("\n— STAMPA E PROGRESSI —");
   expect("scheda di stampa con caselle", results.printSlots === 8, results.printSlots);
   expect("scheda di stampa con tessere", results.printTiles > 0, results.printTiles);
   expect("progressi salvati", results.savedProgress >= 1, results.savedProgress);

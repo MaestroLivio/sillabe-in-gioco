@@ -4,6 +4,57 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.2.0] — 2026-10-25
+
+### Corretto
+- **Sillaba letta due volte a ogni tocco.** Un tap produce un `pointerdown`
+  *seguito* da un `click`: entrambi chiamavano `speak()`, quindi la sillaba
+  partiva due volte e si sovrapponeva. Ora `pointerdown` non parla mai: parla il
+  `click` per il tocco e `onDragMove` nel momento in cui il trascinamento
+  comincia davvero. Un solo suono per gesto, verificato dallo smoke test che
+  conta le chiamate a `speak()` durante un tap (`1`, non `2`).
+- **La barra inferiore copriva le tessere del laboratorio parole.** La variabile
+  `--bar-h` era misurata sulla prima barra del documento e non veniva ricalcolata
+  al cambio di schermata; ora `syncBottomBarHeight()` misura la barra della
+  schermata attiva e viene richiamata da `showScreen()`.
+
+### Aggiunto
+- **Formazione di parole: 20 parole illustrate**, in due tappe.
+  - *Unisco le lettere* (8 parole): ape, mela, sole, luna, pane, casa, dado, faro.
+  - *Unisco le sillabe* (12 parole): gatto, cane, pesce, rana, topo, fiore, palla,
+    treno, nave, libro, ombrello, campana.
+  - Ogni parola ha la sua figura (illustrazioni 41–60), i suoi pezzi e 3 distrattori.
+  - La parola **cresce sotto le caselle** mentre viene composta.
+  - Schermata dedicata con TV, radio, suggerimento, mescola, rifai e navigazione
+    parola precedente/successiva; scorciatoie `←` `→` `H` `R`.
+- **20 esercizi finali sui suoni difficili**: `che chi ce ci cia cio ciu ge gi ghe
+  ghi gli gn gno sci sce spr str squ qua`. Si ascolta la parola
+  (formiche, chitarra, cesto, città, camicia, ciotola, ciuffo, gelato, giraffa,
+  alghe, ghiaccio, aglio, bagno, ragno, sciarpa, pesce, spremuta, strada, squalo,
+  quaderno) e si sceglie la grafia giusta fra quattro. La scheda del suono mostra
+  il gruppo e la parola con il gruppo evidenziato.
+- **Tutto maiuscolo on/off** nelle impostazioni: tessere, caselle e parole in
+  MAIUSCOLO, etichette dell'interfaccia invariate.
+- **Lettura delle parole on/off**: spegne la voce sulle parole intere; i pulsanti
+  ASCOLTA lo segnalano invece di contraddire l'impostazione.
+- **Esercizio scelto dal docente** nel menu impostazioni: quiz misto, tutti e 20 i
+  suoni difficili oppure un singolo suono, con ▶ *Avvia l'esercizio*.
+- **Nuovi pulsanti in home**: 🔤 PAROLE e 👂 SUONI DIFFICILI, più l'elenco delle
+  20 parole con lo stato di completamento.
+- **60 illustrazioni** (erano 40): le 20 nuove scene delle parole sono disegnate
+  dal generatore vettoriale e non contengono testo, come le altre.
+- **25 nuovi clip audio**: 42 pezzi del laboratorio (lettere e sillabe) e 20 parole
+  dei suoni difficili. In tutto **393 clip** con la voce neurale, sempre offline.
+
+### Strumenti
+- `scripts/audio/build.js --missing` sintetizza solo i clip assenti, senza
+  riscrivere quelli già validati.
+- `scripts/validate.js` controlla anche le 20 parole (pezzi che ricompongono la
+  parola, distrattori, figura) e le 20 schede sui suoni (opzioni e unicità).
+- Smoke test esteso a laboratorio parole, suoni difficili, impostazioni e
+  regressione del doppio audio (48 controlli).
+- L'audit di layout verifica anche le schermate PAROLE e SUONI DIFFICILI.
+
 ## [2.1.1] — 2026-10-25
 
 ### Corretto

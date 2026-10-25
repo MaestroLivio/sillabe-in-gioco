@@ -14,6 +14,7 @@
  * Uso:
  *   node scripts/audio/build.js            genera tutto
  *   node scripts/audio/build.js --only=syl rigenera solo le sillabe
+ *   node scripts/audio/build.js --missing  genera solo i clip assenti
  *   node scripts/audio/build.js --check    verifica senza scrivere
  */
 const fs = require("fs");
@@ -33,6 +34,10 @@ const MP3_KBPS = 32;
 const args = process.argv.slice(2);
 const only = (args.find(a => a.startsWith("--only=")) || "").split("=")[1] || "all";
 const checkOnly = args.includes("--check");
+/* --missing: sintetizza solo i clip che non esistono ancora. Serve quando si
+   aggiungono poche parole nuove: rigenerare 350 file per 20 token sarebbe
+   inutile (e la voce cambierebbe leggermente i clip già validati). */
+const onlyMissing = args.includes("--missing");
 
 /* --- utilità --- */
 function sh(cmd, argv) {
@@ -117,6 +122,10 @@ function write(group, name, text, opts) {
   const dir = path.join(AUDIO, group);
   fs.mkdirSync(dir, { recursive: true });
   const file = path.join(dir, name + ".mp3");
+  // --missing: se il clip è già a posto si riusa, senza risintetizzare
+  if (onlyMissing && fs.existsSync(file) && fs.statSync(file).size > 800) {
+    return { file: `audio/${group}/${name}.mp3`, dur: +duration(file).toFixed(3), spoken: text };
+  }
   const dur = synth(text, file, opts);
   return { file: `audio/${group}/${name}.mp3`, dur, spoken: text };
 }
