@@ -4,6 +4,47 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.2.7] — 2026-10-26
+
+### Aggiunto
+- **Quinto percorso: «La prima parola»**, quello che viene prima della lettura.
+  101 esercizi divisi in **12 tappe**, con numerazione propria: non fa parte dei
+  40 livelli delle frasi e non li sposta.
+  - Si parte dalle **cinque vocali**, si aggiunge **una consonante alla volta**
+    (M; L e R; S e Z; N e F; V e P; T e B; D con i suoni duri *ca, co, cu, ga, go, gu*),
+    poi i **digrammi della H** (*che, chi, ghe, ghi*), i **suoni dolci**
+    (*ce, ci, ge, gi, cia, cio, ciu, giu*), i **gruppi difficili** (*gn, gli, sce, sci*
+    dentro una parola vera) e infine **dieci parole** da comporre con le sillabe.
+  - **La sillaba si costruisce**: la consonante e la vocale stanno in due caselle
+    separate, e le tessere del vassoio contengono le consonanti della tappa più le
+    cinque vocali. È l'atto che insegna il metodo sillabico; nel laboratorio parole,
+    invece, la sillaba arriva già intera.
+  - Pulsante **TAPPE** con l'elenco delle dodici tappe e quante voci sono completate.
+- **Nomi nuovi per i cinque percorsi**: *La prima parola*, *La prima frase*,
+  *Frasi semplici*, *Frasi che si uniscono*, *Frasi che si intrecciano*.
+
+### Come è fatto, e perché
+- **Le tappe sono un inventario, non cento oggetti scritti a mano.** `SYLL_SERIES`
+  dichiara per ogni tappa nome, tipo e l'elenco delle voci; il codice costruisce da
+  lì caselle e tessere. Una serie incompleta si nota subito nel dato, e
+  `scripts/audio/extract.js` legge lo stesso elenco per generare i clip mancanti:
+  aggiungere una sillaba in un punto basta a far esistere il suo suono.
+- **La numerazione è separata apposta.** Il contatore dei livelli resta `x / 40`, le
+  statistiche restano `/40` e `/120`, `groupStats` non è stato toccato. Il percorso
+  sillabico ha il suo contatore (`1 / 101`) e il suo salvataggio (`progress.syll`).
+- **29 sillabe e 2 parole avevano bisogno di un clip nuovo** (*che, ghi, cia, glia,
+  ghe, giu, zi, zu…* e le parole *maglia*, *scivolo*). Sono state generate con
+  `--missing`, senza rigenerare i 393 file già validati: il manifest è passato da
+  393 a 424 clip.
+- **Le figure delle parole nuove sono emoji, non scene disegnate.** Le 18 parole del
+  percorso non hanno un PNG in `illustrations/`: disegnare 18 scene nuove è un lavoro
+  separato, e un'emoji grande sulla TV resta leggibile e coerente con il resto
+  dell'interfaccia. Va detto com'è, non nascosto.
+- **I distrattori non si inventano.** Sono sillabe e lettere che hanno già un clip
+  nell'app: una tessera che non si può ascoltare sarebbe un esercizio rotto.
+
+---
+
 ## [2.2.6] — 2026-10-26
 
 ### Aggiunto

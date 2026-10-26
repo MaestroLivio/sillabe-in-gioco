@@ -28,7 +28,10 @@ const dataCode = script.slice(start, end)
   .replace(/const LEVELS = RAW\.map/, "globalThis.LEVELS = RAW.map")
   // WORDS e SOUNDS servono ai controlli: `const` in sandbox non finisce su globalThis
   .replace(/^const WORDS = /m, "globalThis.WORDS = ")
-  .replace(/^const SOUNDS = /m, "globalThis.SOUNDS = ");
+  .replace(/^const SOUNDS = /m, "globalThis.SOUNDS = ")
+  // percorso sillabico: stesse ragioni, i dati vivono fuori dai 40 livelli
+  .replace(/^const SYLL_STEPS = /m, "globalThis.SYLL_STEPS = ")
+  .replace(/^const SYLL_ITEMS = /m, "globalThis.SYLL_ITEMS = ");
 
 const sandbox = {
   console,
@@ -138,6 +141,45 @@ SOUNDS.forEach((s, i) => {
   if (hits !== 1) errors.push(`Suono «${s.sound}»: compare ${hits} volte fra le opzioni`);
 });
 
+/* --- percorso «La prima parola»: fonemi, sillabe, parola ---
+   Ha una numerazione propria, fuori dai 40 livelli delle frasi: qui si
+   controlla che le dodici tappe reggano da sole (nessuna vuota, nessun
+   doppione, ogni parola ricomposta dalle sue sillabe). */
+const SYLL_STEPS = sandbox.SYLL_STEPS || [];
+const SYLL_ITEMS = sandbox.SYLL_ITEMS || [];
+if (SYLL_STEPS.length !== 12) errors.push(`Attese 12 tappe del percorso sillabico, trovate ${SYLL_STEPS.length}`);
+if (SYLL_ITEMS.length !== SYLL_STEPS.reduce((a, s) => a + s.items.length, 0)) {
+  errors.push("SYLL_ITEMS non corrisponde agli item delle tappe");
+}
+const syllKeys = new Set();
+const syllSay = new Set();
+SYLL_STEPS.forEach((step, i) => {
+  const n = i + 1;
+  if (step.index !== i) errors.push(`Tappa ${n}: indice errato (${step.index})`);
+  if (!step.items.length) errors.push(`Tappa ${n}: nessun esercizio`);
+  if (!step.name || !step.note) errors.push(`Tappa ${n}: nome o consegna mancanti`);
+  step.items.forEach(it => {
+    if (syllKeys.has(it.key)) errors.push(`Tappa ${n}: chiave duplicata «${it.key}»`);
+    syllKeys.add(it.key);
+    if (it.step !== i) errors.push(`Tappa ${n}: item «${it.title}» con tappa sbagliata`);
+    if (!it.units.length) errors.push(`Tappa ${n}: item «${it.title}» senza pezzi`);
+    it.units.forEach(u => {
+      if (!u) errors.push(`Tappa ${n}: pezzo vuoto in «${it.title}»`);
+      if (/\s/.test(u)) errors.push(`Tappa ${n}: il pezzo «${u}» contiene spazi`);
+    });
+    /* la parola deve tornare dai suoi pezzi, altrimenti la casella non
+       corrisponde alla tessera e l'esercizio diventa irrisolvibile */
+    if (it.units.join("") !== it.say) {
+      errors.push(`Tappa ${n}: «${it.say}» non si ricompone dai pezzi (${it.units.join("-")})`);
+    }
+    if (syllSay.has(it.say)) errors.push(`Tappa ${n}: «${it.say}» ripetuto in un'altra tappa`);
+    syllSay.add(it.say);
+    if (it.kind === "syl" && it.units.length !== 2) {
+      errors.push(`Tappa ${n}: la sillaba «${it.say}» non è consonante + vocale`);
+    }
+  });
+});
+
 /* report */
 console.log(`Livelli: ${LEVELS.length}`);
 console.log(`Gruppi: ${groups.join(" · ")}`);
@@ -145,6 +187,7 @@ console.log(`Sillabe totali: ${LEVELS.reduce((a, l) => a + l.syllables.length, 0
 console.log(`Frasi uniche: ${texts.size}`);
 console.log(`Parole del laboratorio: ${WORDS.length} (${WORDS.filter(w => w.stage === "letters").length} lettere · ${WORDS.filter(w => w.stage === "syllables").length} sillabe)`);
 console.log(`Suoni difficili: ${SOUNDS.length}`);
+console.log(`Percorso sillabico: ${SYLL_STEPS.length} tappe · ${SYLL_ITEMS.length} esercizi`);
 LEVELS.slice(0, 3).forEach(l => console.log(`  es. ${l.id}: ${l.text}  [${l.syllables.join("-")}]`));
 LEVELS.slice(-2).forEach(l => console.log(`  es. ${l.id}: ${l.text}  [${l.syllables.join("-")}]`));
 

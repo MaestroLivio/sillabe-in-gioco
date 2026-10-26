@@ -401,6 +401,33 @@ body.theme-night .wordbig{color:#bcdcff}
 .wordchip.done{border-color:var(--green);background:#eaf9ee}
 body.theme-night .wordchip.done{background:#22402c}
 
+/* Percorso «La prima parola»: la card sta sopra i quattro percorsi delle
+   frasi e ha un colore suo, così si vede che è un'altra cosa. */
+.syll-path{margin-bottom:10px;border-color:#b9dcf7;background:linear-gradient(160deg,#f2f9ff,#dcefff)}
+body.theme-night .syll-path{background:linear-gradient(160deg,#22334a,#1a2839);border-color:#3a5876}
+
+/* Figura della parola sulla TV: qui non c'è un disegno dedicato, si mostra
+   l'emoji grande della parola. Il riquadro tiene l'altezza stabile, così la
+   TV non "salta" passando da una parola all'altra. */
+.syllfigure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 8px;min-height:150px}
+.syllfigure .fem{font-size:4.4rem;line-height:1}
+.syllfigure .fcap{font-size:1.15rem;font-weight:700;letter-spacing:1.5px;color:#eaf7ff;text-transform:uppercase}
+
+/* Elenco delle tappe nel foglio «TAPPE» */
+.steplist{display:grid;gap:8px;max-height:52vh;overflow:auto}
+.steprow{
+  display:flex;align-items:center;gap:10px;text-align:left;width:100%;
+  padding:10px 12px;border-radius:14px;background:var(--cream);border:2px solid var(--line);
+  transition:transform .12s,border-color .12s
+}
+.steprow:hover{transform:translateY(-2px);border-color:var(--blue-l)}
+body.theme-night .steprow{background:#22334a;border-color:#3a5876}
+.steprow .se{font-size:1.5rem;line-height:1;flex:0 0 auto}
+.steprow .sb{flex:1;min-width:0}
+.steprow .sn{display:block;font-weight:700;font-size:.86rem}
+.steprow .ss{display:block;font-size:.72rem;color:var(--ink-soft)}
+.steprow .sc{font-size:.74rem;font-weight:700;color:var(--green-d);flex:0 0 auto}
+
 .toast{
   position:fixed;left:50%;bottom:118px;transform:translate(-50%,20px);z-index:200;
   background:#25384d;color:#fff;padding:12px 20px;border-radius:999px;font-size:.85rem;font-weight:700;
@@ -507,7 +534,8 @@ body.theme-night .trophy.unlocked{background:#3a3222}
     </div>
 
     <div class="card">
-      <h2>I quattro percorsi</h2>
+      <h2>I cinque percorsi</h2>
+      <div id="syllPathCard"></div>
       <div class="groups" id="groupList"></div>
     </div>
 
@@ -687,6 +715,80 @@ body.theme-night .trophy.unlocked{background:#3a3222}
   </footer>
 </section>
 
+<section id="screen-syll" class="screen" aria-label="La prima parola: percorso sillabico">
+  <header class="topbar">
+    <div class="titlewrap">
+      <span class="badge" id="syllBadge">La prima parola · tappa 1</span>
+      <h1 id="syllTitle">Le vocali</h1>
+    </div>
+    <div class="topActions">
+      <button class="icon-btn" id="syllHomeBtn" aria-label="Torna alla home">🏠</button>
+      <button class="btn-close" id="syllCloseBtn" aria-label="Chiudi il percorso sillabico">✕</button>
+    </div>
+  </header>
+
+  <div class="stage">
+    <div>
+      <div class="tv">
+        <div class="tv-screen">
+          <div id="syllImage" aria-live="polite"></div>
+          <div class="tv-glare"></div>
+        </div>
+        <div class="tv-knobs" aria-hidden="true"><i class="knob"></i><i class="knob"></i></div>
+        <span class="tv-label">Sillabe TV</span>
+      </div>
+      <div class="tv-legs" aria-hidden="true"><i></i><i></i></div>
+    </div>
+
+    <aside class="radio-panel">
+      <button class="radio" id="syllRadioBtn" aria-label="Ascolta il suono da comporre">
+        <span class="speaker" aria-hidden="true">🔊</span>
+        <span class="rlabel">ASCOLTA</span>
+        <span class="rsub" id="syllRadioSub">il suono</span>
+      </button>
+      <div class="info-card">
+        <strong>Come si gioca</strong>
+        <span id="syllNote">Ascolta il suono e metti le lettere al posto giusto.</span>
+      </div>
+      <div class="info-card">
+        <strong>Questo esercizio</strong>
+        <span id="syllProgressText">0 di 0 caselle</span>
+      </div>
+    </aside>
+  </div>
+
+  <div id="syllSlotsWrap" aria-label="Area di costruzione della sillaba o della parola"></div>
+  <div class="wordbig" id="syllWordBig" aria-live="polite"></div>
+
+  <div id="syllTilesWrap">
+    <div class="tiles-head">
+      <h2 id="syllTilesHead">Lettere</h2>
+      <button class="btn ghost small" id="syllShuffleBtn" aria-label="Mescola le tessere">🔀 Mescola</button>
+    </div>
+    <div class="tile-pool" id="syllTilePool" role="group" aria-label="Tessere disponibili"></div>
+  </div>
+
+  <footer class="bottombar">
+    <div class="bottombar-inner">
+      <button class="mascot-btn" id="syllMascotBtn" aria-label="La mascotte ti dà un consiglio">
+        <span class="m" aria-hidden="true">🐻</span>
+        <span class="mtext"><b>Orsetto Lino</b><span id="syllMascotText">Tocca una lettera per ascoltarla</span></span>
+      </button>
+      <div class="toolrow">
+        <button class="tool" id="syllHintBtn" aria-label="Suggerimento"><span class="ti">💡</span><span class="tl">SUGGERIMENTO</span></button>
+        <button class="tool" id="syllReadBtn" aria-label="Ascolta il risultato"><span class="ti">🔊</span><span class="tl">ASCOLTA</span></button>
+        <button class="tool" id="syllListBtn" aria-label="Vedi tutte le tappe"><span class="ti">🗂️</span><span class="tl">TAPPE</span></button>
+        <button class="tool" id="syllResetBtn" aria-label="Rifai l'esercizio"><span class="ti">🔄</span><span class="tl">RIFAI</span></button>
+      </div>
+      <div class="navrow">
+        <button class="nav-btn" id="syllPrevBtn" aria-label="Esercizio precedente">←</button>
+        <span class="counter" id="syllCounter">1 / 101</span>
+        <button class="nav-btn" id="syllNextBtn" aria-label="Esercizio successivo">→</button>
+      </div>
+    </div>
+  </footer>
+</section>
+
 <section id="screen-exercises" class="screen" aria-label="Esercizi">
   <header class="topbar">
     <div class="titlewrap">
@@ -779,13 +881,17 @@ body.theme-night .trophy.unlocked{background:#3a3222}
 /* ------------------------------------------------------------------
    1. DATI — 40 livelli, tutti con frase diversa
    ------------------------------------------------------------------ */
+/* I cinque percorsi, in ordine di difficoltà. Il primo — «La prima parola» —
+   non è in questo elenco: vive in una sezione a parte con una sua numerazione
+   (vedi 1d), perché prima della frase si lavora sulla sillaba. Questi quattro
+   sono i percorsi delle frasi, livelli 1-40. */
 const GROUP_TITLES = [
-  "Dalla parola alla frase",
+  "La prima frase",
   "Frasi semplici",
-  "Frasi coordinate",
-  "Frasi complesse"
+  "Frasi che si uniscono",
+  "Frasi che si intrecciano"
 ];
-const GROUP_BADGES = ["Percorso 1 · Guidato", "Percorso 2 · Frasi semplici", "Percorso 3 · Coordinate", "Percorso 4 · Complesse"];
+const GROUP_BADGES = ["La prima frase · guidata", "Frasi semplici", "Frasi che si uniscono", "Frasi che si intrecciano"];
 const GROUP_EMOJI = ["🌱", "🌿", "🌳", "🏔️"];
 
 /* parts: [etichetta, sillabe, numero di slot pre-compilati]
@@ -1010,6 +1116,137 @@ const SOUNDS = SOUND_ITEMS.map((it, i) => ({
   word: it.word,
   options: shuffleArr([it.sound].concat(it.wrong))
 }));
+
+/* ------------------------------------------------------------------
+   1d. LA PRIMA PAROLA — percorso sillabico sistematico
+
+   Il percorso che viene *prima* delle frasi: si parte dal fonema, si
+   costruisce la sillaba unendo consonante e vocale, e solo alla fine si
+   arriva alla parola intera. È il metodo sillabico nell'ordine in cui si
+   insegna: vocali → serie di consonanti → digrammi → gruppi difficili →
+   prima parola.
+
+   Ha una sua numerazione (12 tappe) e vive fuori dai 40 livelli delle
+   frasi: le frasi non si toccano, il contatore dei livelli resta «x / 40».
+
+   `units` è l'inventario della tappa, separato da spazi. Per le serie di
+   consonanti è la sillaba intera («ma me mi mo mu»); la consonante e la
+   vocale si ricavano dalla sillaba stessa, quindi non si possono
+   disallineare. Per le parole la sillabazione è scritta con il trattino
+   («ba-gno»): è il dato che decide le caselle, e un errore si vede qui.
+
+   Le tappe sono dichiarate come inventario, non come cento oggetti scritti
+   a mano: la progressione è sistematica, e una serie incompleta si nota
+   subito nel dato. `scripts/audio/extract.js` legge proprio questi elenchi
+   per generare i clip mancanti: aggiungere una sillaba qui basta a far
+   esistere il suo suono.
+
+   kind:
+     «vowel» → una casella: la vocale sentita, scelta fra le cinque
+     «syl»   → due caselle: la consonante e la vocale, unite in una sillaba
+     «syl1»  → una casella: un gruppo già formato (che, chi, ce, cia…)
+     «word»  → la parola intera, composta con le sue sillabe
+   ------------------------------------------------------------------ */
+const SYLL_SERIES = [
+  { name: "Le vocali", kind: "vowel", units: "a e i o u",
+    note: "Ascolta il suono e metti la vocale nella casella." },
+  { name: "La M", kind: "syl", units: "ma me mi mo mu",
+    note: "Prima la consonante, poi la vocale: la sillaba nasce dall'incontro." },
+  { name: "La L e la R", kind: "syl", units: "la le li lo lu ra re ri ro ru",
+    note: "Due consonanti che si tengono: il suono continua." },
+  { name: "La S e la Z", kind: "syl", units: "sa se si so su za ze zi zo zu",
+    note: "La S sibila, la Z pizzica: sono suoni lunghi." },
+  { name: "La N e la F", kind: "syl", units: "na ne ni no nu fa fe fi fo fu",
+    note: "La N risuona nel naso, la F sfiora i denti." },
+  { name: "La V e la P", kind: "syl", units: "va ve vi vo vu pa pe pi po pu",
+    note: "La V vibra, la P è uno scoppio corto." },
+  { name: "La T e la B", kind: "syl", units: "ta te ti to tu ba be bi bo bu",
+    note: "Come P, ma con la voce che vibra." },
+  { name: "La D e i suoni duri", kind: "syl", units: "da de di do du ca co cu ga go gu",
+    note: "C e G davanti a A, O, U suonano duri." },
+  { name: "I digrammi della H", kind: "syl1", units: "che chi ghe ghi",
+    note: "Due lettere, un solo suono duro." },
+  { name: "I suoni dolci", kind: "syl1", units: "ce ci ge gi cia cio ciu giu",
+    note: "C e G davanti a I o E diventano dolci." },
+  { name: "I gruppi difficili", kind: "word",
+    units: "ba-gno a-glio pe-sce sci-vo-lo for-mi-che chi-tar-ra al-ghe ma-glia",
+    note: "GN, GLI e SC dentro una parola vera." },
+  { name: "La prima parola", kind: "word",
+    units: "pa-ne so-le ca-sa lu-na da-do fa-ro gat-to ca-ne ra-na to-po",
+    note: "Adesso le sillabe si uniscono e nasce la parola." }
+];
+
+/* Emoji delle parole: sono le stesse figure dei suoni difficili, così il
+   bambino ritrova un disegno che conosce già. */
+const SYLL_WORD_EMO = {
+  bagno: "🛁", aglio: "🧄", pesce: "🐟", scivolo: "🛝",
+  formiche: "🐜", chitarra: "🎸", alghe: "🌿", maglia: "👕",
+  pane: "🍞", sole: "☀️", casa: "🏠", luna: "🌙", dado: "🎲",
+  faro: "🗼", gatto: "🐱", cane: "🐶", rana: "🐸", topo: "🐭"
+};
+
+/* Consonanti con cui si costruiscono i distrattori delle caselle: si
+   escludono quelle della serie in corso, così la scelta è una scelta. */
+const SYLL_CONS_POOL = ["b","c","d","f","g","l","m","n","p","r","s","t","v","z"];
+
+/**
+ * Costruisce gli item delle tappe a partire dall'inventario.
+ * Per «syl» la sillaba si spezza in consonante + vocale (prima lettera, resto):
+ * è la stessa regola per tutte le quindici consonanti, quindi non esiste il
+ * caso «serie con la divisione sbagliata».
+ */
+const SYLL_STEPS = SYLL_SERIES.map((s, stepIdx) => {
+  const raw = s.units.split(" ");
+  const items = raw.map((u, itemIdx) => {
+    if (s.kind === "word") {
+      const pieces = u.split("-");
+      return {
+        key: `${stepIdx}-${itemIdx}`,
+        step: stepIdx,
+        index: itemIdx,
+        kind: s.kind,
+        units: pieces,
+        say: pieces.join(""),
+        title: pieces.join("")
+      };
+    }
+    if (s.kind === "syl") {
+      return {
+        key: `${stepIdx}-${itemIdx}`,
+        step: stepIdx,
+        index: itemIdx,
+        kind: s.kind,
+        units: [u[0], u.slice(1)],
+        say: u,
+        title: u
+      };
+    }
+    return {
+      key: `${stepIdx}-${itemIdx}`,
+      step: stepIdx,
+      index: itemIdx,
+      kind: s.kind,
+      units: [u],
+      say: u,
+      title: u
+    };
+  });
+  return {
+    index: stepIdx,
+    name: s.name,
+    kind: s.kind,
+    note: s.note,
+    items,
+    emoji: s.kind === "word" ? "🔤" : s.kind === "vowel" ? "🔊" : "🧩"
+  };
+});
+
+/** Tutti gli item, in fila: serve al contatore e al pulsante «continua». */
+const SYLL_ITEMS = SYLL_STEPS.flatMap(s => s.items);
+
+/** Tappe che si presentano come una parola da comporre a pezzi. */
+const isSyllWordStep = step => step.kind === "word";
+
 
 /* ------------------------------------------------------------------
    2. STATO E PERSISTENZA
@@ -1455,7 +1692,7 @@ function illustrationSVG(level) {
 /* ------------------------------------------------------------------
    6. NAVIGAZIONE SCHERMATE
    ------------------------------------------------------------------ */
-const SCREENS = ["home", "words", "level", "exercises", "results", "trophies"];
+const SCREENS = ["home", "words", "syll", "level", "exercises", "results", "trophies"];
 function showScreen(name) {
   SCREENS.forEach(s => {
     const node = $("#screen-" + s);
@@ -1487,6 +1724,35 @@ function groupStats(g) {
   return { done, stars, total: 10 };
 }
 
+/**
+ * Card del percorso sillabico. Sta fuori dai quattro percorsi delle frasi
+ * perché ha una numerazione propria (dodici tappe, con un contatore tutto
+ * suo): il contatore dei livelli resta x/40 e non slitta.
+ */
+function renderSyllPathCard() {
+  const box = $("#syllPathCard");
+  if (!box) return;
+  progress.syll = progress.syll || {};
+  const done = Object.keys(progress.syll).length;
+  const total = SYLL_ITEMS.length;
+  const stars = Object.values(progress.syll).reduce((a, r) => a + (r.stars || 0), 0);
+  const pct = total ? Math.round(done / total * 100) : 0;
+
+  const b = el("button", "group-card syll-path");
+  b.type = "button";
+  b.innerHTML = `<span class="emoji" aria-hidden="true">🔤</span>
+    <span class="gbody">
+      <span class="gname">La prima parola</span>
+      <span class="gsub">Tappe 1–${SYLL_STEPS.length} · ${done}/${total} esercizi completati</span>
+      <span class="mini-bar"><i style="width:${pct}%"></i></span>
+    </span>
+    <span class="gcount">${stars}★</span>`;
+  b.setAttribute("aria-label",
+    `La prima parola, dal suono alla sillaba: ${SYLL_STEPS.length} tappe, ${done} esercizi su ${total} completati. Apri il primo esercizio non completato.`);
+  b.addEventListener("click", () => { fx("click"); startSyllPath(); });
+  box.appendChild(b);
+}
+
 function renderHome() {
   const totalStars = Object.values(progress.levels).reduce((a, r) => a + (r.stars || 0), 0);
   const doneCount = Object.keys(progress.levels).length;
@@ -1506,6 +1772,7 @@ function renderHome() {
 
   const list = $("#groupList");
   list.innerHTML = "";
+  renderSyllPathCard();
   GROUP_TITLES.forEach((title, g) => {
     const st = groupStats(g);
     const b = el("button", "group-card");
@@ -1975,8 +2242,373 @@ function wordReset() {
 }
 
 /* ------------------------------------------------------------------
-   9. INTERAZIONI: click, selezione, drag & drop (mouse/touch/penna)
+   8c. LA PRIMA PAROLA — percorso sillabico
+
+   Tre modi di comporre, una sola meccanica:
+     · «vowel»  una casella, cinque vocali da scegliere
+     · «syl»    due caselle (consonante, vocale): la tessera della
+                consonante è quella giusta; la vocale si sceglie fra cinque
+     · «syl1»   una casella, il gruppo già formato (che, chi, ce, cia…)
+     · «word»   le sillabe della parola, in ordine
+
+   La differenza con il laboratorio parole è didattica, non estetica: qui
+   la sillaba *si costruisce* mettendo insieme i suoi due pezzi, che è
+   l'atto che insegna il metodo sillabico. Nel laboratorio parole la
+   sillaba arriva già intera.
    ------------------------------------------------------------------ */
+const SY = {
+  step: 0,
+  index: 0,
+  slots: [],
+  tiles: [],
+  selectedTile: null,
+  completed: false,
+  mistakes: 0,
+  hints: 0
+};
+
+/** L'item in corso, oppure null. */
+function currentSyll() {
+  const step = SYLL_STEPS[SY.step];
+  return step ? step.items[SY.index] || null : null;
+}
+function currentSyllStep() { return SYLL_STEPS[SY.step]; }
+
+/** Apre il percorso all'item indicato (indice piatto in SYLL_ITEMS). */
+function startSyll(flatIndex) {
+  const i = Math.max(0, Math.min(SYLL_ITEMS.length - 1, flatIndex | 0));
+  const item = SYLL_ITEMS[i];
+  SY.step = item.step;
+  SY.index = item.index;
+  buildSyllLab();
+  showScreen("syll");
+  if (settings.autoRead) setTimeout(() => speakSyllTarget(), 420);
+}
+
+/** Apre la prima tappa, o la prima non completata. */
+function startSyllPath() {
+  progress.syll = progress.syll || {};
+  const next = SYLL_ITEMS.find(it => !progress.syll[it.key]);
+  startSyll(next ? SYLL_ITEMS.indexOf(next) : 0);
+}
+
+/** Indice piatto dell'item in corso: serve ai pulsanti ← → e al contatore. */
+function syllFlatIndex() {
+  return SYLL_ITEMS.findIndex(it => it.step === SY.step && it.index === SY.index);
+}
+
+/** Fa sentire il bersaglio: la sillaba intera, o la parola intera. */
+function speakSyllTarget() {
+  const item = currentSyll();
+  if (!item) return;
+  if (item.kind === "word") {
+    speak(item.say, { group: "parole", rate: Math.max(0.6, settings.rate - 0.1) });
+  } else {
+    speak(item.say, { group: "syl", rate: Math.max(0.55, settings.rate - 0.2) });
+  }
+}
+
+/** Consonanti della serie in corso (per i distrattori delle vocali). */
+function seriesConsonants(step) {
+  const list = new Set();
+  step.items.forEach(it => { if (it.kind === "syl") list.add(it.units[0]); });
+  return Array.from(list);
+}
+
+function buildSyllLab() {
+  const item = currentSyll();
+  const step = currentSyllStep();
+  if (!item || !step) return;
+
+  SY.slots = [];
+  SY.tiles = [];
+  SY.selectedTile = null;
+  SY.completed = false;
+  SY.mistakes = 0;
+  SY.hints = 0;
+
+  $("#syllBadge").textContent = `La prima parola · tappa ${step.index + 1}`;
+  $("#syllTitle").textContent = `${step.name}`;
+  $("#syllNote").textContent = step.note;
+  $("#syllCounter").textContent = `${syllFlatIndex() + 1} / ${SYLL_ITEMS.length}`;
+  $("#syllPrevBtn").disabled = syllFlatIndex() === 0;
+  $("#syllNextBtn").disabled = syllFlatIndex() === SYLL_ITEMS.length - 1;
+
+  // Illustrazione: per le parole c'è un'emoji grande sulla TV; per sillabe e
+  // vocali la TV mostra le caselle, che sono il vero contenuto dell'esercizio.
+  const tv = $("#syllImage");
+  tv.innerHTML = "";
+  if (item.kind === "word") {
+    const box = el("div", "syllfigure");
+    box.innerHTML = `<span class="fem" aria-hidden="true">${SYLL_WORD_EMO[item.say] || "🔤"}</span>`;
+    box.appendChild(el("div", "fcap", item.say));
+    tv.appendChild(box);
+  } else {
+    const card = el("div", "soundcard");
+    card.innerHTML = `<span class="focus">${item.title}${item.kind === "syl" ? "" : ""}</span>
+      <div class="cap">${item.kind === "syl" ? "una consonante + una vocale" : "un suono"}</div>`;
+    tv.appendChild(card);
+  }
+
+  // Caselle
+  const wrap = $("#syllSlotsWrap");
+  wrap.innerHTML = "";
+  const row = el("div", "slotrow");
+  row.setAttribute("role", "group");
+  row.setAttribute("aria-label", `${item.title}: ${item.units.length} caselle`);
+  item.units.forEach((u, i) => {
+    const slot = el("button", "slot");
+    slot.type = "button";
+    slot.dataset.index = String(i);
+    slot.setAttribute("aria-label", `Casella ${i + 1}, vuota`);
+    slot.addEventListener("click", () => onSyllSlotClick(slot));
+    slot.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSyllSlotClick(slot); }
+    });
+    row.appendChild(slot);
+    SY.slots.push({ index: i, unit: u, filled: false });
+  });
+  wrap.appendChild(row);
+
+  // Tessere
+  SY.tiles = buildSyllTiles(item, step);
+  $("#syllTilesHead").textContent = item.kind === "word" ? "Sillabe"
+    : item.kind === "syl" ? "Consonanti e vocali" : "Lettere e gruppi";
+  $("#syllRadioSub").textContent = item.kind === "word" ? "la parola" : "il suono da comporre";
+  renderSyllTiles();
+  updateSyllProgress();
+  $("#syllMascotText").textContent = item.kind === "word"
+    ? "Metti le sillabe nell'ordine giusto."
+    : "Tocca una tessera per ascoltarla.";
+  syncBottomBarHeight();
+}
+
+/**
+ * Tessere dell'esercizio. Contengono sempre tutti i pezzi corretti più
+ * distrattori plausibili:
+ *  · «vowel»  cinque vocali, una sola giusta;
+ *  · «syl»    la consonante giusta + due consonanti estranee alla serie, e
+ *             le cinque vocali: la vocale si sceglie, non si indovina;
+ *  · «syl1»   il gruppo giusto + tre altri gruppi della stessa famiglia;
+ *  · «word»   le sillabe della parola + due sillabe estranee.
+ * I distrattori sono sempre suoni con un clip: si pescano dagli inventari
+ * dell'app, non si inventano stringhe che poi non si possono ascoltare.
+ */
+function buildSyllTiles(item, step) {
+  const units = item.units.map(u => u.toLowerCase());
+  const tiles = item.units.map(u => ({ text: u, correct: true }));
+  const added = new Set(units);
+
+  const add = text => {
+    const t = String(text);
+    if (added.has(t.toLowerCase()) || !t) return;
+    added.add(t.toLowerCase());
+    tiles.push({ text: t, correct: false });
+  };
+
+  if (item.kind === "vowel") {
+    ["a","e","i","o","u"].forEach(add);
+  } else if (item.kind === "syl") {
+    ["a","e","i","o","u"].forEach(add);
+    const own = seriesConsonants(step);
+    shuffleArr(SYLL_CONS_POOL.filter(c => !own.includes(c))).slice(0, 2).forEach(add);
+  } else if (item.kind === "syl1") {
+    const family = step.items.map(it => it.say).filter(s => s !== item.say);
+    shuffleArr(family).slice(0, 3).forEach(add);
+  } else {
+    // parole: si pescano sillabe vere da altre parole della stessa tappa
+    const other = step.items.filter(it => it.say !== item.say)
+      .flatMap(it => it.units);
+    shuffleArr(Array.from(new Set(other))).slice(0, 2).forEach(add);
+  }
+  return shuffleArr(tiles);
+}
+
+function renderSyllTiles() {
+  const pool = $("#syllTilePool");
+  pool.innerHTML = "";
+  SY.tiles.forEach((t, i) => {
+    if (t.used) return;
+    const tile = el("button", "tile", t.text);
+    tile.type = "button";
+    tile.dataset.tile = String(i);
+    tile.setAttribute("aria-label", `Tessera ${t.text}. Premi Invio per selezionarla.`);
+    tile.addEventListener("click", () => onSyllTileClick(tile, t));
+    pool.appendChild(tile);
+  });
+  if (!pool.children.length) {
+    pool.appendChild(el("p", "muted", "Tutte le tessere sono al loro posto. Controlla il risultato!"));
+  }
+}
+
+function updateSyllProgress() {
+  const done = SY.slots.filter(s => s.filled).length;
+  $("#syllProgressText").textContent = `${done} di ${SY.slots.length} caselle`;
+  $("#syllWordBig").textContent = SY.slots.map(s => s.filled ? s.unit : "·").join("");
+}
+
+function onSyllTileClick(tile, t) {
+  if (SY.completed) return;
+  fx("click");
+  // la tessera fa sentire il proprio suono: è il gesto che insegna
+  speak(t.text, { group: t.text.length > 1 ? ["syl", "parole"] : "syl",
+    rate: Math.max(0.55, settings.rate - 0.2) });
+  if (tile.classList.contains("selected")) {
+    tile.classList.remove("selected");
+    SY.selectedTile = null;
+    return;
+  }
+  $$("#syllTilePool .tile.selected").forEach(n => n.classList.remove("selected"));
+  tile.classList.add("selected");
+  SY.selectedTile = { tile, data: t };
+  $("#syllMascotText").textContent = `Hai scelto «${t.text}»: tocca la casella giusta.`;
+  announce(`Tessera ${t.text} selezionata. Scegli una casella.`);
+}
+
+function onSyllSlotClick(slot) {
+  if (SY.completed || !SY.selectedTile) {
+    if (!SY.selectedTile) $("#syllMascotText").textContent = "Prima scegli una tessera, poi tocca la casella.";
+    return;
+  }
+  const sel = SY.selectedTile;
+  tryPlaceSyll(sel.tile, sel.data, slot);
+  SY.selectedTile = null;
+  $$("#syllTilePool .tile.selected").forEach(n => n.classList.remove("selected"));
+}
+
+function tryPlaceSyll(tileEl, data, slotEl) {
+  if (!slotEl || SY.completed) return;
+  const slot = SY.slots[Number(slotEl.dataset.index)];
+  if (!slot || slot.filled) {
+    slotEl.classList.add("shake");
+    setTimeout(() => slotEl.classList.remove("shake"), 400);
+    $("#syllMascotText").textContent = "Questa casella è già occupata: scegline un'altra.";
+    return;
+  }
+  if (slot.unit.toLowerCase() === data.text.toLowerCase()) {
+    placeSyllUnit(slotEl, slot, data);
+  } else {
+    SY.mistakes++;
+    fx("wrong");
+    slotEl.classList.add("shake");
+    setTimeout(() => slotEl.classList.remove("shake"), 420);
+    tileEl.classList.add("shake-anim");
+    setTimeout(() => tileEl.classList.remove("shake-anim"), 420);
+    $("#syllMascotText").textContent = `«${data.text}» non va bene qui. Riascolta e riprova.`;
+    speak("Riprova", { group: "ui", rate: 1 });
+  }
+}
+
+function placeSyllUnit(slotEl, slot, data) {
+  slotEl.textContent = slot.unit;
+  slotEl.classList.add("filled");
+  slotEl.setAttribute("aria-label", `Casella ${slot.index + 1}: ${slot.unit}`);
+  slot.filled = true;
+  data.used = true;
+  const idx = SY.tiles.indexOf(data);
+  const tile = $$("#syllTilePool .tile").find(t => t.dataset.tile === String(idx));
+  if (tile) tile.remove();
+  fx("place");
+  if (!checkSyllCompletion()) {
+    // il pezzo appena messo si sente; se la sillaba è finita si sente intera
+    const complete = SY.slots.every(s => s.filled);
+    if (complete) speakSyllTarget();
+    else speak(slot.unit, { group: "syl", rate: Math.max(0.55, settings.rate - 0.2) });
+    $("#syllMascotText").textContent = `Bravo! «${slot.unit}» è al posto giusto.`;
+  }
+  updateSyllProgress();
+}
+
+/** Chiude l'esercizio quando tutte le caselle sono piene. Ritorna true se ha chiuso. */
+function checkSyllCompletion() {
+  if (SY.completed || !SY.slots.every(s => s.filled)) return false;
+  SY.completed = true;
+  const item = currentSyll();
+  $$("#syllSlotsWrap .slot.filled").forEach(s => s.classList.add("done"));
+  fx("win");
+  confetti();
+  progress.syll = progress.syll || {};
+  const prev = progress.syll[item.key];
+  const stars = SY.mistakes === 0 ? 3 : SY.mistakes <= 2 ? 2 : 1;
+  progress.syll[item.key] = { stars: Math.max(stars, prev ? prev.stars : 0), mistakes: SY.mistakes };
+  saveJSON(STORE_KEY, progress);
+  $("#syllWordBig").textContent = item.say;
+  $("#syllMascotText").textContent = item.kind === "word"
+    ? `Hai formato «${item.say}»! Complimenti.`
+    : `Hai formato «${item.say}»! Adesso si legge.`;
+  setTimeout(() => speakSyllTarget(), 380);
+  return true;
+}
+
+function syllHint() {
+  if (SY.completed) { toast("Esercizio già completato! 🎉"); return; }
+  const slot = SY.slots.find(s => !s.filled);
+  if (!slot) return;
+  SY.hints++;
+  const slotEl = document.querySelector(`#syllSlotsWrap .slot[data-index="${slot.index}"]`);
+  const tileEl = Array.from(document.querySelectorAll("#syllTilePool .tile"))
+    .find(t => t.textContent.toLowerCase() === slot.unit.toLowerCase());
+  if (slotEl) { slotEl.classList.add("target"); setTimeout(() => slotEl.classList.remove("target"), 2600); }
+  if (tileEl) {
+    tileEl.classList.add("blink");
+    tileEl.scrollIntoView({ block: "nearest", behavior: settings.reduceMotion ? "auto" : "smooth" });
+    setTimeout(() => tileEl.classList.remove("blink"), 2000);
+  }
+  fx("hint");
+  speak(slot.unit, { group: "syl", rate: Math.max(0.55, settings.rate - 0.25) });
+  $("#syllMascotText").textContent = `Il prossimo pezzo è «${slot.unit}».`;
+}
+
+function syllReset() {
+  buildSyllLab();
+  toast("Esercizio ricominciato da capo");
+}
+
+/** Passa all'item successivo della fila, se esiste. */
+function syllNext(delta) {
+  const i = syllFlatIndex() + delta;
+  if (i < 0 || i >= SYLL_ITEMS.length) return;
+  startSyll(i);
+}
+
+/** Elenco delle dodici tappe, con quante voci sono state completate. */
+function openSyllSteps() {
+  progress.syll = progress.syll || {};
+  const rows = SYLL_STEPS.map(step => {
+    const done = step.items.filter(it => progress.syll[it.key]).length;
+    const pct = Math.round(done / step.items.length * 100);
+    return `<button class="steprow" data-step="${step.index}">
+      <span class="se" aria-hidden="true">${step.emoji}</span>
+      <span class="sb">
+        <span class="sn">Tappa ${step.index + 1}. ${step.name}</span>
+        <span class="ss">${step.items.length} esercizi · ${done} completati</span>
+        <span class="mini-bar"><i style="width:${pct}%"></i></span>
+      </span>
+      <span class="sc">${done}/${step.items.length}</span>
+    </button>`;
+  }).join("");
+  openSheet("Le tappe del percorso", `
+    <p class="muted" style="font-size:.84rem;margin-bottom:10px">
+      Dal suono alla sillaba, dalla sillaba alla parola. Ogni tappa aggiunge una
+      consonante o un gruppo nuovo; le precedenti restano e si mescolano.
+    </p>
+    <div class="steplist">${rows}</div>
+    <div class="row" style="justify-content:flex-end;margin-top:12px">
+      <button class="btn ghost small" id="stepsDone">Chiudi</button>
+    </div>
+  `);
+  $$("#overlayBody .steprow").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const step = SYLL_STEPS[Number(btn.dataset.step)];
+      closeSheet();
+      startSyll(SYLL_ITEMS.indexOf(step.items[0]));
+    });
+  });
+  const done = $("#stepsDone");
+  if (done) done.onclick = closeSheet;
+}
+
+
 function onTileClick(tile, t) {
   if (L.completed) return;
   fx("click");
@@ -2668,11 +3300,21 @@ function openHelp() {
       <li><b>2. Trascina</b> ogni tessera nella casella giusta (con il dito o con il mouse).</li>
       <li><b>3. Tocca</b> una tessera per ascoltarne il suono; toccala e poi tocca la casella per inserirla.</li>
       <li><b>4. Suggerimento</b> fa lampeggiare la sillaba giusta; <b>Rifai</b> ricomincia il livello.</li>
-      <li><b>5. Formazione di parole</b>: 20 parole da comporre, prima con le lettere poi con le sillabe.</li>
-      <li><b>6. Suoni difficili</b>: 20 schede finali su <i>che, chi, ce, ci, cia, cio, sci, sce, gn, gli, str, spr…</i></li>
-      <li><b>7. Esercizi</b> propone 8 domande su sillabe, parole e conteggi; il docente può
+      <li><b>5. La prima parola</b>: il percorso che viene prima di tutti, in 101 esercizi
+        divisi in 12 tappe. Si parte dalle cinque vocali, si aggiunge una consonante alla
+        volta (M, L, R, S, Z, N, F…), poi i digrammi <i>che, chi, ghe, ghi</i> e i suoni
+        dolci <i>ce, ci, ge, gi, cia, cio, giu</i>. Quindi i gruppi difficili e infine le
+        parole vere da comporre con le sillabe. La tessera della consonante e quella della
+        vocale si mettono in due caselle diverse: la sillaba non arriva già fatta, si
+        costruisce.</li>
+      <li><b>6. Formazione di parole</b>: 20 parole da comporre, prima con le lettere poi con le sillabe.</li>
+      <li><b>7. Suoni difficili</b>: 20 schede finali su <i>che, chi, ce, ci, cia, cio, sci, sce, gn, gli, str, spr…</i></li>
+      <li><b>8. Esercizi</b> propone 8 domande su sillabe, parole e conteggi; il docente può
         scegliere dal menu impostazioni quale esercizio avviare.</li>
     </ul>
+    <p class="muted" style="font-size:.78rem">I cinque percorsi sono: <b>La prima parola</b> (suoni e sillabe),
+      <b>La prima frase</b>, <b>Frasi semplici</b>, <b>Frasi che si uniscono</b>, <b>Frasi che si intrecciano</b>.
+      Il primo ha una numerazione sua, gli altri quattro restano i 40 livelli.</p>
     <p class="muted" style="font-size:.78rem">Scorciatoie da tastiera: ← → per cambiare livello o parola, H per il suggerimento, R per rifare, Esc per tornare alla home.</p>
     <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn ghost small" id="helpDone">Ho capito</button></div>
   `);
@@ -2785,6 +3427,33 @@ $("#wordsResetBtn").onclick = wordReset;
 $("#wordsPrevBtn").onclick = () => { if (W.index > 0) startWord(W.index - 1); };
 $("#wordsNextBtn").onclick = () => { if (W.index < WORDS.length - 1) startWord(W.index + 1); };
 
+/* --- percorso «La prima parola» (fonemi → sillabe → parola) --- */
+$("#syllHomeBtn").onclick = () => { switchScreenCleanup(); showScreen("home"); };
+$("#syllCloseBtn").onclick = () => { switchScreenCleanup(); showScreen("home"); };
+$("#syllRadioBtn").onclick = () => {
+  const btn = $("#syllRadioBtn");
+  btn.classList.add("playing");
+  setTimeout(() => btn.classList.remove("playing"), 1400);
+  speakSyllTarget();
+  announce("Ascolto del suono da comporre.");
+};
+$("#syllReadBtn").onclick = () => {
+  // il pulsante di ascolto legge sempre: è un gesto esplicito del bambino,
+  // non una lettura automatica che le impostazioni possono spegnere
+  speakSyllTarget();
+};
+$("#syllShuffleBtn").onclick = () => {
+  SY.tiles = shuffleArr(SY.tiles);
+  renderSyllTiles();
+  toast("Tessere mescolate");
+};
+$("#syllMascotBtn").onclick = syllHint;
+$("#syllHintBtn").onclick = syllHint;
+$("#syllResetBtn").onclick = syllReset;
+$("#syllListBtn").onclick = openSyllSteps;
+$("#syllPrevBtn").onclick = () => syllNext(-1);
+$("#syllNextBtn").onclick = () => syllNext(1);
+
 $("#quizRepeatBtn").onclick = () => {
   const item = quiz.items[quiz.i];
   if (item) speak(item.speak, { group: ["parole", "syl"], rate: Math.max(0.65, settings.rate - 0.1) });
@@ -2795,7 +3464,7 @@ $("#trophyHomeBtn").onclick = () => showScreen("home");
 $("#trophyCloseBtn").onclick = () => showScreen("home");
 $("#resetProgressBtn").onclick = () => {
   if (confirm("Vuoi azzerare tutti i progressi e i trofei?")) {
-    progress = { levels: {}, exercises: { sessions: 0, best: 0 }, listens: 0, lastLevel: 1 };
+    progress = { levels: {}, exercises: { sessions: 0, best: 0 }, listens: 0, lastLevel: 1, words: {}, syll: {} };
     saveJSON(STORE_KEY, progress);
     renderTrophies();
     toast("Progressi azzerati");
@@ -2807,10 +3476,18 @@ $("#overlay").addEventListener("click", e => { if (e.target.id === "overlay") cl
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     if ($("#overlay").classList.contains("open")) { closeSheet(); return; }
-    if (L.screen === "level" || L.screen === "words") { switchScreenCleanup(); showScreen("home"); }
+    if (L.screen === "level" || L.screen === "words" || L.screen === "syll") { switchScreenCleanup(); showScreen("home"); }
     return;
   }
   if (e.target.matches("input, select, textarea")) return;
+  // percorso sillabico: stesso schema del laboratorio parole
+  if (L.screen === "syll") {
+    if (e.key === "ArrowRight") syllNext(1);
+    if (e.key === "ArrowLeft") syllNext(-1);
+    if (e.key.toLowerCase() === "h") syllHint();
+    if (e.key.toLowerCase() === "r") syllReset();
+    return;
+  }
   // laboratorio parole: frecce per cambiare parola, H e R come nei livelli
   if (L.screen === "words") {
     if (e.key === "ArrowRight") { if (W.index < WORDS.length - 1) startWord(W.index + 1); }

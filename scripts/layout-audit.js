@@ -54,12 +54,16 @@ app.whenReady().then(async () => {
 
       // scostamento dal fondo: se positivo, l'ultimo contenuto resta sotto la barra.
       // Si guarda il vassoio della schermata attiva (#tilePool nei livelli,
-      // #wordsTilePool nel laboratorio parole).
+      // #wordsTilePool nel laboratorio parole, #syllTilePool nel percorso sillabico).
       const pool = document.querySelector('#tilePool');
       const poolNode = pool && pool.offsetParent
         ? pool
         : document.querySelector('#wordsTilePool');
-      const poolRect = poolNode && poolNode.offsetParent ? poolNode.getBoundingClientRect() : null;
+      const syllPool = document.querySelector('#syllTilePool');
+      const chosenPool = poolNode && poolNode.offsetParent
+        ? poolNode
+        : (syllPool && syllPool.offsetParent ? syllPool : null);
+      const poolRect = chosenPool ? chosenPool.getBoundingClientRect() : null;
       const lastTile = poolRect ? Math.round(poolRect.bottom) : 0;
       const clearance = poolRect ? Math.round(barTop - poolRect.bottom) : null;
 
@@ -122,6 +126,15 @@ app.whenReady().then(async () => {
   if (lab.overflowX > 0) problems.push("parole: overflow orizzontale");
   if (!lab.tileCleared) problems.push("parole: la barra inferiore copre le tessere");
 
+  /* percorso sillabico: sillaba (due caselle) e parola (figura grande) */
+  const syl = await audit("PRIMA PAROLA desktop (sillaba)", `startSyll(5);`);
+  if (syl.overflowX > 0) problems.push("prima parola (sillaba): overflow orizzontale");
+  if (!syl.tileCleared) problems.push("prima parola (sillaba): la barra inferiore copre le tessere");
+
+  const sylWord = await audit("PRIMA PAROLA desktop (parola)", `startSyll(93);`);
+  if (sylWord.overflowX > 0) problems.push("prima parola (parola): overflow orizzontale");
+  if (!sylWord.tileCleared) problems.push("prima parola (parola): la barra inferiore copre le tessere");
+
   const troph = await audit("TROFEI desktop", `showScreen('trophies');`);
   if (troph.overflowX > 0) problems.push("trofei: overflow orizzontale");
 
@@ -136,6 +149,10 @@ app.whenReady().then(async () => {
   const phone = await audit("LIVELLO 1 telefono 390", `startLevel(0);`);
   if (phone.overflowX > 0) problems.push("telefono: overflow orizzontale");
   if (!phone.tileCleared) problems.push("telefono: la barra inferiore copre le tessere");
+
+  const phoneSyl = await audit("PRIMA PAROLA telefono 390", `startSyll(93);`);
+  if (phoneSyl.overflowX > 0) problems.push("telefono: overflow orizzontale nel percorso sillabico");
+  if (!phoneSyl.tileCleared) problems.push("telefono: la barra copre le tessere del percorso sillabico");
 
   /* --- resa delle illustrazioni: quanti colori distinti nell'area TV --- */
   win.setSize(1180, 860);

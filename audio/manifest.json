@@ -94,6 +94,11 @@
     "dur": 0.34,
     "spoken": "bro"
    },
+   "bu": {
+    "file": "audio/syl/bu.mp3",
+    "dur": 0.313,
+    "spoken": "bu"
+   },
    "c": {
     "file": "audio/syl/c.mp3",
     "dur": 0.235,
@@ -119,10 +124,20 @@
     "dur": 0.444,
     "spoken": "cap"
    },
+   "ce": {
+    "file": "audio/syl/ce.mp3",
+    "dur": 0.34,
+    "spoken": "ce"
+   },
    "cel": {
     "file": "audio/syl/cel.mp3",
     "dur": 0.575,
     "spoken": "cel"
+   },
+   "che": {
+    "file": "audio/syl/che.mp3",
+    "dur": 0.287,
+    "spoken": "che"
    },
    "ché": {
     "file": "audio/syl/che2.mp3",
@@ -149,10 +164,25 @@
     "dur": 0.366,
     "spoken": "ci"
    },
+   "cia": {
+    "file": "audio/syl/cia.mp3",
+    "dur": 0.496,
+    "spoken": "cia"
+   },
    "cie": {
     "file": "audio/syl/cie.mp3",
     "dur": 0.444,
     "spoken": "cie"
+   },
+   "cio": {
+    "file": "audio/syl/cio.mp3",
+    "dur": 0.522,
+    "spoken": "cio"
+   },
+   "ciu": {
+    "file": "audio/syl/ciu.mp3",
+    "dur": 0.313,
+    "spoken": "ciu"
    },
    "clas": {
     "file": "audio/syl/clas.mp3",
@@ -239,6 +269,11 @@
     "dur": 0.444,
     "spoken": "f (fonema di «effe» tenuto 0.4s)"
    },
+   "fa": {
+    "file": "audio/syl/fa.mp3",
+    "dur": 0.366,
+    "spoken": "fa"
+   },
    "fal": {
     "file": "audio/syl/fal.mp3",
     "dur": 0.549,
@@ -259,6 +294,11 @@
     "dur": 0.601,
     "spoken": "fes"
    },
+   "fi": {
+    "file": "audio/syl/fi.mp3",
+    "dur": 0.392,
+    "spoken": "fi"
+   },
    "fia": {
     "file": "audio/syl/fia.mp3",
     "dur": 0.418,
@@ -268,6 +308,11 @@
     "file": "audio/syl/fio.mp3",
     "dur": 0.522,
     "spoken": "fio"
+   },
+   "fo": {
+    "file": "audio/syl/fo.mp3",
+    "dur": 0.392,
+    "spoken": "fo"
    },
    "for": {
     "file": "audio/syl/for.mp3",
@@ -279,10 +324,20 @@
     "dur": 0.575,
     "spoken": "fred"
    },
+   "fu": {
+    "file": "audio/syl/fu.mp3",
+    "dur": 0.47,
+    "spoken": "fu"
+   },
    "g": {
     "file": "audio/syl/g.mp3",
     "dur": 0.235,
     "spoken": "g (scoppio da «gallo»)"
+   },
+   "ga": {
+    "file": "audio/syl/ga.mp3",
+    "dur": 0.392,
+    "spoken": "ga"
    },
    "gab": {
     "file": "audio/syl/gab.mp3",
@@ -298,6 +353,21 @@
     "file": "audio/syl/ge.mp3",
     "dur": 0.392,
     "spoken": "ge"
+   },
+   "ghe": {
+    "file": "audio/syl/ghe.mp3",
+    "dur": 0.418,
+    "spoken": "ghe"
+   },
+   "ghi": {
+    "file": "audio/syl/ghi.mp3",
+    "dur": 0.34,
+    "spoken": "ghi"
+   },
+   "gi": {
+    "file": "audio/syl/gi.mp3",
+    "dur": 0.575,
+    "spoken": "gi"
    },
    "gia": {
     "file": "audio/syl/gia.mp3",
@@ -319,15 +389,30 @@
     "dur": 0.444,
     "spoken": "gior"
    },
+   "giu": {
+    "file": "audio/syl/giu.mp3",
+    "dur": 0.392,
+    "spoken": "giu"
+   },
    "gli": {
     "file": "audio/syl/gli.mp3",
     "dur": 0.366,
     "spoken": "gli"
    },
+   "glia": {
+    "file": "audio/syl/glia.mp3",
+    "dur": 0.549,
+    "spoken": "glia"
+   },
    "glie": {
     "file": "audio/syl/glie.mp3",
     "dur": 0.366,
     "spoken": "glie"
+   },
+   "glio": {
+    "file": "audio/syl/glio.mp3",
+    "dur": 0.47,
+    "spoken": "glio"
    },
    "gna": {
     "file": "audio/syl/gna.mp3",
@@ -343,6 +428,11 @@
     "file": "audio/syl/go.mp3",
     "dur": 0.34,
     "spoken": "go"
+   },
+   "gu": {
+    "file": "audio/syl/gu.mp3",
+    "dur": 0.313,
+    "spoken": "gu"
    },
    "gue": {
     "file": "audio/syl/gue.mp3",
@@ -484,6 +574,16 @@
     "dur": 0.366,
     "spoken": "mi"
    },
+   "mo": {
+    "file": "audio/syl/mo.mp3",
+    "dur": 0.392,
+    "spoken": "mo"
+   },
+   "mu": {
+    "file": "audio/syl/mu.mp3",
+    "dur": 0.366,
+    "spoken": "mu"
+   },
    "n": {
     "file": "audio/syl/n.mp3",
     "dur": 0.47,
@@ -518,6 +618,11 @@
     "file": "audio/syl/non.mp3",
     "dur": 0.496,
     "spoken": "non"
+   },
+   "nu": {
+    "file": "audio/syl/nu.mp3",
+    "dur": 0.366,
+    "spoken": "nu"
    },
    "nuo": {
     "file": "audio/syl/nuo.mp3",
@@ -568,6 +673,11 @@
     "file": "audio/syl/per.mp3",
     "dur": 0.313,
     "spoken": "per"
+   },
+   "pi": {
+    "file": "audio/syl/pi.mp3",
+    "dur": 0.313,
+    "spoken": "pi"
    },
    "piat": {
     "file": "audio/syl/piat.mp3",
@@ -628,6 +738,11 @@
     "file": "audio/syl/pron.mp3",
     "dur": 0.392,
     "spoken": "pron"
+   },
+   "pu": {
+    "file": "audio/syl/pu.mp3",
+    "dur": 0.261,
+    "spoken": "pu"
    },
    "qua": {
     "file": "audio/syl/qua.mp3",
@@ -784,6 +899,11 @@
     "dur": 0.496,
     "spoken": "stra"
    },
+   "su": {
+    "file": "audio/syl/su.mp3",
+    "dur": 0.34,
+    "spoken": "su"
+   },
    "sul": {
     "file": "audio/syl/sul.mp3",
     "dur": 0.34,
@@ -894,6 +1014,11 @@
     "dur": 0.366,
     "spoken": "vo"
    },
+   "vu": {
+    "file": "audio/syl/vu.mp3",
+    "dur": 0.418,
+    "spoken": "vu"
+   },
    "z": {
     "file": "audio/syl/z.mp3",
     "dur": 0.235,
@@ -904,10 +1029,30 @@
     "dur": 0.418,
     "spoken": "za"
    },
+   "ze": {
+    "file": "audio/syl/ze.mp3",
+    "dur": 0.418,
+    "spoken": "ze"
+   },
+   "zi": {
+    "file": "audio/syl/zi.mp3",
+    "dur": 0.366,
+    "spoken": "zi"
+   },
    "zio": {
     "file": "audio/syl/zio.mp3",
     "dur": 0.575,
     "spoken": "zio"
+   },
+   "zo": {
+    "file": "audio/syl/zo.mp3",
+    "dur": 0.366,
+    "spoken": "zo"
+   },
+   "zu": {
+    "file": "audio/syl/zu.mp3",
+    "dur": 0.366,
+    "spoken": "zu"
    },
    "zup": {
     "file": "audio/syl/zup.mp3",
@@ -1568,6 +1713,11 @@
     "dur": 0.836,
     "spoken": "maestra"
    },
+   "maglia": {
+    "file": "audio/parole/maglia.mp3",
+    "dur": 0.679,
+    "spoken": "maglia"
+   },
    "mamma": {
     "file": "audio/parole/mamma.mp3",
     "dur": 0.627,
@@ -1782,6 +1932,11 @@
     "file": "audio/parole/sciarpa.mp3",
     "dur": 0.627,
     "spoken": "sciarpa"
+   },
+   "scivolo": {
+    "file": "audio/parole/scivolo.mp3",
+    "dur": 0.627,
+    "spoken": "scivolo"
    },
    "scrive": {
     "file": "audio/parole/scrive.mp3",

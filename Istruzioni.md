@@ -25,7 +25,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 
 - **Continua** riprende il livello dove eri rimasto.
 - **Livello a caso** propone un esercizio qualsiasi tra i 40.
-- **I quattro percorsi** mostrano 10 livelli ciascuno con le stelle ottenute; tocca un percorso per aprire il primo livello non ancora completato.
+- **I cinque percorsi**: il primo, **La prima parola**, porta dal suono alla sillaba alla parola (12 tappe, 101 esercizi); gli altri quattro mostrano 10 livelli di frasi ciascuno con le stelle ottenute. Tocca un percorso per aprire il primo esercizio non ancora completato.
 - **Strumenti**: Parole, Suoni difficili, Esercizi, Stampa, Trofei, Aiuto.
 - **Formazione di parole**: le 20 parole da comporre, con la figura e lo stato di completamento;
   tocca una parola per aprirla.
@@ -79,14 +79,33 @@ In alto a destra: 🏠 torna alla home, ✕ chiude il livello.
 
 ---
 
-## 4. I quattro percorsi
+## 4. I cinque percorsi
+
+### 🌱 La prima parola — suoni, sillabe, prima parola
+
+Il percorso che viene prima della lettura. Dodici tappe, 101 esercizi, numerazione propria:
+non fa parte dei 40 livelli delle frasi.
+
+| Tappa | Cosa si impara |
+|---|---|
+| 1 | **Le vocali**: si ascolta il suono e si mette la vocale nella casella. |
+| 2–8 | **Una consonante alla volta** (M, L e R, S e Z, N e F, V e P, T e B, D con i suoni duri). La consonante e la vocale stanno in **due caselle separate**: la sillaba si costruisce, non arriva già fatta. |
+| 9 | **I digrammi della H**: *che, chi, ghe, ghi* — due lettere, un solo suono duro. |
+| 10 | **I suoni dolci**: *ce, ci, ge, gi, cia, cio, ciu, giu*. |
+| 11 | **I gruppi difficili**: *gn, gli, sce, sci* dentro una parola vera. |
+| 12 | **La prima parola**: dieci parole da comporre mettendo le sillabe in ordine. |
+
+Le tappe precedenti non spariscono: le consonanti già imparate tornano come distrattori,
+così la scelta è una scelta e non un riconoscimento.
+
+### I quattro percorsi delle frasi
 
 | Percorso | Livelli | Cosa si impara |
 |---|---|---|
-| 🌱 **1 · Guidato** | 1–10 | Soggetto + verbo + oggetto. La frase è scritta in alto e 4–5 caselle sono già compilate in grigio. |
-| 🌿 **2 · Frasi semplici** | 11–20 | Frasi lineari complete con espansioni: tutte le caselle sono da riempire. |
-| 🌳 **3 · Coordinate** | 21–30 | Due frasi unite da *e*, *ma*, *poi*, con il connettore al centro. |
-| 🏔️ **4 · Complesse** | 31–40 | Subordinate causali, temporali e relative: *quando*, *se*, *perché*, *mentre*, *dopo*, *prima*, *poiché*. |
+| 🌱 **La prima frase** | 1–10 | Soggetto + verbo + oggetto. La frase è scritta in alto e 4–5 caselle sono già compilate in grigio. |
+| 🌿 **Frasi semplici** | 11–20 | Frasi lineari complete con espansioni: tutte le caselle sono da riempire. |
+| 🌳 **Frasi che si uniscono** | 21–30 | Due frasi unite da *e*, *ma*, *poi*, con il connettore al centro. |
+| 🏔️ **Frasi che si intrecciano** | 31–40 | Subordinate causali, temporali e relative: *quando*, *se*, *perché*, *mentre*, *dopo*, *prima*, *poiché*. |
 
 Ogni livello ha **3 tessere distrattore** (sillabe sbagliate) mescolate alle corrette:
 servono a far ragionare sul suono, non solo sulla forma.
@@ -223,7 +242,7 @@ Tutte le scelte sono salvate automaticamente sul dispositivo.
 - **Suoni difficili in chiusura**: dopo i 40 livelli, le 20 schede finali verificano i gruppi
   che generano più errori; il docente può assegnarne uno solo a chi ne ha bisogno.
 - **Scheda stampata**: dopo il livello digitale, la scheda A4 consolida la scrittura a mano.
-- **Sessioni brevi**: 10–15 minuti sono più efficaci di 40, soprattutto nei percorsi 3 e 4.
+- **Sessioni brevi**: 10–15 minuti sono più efficaci di 40, soprattutto in «Frasi che si uniscono» e «Frasi che si intrecciano».
 
 ---
 

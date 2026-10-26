@@ -4,7 +4,7 @@ App didattica per l'apprendimento della letto‑scrittura in italiano: si compon
 trascinando tessere sillabiche, con sintesi vocale, illustrazioni generate al volo,
 esercizi, schede stampabili e trofei.
 
-**40 livelli · 4 percorsi · 20 parole da comporre · 20 suoni difficili · nessun dato che lascia il dispositivo.**
+**5 percorsi · 101 esercizi suoni e sillabe · 40 livelli di frasi · 20 parole da comporre · 20 suoni difficili · nessun dato che lascia il dispositivo.**
 
 ![Home](build/screenshots/01-home.png)
 
@@ -127,12 +127,38 @@ Scheda di lavoro A4 pronta per la classe: frase, caselle da riempire, tessere da
 
 ## Percorsi didattici
 
+### La prima parola — dal suono alla sillaba alla parola
+
+Il percorso che viene *prima* della lettura. Ha una numerazione propria, fuori dai 40
+livelli delle frasi: **12 tappe, 101 esercizi**. La sillaba non arriva già composta —
+la consonante e la vocale stanno in due caselle diverse e il bambino le unisce.
+
+| Tappa | Contenuto | Esercizi |
+|---|---|---|
+| 1 | Le vocali | 5 |
+| 2 | La M | 5 |
+| 3 | La L e la R | 10 |
+| 4 | La S e la Z | 10 |
+| 5 | La N e la F | 10 |
+| 6 | La V e la P | 10 |
+| 7 | La T e la B | 10 |
+| 8 | La D e i suoni duri (*ca, co, cu, ga, go, gu*) | 11 |
+| 9 | I digrammi della H (*che, chi, ghe, ghi*) | 4 |
+| 10 | I suoni dolci (*ce, ci, ge, gi, cia, cio, ciu, giu*) | 8 |
+| 11 | I gruppi difficili (*gn, gli, sce, sci* dentro una parola) | 8 |
+| 12 | La prima parola (10 parole da comporre con le sillabe) | 10 |
+
+La progressione è sistematica: ogni tappa aggiunge una consonante o un gruppo nuovo e
+le precedenti restano, mescolate ai distrattori.
+
+### I quattro percorsi delle frasi
+
 | Percorso | Livelli | Contenuto | Modalità |
 |---|---|---|---|
-| 1 · Guidato | 1–10 | Soggetto + verbo + oggetto | Riga suggerimento, 4–5 caselle precompilate |
-| 2 · Frasi semplici | 11–20 | Frasi lineari complete | Tutte le caselle da riempire |
-| 3 · Coordinate | 21–30 | Due frasi unite da *e, ma, poi* | Due righe + connettore centrale |
-| 4 · Complesse | 31–40 | Causali, temporali, relative | Due parti: subordinata + principale |
+| La prima frase | 1–10 | Soggetto + verbo + oggetto | Riga suggerimento, 4–5 caselle precompilate |
+| Frasi semplici | 11–20 | Frasi lineari complete | Tutte le caselle da riempire |
+| Frasi che si uniscono | 21–30 | Due frasi unite da *e, ma, poi* | Due righe + connettore centrale |
+| Frasi che si intrecciano | 31–40 | Causali, temporali, relative | Due parti: subordinata + principale |
 
 Esempi:
 - `1. Il gatto beve il latte` → `il · gat · to · be · ve · il · lat · te`

@@ -91,6 +91,29 @@ const soundSrc = block("const SOUND_ITEMS = [", "const SOUNDS =");
 const soundWords = [...soundSrc.matchAll(/word:\s*"([^"]*)"/g)].map(m => m[1]);
 const soundGroups = [...soundSrc.matchAll(/sound:\s*"([^"]*)"/g)].map(m => m[1]);
 
+/* --- 4d. percorso «La prima parola»: fonemi → sillabe → parola ---
+   L'inventario è dichiarato in SYLL_SERIES. Per le tappe di sillabe ogni
+   voce è una sillaba; per le tappe di parole la voce è la parola spezzata
+   con i trattini, quindi servono due clip: le sillabe e la parola intera.
+   Leggere i dati dall'app invece di riscriverli qui evita che le due liste
+   divergano in silenzio. */
+const syllSrc = block("const SYLL_SERIES = [", "/* Emoji delle parole");
+const syllUnits = [...syllSrc.matchAll(/units:\s*"([^"]*)"/g)].map(m => m[1]);
+
+const syllSyllables = [];
+const syllWords = [];
+syllUnits.forEach(units => {
+  units.split(" ").filter(Boolean).forEach(token => {
+    if (token.includes("-")) {
+      const pieces = token.split("-").filter(Boolean);
+      pieces.forEach(p => syllSyllables.push(p));
+      syllWords.push(pieces.join(""));
+    } else {
+      syllSyllables.push(token);
+    }
+  });
+});
+
 const labUnits = [...new Set([...wordLabUnits, ...letterPool])]
   .sort((a, b) => a.localeCompare(b, "it"));
 
@@ -100,10 +123,10 @@ const labUnits = [...new Set([...wordLabUnits, ...letterPool])]
    e dei suoni difficili non compaiono nelle frasi, quindi vanno aggiunte. */
 const words = [...new Set(
   sentences.flatMap(s => s.toLowerCase().split(/\s+/)).filter(Boolean)
-    .concat(wordLabWords, soundWords)
+    .concat(wordLabWords, soundWords, syllWords)
 )].sort((a, b) => a.localeCompare(b, "it"));
 
-const allSyllables = [...new Set([...syllables, ...distractors, ...labUnits])]
+const allSyllables = [...new Set([...syllables, ...distractors, ...labUnits, ...syllSyllables])]
   .sort((a, b) => a.localeCompare(b, "it"));
 
 module.exports = {
@@ -116,7 +139,9 @@ module.exports = {
   wordLabUnits: labUnits,
   letterPool,
   soundWords,
-  soundGroups
+  soundGroups,
+  syllSyllables: [...new Set(syllSyllables)].sort((a, b) => a.localeCompare(b, "it")),
+  syllWords: [...new Set(syllWords)].sort((a, b) => a.localeCompare(b, "it"))
 };
 
 if (require.main === module) {

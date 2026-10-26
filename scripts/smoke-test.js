@@ -183,6 +183,68 @@ app.whenReady().then(async () => {
     out.tapSpeaks = spoken;
     settings.autoRead = autoReadBefore;
 
+    /* PERCORSO «LA PRIMA PAROLA»: una tappa di sillabe (M) e una di parole */
+    out.syllSteps = typeof SYLL_STEPS !== 'undefined' ? SYLL_STEPS.length : -1;
+    out.syllItems = typeof SYLL_ITEMS !== 'undefined' ? SYLL_ITEMS.length : -1;
+    out.syllCard = !!document.querySelector('#syllPathCard .group-card');
+
+    settings.autoRead = false;
+    startSyll(0); // tappa 1: le vocali, una casella
+    await waitFor(() => document.getElementById('screen-syll').classList.contains('active'), 2000);
+    out.syllActive = document.getElementById('screen-syll').classList.contains('active');
+    out.syllVowelSlots = document.querySelectorAll('#syllSlotsWrap .slot').length;
+    out.syllVowelUnits = SYLL_ITEMS[0].units.length;
+    out.syllVowelTiles = document.querySelectorAll('#syllTilePool .tile').length;
+    out.syllCounter = document.getElementById('syllCounter').textContent;
+
+    // completa la vocale programmaticamente
+    const vSlots = SY.slots.filter(s => !s.filled);
+    vSlots.forEach(s => {
+      const node = document.querySelector('#syllSlotsWrap .slot[data-index="' + s.index + '"]');
+      const tile = Array.from(document.querySelectorAll('#syllTilePool .tile')).find(t => t.textContent === s.unit);
+      if (tile && node) { SY.selectedTile = { tile, data: SY.tiles[Number(tile.dataset.tile)] }; onSyllSlotClick(node); }
+    });
+    await sleep(200);
+    out.syllCompleted = SY.completed;
+    out.syllSaved = !!(progress.syll && progress.syll[SYLL_ITEMS[0].key]);
+
+    // tappa di sillabe: due caselle, consonante + vocale
+    const sylStep = SYLL_STEPS.findIndex(s => s.kind === 'syl');
+    startSyll(SYLL_ITEMS.indexOf(SYLL_STEPS[sylStep].items[0]));
+    await sleep(150);
+    out.syllConsSlots = document.querySelectorAll('#syllSlotsWrap .slot').length;
+    out.syllConsTiles = Array.from(document.querySelectorAll('#syllTilePool .tile')).map(t => t.textContent);
+    out.syllConsHasVowels = ['a','e','i','o','u'].every(v => out.syllConsTiles.includes(v));
+
+    // tappa di parole: una casella per sillaba, con la figura grande
+    const wordStep = SYLL_STEPS.findIndex(s => s.kind === 'word');
+    startSyll(SYLL_ITEMS.indexOf(SYLL_STEPS[wordStep].items[0]));
+    await sleep(150);
+    out.syllWordSlots = document.querySelectorAll('#syllSlotsWrap .slot').length;
+    out.syllWordUnits = SYLL_STEPS[wordStep].items[0].units.length;
+    out.syllFigure = !!document.querySelector('#syllImage .syllfigure .fem');
+    out.syllWordTiles = document.querySelectorAll('#syllTilePool .tile').length;
+
+    // risolvi la parola: la figura e il contatore devono reggere
+    const wSlots2 = SY.slots.filter(s => !s.filled);
+    wSlots2.forEach(s => {
+      const node = document.querySelector('#syllSlotsWrap .slot[data-index="' + s.index + '"]');
+      const tile = Array.from(document.querySelectorAll('#syllTilePool .tile')).find(t => t.textContent === s.unit);
+      if (tile && node) { SY.selectedTile = { tile, data: SY.tiles[Number(tile.dataset.tile)] }; onSyllSlotClick(node); }
+    });
+    await sleep(200);
+    out.syllWordCompleted = SY.completed;
+    out.syllWordBig = document.getElementById('syllWordBig').textContent;
+
+    // ogni sillaba e ogni parola del percorso devono avere un clip
+    await loadAudioManifest();
+    out.syllAudioSyl = SYLL_ITEMS.every(it =>
+      it.kind === 'word' ? it.units.every(u => audioFileFor(u, 'syl')) : audioFileFor(it.say, 'syl'));
+    out.syllAudioWords = SYLL_ITEMS.filter(it => it.kind === 'word')
+      .every(it => audioFileFor(it.say, 'parole'));
+    settings.autoRead = autoReadBefore;
+
+
     // SUONI DIFFICILI: quiz con la scheda del gruppo
     settings.exercise = 'sounds';
     startChosenExercise();
@@ -268,6 +330,7 @@ app.whenReady().then(async () => {
   console.log("\n— HOME —");
   expect("home visibile", results.homeActive);
   expect("4 card percorso", results.groupCards === 4, results.groupCards);
+  expect("card «La prima parola» fuori dai quattro percorsi", results.syllCard);
   expect("4 statistiche", results.homeStats === 4, results.homeStats);
   expect("20 parole nel laboratorio", results.wordListChips === 20, results.wordListChips);
 
@@ -310,6 +373,25 @@ app.whenReady().then(async () => {
   expect("tappa sillabe per la parola 13", /sillabe/i.test(results.wordsStage2), results.wordsStage2);
   expect("caselle della tappa sillabe", results.wordsSlots2 === results.wordsUnits2, `${results.wordsSlots2}/${results.wordsUnits2}`);
   expect("un solo suono per tap (niente doppioni)", results.tapSpeaks === 1, results.tapSpeaks);
+
+  console.log("\n— PERCORSO «LA PRIMA PAROLA» —");
+  expect("12 tappe", results.syllSteps === 12, results.syllSteps);
+  expect("101 esercizi", results.syllItems === 101, results.syllItems);
+  expect("schermata sillabica attiva", results.syllActive);
+  expect("vocale: una casella", results.syllVowelSlots === results.syllVowelUnits, `${results.syllVowelSlots}/${results.syllVowelUnits}`);
+  expect("vocale: cinque vocali fra le tessere", results.syllVowelTiles === 5, results.syllVowelTiles);
+  expect("contatore sul totale degli esercizi", /^1 \/ 101$/.test(results.syllCounter), results.syllCounter);
+  expect("vocale completabile", results.syllCompleted);
+  expect("progresso della vocale salvato", results.syllSaved);
+  expect("sillaba: due caselle", results.syllConsSlots === 2, results.syllConsSlots);
+  expect("sillaba: le vocali sono scegliibili", results.syllConsHasVowels, results.syllConsTiles.join(","));
+  expect("parola: una casella per sillaba", results.syllWordSlots === results.syllWordUnits, `${results.syllWordSlots}/${results.syllWordUnits}`);
+  expect("parola: figura grande sulla TV", results.syllFigure);
+  expect("parola: tessere con distrattori", results.syllWordTiles > results.syllWordUnits, results.syllWordTiles);
+  expect("parola completabile", results.syllWordCompleted);
+  expect("la parola cresce sotto le caselle", results.syllWordBig.length > 0, results.syllWordBig);
+  expect("ogni sillaba del percorso ha il clip", results.syllAudioSyl);
+  expect("ogni parola del percorso ha il clip", results.syllAudioWords);
 
   console.log("\n— SUONI DIFFICILI —");
   expect("20 schede", results.soundItems === 20, results.soundItems);
