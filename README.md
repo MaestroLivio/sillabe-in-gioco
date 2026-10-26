@@ -57,7 +57,7 @@ fra quattro; la scheda del suono mostra il gruppo e la parola con il gruppo evid
 
 ### Voce
 - **Voci preregistrate con voce neurale italiana**, incluse nel pacchetto: 182 sillabe e lettere,
-  40 frasi, 163 parole e le battute dell'interfaccia (393 clip, ≈1 MB). Identiche su ogni
+  40 frasi, 165 parole e le battute dell'interfaccia (424 clip, ≈1 MB). Identiche su ogni
   dispositivo, anche senza voci italiane installate nel sistema.
 - **Le sillabe non vengono più compitate.** Con la sintesi di sistema alcune sillabe
   isolate (`ac`, `ap`, `ia`, `ta`, `uc`) venivano lette come sigle, lettera per lettera;
@@ -293,13 +293,13 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm start` | Avvia l'app desktop Electron in sviluppo |
 | `npm run serve` | Server statico locale su `:4321` (service worker attivo) |
 | `npm run validate` | Verifica i 40 livelli: unicità frasi, sillabe, distrattori, gruppi |
-| `npm run illustrations` | Rigenera le 60 illustrazioni (SVG + PNG) dal generatore vettoriale |
+| `npm run illustrations` | Rigenera le 67 illustrazioni (SVG + PNG) dal generatore vettoriale |
 | `npm run test:illustrations` | Valida le illustrazioni: dimensione, soggetti attesi, nessun duplicato |
 | `npm run audio` | Rigenera tutti i clip vocali (sillabe, frasi, parole, interfaccia) con la voce neurale |
 | `npm run audio -- --only=syl` | Rigenera solo un gruppo (`syl`, `frasi`, `parole`, `ui`) |
 | `npm run test:audio` | Verifica i clip: copertura di sillabe/frasi/parole, durate, file orfani |
 | `npm run test:pronuncia` | Controlla che le sillabe critiche non siano compitate lettera per lettera |
-| `npm run test:release -- v2.2.0` | Scarica gli artefatti pubblicati e verifica che contengano le 60 illustrazioni e i 393 clip |
+| `npm run test:release -- v2.2.0` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i 424 clip |
 | `npm run test:smoke` | Smoke test headless Electron: 48 controlli su schermate, laboratorio parole e suoni |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |
@@ -328,7 +328,7 @@ sillabe-in-gioco/
 ├── sw.js                       # Service worker (offline)
 ├── favicon.png
 ├── icons/                      # Icone PNG 16→1024 + maskable
-├── illustrations/              # 60 illustrazioni: NN.png (1280×720) + NN.svg (sorgente)
+├── illustrations/              # 67 illustrazioni: NN.png (1280×720) + NN.svg (sorgente)
 ├── audio/                      # Voci preregistrate (voce neurale, offline)
 │   ├── manifest.json           # Indice: token -> file, con durata e forma pronunciata
 │   ├── syl/                    # 182 sillabe e lettere
@@ -396,7 +396,7 @@ Scelte tecniche rilevanti:
 - **Nessuna libreria esterna**: zero CDN, zero npm a runtime, quindi nessuna chiamata di rete.
 - **Un solo file HTML** per l'app: facile da distribuire, copiare su LIM o condividere via email.
 - **Pointer Events** invece dei soli eventi touch/mouse: un unico percorso per dito, penna e mouse, con fallback HTML5 Drag and Drop.
-- **Illustrazioni vettoriali originali**: 60 scene da libro illustrato (40 frasi + 20 parole), sorgenti SVG versionati nel repository e rasterizzati in PNG ad alta risoluzione. Nuove, senza diritti di terzi, incluse nell'app e disponibili offline.
+- **Illustrazioni vettoriali originali**: 67 scene da libro illustrato (40 frasi + 27 parole), sorgenti SVG versionati nel repository e rasterizzati in PNG ad alta risoluzione. Nuove, senza diritti di terzi, incluse nell'app e disponibili offline.
 - **Contesto sicuro** in Electron: `contextIsolation`, `sandbox`, `nodeIntegration: false`, navigazione esterna bloccata, permessi in allowlist.
 
 ---

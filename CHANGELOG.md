@@ -36,10 +36,13 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
   ghe, giu, zi, zu…* e le parole *maglia*, *scivolo*). Sono state generate con
   `--missing`, senza rigenerare i 393 file già validati: il manifest è passato da
   393 a 424 clip.
-- **Le figure delle parole nuove sono emoji, non scene disegnate.** Le 18 parole del
-  percorso non hanno un PNG in `illustrations/`: disegnare 18 scene nuove è un lavoro
-  separato, e un'emoji grande sulla TV resta leggibile e coerente con il resto
-  dell'interfaccia. Va detto com'è, non nascosto.
+- **Le figure delle parole sono scene disegnate, non emoji.** Le dieci parole della
+  tappa finale usano le scene che il laboratorio «Formazione di parole» aveva già
+  (`illustrations/43-53`), quindi il bambino ritrova lo stesso disegno in due punti
+  dell'app. Le sette parole dei gruppi difficili che non ne avevano una — *bagno*,
+  *aglio*, *scivolo*, *formiche*, *chitarra*, *alghe*, *maglia* — sono state
+  disegnate per l'occasione (`illustrations/61-67`): il catalogo passa da 60 a 67
+  scene. L'emoji resta solo come riserva, se un file dovesse mancare.
 - **I distrattori non si inventano.** Sono sillabe e lettere che hanno già un clip
   nell'app: una tessera che non si può ascoltare sarebbe un esercizio rotto.
 

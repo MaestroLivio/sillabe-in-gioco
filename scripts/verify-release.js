@@ -4,7 +4,7 @@
  * Verifica gli artefatti di una release pubblicata su GitHub.
  *
  * Non basta che la CI sia verde: questo script scarica i pacchetti
- * effettivamente pubblicati e controlla che contengano le 60 illustrazioni.
+ * effettivamente pubblicati e controlla che contengano le 67 illustrazioni.
  * Nei pacchetti desktop le immagini stanno dentro `app.asar` (non come file
  * sciolti), quindi la verifica apre l'archivio invece di cercare per nome.
  *
@@ -20,8 +20,8 @@ const { execFileSync } = require("child_process");
 const TAG = process.argv[2] || "v2.0.2";
 const KEEP = process.argv.includes("--keep");
 const REPO = "MaestroLivio/sillabe-in-gioco";
-const EXPECTED = 60;            // illustrazioni attese in ogni artefatto
-const EXPECTED_AUDIO = 393;      // clip vocali attesi (182 sillabe + 40 frasi + 163 parole + 8 battute)
+const EXPECTED = 67;            // illustrazioni attese in ogni artefatto
+const EXPECTED_AUDIO = 424;      // clip vocali attesi (211 sillabe + 40 frasi + 165 parole + 8 battute)
 
 const WORK = path.join(os.tmpdir(), `sillabe-release-${TAG.replace(/[^\w.]/g, "")}`);
 const ASAR = path.join(__dirname, "..", "node_modules", ".bin", "asar");

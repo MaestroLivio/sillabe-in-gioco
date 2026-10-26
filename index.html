@@ -406,11 +406,13 @@ body.theme-night .wordchip.done{background:#22402c}
 .syll-path{margin-bottom:10px;border-color:#b9dcf7;background:linear-gradient(160deg,#f2f9ff,#dcefff)}
 body.theme-night .syll-path{background:linear-gradient(160deg,#22334a,#1a2839);border-color:#3a5876}
 
-/* Figura della parola sulla TV: qui non c'è un disegno dedicato, si mostra
-   l'emoji grande della parola. Il riquadro tiene l'altezza stabile, così la
-   TV non "salta" passando da una parola all'altra. */
+/* Figura della parola sulla TV. Le parole del percorso hanno una scena
+   disegnata (la stessa del laboratorio): riempie la TV e la sua altezza resta
+   stabile, così passando da una parola all'altra lo schermo non "salta". Se
+   il disegno manca, al suo posto compare l'emoji grande della parola. */
 .syllfigure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 8px;min-height:150px}
 .syllfigure .fem{font-size:4.4rem;line-height:1}
+.syllfigure .fimg{display:block;width:100%;max-height:210px;object-fit:contain;border-radius:10px;background:#0e1f1d}
 .syllfigure .fcap{font-size:1.15rem;font-weight:700;letter-spacing:1.5px;color:#eaf7ff;text-transform:uppercase}
 
 /* Elenco delle tappe nel foglio «TAPPE» */
@@ -1183,6 +1185,17 @@ const SYLL_WORD_EMO = {
   formiche: "🐜", chitarra: "🎸", alghe: "🌿", maglia: "👕",
   pane: "🍞", sole: "☀️", casa: "🏠", luna: "🌙", dado: "🎲",
   faro: "🗼", gatto: "🐱", cane: "🐶", rana: "🐸", topo: "🐭"
+};
+
+/* Illustrazioni delle parole del percorso sillabico: sono le stesse scene
+   del laboratorio «Formazione di parole» (illustrations/NN.png), non nuovi
+   disegni. L'emoji resta come riserva se il file non c'è, così una tappa non
+   rimane mai senza figura. */
+const SYLL_WORD_IMG = {
+  bagno: 61, aglio: 62, pesce: 51, scivolo: 63,
+  formiche: 64, chitarra: 65, alghe: 66, maglia: 67,
+  pane: 45, sole: 43, casa: 46, luna: 44, dado: 47,
+  faro: 48, gatto: 49, cane: 50, rana: 52, topo: 53
 };
 
 /* Consonanti con cui si costruiscono i distrattori delle caselle: si
@@ -2334,13 +2347,34 @@ function buildSyllLab() {
   $("#syllPrevBtn").disabled = syllFlatIndex() === 0;
   $("#syllNextBtn").disabled = syllFlatIndex() === SYLL_ITEMS.length - 1;
 
-  // Illustrazione: per le parole c'è un'emoji grande sulla TV; per sillabe e
-  // vocali la TV mostra le caselle, che sono il vero contenuto dell'esercizio.
+  // Illustrazione: per le parole la TV mostra la scena disegnata della parola
+  // (la stessa del laboratorio «Formazione di parole»); per sillabe e vocali
+  // mostra le caselle, che sono il vero contenuto dell'esercizio.
   const tv = $("#syllImage");
   tv.innerHTML = "";
   if (item.kind === "word") {
     const box = el("div", "syllfigure");
-    box.innerHTML = `<span class="fem" aria-hidden="true">${SYLL_WORD_EMO[item.say] || "🔤"}</span>`;
+    const emo = SYLL_WORD_EMO[item.say] || "🔤";
+    const num = SYLL_WORD_IMG[item.say];
+    if (num) {
+      const img = el("img", "fimg");
+      img.src = `illustrations/${String(num).padStart(2, "0")}.png`;
+      img.alt = item.say;
+      // Se il disegno non c'è, la parola non resta senza figura.
+      img.addEventListener("error", () => {
+        img.remove();
+        const span = el("span", "fem");
+        span.setAttribute("aria-hidden", "true");
+        span.textContent = emo;
+        box.insertBefore(span, box.firstChild);
+      });
+      box.appendChild(img);
+    } else {
+      const span = el("span", "fem");
+      span.setAttribute("aria-hidden", "true");
+      span.textContent = emo;
+      box.appendChild(span);
+    }
     box.appendChild(el("div", "fcap", item.say));
     tv.appendChild(box);
   } else {

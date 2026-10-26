@@ -1480,6 +1480,253 @@ SCENES.push(() => {
 });
 
 /* ==================================================================
+   GRUPPI DIFFICILI · 7 figure mancanti (61-67)
+
+   Parole della tappa «I gruppi difficili» che non avevano ancora una
+   scena: il bambino le vede qui per la prima volta. Stessa regola delle
+   altre: il disegno mostra il significato della parola, mai la scrittura.
+   ================================================================== */
+
+/* 61 · bagno */
+SCENES.push(() => {
+  const b = indoor("#eaf4fb", "#dfe9f2");
+  let tiles = "";
+  // piastrelle della parete
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 9; c++) {
+      tiles += rect(24 + c * 70, 18 + r * 54, 62, 46, 6, "#ffffff", { opacity: 0.5 });
+    }
+  }
+  let bubbles = "";
+  [[214, 236, 11], [244, 214, 8], [272, 244, 13], [300, 220, 9], [330, 240, 7]].forEach(
+    ([bx, by, br]) => { bubbles += circ(bx, by, br, "#ffffff", { opacity: 0.75 }); }
+  );
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      tiles +
+      // vasca
+      rect(150, 244, 300, 82, 22, "#ffffff") +
+      rect(162, 254, 276, 62, 16, "#bfe4f6") +
+      ell(300, 254, 138, 12, "#a5d8f2", { opacity: 0.9 }) +
+      bubbles +
+      // rubinetto
+      rect(316, 176, 16, 62, 6, "#c3ccd6") +
+      path("M324 180 q0 -18 26 -18", "none", { stroke: "#c3ccd6", sw: 12 }) +
+      circ(352, 186, 5, "#9fb0c0") +
+      // doccetta
+      line("M404 96 q22 26 6 52", "#9fb0c0", 8) +
+      ell(398, 152, 20, 12, "#c3ccd6") +
+      ell(398, 158, 16, 8, "#9fb0c0") +
+      // asciugamano
+      rect(500, 150, 74, 96, 10, "#f58ba8") +
+      rect(500, 150, 74, 14, 8, "#e88098") +
+      shadow(300, 330, 150)
+  };
+});
+
+/* 62 · aglio */
+SCENES.push(() => {
+  const b = indoor("#fdf8ee", "#e9d8b8");
+  // testa d'aglio: spicchi a punta, buccia bianca venata
+  let cloves = "";
+  [[0, -46], [-30, -30], [30, -30], [-16, -6], [16, -6], [0, -70]].forEach(([dx, dy]) => {
+    cloves += path(
+      `M${n(300 + dx)} ${n(240 + dy)} q${n(16)} ${n(6)} ${n(14)} ${n(26)} q${n(-2)} ${n(16)} ${n(-14)} ${n(18)} q${n(-12)} ${n(-2)} ${n(-14)} ${n(-18)} q${n(-2)} ${n(-20)} ${n(14)} ${n(-26)} Z`,
+      "#fffdf8"
+    );
+  });
+  return {
+    sky: b.sky,
+    body:
+      b.body +
+      P.window(64, 40, 92, 78, { curtain: "#8fce6f" }) +
+      P.counter(180, 300, 250, 1.3) +
+      shadow(300, 292, 62) +
+      cloves +
+      // venature e punta secca
+      line("M300 194 q-6 -22 4 -34", "#b9d6a8", 4) +
+      line("M300 240 q-16 8 -20 26", "#dfe8d4", 3, { opacity: 0.9 }) +
+      line("M300 240 q18 8 22 24", "#dfe8d4", 3, { opacity: 0.9 }) +
+      // bulbo intero accanto
+      ell(452, 268, 40, 34, "#fffdf8") +
+      ell(452, 262, 26, 22, "#f4f7ec") +
+      line("M452 234 q-4 -18 4 -28", "#b9d6a8", 4) +
+      P.plate(120, 296, 1.2, "#ffffff")
+  };
+});
+
+/* 63 · scivolo */
+SCENES.push(() => {
+  let grass = "";
+  for (let i = 0; i < 22; i++) {
+    grass += line(`M${n(30 + i * 28)} 336 q${n(4)} -10 ${n(9)} -3`, "#4ea24d", 4, { opacity: 0.7 });
+  }
+  return {
+    sky: ["#d7f0ff", "#d9f0e2"],
+    body:
+      sun(72, 52, 26) +
+      cloud(250, 44, 0.76) +
+      cloud(486, 58, 0.6, "#ffffff", 0.7) +
+      meadow(246) +
+      grass +
+      P.slide(146, 300, 1.55) +
+      // bambino che scende
+      person({
+        x: 322, y: 268, s: 0.95, hairStyle: "short", hair: C.hair.black,
+        shirt: C.cloth.red, pants: C.cloth.navy, pose: "arms"
+      }) +
+      P.ball(508, 322, 24, "#5aa9e6", "#f6bf4a") +
+      P.flowerPatch(556, 330, 1.0)
+  };
+});
+
+/* 64 · formiche */
+SCENES.push(() => {
+  let ants = "";
+  [[180, 310, 1], [248, 322, 0.85], [316, 308, 1], [386, 320, 0.9], [452, 306, 0.8]].forEach(
+    ([ax, ay, as]) => {
+      // tre segmenti del corpo + zampe + antenne
+      ants +=
+        ell(ax - 14 * as, ay, 10 * as, 8 * as, "#3f4a55") +
+        ell(ax, ay - 1 * as, 8 * as, 7 * as, "#33475b") +
+        ell(ax + 13 * as, ay - 2 * as, 9 * as, 8 * as, "#3f4a55") +
+        line(`M${n(ax - 20 * as)} ${n(ay + 4 * as)} l${n(-10 * as)} ${n(10 * as)}`, "#33475b", 2.6 * as) +
+        line(`M${n(ax - 4 * as)} ${n(ay + 6 * as)} l${n(-4 * as)} ${n(11 * as)}`, "#33475b", 2.6 * as) +
+        line(`M${n(ax + 8 * as)} ${n(ay + 6 * as)} l${n(4 * as)} ${n(11 * as)}`, "#33475b", 2.6 * as) +
+        line(`M${n(ax + 19 * as)} ${n(ay - 8 * as)} q${n(5 * as)} ${n(-9 * as)} ${n(11 * as)} ${n(-10 * as)}`, "#33475b", 2.4 * as) +
+        line(`M${n(ax + 21 * as)} ${n(ay - 6 * as)} q${n(8 * as)} ${n(-4 * as)} ${n(13 * as)} ${n(-2 * as)}`, "#33475b", 2.4 * as);
+    }
+  );
+  // formicaio: cumulo di terra con buco
+  return {
+    sky: ["#e8f7e4", "#cfe9d6"],
+    body:
+      sun(86, 56, 26) +
+      cloud(400, 46, 0.7) +
+      meadow(258) +
+      ell(556, 318, 74, 40, "#c7a06a") +
+      ell(556, 306, 74, 34, "#d8b47e") +
+      ell(556, 300, 18, 8, "#8d6a45") +
+      ants +
+      P.flowerPatch(96, 332, 1.0) +
+      // briciole portate in fila
+      circ(214, 300, 5, "#f6d47a") +
+      circ(282, 316, 4, "#f6d47a") +
+      circ(352, 300, 4.4, "#f6d47a")
+  };
+});
+
+/* 65 · chitarra */
+SCENES.push(() => {
+  // corde tese dalla cassa al manico
+  let strings = "";
+  [286, 292, 298, 304, 310, 316].forEach(y => {
+    strings += line(`M${n(196)} ${n(y)} L${n(392)} ${n(y - 34)}`, "#e8eef4", 1.8, { opacity: 0.95 });
+  });
+  // tasti del manico
+  let frets = "";
+  for (let i = 0; i < 6; i++) {
+    const fx = 300 + i * 17;
+    frets += line(`M${n(fx)} ${n(fx === 300 ? 244 : 244 - i * 5)} l${n(4)} ${n(-36)}`, "#c9a67d", 3);
+  }
+  return {
+    sky: ["#fdf1e0", "#f7e3c8"],
+    body:
+      P.room("#fdf6ea", "#e8cfae", 288) +
+      P.rug(320, 336, 190, "#d8e8f5") +
+      // cassa armonica
+      ell(228, 258, 74, 62, "#e6b06a") +
+      ell(228, 258, 56, 46, "#d99a4e") +
+      circ(228, 258, 20, "#3f4a55") +
+      // manico e paletta
+      rect(276, 214, 118, 26, 10, "#c9a67d") +
+      frets +
+      rect(388, 200, 40, 34, 8, "#8d6a45") +
+      circ(398, 210, 5, "#f6bf4a") +
+      circ(414, 206, 5, "#f6bf4a") +
+      circ(430, 208, 5, "#f6bf4a") +
+      // ponte
+      rect(266, 246, 26, 14, 4, "#8d6a45") +
+      strings +
+      // plettro
+      poly([[486, 300], [512, 288], [518, 316], [492, 322]], "#5aa9e6") +
+      shadow(250, 330, 120)
+  };
+});
+
+/* 66 · alghe */
+SCENES.push(() => {
+  let weeds = "";
+  [70, 118, 166, 470, 520, 570].forEach((wx, i) => {
+    const col = i % 2 ? "#3ea363" : "#4ea24d";
+    weeds += path(
+      `M${n(wx)} ${n(320)} q${n(i % 2 ? 26 : -26)} ${n(-30)} 0 ${n(-58)} q${n(i % 2 ? -20 : 20)} ${n(-26)} 0 ${n(-52)} q${n(i % 2 ? 14 : -14)} ${n(-20)} 0 ${n(-40)}`,
+      "none", { stroke: col, sw: 11 }
+    );
+    weeds += path(
+      `M${n(wx + 16)} ${n(318)} q${n(i % 2 ? -18 : 18)} ${n(-24)} 0 ${n(-44)}`,
+      "none", { stroke: "#63b96f", sw: 7, opacity: 0.9 }
+    );
+  });
+  // raggi di luce dall'alto
+  let rays = "";
+  [[150, 0.13], [300, 0.09], [450, 0.11]].forEach(([rx, op]) => {
+    rays += poly([[rx, 0], [rx + 60, 0], [rx - 20, 330], [rx - 80, 330]], "#ffffff", { opacity: op });
+  });
+  return {
+    sky: ["#7fd0f0", "#18618a"],
+    body:
+      rays +
+      rect(-10, 312, 660, 70, 0, "#f3e0ba") +
+      ell(300, 316, 90, 16, "#e4d3b2") +
+      weeds +
+      fish(320, 196, 1.35, { color: "#f2884b", dark: "#d96a2f" }) +
+      circ(258, 150, 6, "#d8f0fa", { opacity: 0.7 }) +
+      circ(282, 128, 4.6, "#d8f0fa", { opacity: 0.6 }) +
+      circ(240, 112, 3.4, "#d8f0fa", { opacity: 0.5 })
+  };
+});
+
+/* 67 · maglia */
+SCENES.push(() => {
+  return {
+    sky: ["#fdf1e0", "#f7e3c8"],
+    body:
+      P.room("#fdf6ea", "#e8cfae", 288) +
+      // stendibiancheria
+      line("M96 150 h448", "#9a8f84", 6) +
+      line("M120 150 v-40", "#9a8f84", 6) +
+      line("M520 150 v-40", "#9a8f84", 6) +
+      // maglia appesa: corpino, maniche, collo
+      line("M320 150 v22", "#c98a5a", 4) +
+      path("M270 176 q50 -14 100 0 l14 74 q-14 10 -30 2 l0 76 l-68 0 l0 -76 q-16 8 -30 -2 Z", "#5aa9e6") +
+      // maniche
+      path("M270 176 q-38 16 -46 54 l30 12 q12 -28 34 -38 Z", "#4a90e2") +
+      path("M370 176 q38 16 46 54 l-30 12 q-12 -28 -34 -38 Z", "#4a90e2") +
+      // collo
+      path("M300 176 q20 20 40 0 q-20 -8 -40 0 Z", "#3c5a78") +
+      // righe lavorate a maglia
+      (() => {
+        let knit = "";
+        for (let i = 0; i < 6; i++) {
+          const ky = 214 + i * 22;
+          knit += line(`M${n(288)} ${n(ky)} q${n(16)} ${n(8)} ${n(32)} 0 q${n(16)} ${n(8)} ${n(32)} 0`, "#4a90e2", 3, { opacity: 0.55 });
+        }
+        return knit;
+      })() +
+      // gomitolo e ferri
+      circ(500, 306, 30, "#f58ba8") +
+      path("M486 288 q22 12 4 34 q-18 12 -20 -8", "none", { stroke: "#e88098", sw: 4 }) +
+      line("M470 280 l52 44", "#c9a67d", 5) +
+      line("M522 280 l-52 44", "#c9a67d", 5) +
+      shadow(320, 334, 120) +
+      P.rug(320, 336, 168, "#f2c8a3")
+  };
+});
+
+/* ==================================================================
    Documento SVG
    ================================================================== */
 

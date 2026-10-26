@@ -63,7 +63,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 Ogni frase ha il suo disegno, in alto sopra le caselle: il gatto con la ciotola
 di latte, la mamma ai fornelli, il treno in stazione, la luna sul mare, la festa
 a scuola. Sono 40 scene diverse, una per livello, più le 20 figure delle parole.
-In tutto 60 illustrazioni originali.
+In tutto 67 illustrazioni originali.
 
 > [!NOTE]
 > I disegni **non contengono lettere né parole**: mostrano il significato della

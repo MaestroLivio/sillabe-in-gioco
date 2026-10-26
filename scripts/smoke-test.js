@@ -222,7 +222,14 @@ app.whenReady().then(async () => {
     await sleep(150);
     out.syllWordSlots = document.querySelectorAll('#syllSlotsWrap .slot').length;
     out.syllWordUnits = SYLL_STEPS[wordStep].items[0].units.length;
-    out.syllFigure = !!document.querySelector('#syllImage .syllfigure .fem');
+    // La figura della parola è la scena disegnata; l'emoji resta come
+    // riserva se il disegno non c'è. Il test accetta entrambe, ma vuole
+    // una figura vera dentro il riquadro.
+    const figImg = document.querySelector('#syllImage .syllfigure .fimg');
+    const figEmo = document.querySelector('#syllImage .syllfigure .fem');
+    out.syllFigure = !!(figImg || figEmo);
+    out.syllFigureIsScene = !!figImg && figImg.getAttribute("src").startsWith("illustrations/") && figImg.getAttribute("src").endsWith(".png");
+    out.syllFigureSrc = figImg ? figImg.getAttribute('src') : '';
     out.syllWordTiles = document.querySelectorAll('#syllTilePool .tile').length;
 
     // risolvi la parola: la figura e il contatore devono reggere
@@ -387,6 +394,7 @@ app.whenReady().then(async () => {
   expect("sillaba: le vocali sono scegliibili", results.syllConsHasVowels, results.syllConsTiles.join(","));
   expect("parola: una casella per sillaba", results.syllWordSlots === results.syllWordUnits, `${results.syllWordSlots}/${results.syllWordUnits}`);
   expect("parola: figura grande sulla TV", results.syllFigure);
+  expect("parola: la figura è la scena disegnata", results.syllFigureIsScene, results.syllFigureSrc);
   expect("parola: tessere con distrattori", results.syllWordTiles > results.syllWordUnits, results.syllWordTiles);
   expect("parola completabile", results.syllWordCompleted);
   expect("la parola cresce sotto le caselle", results.syllWordBig.length > 0, results.syllWordBig);

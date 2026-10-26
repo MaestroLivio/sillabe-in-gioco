@@ -11,7 +11,7 @@
  * Verifica inoltre:
  *  - dimensione 1280×720 e trasparenza assente
  *  - nessuna tessera vuota o monocroma (soglia di colori distinti)
- *  - nessun PNG duplicato (60 scene tutte diverse)
+ *  - nessun PNG duplicato (67 scene tutte diverse)
  *
  * Uso: node scripts/illustrations/verify.js
  */
@@ -91,7 +91,16 @@ const SIGNATURE = {
   57: ["#3c5a78", "#4fa8d8"],     // scafo + mare
   58: ["#f58ba8", "#ffffff"],     // copertina + pagine
   59: ["#ee5f5f", "#9fb4c6"],     // ombrello + cielo di pioggia
-  60: ["#f6bf4a", "#a86c33"]      // campana + trave di legno
+  60: ["#f6bf4a", "#a86c33"],     // campana + trave di legno
+
+  /* --- parole dei gruppi difficili (61-67) --- */
+  61: ["#bfe4f6", "#ffffff"],     // acqua della vasca + ceramica
+  62: ["#fffdf8", "#b9d6a8"],     // spicchi d'aglio + gambo
+  63: ["#8d99a6", "#5aa9e6"],     // struttura dello scivolo + scivolo
+  64: ["#33475b", "#d8b47e"],     // formiche + formicaio
+  65: ["#e6b06a", "#3f4a55"],     // cassa di legno + buca
+  66: ["#4ea24d", "#f2884b"],     // alghe + pesce
+  67: ["#5aa9e6", "#f58ba8"]      // maglia + gomitolo
 };
 
 function hexToRgb(h) {

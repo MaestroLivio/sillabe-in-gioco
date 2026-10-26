@@ -36,7 +36,7 @@ browser o il sistema che ospita l'app.
 
 ## Immagini e asset
 
-Le 60 illustrazioni (40 frasi + 20 parole) sono **disegni vettoriali originali inclusi nel
+Le 67 illustrazioni (40 frasi + 27 parole) sono **disegni vettoriali originali inclusi nel
 pacchetto dell'app** (`illustrations/`). Vengono caricate dal disco del
 dispositivo: nessuna immagine è richiesta a un server, a un CDN o a un servizio
 di intelligenza artificiale, e nessun dato dell'utente viene inviato altrove per
@@ -69,7 +69,7 @@ identificatori del dispositivo. Non esiste alcun campo che raccolga dati del bam
 
 La lettura ad alta voce usa **file audio preregistrati**, inclusi nel pacchetto
 dell'applicazione: 182 sillabe e lettere, 40 frasi, 163 parole e le battute dell'interfaccia
-(393 clip in tutto).
+(424 clip in tutto).
 Sono file statici, letti da disco o dal service worker: nessun testo viene inviato a
 un motore di sintesi e nessun dato esce dal dispositivo.
 
