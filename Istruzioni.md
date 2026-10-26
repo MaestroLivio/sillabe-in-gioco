@@ -249,4 +249,4 @@ Dettagli completi in [PRIVACY.md](PRIVACY.md).
 
 ---
 
-Copyright © 2026 Livio Luppino · Licenza MIT · Uso libero in classe, in studio e in famiglia.
+Copyright © 2026 Livio Luppino · Licenza CC BY 4.0 · Uso libero in classe, in studio e in famiglia.

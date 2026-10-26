@@ -7,14 +7,19 @@ Il presente contratto regola l'uso del software "Sillabe in Gioco" (di seguito
 in lingua italiana.
 
 2. LICENZA
-Il Software è distribuito con licenza MIT. È consentito installare ed eseguire
-il Software su un numero illimitato di dispositivi, per uso personale,
-familiare, scolastico o terapeutico.
+Il Software è distribuito con licenza Creative Commons Attribuzione 4.0
+Internazionale (CC BY 4.0), il cui testo integrale è nel file LICENSE accluso
+e all'indirizzo https://creativecommons.org/licenses/by/4.0/
+È consentito installare ed eseguire il Software su un numero illimitato di
+dispositivi, per uso personale, familiare, scolastico o terapeutico.
 
-3. USO DIDATTICO
+3. USO DIDATTICO E ATTRIBUZIONE
 Il Software può essere utilizzato liberamente da insegnanti, logopedisti,
 educatori e genitori, anche in contesti professionali, senza corrispettivo.
-È gradita, ma non obbligatoria, la citazione della fonte.
+La licenza CC BY 4.0 consente di copiare, ridistribuire e modificare l'opera,
+anche per scopi commerciali. In tutti questi casi è OBBLIGATORIO riconoscere
+la paternità: cita «Sillabe in Gioco» di Livio Luppino, indica la licenza
+CC BY 4.0 e segnala se sono state fatte modifiche.
 
 4. DATI E PRIVACY
 Il Software non raccoglie, non trasmette e non condivide alcun dato personale.
@@ -36,4 +41,4 @@ Le versioni successive possono modificare funzionalità e contenuti didattici.
 Proseguendo con l'installazione l'utente dichiara di aver letto e accettato i
 termini del presente contratto.
 
-Copyright © 2026 Livio Luppino — Licenza MIT
+Copyright © 2026 Livio Luppino — Licenza CC BY 4.0

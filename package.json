@@ -7,7 +7,7 @@
     "name": "Livio Luppino",
     "email": "livioluppino@users.noreply.github.com"
   },
-  "license": "MIT",
+  "license": "CC-BY-4.0",
   "private": true,
   "main": "desktop/main.js",
   "homepage": "https://github.com/MaestroLivio/sillabe-in-gioco",
@@ -69,6 +69,7 @@
       "icons/**/*",
       "illustrations/**/*",
       "audio/**/*",
+      "LICENSE",
       "package.json"
     ],
     "compression": "maximum",

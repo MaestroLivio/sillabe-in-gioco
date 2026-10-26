@@ -98,6 +98,6 @@ Per domande sulla privacy: aprire una issue sul repository GitHub del progetto
 
 ---
 
-*Sillabe in Gioco è distribuita con licenza MIT. È uno strumento didattico di supporto:
+*Sillabe in Gioco è distribuita con licenza CC BY 4.0. È uno strumento didattico di supporto:
 non sostituisce la valutazione di un logopedista, di un neuropsichiatra infantile o di un
 insegnante specializzato.*

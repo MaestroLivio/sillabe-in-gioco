@@ -178,7 +178,7 @@ function showAbout() {
       "Trascina le sillabe, ascolta la voce italiana, componi le frasi.\n\n" +
       "40 livelli · 4 percorsi · esercizi · schede stampabili · trofei\n\n" +
       "Tecnologie: HTML5, CSS3, JavaScript ES6, Web Speech API.\n" +
-      "Licenza MIT — nessun dato lasciato uscire dal dispositivo.",
+      "Licenza CC BY 4.0 — nessun dato lasciato uscire dal dispositivo.",
     buttons: ["Chiudi"],
     noLink: true
   });

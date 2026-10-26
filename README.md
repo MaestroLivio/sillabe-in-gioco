@@ -414,7 +414,14 @@ gh release upload "v$(node -p "require('./package.json').version")" dist/*.dmg d
 
 ## Licenza
 
-MIT — vedi [LICENSE](LICENSE).
+CC BY 4.0 (Creative Commons Attribuzione 4.0 Internazionale) — vedi [LICENSE](LICENSE).
+
+Puoi condividere e adattare l'opera, anche per scopi commerciali, a una sola condizione:
+**attribuzione**. Cita «Sillabe in Gioco» di Livio Luppino, indica la licenza e segnala
+eventuali modifiche.
+
+La licenza copre tutto il progetto: codice sorgente, illustrazioni, registrazioni audio
+e testi didattici.
 
 Progetto didattico senza scopo di lucro: l'uso in classe, in studio logopedico e in famiglia
 è libero e gratuito.

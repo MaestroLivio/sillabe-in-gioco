@@ -50,7 +50,7 @@ const web = path.join(DIST, "web");
 fs.rmSync(web, { recursive: true, force: true });
 fs.mkdirSync(web, { recursive: true });
 
-["index.html", "manifest.webmanifest", "sw.js", "favicon.png"].forEach(f => {
+["index.html", "manifest.webmanifest", "sw.js", "favicon.png", "LICENSE"].forEach(f => {
   if (fs.existsSync(path.join(ROOT, f))) copy(f, web);
 });
 copyDir("icons", path.join(web, "icons"));
@@ -80,7 +80,7 @@ Note:
 - Non richiede server, database, account.
 - La sintesi vocale usa le voci italiane installate nel sistema.
 
-Licenza MIT — Copyright © 2026 Livio Luppino
+Licenza CC BY 4.0 — Copyright © 2026 Livio Luppino
 `);
 
 console.log("✔ dist/web");
@@ -91,6 +91,7 @@ fs.rmSync(chr, { recursive: true, force: true });
 fs.mkdirSync(chr, { recursive: true });
 
 copy("index.html", chr);
+copy("LICENSE", chr);
 copyDir("icons", path.join(chr, "icons"));
 copyDir("illustrations", path.join(chr, "illustrations"));
 copyDir("audio", path.join(chr, "audio"));
@@ -119,7 +120,7 @@ Pubblicazione sul Chrome Web Store:
 2. Carica lo ZIP nella Chrome Web Store Developer Dashboard
 3. Compila la scheda, le motivazioni dei permessi (solo "storage") e la privacy policy
 
-Licenza MIT — Copyright © 2026 Livio Luppino
+Licenza CC BY 4.0 — Copyright © 2026 Livio Luppino
 `);
 
 console.log("✔ dist/chromeos");

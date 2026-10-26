@@ -4,6 +4,33 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [Non pubblicato]
+
+### Cambiato
+- **Licenza: da MIT a CC BY 4.0** (Creative Commons Attribuzione 4.0
+  Internazionale), su tutto il progetto — codice sorgente, illustrazioni,
+  registrazioni audio e testi didattici. Il testo legale integrale è in
+  `LICENSE`, che ora riporta in apertura un riepilogo in italiano con le
+  condizioni d'uso e l'esempio di attribuzione, seguito dal testo ufficiale
+  inglese (l'unico vincolante).
+  - La differenza pratica rispetto a MIT è che CC BY 4.0 **richiede**
+    l'attribuzione: chi ridistribuisce o modifica l'opera deve citare
+    «Sillabe in Gioco» di Livio Luppino, indicare la licenza e segnalare le
+    modifiche. MIT, invece, chiedeva solo di allegare l'avviso di copyright.
+  - Il campo `license` di `package.json` e `package-lock.json` ora è
+    `CC-BY-4.0`, il valore SPDX corretto per questa licenza.
+  - Aggiornati di conseguenza: il contratto `build/eula.txt` davanti
+    all'installer Windows (con un paragrafo dedicato all'obbligo di
+    attribuzione), la finestra «Informazioni su» dell'app desktop,
+    `README.md`, `PRIVACY.md`, `Istruzioni.md` e le note `README.txt` dentro i
+    pacchetti web e ChromeOS.
+  - **Il file `LICENSE` ora viaggia dentro i pacchetti**: è elencato in
+    `build.files` di `package.json` (quindi entra in `app.asar` per macOS,
+    Windows e Linux) e viene copiato in `dist/web` e `dist/chromeos` da
+    `scripts/package-web.js`. Prima restava solo nel repository, quindi chi
+    installava l'app non riceveva il testo della licenza — cosa che MIT
+    tollerava ma CC BY 4.0 no, perché l'attribuzione deve accompagnare l'opera.
+
 ## [2.2.5] — 2026-10-25
 
 ### Corretto
