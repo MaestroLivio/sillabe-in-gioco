@@ -8,6 +8,11 @@
  * Nei pacchetti desktop le immagini stanno dentro `app.asar` (non come file
  * sciolti), quindi la verifica apre l'archivio invece di cercare per nome.
  *
+ * Controlla anche `aggiornamento.json`, l'unico allegato che non contiene
+ * l'app: se indica un nome di file che nella release non esiste, gli utenti
+ * di quel sistema non riescono ad aggiornare. Aprire i pacchetti non lo
+ * rivelerebbe, perché i pacchetti sono giusti: sbaglia solo la mappa.
+ *
  * Uso:
  *   node scripts/verify-release.js v2.0.2
  *   node scripts/verify-release.js v2.0.2 --keep   # conserva i download
@@ -224,6 +229,56 @@ function checkDmg(file) {
   }
 }
 
+/**
+ * Il manifest degli aggiornamenti è l'unico allegato che non contiene l'app:
+ * è la mappa «sistema → file» che l'app legge all'avvio. Un nome sbagliato lì
+ * non si scopre aprendo i pacchetti — quelli esistono e sono giusti — ma solo
+ * quando l'utente prova ad aggiornare e l'app chiede a GitHub un file che non
+ * c'è. Per questo i nomi vanno confrontati con gli allegati veri della release.
+ */
+function checkManifest(file, assetByName) {
+  const problems = [];
+  let manifest;
+  try {
+    manifest = JSON.parse(fs.readFileSync(file, "utf8"));
+  } catch (e) {
+    return [`aggiornamento.json: non è JSON valido (${e.message})`];
+  }
+
+  const attesa = TAG.replace(/^v/, "");
+  if (manifest.version !== attesa) {
+    problems.push(`aggiornamento.json: dichiara la versione ${manifest.version}, la release è ${attesa}`);
+  }
+  if (!manifest.pacchetti || typeof manifest.pacchetti !== "object") {
+    return problems.concat("aggiornamento.json: manca l'elenco dei pacchetti");
+  }
+
+  /* Ogni sistema che l'app sa aggiornare deve avere il suo file: un buco qui
+     significa «scarica a mano dalla pagina delle release». */
+  for (const key of ["darwin-arm64", "darwin-x64", "win32-x64", "linux-x64"]) {
+    const voce = manifest.pacchetti[key];
+    if (!voce) {
+      problems.push(`aggiornamento.json: manca il pacchetto ${key}`);
+      continue;
+    }
+    const asset = assetByName.get(voce.file);
+    if (!asset) {
+      problems.push(`aggiornamento.json: ${key} indica «${voce.file}», che non è un allegato della release`);
+      continue;
+    }
+    if (voce.byte !== asset.size) {
+      problems.push(`aggiornamento.json: ${key} dichiara ${voce.byte} byte, l'allegato ne ha ${asset.size}`);
+    }
+    if (!/^[a-f0-9]{64}$/.test(voce.sha256 || "")) {
+      problems.push(`aggiornamento.json: ${key} ha un'impronta SHA-256 malformata`);
+    }
+  }
+
+  const n = Object.keys(manifest.pacchetti).length;
+  console.log(`aggiornamento.json: versione ${manifest.version}, ${n} pacchetti`);
+  return problems;
+}
+
 /* --- main --- */
 
 (async () => {
@@ -238,11 +293,21 @@ function checkDmg(file) {
   const problems = [];
   const rows = [];
 
+  /* Il manifest si controlla per primo: se i nomi sono sbagliati, aprire i
+     pacchetti non serve a nulla. Gli allegati veri fanno da riferimento. */
+  const assetByName = new Map(info.assets.map(a => [a.name, a]));
+
   for (const asset of info.assets) {
     const name = asset.name;
     const file = download(name);
     if (!file) {
       problems.push(`${name}: download fallito`);
+      continue;
+    }
+
+    /* Il manifest non è un pacchetto: si legge, non si apre. */
+    if (/^aggiornamento\.json$/i.test(name)) {
+      problems.push(...checkManifest(file, assetByName));
       continue;
     }
 
@@ -270,6 +335,7 @@ function checkDmg(file) {
     process.exitCode = 1;
   } else {
     console.log(`✔ Tutti i ${rows.length} artefatti pubblicati contengono le ${EXPECTED} illustrazioni e i ${EXPECTED_AUDIO} clip vocali`);
+    console.log("✔ aggiornamento.json indica file che esistono davvero nella release");
   }
 
   if (!KEEP) fs.rmSync(WORK, { recursive: true, force: true });
