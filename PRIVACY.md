@@ -1,14 +1,38 @@
 # Informativa sulla privacy · Sillabe in Gioco
 
-**Ultimo aggiornamento:** 24 ottobre 2026
-**Versione applicazione:** 2.2.0
+**Ultimo aggiornamento:** 26 ottobre 2026
+**Versione applicazione:** 2.2.6
 **Titolare:** Livio Luppino
 
 ## In sintesi
 
 Sillabe in Gioco **non raccoglie alcun dato personale**. Non ci sono account, server,
 analytics, pubblicità o tracciamenti. L'applicazione funziona interamente sul dispositivo
-dell'utente e non effettua connessioni di rete verso servizi remoti.
+dell'utente.
+
+L'unica connessione di rete è il **controllo degli aggiornamenti** della versione desktop:
+all'avvio l'app chiede a GitHub se esiste una versione più recente. È una richiesta
+anonima, senza dati dell'utente, e si può disattivare dalle impostazioni. Dettagli nella
+sezione [Controllo aggiornamenti](#controllo-aggiornamenti).
+
+## Controllo aggiornamenti
+
+La versione desktop (macOS, Windows, Linux) può avvisare quando esce una versione nuova.
+Per farlo scarica un piccolo file di testo — `aggiornamento.json` — dall'indirizzo
+pubblico del progetto su GitHub, poi chiede all'utente se vuole aggiornare.
+
+| Aspetto | Comportamento |
+|---|---|
+| Cosa viene inviato | Solo la richiesta del file. Nessun identificativo, nessun dato di gioco, nessun dato del bambino |
+| Quando | All'avvio, una volta sola, dopo 2,5 secondi; oppure quando l'utente preme «Controlla adesso» |
+| Dove va | `github.com` e i server degli allegati di GitHub (`release-assets.githubusercontent.com`) |
+| Si può disattivare | Sì, dalle impostazioni: «Avvisami delle nuove versioni» |
+| Se non c'è rete | Il controllo fallisce in silenzio, senza messaggi. L'app funziona normalmente |
+| Chi lo riceve | GitHub, che come qualsiasi sito registra l'indirizzo IP della richiesta nei propri log |
+| Se si accetta il download | Si scarica il pacchetto solo dopo un click esplicito; il file viene verificato con l'impronta SHA-256 pubblicata prima di essere aperto |
+
+Nella versione **web e ChromeOS** il controllo non esiste: gli aggiornamenti li gestisce il
+browser o il sistema che ospita l'app.
 
 ## Immagini e asset
 
@@ -32,7 +56,9 @@ identificatori del dispositivo. Non esiste alcun campo che raccolga dati del bam
 
 ## Cosa NON viene fatto
 
-- Nessun invio di dati a server propri o di terzi.
+- Nessun invio di dati a server propri o di terzi. L'unica richiesta in uscita è il file
+  `aggiornamento.json` per il controllo delle nuove versioni (vedi [Controllo aggiornamenti](#controllo-aggiornamenti)):
+  non trasporta alcun dato dell'utente e si può disattivare.
 - Nessun servizio di analytics (Google Analytics, Firebase, Sentry, ecc.).
 - Nessuna pubblicità, nessun SDK pubblicitario, nessun profilo pubblicitario.
 - Nessun cookie di tracciamento (l'app non usa cookie).

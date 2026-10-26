@@ -242,9 +242,11 @@ Tutte le scelte sono salvate automaticamente sul dispositivo.
 
 ## 11. Privacy
 
-Nessuna connessione a internet, nessun account, nessuna pubblicità, nessuna statistica.
+Nessun account, nessuna pubblicità, nessuna statistica.
 I progressi restano in `localStorage` (web) o nella cartella dati dell'app (desktop).
 Le voci sono registrate e incluse nell'app: nessun testo viene inviato altrove e non serve alcuna voce italiana installata. Se un clip manca, l'app legge con la voce del sistema operativo.
+
+Nella versione desktop l'app controlla all'avvio se c'è una versione nuova: chiede un piccolo file a GitHub, non invia nessun dato e si può disattivare dalle impostazioni («Avvisami delle nuove versioni»). La versione web e ChromeOS non effettua questo controllo.
 Dettagli completi in [PRIVACY.md](PRIVACY.md).
 
 ---

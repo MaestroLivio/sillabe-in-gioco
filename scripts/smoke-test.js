@@ -208,6 +208,10 @@ app.whenReady().then(async () => {
     out.settingsCaps = !!document.getElementById('setCaps');
     out.settingsReadWords = !!document.getElementById('setReadWords');
     out.settingsExerciseOpts = document.querySelectorAll('#setExercise option').length;
+    /* l'interruttore degli aggiornamenti esiste solo su desktop: qui gira in
+       Electron, quindi deve esserci */
+    out.settingsUpdateCheck = !!document.getElementById('setUpdateCheck');
+    out.settingsUpdateBtn = !!document.getElementById('checkUpdatesNow');
     closeSheet();
     await sleep(60);
 
@@ -316,9 +320,11 @@ app.whenReady().then(async () => {
   expect("esercizio singolo scelto dal docente", results.singleItems === 1 && results.singleAnswer === "cia", `${results.singleItems}/${results.singleAnswer}`);
 
   console.log("\n— IMPOSTAZIONI —");
-  expect("11 campi", results.settingsFields === 11, results.settingsFields);
+  expect("12 campi (11 + aggiornamenti)", results.settingsFields === 12, results.settingsFields);
   expect("interruttore tutto maiuscolo", results.settingsCaps);
   expect("interruttore lettura parole", results.settingsReadWords);
+  expect("interruttore aggiornamenti presente su desktop", results.settingsUpdateCheck);
+  expect("pulsante «Controlla adesso»", results.settingsUpdateBtn);
   expect("scelta esercizio con 22 voci", results.settingsExerciseOpts === 22, results.settingsExerciseOpts);
 
   console.log("\n— STAMPA E PROGRESSI —");

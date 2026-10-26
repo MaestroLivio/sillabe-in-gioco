@@ -7,6 +7,7 @@
 const { app, BrowserWindow, Menu, shell, ipcMain, dialog } = require("electron");
 const path = require("path");
 const fs = require("fs");
+const updater = require("./updater");
 
 const APP_TITLE = "Sillabe in Gioco";
 const isMac = process.platform === "darwin";
@@ -79,6 +80,17 @@ app.whenReady().then(() => {
 
   Menu.setApplicationMenu(buildMenu());
   createWindow();
+  updater.registerIpc();
+
+  /* Controllo aggiornamenti all'avvio: parte dopo che la finestra è visibile,
+     così l'app è subito usabile. Se non c'è rete, fallisce in silenzio. */
+  if (app.isPackaged) {
+    mainWindow.once("ready-to-show", () => {
+      setTimeout(() => {
+        updater.checkForUpdates(mainWindow).catch(() => { /* offline: si ignora */ });
+      }, 2500);
+    });
+  }
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -147,6 +159,7 @@ function buildMenu() {
         { label: "Impostazioni di accessibilità", click: () => mainWindow?.webContents.executeJavaScript("document.getElementById('homeSettingsBtn')?.click()") },
         { type: "separator" },
         { label: "Apri la cartella dei dati", click: () => shell.openPath(app.getPath("userData")) },
+        { label: "Verifica aggiornamenti…", click: () => updater.checkForUpdates(mainWindow, { manual: true }) },
         { label: "Informazioni", click: showAbout }
       ]
     }
@@ -178,7 +191,8 @@ function showAbout() {
       "Trascina le sillabe, ascolta la voce italiana, componi le frasi.\n\n" +
       "40 livelli · 4 percorsi · esercizi · schede stampabili · trofei\n\n" +
       "Tecnologie: HTML5, CSS3, JavaScript ES6, Web Speech API.\n" +
-      "Licenza CC BY 4.0 — nessun dato lasciato uscire dal dispositivo.",
+      "Licenza CC BY 4.0 — nessun dato lasciato uscire dal dispositivo,\n" +
+      "a parte il controllo delle nuove versioni (disattivabile).",
     buttons: ["Chiudi"],
     noLink: true
   });

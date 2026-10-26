@@ -1046,6 +1046,10 @@ let settings = loadJSON(SETTINGS_KEY, DEFAULT_SETTINGS);
 let progress = loadJSON(STORE_KEY, { levels: {}, exercises: { sessions: 0, best: 0 }, listens: 0, lastLevel: 1 });
 if (!progress.levels) progress.levels = {};
 
+/* Preferenza sul controllo aggiornamenti (solo desktop). Vive nel processo
+   principale, non in localStorage: la decide l'app, non la pagina. */
+const UPDATE_PREF = { checkOnStartup: true };
+
 const L = {
   screen: "home",
   levelIndex: 0,
@@ -2567,6 +2571,15 @@ function openSettings() {
     `<option value="sounds" ${settings.exercise === "sounds" ? "selected" : ""}>Suoni difficili · tutti i 20</option>`,
     ...SOUNDS.map(s => `<option value="sound:${s.id}" ${settings.exercise === "sound:" + s.id ? "selected" : ""}>Suono ${s.sound} · ${s.word}</option>`)
   ].join("");
+  /* Il controllo aggiornamenti esiste solo nella versione desktop: nella PWA
+     il browser si occupa da sé di servire la versione nuova. */
+  const updateField = window.desktopAPI && window.desktopAPI.updaterPrefs
+    ? `<div class="field"><label for="setUpdateCheck">Avvisami delle nuove versioni<span class="hint">Controllo all'avvio</span></label>
+         <span class="switch"><input id="setUpdateCheck" type="checkbox" ${UPDATE_PREF.checkOnStartup ? "checked" : ""}><span></span></span></div>
+       <div class="row" style="justify-content:flex-end;margin:-4px 0 6px">
+         <button class="btn ghost small" id="checkUpdatesNow">⇩ Controlla adesso</button>
+       </div>`
+    : "";
   openSheet("Impostazioni", `
     <div class="field"><label for="setFont">Dimensione testo<span class="hint">Più grande per leggere meglio</span></label>
       <input id="setFont" type="range" min="0.9" max="1.5" step="0.05" value="${settings.fontScale}"></div>
@@ -2590,6 +2603,7 @@ function openSettings() {
       <span class="switch"><input id="setMotion" type="checkbox" ${settings.reduceMotion ? "checked" : ""}><span></span></span></div>
     <div class="field"><label for="setExercise">Esercizio scelto dal docente<span class="hint">Su cosa lavorare adesso</span></label>
       <select id="setExercise">${exOpts}</select></div>
+    ${updateField}
     <div class="row" style="justify-content:flex-end;margin-top:14px">
       <button class="btn small" id="settingsStart">▶ Avvia l'esercizio</button>
       <button class="btn ghost small" id="settingsDone">Chiudi</button>
@@ -2620,6 +2634,28 @@ function openSettings() {
 
   $("#settingsStart").onclick = () => { closeSheet(); startChosenExercise(); };
   $("#settingsDone").onclick = closeSheet;
+
+  /* aggiornamenti (solo desktop): l'interruttore è salvato dal processo
+     principale nella cartella dati dell'app, non in localStorage */
+  const updateCheck = $("#setUpdateCheck");
+  if (updateCheck) {
+    updateCheck.addEventListener("change", () => {
+      UPDATE_PREF.checkOnStartup = updateCheck.checked;
+      window.desktopAPI.setUpdateCheck(updateCheck.checked).catch(() => {});
+    });
+  }
+  const checkNow = $("#checkUpdatesNow");
+  if (checkNow) {
+    checkNow.addEventListener("click", () => {
+      checkNow.disabled = true;
+      const original = checkNow.textContent;
+      checkNow.textContent = "⇩ Controllo…";
+      window.desktopAPI.checkUpdates().catch(() => {}).then(() => {
+        checkNow.disabled = false;
+        checkNow.textContent = original;
+      });
+    });
+  }
 }
 
 function openHelp() {
@@ -2797,6 +2833,14 @@ $$(".screen").forEach(s => s.classList.remove("active"));
 $("#screen-home").classList.add("active");
 syncBottomBarHeight();
 if (synth) refreshVoices();
+
+/* Preferenza aggiornamenti: si legge una volta sola all'avvio (solo desktop).
+   Il controllo vero e proprio lo fa il processo principale. */
+if (window.desktopAPI && window.desktopAPI.updaterPrefs) {
+  window.desktopAPI.updaterPrefs().then(p => {
+    UPDATE_PREF.checkOnStartup = !!p.checkOnStartup;
+  }).catch(() => { /* si resta sul valore predefinito */ });
+}
 
 /* Registrazione del service worker (PWA: ChromeOS, desktop, tablet) */
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {

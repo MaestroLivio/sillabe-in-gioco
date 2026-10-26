@@ -25,8 +25,12 @@ CC BY 4.0 e segnala se sono state fatte modifiche.
 Il Software non raccoglie, non trasmette e non condivide alcun dato personale.
 I progressi di gioco sono salvati esclusivamente in locale sul dispositivo
 (localStorage o cartella dati dell'applicazione). Non sono presenti analytics,
-pubblicità, tracciamenti o connessioni a servizi remoti. La sintesi vocale
-utilizza le voci installate nel sistema operativo.
+pubblicità o tracciamenti. La sintesi vocale utilizza le voci installate nel
+sistema operativo.
+L'unica connessione di rete è il controllo delle nuove versioni: una richiesta
+anonima a GitHub che non trasporta dati dell'utente e che può essere
+disattivata dalle impostazioni. Se il dispositivo è offline il controllo
+fallisce in silenzio e il Software funziona normalmente.
 
 5. LIMITAZIONI DI RESPONSABILITÀ
 Il Software è fornito "così com'è", senza garanzie di alcun tipo. Gli autori non

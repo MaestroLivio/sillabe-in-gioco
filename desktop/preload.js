@@ -12,5 +12,9 @@ contextBridge.exposeInMainWorld("desktopAPI", {
   close: () => ipcRenderer.send("app:close"),
   print: () => ipcRenderer.invoke("app:print"),
   openDataFolder: () => ipcRenderer.invoke("app:openDataFolder"),
-  exportProgress: data => ipcRenderer.invoke("app:exportProgress", data)
+  exportProgress: data => ipcRenderer.invoke("app:exportProgress", data),
+  /* aggiornamenti: preferenze, controllo manuale */
+  updaterPrefs: () => ipcRenderer.invoke("updater:prefs"),
+  setUpdateCheck: value => ipcRenderer.invoke("updater:setCheckOnStartup", value),
+  checkUpdates: () => ipcRenderer.invoke("updater:checkNow")
 });

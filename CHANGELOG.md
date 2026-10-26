@@ -4,6 +4,65 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.2.6] — 2026-10-26
+
+### Aggiunto
+- **Avviso automatico delle nuove versioni** (versione desktop macOS/Windows/Linux).
+  All'avvio l'app controlla se nel repository c'è una release più recente e, se
+  c'è, chiede se scaricarla. Il pacchetto viene scaricato con una barra di
+  avanzamento, verificato e poi aperto: su macOS e Windows si apre l'installer,
+  su Linux si prepara l'AppImage e si spiega come sostituirlo.
+  - Tre pulsanti: **Scarica e installa**, **Più tardi**, **Salta questa versione**.
+    «Salta» non ripropone quella versione ai successivi avvii.
+  - Si può disattivare dalle impostazioni («Avvisami delle nuove versioni») e
+    c'è **Verifica aggiornamenti…** nel menu Aiuto.
+  - **Il file scaricato viene verificato con l'impronta SHA-256** dichiarata
+    nella release: se non combacia, il file viene buttato e non si apre nulla.
+
+### Come è fatto, e perché
+- **Un manifest allegato alla release, non l'API di GitHub.** Il controllo legge
+  `aggiornamento.json` da `/releases/latest/download/`, un indirizzo stabile.
+  L'API REST di GitHub consente **60 richieste l'ora per indirizzo IP**: in una
+  scuola tutte le macchine escono dallo stesso router, quindi il controllo
+  avrebbe smesso di funzionare proprio dove serve — e proprio con l'app usata da
+  venti computer in aula. Il file allegato non ha questo limite.
+- Il manifest è generato in CI dagli artefatti veri
+  (`scripts/make-update-manifest.js`), non in locale: gli hash devono essere
+  quelli dei file che finiscono nella release. Un manifest costruito su una
+  build locale non combacerebbe, e la verifica dell'hash — cioè la protezione
+  contro un file manomesso — rifiuterebbe ogni aggiornamento.
+- **I nomi dei DMG cambiano fra locale e release**: `actions/upload-artifact`
+  sostituisce gli spazi con i punti, quindi lo stesso file è
+  `Sillabe in Gioco-2.2.6.dmg` sul disco e `Sillabe.in.Gioco-2.2.6.dmg` nella
+  release. Lo script accetta entrambe le forme e scrive nel manifest il nome
+  vero trovato.
+- Solo HTTPS e solo host di GitHub, **ricontrollati a ogni redirect**: senza
+  questo controllo un host consentito potrebbe rimandare a uno qualsiasi e la
+  lista bianca non servirebbe a niente.
+- Nessun download parte senza un click esplicito. Se non c'è rete il controllo
+  fallisce in silenzio e l'app funziona normalmente.
+
+### Cambiato
+- **La privacy diceva «nessuna connessione remota»: non è più vero.** Il
+  controllo aggiornamenti è una richiesta in uscita. `PRIVACY.md` ora ha una
+  sezione dedicata con cosa viene inviato (solo la richiesta del file, nessun
+  dato dell'utente), quando, dove, come disattivarlo e il fatto che GitHub
+  registra l'indirizzo IP nei propri log come qualsiasi sito. Aggiornati anche
+  `README.md`, `Istruzioni.md`, il contratto `build/eula.txt` e la finestra
+  «Informazioni su».
+- Il controllo esiste **solo nella versione desktop**. Nella PWA e
+  nell'estensione ChromeOS gli aggiornamenti li gestisce il browser: non c'è
+  nulla da controllare e nessuna richiesta in più.
+
+### Verificato
+- 8 casi provati automaticamente con un finto server
+  (`scripts/test-updater-integration.js`): versione uguale, rimanda, salta,
+  hash sbagliato, manifest malformato, server in errore, controllo disattivato,
+  percorso completo fino all'apertura del pacchetto. In tutti i casi di errore
+  l'installer **non** viene aperto.
+- Download e calcolo dell'hash provati **contro la release vera** su GitHub
+  (`scripts/test-updater-net.js`): hash calcolato = hash dichiarato.
+
 ## [Non pubblicato]
 
 ### Cambiato

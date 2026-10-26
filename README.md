@@ -377,9 +377,11 @@ Scelte tecniche rilevanti:
 
 ## Privacy
 
-Nessuna raccolta dati, nessun analytics, nessuna pubblicità, nessuna connessione remota.
+Nessuna raccolta dati, nessun analytics, nessuna pubblicità.
 I progressi restano in `localStorage` (web) o nella cartella dati dell'app (desktop).
 La voce usa clip MP3 preregistrati inclusi nell'app; solo come riserva l'app passa al motore di sintesi del sistema operativo, senza inviare dati altrove.
+
+L'unica connessione in uscita è il **controllo aggiornamenti** della versione desktop: una richiesta anonima del file `aggiornamento.json` a GitHub, disattivabile dalle impostazioni. Non trasporta dati dell'utente. Nella versione web e ChromeOS non c'è alcuna connessione oltre al caricamento iniziale.
 
 Dettagli in [PRIVACY.md](PRIVACY.md).
 

@@ -116,10 +116,14 @@ jobs:
           path: artefatti
           merge-multiple: true
 
+      - name: Manifest per il controllo aggiornamenti
+        run: node scripts/make-update-manifest.js artefatti
+
       - name: Crea la release
         uses: softprops/action-gh-release@v2
         with:
-          files: artefatti/*
+          files: |
+            artefatti/*
           body_path: CHANGELOG.md
           draft: false
           prerelease: false
