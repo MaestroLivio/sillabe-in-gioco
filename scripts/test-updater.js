@@ -53,8 +53,13 @@ const manifestScript = fs.readFileSync(path.join(__dirname, "make-update-manifes
 check("il manifest riconosce SillabeInGioco-Setup-<ver>.exe",
   manifestScript.includes("SillabeInGioco-Setup-"), true);
 /* i DMG hanno il nome con spazi in locale e con punti nella release, perché
-   actions/upload-artifact li normalizza: il manifest deve accettare entrambi */
+   la release normalizza gli spazi in punti: il manifest deve accettare
+   entrambi in lettura, ma scrivere il nome con i punti */
 check("il manifest accetta i nomi con spazi", /Sillabe\[ \.\]in\[ \.\]Gioco/.test(manifestScript), true);
+check("il manifest scrive il nome servito da GitHub (punti, non spazi)",
+  /function releaseName\(name\) \{\s*return name\.replace\(\/ \/g, "\."\)/.test(manifestScript), true);
+check("il nome del pacchetto passa da releaseName()",
+  /file: releaseName\(nome\)/.test(manifestScript), true);
 check("artifactName di package.json combacia",
   pkg.build.nsis.artifactName, "SillabeInGioco-Setup-${version}.${ext}");
 check("artifactName portable combacia",

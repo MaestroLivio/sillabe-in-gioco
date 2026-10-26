@@ -43,6 +43,16 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
   *aglio*, *scivolo*, *formiche*, *chitarra*, *alghe*, *maglia* — sono state
   disegnate per l'occasione (`illustrations/61-67`): il catalogo passa da 60 a 67
   scene. L'emoji resta solo come riserva, se un file dovesse mancare.
+
+### Corretto
+- **Il manifest degli aggiornamenti indicava nomi di file inesistenti.** GitHub
+  pubblica gli allegati di una release trasformando gli spazi in punti: il DMG
+  «Sillabe in Gioco-2.2.7-arm64.dmg» diventa «Sillabe.in.Gioco-2.2.7-arm64.dmg».
+  `scripts/make-update-manifest.js` scriveva invece il nome letto dal disco, così
+  l'app su macOS chiedeva un file che non c'era e il download finiva in 404. Ora
+  il nome viene normalizzato prima di finire nel manifest (`releaseName()`), e un
+  controllo in `npm run test:updater` impedisce che la normalizzazione sparisca.
+
 - **I distrattori non si inventano.** Sono sillabe e lettere che hanno già un clip
   nell'app: una tessera che non si può ascoltare sarebbe un esercizio rotto.
 

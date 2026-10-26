@@ -22,11 +22,13 @@ const DIST = process.argv[2] ? path.resolve(process.argv[2]) : path.join(ROOT, "
 const pkg = require(path.join(ROOT, "package.json"));
 const VERSION = pkg.version;
 
-/* Nomi attesi. Attenzione: actions/upload-artifact di GitHub sostituisce gli
-   spazi con i punti, quindi lo stesso DMG si chiama "Sillabe in Gioco-2.2.6.dmg"
-   in locale ma "Sillabe.in.Gioco-2.2.6.dmg" nella release. Invece di indovinare
-   si cerca il file che combacia con l'espressione, e nel manifest finisce il
-   nome vero trovato sul disco: è quello che l'app userà per scaricare. */
+/* Nomi attesi. Attenzione: il DMG si chiama "Sillabe in Gioco-2.2.6.dmg" sul
+   disco ma GitHub pubblica gli allegati di una release sostituendo gli spazi
+   con i punti ("Sillabe.in.Gioco-2.2.6.dmg"). Il nome che finisce nel manifest
+   deve essere quello servito da GitHub, non quello locale: altrimenti l'app
+   chiede un file che non esiste e il download finisce in 404. Per questo si
+   cerca il file con un'espressione che accetta entrambe le forme, e poi il nome
+   trovato viene normalizzato con releaseName() prima di scriverlo. */
 const TARGETS = [
   { key: "darwin-arm64", re: new RegExp(`^Sillabe[ .]in[ .]Gioco-${escapeRe(VERSION)}-arm64\\.dmg$`) },
   { key: "darwin-x64", re: new RegExp(`^Sillabe[ .]in[ .]Gioco-${escapeRe(VERSION)}\\.dmg$`) },
@@ -36,6 +38,14 @@ const TARGETS = [
 
 function escapeRe(s) {
   return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/* Il nome con cui GitHub serve davvero l'allegato. La release sostituisce gli
+   spazi con i punti: "Sillabe in Gioco-2.2.7-arm64.dmg" diventa
+   "Sillabe.in.Gioco-2.2.7-arm64.dmg". Nel manifest va il secondo, perché è
+   quello che l'app concatena all'URL di download. */
+function releaseName(name) {
+  return name.replace(/ /g, ".");
 }
 
 /* Un nome con caratteri strani finirebbe in un URL: si accettano solo quelli
@@ -76,11 +86,13 @@ for (const t of TARGETS) {
     continue;
   }
   pacchetti[t.key] = {
-    file: nome,
+    /* releaseName(): nel manifest serve il nome con cui GitHub serve il file,
+       non quello sul disco. */
+    file: releaseName(nome),
     byte: stat.size,
     sha256: sha256(full)
   };
-  console.log(`  ✔ ${t.key.padEnd(13)} ${nome} (${(stat.size / 1024 / 1024).toFixed(1)} MB)`);
+  console.log(`  ✔ ${t.key.padEnd(13)} ${releaseName(nome)} (${(stat.size / 1024 / 1024).toFixed(1)} MB)`);
 }
 
 if (!Object.keys(pacchetti).length) {
