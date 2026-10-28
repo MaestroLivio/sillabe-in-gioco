@@ -21,6 +21,7 @@
 const { execFileSync, spawnSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 
 const ROOT = path.join(__dirname, "..");
 const pkg = require(path.join(ROOT, "package.json"));
@@ -51,19 +52,27 @@ for (const arch of wanted) {
   }
 
   try {
+    // 0. Su macOS 15 (Sequoia) i file portano l'attributo `com.apple.provenance`
+    //    e FinderInfo che codesign rifiuta («resource fork ... not allowed»).
+    //    Si lavora su una copia pulita ottenuta con ditto --noextattr, si firma
+    //    quella, e si ricopia il bundle firmato in dist/ (il DMG legge da lì).
+    const cleanApp = path.join(os.tmpdir(), `sillabe-sign-${arch}.app`);
+    if (fs.existsSync(cleanApp)) fs.rmSync(cleanApp, { recursive: true, force: true });
+    execFileSync("ditto", ["--noextattr", "--norsrc", app, cleanApp], { stdio: "pipe" });
+
     // 1. firma ad-hoc del bundle con le entitlements di Electron (JIT, ecc.)
     sh("codesign", [
       "--force", "--deep", "--sign", "-",
       "--options", "runtime",
       "--entitlements", ENTITLEMENTS,
-      app
+      cleanApp
     ]);
 
     // 2. verifica: se non passa, il pacchetto non va pubblicato
-    sh("codesign", ["--verify", "--deep", "--strict", app]);
+    sh("codesign", ["--verify", "--deep", "--strict", cleanApp]);
 
     // 3. dettagli per il log (identifier e Info.plist legato)
-    const dv = run("codesign", ["-dv", "--verbose=2", app]).out;
+    const dv = run("codesign", ["-dv", "--verbose=2", cleanApp]).out;
     const id = (dv.match(/Identifier=(\S+)/) || [])[1] || "?";
     const plistOk = /Info\.plist entries=(\d+)/.test(dv);
     console.log(`✔ ${arch}: firmata ad-hoc (identifier ${id}, info.plist ${plistOk ? "legato" : "NON legato"})`);
@@ -74,7 +83,12 @@ for (const arch of wanted) {
       : `${productName}-${pkg.version}-mac.zip`;
     const zipPath = path.join(ROOT, "dist", zipName);
     if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
-    execFileSync("ditto", ["-c", "-k", "--sequesterRsrc", "--keepParent", app, zipPath], { stdio: "pipe" });
+    execFileSync("ditto", ["-c", "-k", "--sequesterRsrc", "--keepParent", cleanApp, zipPath], { stdio: "pipe" });
+    // copia il bundle firmato in dist/ per make-dmg.js (che legge da lì)
+    if (fs.existsSync(app)) fs.rmSync(app, { recursive: true, force: true });
+    execFileSync("ditto", ["--noextattr", "--norsrc", cleanApp, app], { stdio: "pipe" });
+    fs.rmSync(cleanApp, { recursive: true, force: true });
+
     const mb = (fs.statSync(zipPath).size / 1024 / 1024).toFixed(1);
     console.log(`✔ ${arch}: ${zipName} ricreato dalla copia firmata (${mb} MB)`);
   } catch (e) {

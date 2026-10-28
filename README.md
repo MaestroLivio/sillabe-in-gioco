@@ -4,7 +4,7 @@ App didattica per l'apprendimento della letto‑scrittura in italiano: si compon
 trascinando tessere sillabiche, con sintesi vocale, illustrazioni generate al volo,
 esercizi, schede stampabili e trofei.
 
-**5 percorsi · 101 esercizi suoni e sillabe · 40 livelli di frasi · 20 parole da comporre · 20 suoni difficili · nessun dato che lascia il dispositivo.**
+**5 percorsi storici · 101 esercizi suoni e sillabe · 40 livelli di frasi · 20 parole da comporre · 20 suoni difficili · e il nuovo «Viaggio delle sillabe» con 136 unità, 469 parole illustrate, 109 frasi e oltre 1.900 esercizi generati · nessun dato che lascia il dispositivo.**
 
 ![Home](build/screenshots/01-home.png)
 
@@ -13,6 +13,7 @@ esercizi, schede stampabili e trofei.
 ## Indice
 
 - [Funzionalità](#funzionalità)
+- [Il viaggio delle sillabe](#il-viaggio-delle-sillabe)
 - [Percorsi didattici](#percorsi-didattici)
 - [Accessibilità](#accessibilità)
 - [Avvio rapido](#avvio-rapido)
@@ -125,6 +126,35 @@ Scheda di lavoro A4 pronta per la classe: frase, caselle da riempire, tessere da
 
 ---
 
+## Il viaggio delle sillabe
+
+Il nuovo modulo fonico-sillabico sistematico, accessibile dalla home. È pensato
+per la classe prima (e per l'ultimo anno dell'infanzia, la classe seconda e i
+percorsi individualizzati) e non sostituisce i percorsi esistenti.
+
+- **8 livelli**: vocali; M·P·L·T; S·N·R·F; V·B·D·Z; C e G dure/dolci; gruppi
+  CIA/GIA/SCA/GN/GLI/QU/CQU; segmenti vocali+consonante; strutture complesse.
+- **136 unità** (104 sillabe, 20 segmenti, 3 grafemi, 9 moduli) e **469 parole
+  illustrate** con sillabazione verificata, categoria, difficoltà e prerequisiti.
+- **109 frasi** con la sillaba bersaglio ripetuta e occorrenze calcolate sulla
+  sillabazione vera, non con una ricerca di lettere.
+- **Oltre 1.900 esercizi** generati: ascolto, discriminazione, immagine,
+  posizione, segmentazione, completamento, treno, memory, frasi da riordinare,
+  occorrenze da evidenziare, invenzione guidata. Minimo **12 esercizi validi per
+  ogni unità**, con 3+ forme di interazione.
+- **7 giochi** e **4 modalità di frase** (ascolta, completa, costruisci, inventa).
+- **Pannello insegnante** con PIN, selezione unità, ordine famiglie, alternative,
+  tipologie attive, parole/immagini/audio personali, sillabazioni corrette,
+  frasi, risultati, CSV/PDF e azzeramento per unità.
+- **Progressi per profilo e per competenza**, ripasso consigliato, soglia di
+  acquisizione configurabile (predefinita 80%).
+- **Offline** come il resto dell'app; audio preregistrato con voce italiana e
+  fallback alla sintesi di sistema.
+
+Dettagli, limiti dichiarati e guida all'estensione: [`docs/VIAGGIO.md`](docs/VIAGGIO.md).
+
+---
+
 ## Percorsi didattici
 
 ### La prima parola — dal suono alla sillaba alla parola
@@ -234,8 +264,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.2.0.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.2.0.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.3.0.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.3.0.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -253,7 +283,7 @@ Due strade, entrambe incluse.
 npm run build:chromeos
 ```
 
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.2.0.zip`.
+Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.3.0.zip`.
 
 Installazione in modalità sviluppatore:
 
@@ -277,7 +307,7 @@ privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
 ### Web / PWA
 
 ```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.2.0.zip
+npm run build:web      # crea dist/web + dist/sillabe-web-v2.3.0.zip
 npm run serve          # prova locale con service worker attivo
 ```
 
@@ -296,14 +326,17 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run illustrations` | Rigenera le 67 illustrazioni (SVG + PNG) dal generatore vettoriale |
 | `npm run test:illustrations` | Valida le illustrazioni: dimensione, soggetti attesi, nessun duplicato |
 | `npm run audio` | Rigenera tutti i clip vocali (sillabe, frasi, parole, interfaccia) con la voce neurale |
-| `npm run audio -- --only=syl` | Rigenera solo un gruppo (`syl`, `frasi`, `parole`, `ui`) |
+| `npm run audio -- --only=syl` | Rigenera solo un gruppo (`syl`, `frasi`, `frasiViaggio`, `parole`, `ui`) |
+| `npm run illustrations:parole` | Genera le schede SVG delle parole del viaggio (emoji + cornice) |
+| `npm run test:viaggio` | Valida contenuti e generatore del viaggio: sillabazioni, immagini, frasi, ≥12 esercizi per unità, trappole, audio |
+| `npm run test:viaggio:ui` | Audit Electron del viaggio: mappa, unità, esercizi, memoria, treno, frasi, pannello docente |
 | `npm run test:audio` | Verifica i clip: copertura di sillabe/frasi/parole, durate, file orfani |
 | `npm run test:pronuncia` | Controlla che le sillabe critiche non siano compitate lettera per lettera |
-| `npm run test:release -- v2.2.0` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i 424 clip |
-| `npm run test:smoke` | Smoke test headless Electron: 48 controlli su schermate, laboratorio parole e suoni |
+| `npm run test:release -- v2.3.0` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i clip audio dichiarati dal manifest |
+| `npm run test:smoke` | Smoke test headless Electron: schermate, laboratorio parole, suoni, impostazioni e accesso al viaggio |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |
-| `npm test` | Esegue validazione + illustrazioni + audio + pronuncia + smoke + livelli + layout (usato dalla CI) |
+| `npm test` | Esegue validazione + viaggio + illustrazioni + audio + pronuncia + smoke + livelli + layout (usato dalla CI) |
 | `npm run icons` | Rigenera tutte le icone PNG da `build/icon.svg` |
 | `npm run icons:native` | Genera `icon.icns` (macOS) e `icon.ico` (Windows) |
 | `npm run screenshots` | Cattura le 12 schermate in `build/screenshots/` |

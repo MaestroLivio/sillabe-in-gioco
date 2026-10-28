@@ -304,6 +304,9 @@ app.whenReady().then(async () => {
     out.audioFrasi = audioIndex && audioIndex.frasi ? audioIndex.frasi.size : 0;
     out.audioParole = audioIndex && audioIndex.parole ? audioIndex.parole.size : 0;
     out.audioUi = audioIndex && audioIndex.ui ? audioIndex.ui.size : 0;
+    out.audioFrasiViaggio = audioIndex && audioIndex.frasiViaggio ? audioIndex.frasiViaggio.size : 0;
+    out.viaggioHomeCard = !!document.querySelector('#viaggioHomeCard #vHomeEntra');
+    out.viaggioScreen = !!document.querySelector('#screen-viaggio');
     // ogni sillaba del livello 1 e la frase 1 devono avere un clip
     out.audioSylL1 = LEVELS[0].syllables.every(s => audioFileFor(s, 'syl'));
     out.audioFraseL1 = audioFileFor('1', 'frasi');
@@ -410,7 +413,7 @@ app.whenReady().then(async () => {
   expect("esercizio singolo scelto dal docente", results.singleItems === 1 && results.singleAnswer === "cia", `${results.singleItems}/${results.singleAnswer}`);
 
   console.log("\n— IMPOSTAZIONI —");
-  expect("12 campi (11 + aggiornamenti)", results.settingsFields === 12, results.settingsFields);
+  expect("campi impostazioni (incluso volume)", results.settingsFields >= 12, results.settingsFields);
   expect("interruttore tutto maiuscolo", results.settingsCaps);
   expect("interruttore lettura parole", results.settingsReadWords);
   expect("interruttore aggiornamenti presente su desktop", results.settingsUpdateCheck);
@@ -423,14 +426,19 @@ app.whenReady().then(async () => {
   expect("progressi salvati", results.savedProgress >= 1, results.savedProgress);
 
   console.log("\n— AUDIO PREREGISTRATO —");
-  expect("manifest audio con 4 gruppi", results.audioGroups.length === 4, results.audioGroups.join(","));
+  expect("manifest audio con i gruppi storici e del viaggio", results.audioGroups.length >= 5, results.audioGroups.join(","));
   expect("clip delle sillabe presenti", results.audioSyl >= 160, results.audioSyl);
   expect("clip delle 40 frasi", results.audioFrasi === 40, results.audioFrasi);
+  expect("clip delle frasi del viaggio", results.audioFrasiViaggio >= 105, results.audioFrasiViaggio);
   expect("clip delle parole degli esercizi", results.audioParole >= 130, results.audioParole);
   expect("clip delle battute interfaccia", results.audioUi >= 5, results.audioUi);
   expect("ogni sillaba del livello 1 ha il clip", results.audioSylL1);
   expect("la frase 1 ha il clip", !!results.audioFraseL1, results.audioFraseL1);
   expect("il file audio è leggibile", results.audioFileOk);
+
+  console.log("\n— VIAGGIO DELLE SILLABE —");
+  expect("card del viaggio nella home", results.viaggioHomeCard);
+  expect("schermata del viaggio presente", results.viaggioScreen);
 
   console.log("\n— ACCESSIBILITÀ —");
   expect("le caselle sono <button>", results.slotsFocusable);

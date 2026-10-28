@@ -24,6 +24,16 @@
     "dur": 0.287,
     "spoken": "al"
    },
+   "am": {
+    "file": "audio/syl/am.mp3",
+    "dur": 0.366,
+    "spoken": "am"
+   },
+   "an": {
+    "file": "audio/syl/an.mp3",
+    "dur": 0.366,
+    "spoken": "an"
+   },
    "ap": {
     "file": "audio/syl/ap.mp3",
     "dur": 0.392,
@@ -33,6 +43,11 @@
     "file": "audio/syl/ar.mp3",
     "dur": 0.444,
     "spoken": "ar"
+   },
+   "au": {
+    "file": "audio/syl/au.mp3",
+    "dur": 0.418,
+    "spoken": "au"
    },
    "b": {
     "file": "audio/syl/b.mp3",
@@ -49,10 +64,40 @@
     "dur": 0.601,
     "spoken": "bam"
    },
+   "ban": {
+    "file": "audio/syl/ban.mp3",
+    "dur": 0.496,
+    "spoken": "ban"
+   },
+   "bat": {
+    "file": "audio/syl/bat.mp3",
+    "dur": 0.653,
+    "spoken": "bat"
+   },
    "be": {
     "file": "audio/syl/be.mp3",
     "dur": 0.392,
     "spoken": "be"
+   },
+   "bel": {
+    "file": "audio/syl/bel.mp3",
+    "dur": 0.444,
+    "spoken": "bel"
+   },
+   "ben": {
+    "file": "audio/syl/ben.mp3",
+    "dur": 0.575,
+    "spoken": "ben"
+   },
+   "bep": {
+    "file": "audio/syl/bep.mp3",
+    "dur": 0.522,
+    "spoken": "bep"
+   },
+   "bet": {
+    "file": "audio/syl/bet.mp3",
+    "dur": 0.627,
+    "spoken": "bet"
    },
    "bi": {
     "file": "audio/syl/bi.mp3",
@@ -64,15 +109,55 @@
     "dur": 0.496,
     "spoken": "bia"
    },
+   "bien": {
+    "file": "audio/syl/bien.mp3",
+    "dur": 0.653,
+    "spoken": "bien"
+   },
    "bim": {
     "file": "audio/syl/bim.mp3",
     "dur": 0.444,
     "spoken": "bim"
    },
+   "ble": {
+    "file": "audio/syl/ble.mp3",
+    "dur": 0.366,
+    "spoken": "ble"
+   },
+   "bloc": {
+    "file": "audio/syl/bloc.mp3",
+    "dur": 0.653,
+    "spoken": "bloc"
+   },
+   "blu": {
+    "file": "audio/syl/blu.mp3",
+    "dur": 0.418,
+    "spoken": "blu"
+   },
    "bo": {
     "file": "audio/syl/bo.mp3",
     "dur": 0.392,
     "spoken": "bo"
+   },
+   "bot": {
+    "file": "audio/syl/bot.mp3",
+    "dur": 0.679,
+    "spoken": "bot"
+   },
+   "bra": {
+    "file": "audio/syl/bra.mp3",
+    "dur": 0.444,
+    "spoken": "bra"
+   },
+   "brac": {
+    "file": "audio/syl/brac.mp3",
+    "dur": 0.549,
+    "spoken": "brac"
+   },
+   "bre": {
+    "file": "audio/syl/bre.mp3",
+    "dur": 0.366,
+    "spoken": "bre"
    },
    "brel": {
     "file": "audio/syl/brel.mp3",
@@ -94,10 +179,25 @@
     "dur": 0.34,
     "spoken": "bro"
    },
+   "bru": {
+    "file": "audio/syl/bru.mp3",
+    "dur": 0.366,
+    "spoken": "bru"
+   },
    "bu": {
     "file": "audio/syl/bu.mp3",
     "dur": 0.313,
     "spoken": "bu"
+   },
+   "bù": {
+    "file": "audio/syl/bu1.mp3",
+    "dur": 0.418,
+    "spoken": "bù"
+   },
+   "buo": {
+    "file": "audio/syl/buo.mp3",
+    "dur": 0.418,
+    "spoken": "buo"
    },
    "c": {
     "file": "audio/syl/c.mp3",
@@ -108,6 +208,16 @@
     "file": "audio/syl/ca.mp3",
     "dur": 0.287,
     "spoken": "ca"
+   },
+   "caf": {
+    "file": "audio/syl/caf.mp3",
+    "dur": 0.47,
+    "spoken": "caf"
+   },
+   "cake": {
+    "file": "audio/syl/cake.mp3",
+    "dur": 0.522,
+    "spoken": "cake"
    },
    "cam": {
     "file": "audio/syl/cam.mp3",
@@ -134,6 +244,11 @@
     "dur": 0.575,
     "spoken": "cel"
    },
+   "cen": {
+    "file": "audio/syl/cen.mp3",
+    "dur": 0.47,
+    "spoken": "cen"
+   },
    "che": {
     "file": "audio/syl/che.mp3",
     "dur": 0.287,
@@ -153,6 +268,11 @@
     "file": "audio/syl/chia.mp3",
     "dur": 0.313,
     "spoken": "chia"
+   },
+   "chio": {
+    "file": "audio/syl/chio.mp3",
+    "dur": 0.444,
+    "spoken": "chio"
    },
    "chiu": {
     "file": "audio/syl/chiu.mp3",
@@ -174,10 +294,25 @@
     "dur": 0.444,
     "spoken": "cie"
    },
+   "cin": {
+    "file": "audio/syl/cin.mp3",
+    "dur": 0.575,
+    "spoken": "cin"
+   },
    "cio": {
     "file": "audio/syl/cio.mp3",
     "dur": 0.522,
     "spoken": "cio"
+   },
+   "cioc": {
+    "file": "audio/syl/cioc.mp3",
+    "dur": 0.679,
+    "spoken": "cioc"
+   },
+   "cit": {
+    "file": "audio/syl/cit.mp3",
+    "dur": 0.496,
+    "spoken": "cit"
    },
    "ciu": {
     "file": "audio/syl/ciu.mp3",
@@ -189,10 +324,40 @@
     "dur": 0.679,
     "spoken": "clas"
    },
+   "cle": {
+    "file": "audio/syl/cle.mp3",
+    "dur": 0.392,
+    "spoken": "cle"
+   },
+   "clet": {
+    "file": "audio/syl/clet.mp3",
+    "dur": 0.705,
+    "spoken": "clet"
+   },
+   "cli": {
+    "file": "audio/syl/cli.mp3",
+    "dur": 0.34,
+    "spoken": "cli"
+   },
+   "clown": {
+    "file": "audio/syl/clown.mp3",
+    "dur": 0.653,
+    "spoken": "clown"
+   },
    "co": {
     "file": "audio/syl/co.mp3",
     "dur": 0.287,
     "spoken": "co"
+   },
+   "col": {
+    "file": "audio/syl/col.mp3",
+    "dur": 0.34,
+    "spoken": "col"
+   },
+   "com": {
+    "file": "audio/syl/com.mp3",
+    "dur": 0.549,
+    "spoken": "com"
    },
    "con": {
     "file": "audio/syl/con_.mp3",
@@ -204,10 +369,45 @@
     "dur": 0.418,
     "spoken": "cor"
    },
+   "cra": {
+    "file": "audio/syl/cra.mp3",
+    "dur": 0.366,
+    "spoken": "cra"
+   },
+   "cre": {
+    "file": "audio/syl/cre.mp3",
+    "dur": 0.34,
+    "spoken": "cre"
+   },
+   "cri": {
+    "file": "audio/syl/cri.mp3",
+    "dur": 0.34,
+    "spoken": "cri"
+   },
+   "cro": {
+    "file": "audio/syl/cro.mp3",
+    "dur": 0.34,
+    "spoken": "cro"
+   },
+   "cru": {
+    "file": "audio/syl/cru.mp3",
+    "dur": 0.313,
+    "spoken": "cru"
+   },
    "cu": {
     "file": "audio/syl/cu.mp3",
     "dur": 0.313,
     "spoken": "cu"
+   },
+   "cul": {
+    "file": "audio/syl/cul.mp3",
+    "dur": 0.47,
+    "spoken": "cul"
+   },
+   "cuo": {
+    "file": "audio/syl/cuo.mp3",
+    "dur": 0.313,
+    "spoken": "cuo"
    },
    "d": {
     "file": "audio/syl/d.mp3",
@@ -219,6 +419,11 @@
     "dur": 0.34,
     "spoken": "da"
    },
+   "dal": {
+    "file": "audio/syl/dal.mp3",
+    "dur": 0.496,
+    "spoken": "dal"
+   },
    "de": {
     "file": "audio/syl/de.mp3",
     "dur": 0.418,
@@ -229,10 +434,35 @@
     "dur": 0.366,
     "spoken": "del"
    },
+   "den": {
+    "file": "audio/syl/den.mp3",
+    "dur": 0.418,
+    "spoken": "den"
+   },
+   "der": {
+    "file": "audio/syl/der.mp3",
+    "dur": 0.418,
+    "spoken": "der"
+   },
    "di": {
     "file": "audio/syl/di.mp3",
     "dur": 0.418,
     "spoken": "di"
+   },
+   "dì": {
+    "file": "audio/syl/di1.mp3",
+    "dur": 0.418,
+    "spoken": "dì"
+   },
+   "dia": {
+    "file": "audio/syl/dia.mp3",
+    "dur": 0.496,
+    "spoken": "dia"
+   },
+   "dio": {
+    "file": "audio/syl/dio.mp3",
+    "dur": 0.549,
+    "spoken": "dio"
    },
    "do": {
     "file": "audio/syl/do.mp3",
@@ -243,6 +473,21 @@
     "file": "audio/syl/dor.mp3",
     "dur": 0.418,
     "spoken": "dor"
+   },
+   "dram": {
+    "file": "audio/syl/dram.mp3",
+    "dur": 0.627,
+    "spoken": "dram"
+   },
+   "drit": {
+    "file": "audio/syl/drit.mp3",
+    "dur": 0.601,
+    "spoken": "drit"
+   },
+   "dro": {
+    "file": "audio/syl/dro.mp3",
+    "dur": 0.418,
+    "spoken": "dro"
    },
    "du": {
     "file": "audio/syl/du.mp3",
@@ -259,10 +504,25 @@
     "dur": 1.202,
     "spoken": "è"
    },
+   "el": {
+    "file": "audio/syl/el.mp3",
+    "dur": 0.47,
+    "spoken": "el"
+   },
+   "em": {
+    "file": "audio/syl/em.mp3",
+    "dur": 0.366,
+    "spoken": "em"
+   },
    "en": {
     "file": "audio/syl/en.mp3",
     "dur": 0.34,
     "spoken": "en"
+   },
+   "er": {
+    "file": "audio/syl/er.mp3",
+    "dur": 0.366,
+    "spoken": "er"
    },
    "f": {
     "file": "audio/syl/f.mp3",
@@ -274,10 +534,20 @@
     "dur": 0.366,
     "spoken": "fa"
    },
+   "fà": {
+    "file": "audio/syl/fa1.mp3",
+    "dur": 0.366,
+    "spoken": "fà"
+   },
    "fal": {
     "file": "audio/syl/fal.mp3",
     "dur": 0.549,
     "spoken": "fal"
+   },
+   "fan": {
+    "file": "audio/syl/fan.mp3",
+    "dur": 0.601,
+    "spoken": "fan"
    },
    "far": {
     "file": "audio/syl/far.mp3",
@@ -288,6 +558,11 @@
     "file": "audio/syl/fe.mp3",
     "dur": 0.34,
     "spoken": "fe"
+   },
+   "fè": {
+    "file": "audio/syl/fe1.mp3",
+    "dur": 0.366,
+    "spoken": "fè"
    },
    "fes": {
     "file": "audio/syl/fes.mp3",
@@ -309,6 +584,21 @@
     "dur": 0.522,
     "spoken": "fio"
    },
+   "flau": {
+    "file": "audio/syl/flau.mp3",
+    "dur": 0.496,
+    "spoken": "flau"
+   },
+   "flo": {
+    "file": "audio/syl/flo.mp3",
+    "dur": 0.366,
+    "spoken": "flo"
+   },
+   "flus": {
+    "file": "audio/syl/flus.mp3",
+    "dur": 0.679,
+    "spoken": "flus"
+   },
    "fo": {
     "file": "audio/syl/fo.mp3",
     "dur": 0.392,
@@ -319,15 +609,50 @@
     "dur": 0.549,
     "spoken": "for"
    },
+   "fra": {
+    "file": "audio/syl/fra.mp3",
+    "dur": 0.418,
+    "spoken": "fra"
+   },
+   "fre": {
+    "file": "audio/syl/fre.mp3",
+    "dur": 0.418,
+    "spoken": "fre"
+   },
+   "frec": {
+    "file": "audio/syl/frec.mp3",
+    "dur": 0.731,
+    "spoken": "frec"
+   },
    "fred": {
     "file": "audio/syl/fred.mp3",
     "dur": 0.575,
     "spoken": "fred"
    },
+   "fri": {
+    "file": "audio/syl/fri.mp3",
+    "dur": 0.392,
+    "spoken": "fri"
+   },
+   "fron": {
+    "file": "audio/syl/fron.mp3",
+    "dur": 0.522,
+    "spoken": "fron"
+   },
+   "frut": {
+    "file": "audio/syl/frut.mp3",
+    "dur": 0.575,
+    "spoken": "frut"
+   },
    "fu": {
     "file": "audio/syl/fu.mp3",
     "dur": 0.47,
     "spoken": "fu"
+   },
+   "ful": {
+    "file": "audio/syl/ful.mp3",
+    "dur": 0.549,
+    "spoken": "ful"
    },
    "g": {
     "file": "audio/syl/g.mp3",
@@ -344,6 +669,11 @@
     "dur": 0.679,
     "spoken": "gab"
    },
+   "gas": {
+    "file": "audio/syl/gas.mp3",
+    "dur": 0.705,
+    "spoken": "gas"
+   },
    "gat": {
     "file": "audio/syl/gat.mp3",
     "dur": 0.601,
@@ -353,6 +683,11 @@
     "file": "audio/syl/ge.mp3",
     "dur": 0.392,
     "spoken": "ge"
+   },
+   "gen": {
+    "file": "audio/syl/gen.mp3",
+    "dur": 0.627,
+    "spoken": "gen"
    },
    "ghe": {
     "file": "audio/syl/ghe.mp3",
@@ -364,6 +699,16 @@
     "dur": 0.34,
     "spoken": "ghi"
    },
+   "ghia": {
+    "file": "audio/syl/ghia.mp3",
+    "dur": 0.47,
+    "spoken": "ghia"
+   },
+   "ghiac": {
+    "file": "audio/syl/ghiac.mp3",
+    "dur": 0.679,
+    "spoken": "ghiac"
+   },
    "gi": {
     "file": "audio/syl/gi.mp3",
     "dur": 0.575,
@@ -373,6 +718,11 @@
     "file": "audio/syl/gia.mp3",
     "dur": 0.522,
     "spoken": "gia"
+   },
+   "già": {
+    "file": "audio/syl/gia1.mp3",
+    "dur": 0.444,
+    "spoken": "già"
    },
    "giar": {
     "file": "audio/syl/giar.mp3",
@@ -394,6 +744,11 @@
     "dur": 0.392,
     "spoken": "giu"
    },
+   "gla": {
+    "file": "audio/syl/gla.mp3",
+    "dur": 0.444,
+    "spoken": "gla"
+   },
    "gli": {
     "file": "audio/syl/gli.mp3",
     "dur": 0.366,
@@ -414,25 +769,100 @@
     "dur": 0.47,
     "spoken": "glio"
    },
+   "glo": {
+    "file": "audio/syl/glo.mp3",
+    "dur": 0.392,
+    "spoken": "glo"
+   },
+   "gloo": {
+    "file": "audio/syl/gloo.mp3",
+    "dur": 0.418,
+    "spoken": "gloo"
+   },
+   "glu": {
+    "file": "audio/syl/glu.mp3",
+    "dur": 0.418,
+    "spoken": "glu"
+   },
    "gna": {
     "file": "audio/syl/gna.mp3",
     "dur": 0.444,
     "spoken": "gna"
+   },
+   "gne": {
+    "file": "audio/syl/gne.mp3",
+    "dur": 0.366,
+    "spoken": "gne"
+   },
+   "gni": {
+    "file": "audio/syl/gni.mp3",
+    "dur": 0.418,
+    "spoken": "gni"
    },
    "gno": {
     "file": "audio/syl/gno.mp3",
     "dur": 0.418,
     "spoken": "gno"
    },
+   "gnu": {
+    "file": "audio/syl/gnu.mp3",
+    "dur": 0.392,
+    "spoken": "gnu"
+   },
    "go": {
     "file": "audio/syl/go.mp3",
     "dur": 0.34,
     "spoken": "go"
    },
+   "gom": {
+    "file": "audio/syl/gom.mp3",
+    "dur": 0.627,
+    "spoken": "gom"
+   },
+   "gra": {
+    "file": "audio/syl/gra.mp3",
+    "dur": 0.444,
+    "spoken": "gra"
+   },
+   "gras": {
+    "file": "audio/syl/gras.mp3",
+    "dur": 0.444,
+    "spoken": "gras"
+   },
+   "gre": {
+    "file": "audio/syl/gre.mp3",
+    "dur": 0.366,
+    "spoken": "gre"
+   },
+   "gri": {
+    "file": "audio/syl/gri.mp3",
+    "dur": 0.392,
+    "spoken": "gri"
+   },
+   "grot": {
+    "file": "audio/syl/grot.mp3",
+    "dur": 0.705,
+    "spoken": "grot"
+   },
+   "gru": {
+    "file": "audio/syl/gru.mp3",
+    "dur": 0.418,
+    "spoken": "gru"
+   },
    "gu": {
     "file": "audio/syl/gu.mp3",
     "dur": 0.313,
     "spoken": "gu"
+   },
+   "gua": {
+    "file": "audio/syl/gua.mp3",
+    "dur": 0.418,
+    "spoken": "gua"
+   },
+   "guar": {
+    "file": "audio/syl/guar.mp3",
+    "dur": 0.549,
+    "spoken": "guar"
    },
    "gue": {
     "file": "audio/syl/gue.mp3",
@@ -443,6 +873,11 @@
     "file": "audio/syl/gui.mp3",
     "dur": 0.392,
     "spoken": "gui"
+   },
+   "ha": {
+    "file": "audio/syl/ha.mp3",
+    "dur": 0.261,
+    "spoken": "ha"
    },
    "hai": {
     "file": "audio/syl/hai.mp3",
@@ -459,15 +894,50 @@
     "dur": 0.366,
     "spoken": "ia"
    },
+   "iat": {
+    "file": "audio/syl/iat.mp3",
+    "dur": 0.679,
+    "spoken": "iat"
+   },
+   "ie": {
+    "file": "audio/syl/ie.mp3",
+    "dur": 0.392,
+    "spoken": "ie"
+   },
+   "iel": {
+    "file": "audio/syl/iel.mp3",
+    "dur": 0.418,
+    "spoken": "iel"
+   },
    "il": {
     "file": "audio/syl/il.mp3",
     "dur": 0.444,
     "spoken": "il"
    },
+   "im": {
+    "file": "audio/syl/im.mp3",
+    "dur": 0.47,
+    "spoken": "im"
+   },
    "in": {
     "file": "audio/syl/in.mp3",
     "dur": 0.34,
     "spoken": "in"
+   },
+   "io": {
+    "file": "audio/syl/io.mp3",
+    "dur": 0.418,
+    "spoken": "io"
+   },
+   "ir": {
+    "file": "audio/syl/ir.mp3",
+    "dur": 0.287,
+    "spoken": "ir"
+   },
+   "iuo": {
+    "file": "audio/syl/iuo.mp3",
+    "dur": 0.47,
+    "spoken": "iuo"
    },
    "l": {
     "file": "audio/syl/l.mp3",
@@ -489,6 +959,11 @@
     "dur": 0.34,
     "spoken": "la"
    },
+   "lan": {
+    "file": "audio/syl/lan.mp3",
+    "dur": 0.444,
+    "spoken": "lan"
+   },
    "lat": {
     "file": "audio/syl/lat.mp3",
     "dur": 0.549,
@@ -504,6 +979,11 @@
     "dur": 0.366,
     "spoken": "leg"
    },
+   "len": {
+    "file": "audio/syl/len.mp3",
+    "dur": 0.47,
+    "spoken": "len"
+   },
    "let": {
     "file": "audio/syl/let.mp3",
     "dur": 0.627,
@@ -513,6 +993,26 @@
     "file": "audio/syl/li.mp3",
     "dur": 0.261,
     "spoken": "li"
+   },
+   "lia": {
+    "file": "audio/syl/lia.mp3",
+    "dur": 0.522,
+    "spoken": "lia"
+   },
+   "lie": {
+    "file": "audio/syl/lie.mp3",
+    "dur": 0.47,
+    "spoken": "lie"
+   },
+   "lio": {
+    "file": "audio/syl/lio.mp3",
+    "dur": 0.496,
+    "spoken": "lio"
+   },
+   "lip": {
+    "file": "audio/syl/lip.mp3",
+    "dur": 0.575,
+    "spoken": "lip"
    },
    "lo": {
     "file": "audio/syl/lo.mp3",
@@ -559,6 +1059,11 @@
     "dur": 0.34,
     "spoken": "me"
    },
+   "mel": {
+    "file": "audio/syl/mel.mp3",
+    "dur": 0.47,
+    "spoken": "mel"
+   },
    "men": {
     "file": "audio/syl/men.mp3",
     "dur": 0.549,
@@ -574,15 +1079,45 @@
     "dur": 0.366,
     "spoken": "mi"
    },
+   "mì": {
+    "file": "audio/syl/mi1.mp3",
+    "dur": 0.366,
+    "spoken": "mì"
+   },
+   "mio": {
+    "file": "audio/syl/mio.mp3",
+    "dur": 0.444,
+    "spoken": "mio"
+   },
+   "mir": {
+    "file": "audio/syl/mir.mp3",
+    "dur": 0.392,
+    "spoken": "mir"
+   },
    "mo": {
     "file": "audio/syl/mo.mp3",
     "dur": 0.392,
     "spoken": "mo"
    },
+   "mon": {
+    "file": "audio/syl/mon.mp3",
+    "dur": 0.47,
+    "spoken": "mon"
+   },
+   "mor": {
+    "file": "audio/syl/mor.mp3",
+    "dur": 0.418,
+    "spoken": "mor"
+   },
    "mu": {
     "file": "audio/syl/mu.mp3",
     "dur": 0.366,
     "spoken": "mu"
+   },
+   "muc": {
+    "file": "audio/syl/muc.mp3",
+    "dur": 0.549,
+    "spoken": "muc"
    },
    "n": {
     "file": "audio/syl/n.mp3",
@@ -604,15 +1139,30 @@
     "dur": 0.366,
     "spoken": "nel"
    },
+   "net": {
+    "file": "audio/syl/net.mp3",
+    "dur": 0.679,
+    "spoken": "net"
+   },
    "ni": {
     "file": "audio/syl/ni.mp3",
     "dur": 0.366,
     "spoken": "ni"
    },
+   "nio": {
+    "file": "audio/syl/nio.mp3",
+    "dur": 0.575,
+    "spoken": "nio"
+   },
    "no": {
     "file": "audio/syl/no.mp3",
     "dur": 0.418,
     "spoken": "no"
+   },
+   "noc": {
+    "file": "audio/syl/noc.mp3",
+    "dur": 0.679,
+    "spoken": "noc"
    },
    "non": {
     "file": "audio/syl/non.mp3",
@@ -634,10 +1184,25 @@
     "dur": 0.496,
     "spoken": "o (fonema di «rosa» tenuto 0.45s)"
    },
+   "ol": {
+    "file": "audio/syl/ol.mp3",
+    "dur": 0.34,
+    "spoken": "ol"
+   },
    "om": {
     "file": "audio/syl/om.mp3",
     "dur": 0.34,
     "spoken": "om"
+   },
+   "on": {
+    "file": "audio/syl/on.mp3",
+    "dur": 0.313,
+    "spoken": "on"
+   },
+   "or": {
+    "file": "audio/syl/or.mp3",
+    "dur": 0.34,
+    "spoken": "or"
    },
    "p": {
     "file": "audio/syl/p.mp3",
@@ -664,10 +1229,30 @@
     "dur": 0.496,
     "spoken": "par"
    },
+   "paz": {
+    "file": "audio/syl/paz.mp3",
+    "dur": 0.418,
+    "spoken": "paz"
+   },
    "pe": {
     "file": "audio/syl/pe.mp3",
     "dur": 0.261,
     "spoken": "pe"
+   },
+   "pel": {
+    "file": "audio/syl/pel.mp3",
+    "dur": 0.366,
+    "spoken": "pel"
+   },
+   "pen": {
+    "file": "audio/syl/pen.mp3",
+    "dur": 0.392,
+    "spoken": "pen"
+   },
+   "pep": {
+    "file": "audio/syl/pep.mp3",
+    "dur": 0.418,
+    "spoken": "pep"
    },
    "per": {
     "file": "audio/syl/per.mp3",
@@ -679,10 +1264,20 @@
     "dur": 0.313,
     "spoken": "pi"
    },
+   "pia": {
+    "file": "audio/syl/pia.mp3",
+    "dur": 0.34,
+    "spoken": "pia"
+   },
    "piat": {
     "file": "audio/syl/piat.mp3",
     "dur": 0.601,
     "spoken": "piat"
+   },
+   "pie": {
+    "file": "audio/syl/pie.mp3",
+    "dur": 0.418,
+    "spoken": "pie"
    },
    "pio": {
     "file": "audio/syl/pio.mp3",
@@ -694,6 +1289,26 @@
     "dur": 0.549,
     "spoken": "piog"
    },
+   "pis": {
+    "file": "audio/syl/pis.mp3",
+    "dur": 0.47,
+    "spoken": "pis"
+   },
+   "più": {
+    "file": "audio/syl/piu1.mp3",
+    "dur": 0.366,
+    "spoken": "più"
+   },
+   "pla": {
+    "file": "audio/syl/pla.mp3",
+    "dur": 0.366,
+    "spoken": "pla"
+   },
+   "plum": {
+    "file": "audio/syl/plum.mp3",
+    "dur": 0.601,
+    "spoken": "plum"
+   },
    "po": {
     "file": "audio/syl/po.mp3",
     "dur": 0.313,
@@ -703,6 +1318,11 @@
     "file": "audio/syl/poi.mp3",
     "dur": 0.444,
     "spoken": "poi"
+   },
+   "pon": {
+    "file": "audio/syl/pon.mp3",
+    "dur": 0.418,
+    "spoken": "pon"
    },
    "por": {
     "file": "audio/syl/por.mp3",
@@ -724,6 +1344,11 @@
     "dur": 0.313,
     "spoken": "pre"
    },
+   "pren": {
+    "file": "audio/syl/pren.mp3",
+    "dur": 0.418,
+    "spoken": "pren"
+   },
    "pri": {
     "file": "audio/syl/pri.mp3",
     "dur": 0.313,
@@ -739,10 +1364,20 @@
     "dur": 0.392,
     "spoken": "pron"
    },
+   "pru": {
+    "file": "audio/syl/pru.mp3",
+    "dur": 0.313,
+    "spoken": "pru"
+   },
    "pu": {
     "file": "audio/syl/pu.mp3",
     "dur": 0.261,
     "spoken": "pu"
+   },
+   "può": {
+    "file": "audio/syl/puo1.mp3",
+    "dur": 0.287,
+    "spoken": "può"
    },
    "qua": {
     "file": "audio/syl/qua.mp3",
@@ -753,6 +1388,21 @@
     "file": "audio/syl/quan.mp3",
     "dur": 0.496,
     "spoken": "quan"
+   },
+   "que": {
+    "file": "audio/syl/que.mp3",
+    "dur": 0.287,
+    "spoken": "que"
+   },
+   "qui": {
+    "file": "audio/syl/qui.mp3",
+    "dur": 0.366,
+    "spoken": "qui"
+   },
+   "quo": {
+    "file": "audio/syl/quo.mp3",
+    "dur": 0.34,
+    "spoken": "quo"
    },
    "r": {
     "file": "audio/syl/r.mp3",
@@ -769,6 +1419,16 @@
     "dur": 0.601,
     "spoken": "rac"
    },
+   "raf": {
+    "file": "audio/syl/raf.mp3",
+    "dur": 0.522,
+    "spoken": "raf"
+   },
+   "ran": {
+    "file": "audio/syl/ran.mp3",
+    "dur": 0.47,
+    "spoken": "ran"
+   },
    "re": {
     "file": "audio/syl/re.mp3",
     "dur": 0.313,
@@ -778,6 +1438,16 @@
     "file": "audio/syl/rec.mp3",
     "dur": 0.627,
     "spoken": "rec"
+   },
+   "rel": {
+    "file": "audio/syl/rel.mp3",
+    "dur": 0.444,
+    "spoken": "rel"
+   },
+   "ren": {
+    "file": "audio/syl/ren.mp3",
+    "dur": 0.549,
+    "spoken": "ren"
    },
    "res": {
     "file": "audio/syl/res.mp3",
@@ -789,10 +1459,50 @@
     "dur": 0.313,
     "spoken": "ri"
    },
+   "ria": {
+    "file": "audio/syl/ria.mp3",
+    "dur": 0.496,
+    "spoken": "ria"
+   },
+   "riem": {
+    "file": "audio/syl/riem.mp3",
+    "dur": 0.601,
+    "spoken": "riem"
+   },
+   "rif": {
+    "file": "audio/syl/rif.mp3",
+    "dur": 0.444,
+    "spoken": "rif"
+   },
+   "ril": {
+    "file": "audio/syl/ril.mp3",
+    "dur": 0.418,
+    "spoken": "ril"
+   },
+   "rin": {
+    "file": "audio/syl/rin.mp3",
+    "dur": 0.575,
+    "spoken": "rin"
+   },
+   "rio": {
+    "file": "audio/syl/rio.mp3",
+    "dur": 0.47,
+    "spoken": "rio"
+   },
    "ro": {
     "file": "audio/syl/ro.mp3",
     "dur": 0.34,
     "spoken": "ro"
+   },
+   "rò": {
+    "file": "audio/syl/ro1.mp3",
+    "dur": 0.34,
+    "spoken": "rò"
+   },
+   "rop": {
+    "file": "audio/syl/rop.mp3",
+    "dur": 0.601,
+    "spoken": "rop"
    },
    "ros": {
     "file": "audio/syl/ros.mp3",
@@ -834,15 +1544,60 @@
     "dur": 0.418,
     "spoken": "sce"
    },
+   "schio": {
+    "file": "audio/syl/schio.mp3",
+    "dur": 0.601,
+    "spoken": "schio"
+   },
    "sci": {
     "file": "audio/syl/sci.mp3",
     "dur": 0.34,
     "spoken": "sci"
    },
+   "scia": {
+    "file": "audio/syl/scia.mp3",
+    "dur": 0.549,
+    "spoken": "scia"
+   },
+   "scie": {
+    "file": "audio/syl/scie.mp3",
+    "dur": 0.549,
+    "spoken": "scie"
+   },
+   "scien": {
+    "file": "audio/syl/scien.mp3",
+    "dur": 0.522,
+    "spoken": "scien"
+   },
+   "scio": {
+    "file": "audio/syl/scio.mp3",
+    "dur": 0.575,
+    "spoken": "scio"
+   },
+   "sciu": {
+    "file": "audio/syl/sciu.mp3",
+    "dur": 0.522,
+    "spoken": "sciu"
+   },
+   "sco": {
+    "file": "audio/syl/sco.mp3",
+    "dur": 0.444,
+    "spoken": "sco"
+   },
+   "scot": {
+    "file": "audio/syl/scot.mp3",
+    "dur": 0.549,
+    "spoken": "scot"
+   },
    "scri": {
     "file": "audio/syl/scri.mp3",
     "dur": 0.47,
     "spoken": "scri"
+   },
+   "scu": {
+    "file": "audio/syl/scu.mp3",
+    "dur": 0.496,
+    "spoken": "scu"
    },
    "scuo": {
     "file": "audio/syl/scuo.mp3",
@@ -854,6 +1609,16 @@
     "dur": 0.366,
     "spoken": "se"
    },
+   "sen": {
+    "file": "audio/syl/sen.mp3",
+    "dur": 0.549,
+    "spoken": "sen"
+   },
+   "ser": {
+    "file": "audio/syl/ser.mp3",
+    "dur": 0.366,
+    "spoken": "ser"
+   },
    "sfo": {
     "file": "audio/syl/sfo.mp3",
     "dur": 0.496,
@@ -863,6 +1628,21 @@
     "file": "audio/syl/si.mp3",
     "dur": 0.47,
     "spoken": "si"
+   },
+   "sia": {
+    "file": "audio/syl/sia.mp3",
+    "dur": 0.496,
+    "spoken": "sia"
+   },
+   "sio": {
+    "file": "audio/syl/sio.mp3",
+    "dur": 0.575,
+    "spoken": "sio"
+   },
+   "smo": {
+    "file": "audio/syl/smo.mp3",
+    "dur": 0.444,
+    "spoken": "smo"
    },
    "so": {
     "file": "audio/syl/so.mp3",
@@ -879,25 +1659,90 @@
     "dur": 0.496,
     "spoken": "sor"
    },
+   "spa": {
+    "file": "audio/syl/spa.mp3",
+    "dur": 0.444,
+    "spoken": "spa"
+   },
+   "spe": {
+    "file": "audio/syl/spe.mp3",
+    "dur": 0.47,
+    "spoken": "spe"
+   },
+   "spi": {
+    "file": "audio/syl/spi.mp3",
+    "dur": 0.496,
+    "spoken": "spi"
+   },
+   "spil": {
+    "file": "audio/syl/spil.mp3",
+    "dur": 0.627,
+    "spoken": "spil"
+   },
    "splen": {
     "file": "audio/syl/splen.mp3",
     "dur": 0.575,
     "spoken": "splen"
+   },
+   "spo": {
+    "file": "audio/syl/spo.mp3",
+    "dur": 0.444,
+    "spoken": "spo"
+   },
+   "sport": {
+    "file": "audio/syl/sport.mp3",
+    "dur": 0.758,
+    "spoken": "sport"
+   },
+   "spu": {
+    "file": "audio/syl/spu.mp3",
+    "dur": 0.392,
+    "spoken": "spu"
    },
    "sta": {
     "file": "audio/syl/sta.mp3",
     "dur": 0.444,
     "spoken": "sta"
    },
+   "stam": {
+    "file": "audio/syl/stam.mp3",
+    "dur": 0.575,
+    "spoken": "stam"
+   },
    "stel": {
     "file": "audio/syl/stel.mp3",
     "dur": 0.496,
     "spoken": "stel"
    },
+   "sti": {
+    "file": "audio/syl/sti.mp3",
+    "dur": 0.392,
+    "spoken": "sti"
+   },
+   "sto": {
+    "file": "audio/syl/sto.mp3",
+    "dur": 0.392,
+    "spoken": "sto"
+   },
+   "stof": {
+    "file": "audio/syl/stof.mp3",
+    "dur": 0.575,
+    "spoken": "stof"
+   },
    "stra": {
     "file": "audio/syl/stra.mp3",
     "dur": 0.496,
     "spoken": "stra"
+   },
+   "stro": {
+    "file": "audio/syl/stro.mp3",
+    "dur": 0.47,
+    "spoken": "stro"
+   },
+   "stu": {
+    "file": "audio/syl/stu.mp3",
+    "dur": 0.392,
+    "spoken": "stu"
    },
    "su": {
     "file": "audio/syl/su.mp3",
@@ -924,6 +1769,11 @@
     "dur": 0.313,
     "spoken": "ta"
    },
+   "tà": {
+    "file": "audio/syl/ta1.mp3",
+    "dur": 0.313,
+    "spoken": "tà"
+   },
    "tar": {
     "file": "audio/syl/tar.mp3",
     "dur": 0.418,
@@ -934,10 +1784,20 @@
     "dur": 0.287,
     "spoken": "te"
    },
+   "tel": {
+    "file": "audio/syl/tel.mp3",
+    "dur": 0.47,
+    "spoken": "tel"
+   },
    "ti": {
     "file": "audio/syl/ti.mp3",
     "dur": 0.287,
     "spoken": "ti"
+   },
+   "til": {
+    "file": "audio/syl/til.mp3",
+    "dur": 0.496,
+    "spoken": "til"
    },
    "to": {
     "file": "audio/syl/to.mp3",
@@ -959,10 +1819,35 @@
     "dur": 0.366,
     "spoken": "tre"
    },
+   "trec": {
+    "file": "audio/syl/trec.mp3",
+    "dur": 0.522,
+    "spoken": "trec"
+   },
    "trel": {
     "file": "audio/syl/trel.mp3",
     "dur": 0.418,
     "spoken": "trel"
+   },
+   "tri": {
+    "file": "audio/syl/tri.mp3",
+    "dur": 0.313,
+    "spoken": "tri"
+   },
+   "tria": {
+    "file": "audio/syl/tria.mp3",
+    "dur": 0.444,
+    "spoken": "tria"
+   },
+   "tro": {
+    "file": "audio/syl/tro.mp3",
+    "dur": 0.34,
+    "spoken": "tro"
+   },
+   "truc": {
+    "file": "audio/syl/truc.mp3",
+    "dur": 0.522,
+    "spoken": "truc"
    },
    "tu": {
     "file": "audio/syl/tu.mp3",
@@ -979,10 +1864,30 @@
     "dur": 0.418,
     "spoken": "uc"
    },
+   "ul": {
+    "file": "audio/syl/ul.mp3",
+    "dur": 0.418,
+    "spoken": "ul"
+   },
+   "um": {
+    "file": "audio/syl/um.mp3",
+    "dur": 0.261,
+    "spoken": "um"
+   },
    "un": {
     "file": "audio/syl/un.mp3",
     "dur": 0.34,
     "spoken": "un"
+   },
+   "uo": {
+    "file": "audio/syl/uo.mp3",
+    "dur": 0.34,
+    "spoken": "uo"
+   },
+   "ur": {
+    "file": "audio/syl/ur.mp3",
+    "dur": 0.418,
+    "spoken": "ur"
    },
    "v": {
     "file": "audio/syl/v.mp3",
@@ -994,6 +1899,16 @@
     "dur": 0.392,
     "spoken": "va"
    },
+   "van": {
+    "file": "audio/syl/van.mp3",
+    "dur": 0.496,
+    "spoken": "van"
+   },
+   "vat": {
+    "file": "audio/syl/vat.mp3",
+    "dur": 0.679,
+    "spoken": "vat"
+   },
    "ve": {
     "file": "audio/syl/ve.mp3",
     "dur": 0.366,
@@ -1004,10 +1919,20 @@
     "dur": 0.522,
     "spoken": "ven"
    },
+   "ver": {
+    "file": "audio/syl/ver.mp3",
+    "dur": 0.418,
+    "spoken": "ver"
+   },
    "vi": {
     "file": "audio/syl/vi.mp3",
     "dur": 0.313,
     "spoken": "vi"
+   },
+   "viag": {
+    "file": "audio/syl/viag.mp3",
+    "dur": 0.627,
+    "spoken": "viag"
    },
    "vo": {
     "file": "audio/syl/vo.mp3",
@@ -1029,6 +1954,11 @@
     "dur": 0.418,
     "spoken": "za"
    },
+   "zai": {
+    "file": "audio/syl/zai.mp3",
+    "dur": 0.549,
+    "spoken": "zai"
+   },
    "ze": {
     "file": "audio/syl/ze.mp3",
     "dur": 0.418,
@@ -1038,6 +1968,11 @@
     "file": "audio/syl/zi.mp3",
     "dur": 0.366,
     "spoken": "zi"
+   },
+   "zia": {
+    "file": "audio/syl/zia.mp3",
+    "dur": 0.522,
+    "spoken": "zia"
    },
    "zio": {
     "file": "audio/syl/zio.mp3",
@@ -1053,6 +1988,11 @@
     "file": "audio/syl/zu.mp3",
     "dur": 0.366,
     "spoken": "zu"
+   },
+   "zuc": {
+    "file": "audio/syl/zuc.mp3",
+    "dur": 0.522,
+    "spoken": "zuc"
    },
    "zup": {
     "file": "audio/syl/zup.mp3",
@@ -1273,20 +2213,70 @@
     "dur": 0.731,
     "spoken": "abbaia"
    },
+   "abbraccio": {
+    "file": "audio/parole/abbraccio.mp3",
+    "dur": 0.81,
+    "spoken": "abbraccio"
+   },
+   "accende": {
+    "file": "audio/parole/accende.mp3",
+    "dur": 0.81,
+    "spoken": "accende"
+   },
+   "acciuga": {
+    "file": "audio/parole/acciuga.mp3",
+    "dur": 0.731,
+    "spoken": "acciuga"
+   },
    "acqua": {
     "file": "audio/parole/acqua.mp3",
     "dur": 0.522,
     "spoken": "acqua"
+   },
+   "acquario": {
+    "file": "audio/parole/acquario.mp3",
+    "dur": 0.758,
+    "spoken": "acquario"
+   },
+   "acquerello": {
+    "file": "audio/parole/acquerello.mp3",
+    "dur": 0.81,
+    "spoken": "acquerello"
+   },
+   "aereo": {
+    "file": "audio/parole/aereo.mp3",
+    "dur": 0.522,
+    "spoken": "aereo"
    },
    "aglio": {
     "file": "audio/parole/aglio.mp3",
     "dur": 0.522,
     "spoken": "aglio"
    },
+   "ago": {
+    "file": "audio/parole/ago.mp3",
+    "dur": 0.418,
+    "spoken": "ago"
+   },
+   "aiuola": {
+    "file": "audio/parole/aiuola.mp3",
+    "dur": 0.758,
+    "spoken": "aiuola"
+   },
    "al": {
     "file": "audio/parole/al.mp3",
     "dur": 0.287,
     "spoken": "al"
+   },
+   "ala": {
+    "file": "audio/parole/ala.mp3",
+    "dur": 0.392,
+    "spoken": "ala"
+   },
+   "albero": {
+    "file": "audio/parole/albero.mp3",
+    "dur": 0.496,
+    "spoken": "albero"
    },
    "alghe": {
     "file": "audio/parole/alghe.mp3",
@@ -1298,10 +2288,60 @@
     "dur": 0.496,
     "spoken": "alla"
    },
+   "alto": {
+    "file": "audio/parole/alto.mp3",
+    "dur": 0.575,
+    "spoken": "alto"
+   },
    "alunni": {
     "file": "audio/parole/alunni.mp3",
     "dur": 0.575,
     "spoken": "alunni"
+   },
+   "alza": {
+    "file": "audio/parole/alza.mp3",
+    "dur": 0.496,
+    "spoken": "alza"
+   },
+   "ama": {
+    "file": "audio/parole/ama.mp3",
+    "dur": 0.418,
+    "spoken": "ama"
+   },
+   "ambiente": {
+    "file": "audio/parole/ambiente.mp3",
+    "dur": 0.81,
+    "spoken": "ambiente"
+   },
+   "ambra": {
+    "file": "audio/parole/ambra.mp3",
+    "dur": 0.575,
+    "spoken": "ambra"
+   },
+   "ambulatorio": {
+    "file": "audio/parole/ambulatorio.mp3",
+    "dur": 0.967,
+    "spoken": "ambulatorio"
+   },
+   "amico": {
+    "file": "audio/parole/amico.mp3",
+    "dur": 0.627,
+    "spoken": "amico"
+   },
+   "ancora": {
+    "file": "audio/parole/ancora.mp3",
+    "dur": 0.705,
+    "spoken": "ancora"
+   },
+   "angelo": {
+    "file": "audio/parole/angelo.mp3",
+    "dur": 0.653,
+    "spoken": "angelo"
+   },
+   "anna": {
+    "file": "audio/parole/anna.mp3",
+    "dur": 0.522,
+    "spoken": "anna"
    },
    "ape": {
     "file": "audio/parole/ape.mp3",
@@ -1323,10 +2363,45 @@
     "dur": 0.522,
     "spoken": "aprono"
    },
+   "arancia": {
+    "file": "audio/parole/arancia.mp3",
+    "dur": 0.731,
+    "spoken": "arancia"
+   },
+   "arco": {
+    "file": "audio/parole/arco.mp3",
+    "dur": 0.47,
+    "spoken": "arco"
+   },
+   "argento": {
+    "file": "audio/parole/argento.mp3",
+    "dur": 0.862,
+    "spoken": "argento"
+   },
+   "aria": {
+    "file": "audio/parole/aria.mp3",
+    "dur": 0.47,
+    "spoken": "aria"
+   },
    "arriva": {
     "file": "audio/parole/arriva.mp3",
     "dur": 0.653,
     "spoken": "arriva"
+   },
+   "asciugamano": {
+    "file": "audio/parole/asciugamano.mp3",
+    "dur": 0.94,
+    "spoken": "asciugamano"
+   },
+   "automobile": {
+    "file": "audio/parole/automobile.mp3",
+    "dur": 0.914,
+    "spoken": "automobile"
+   },
+   "bacio": {
+    "file": "audio/parole/bacio.mp3",
+    "dur": 0.705,
+    "spoken": "bacio"
    },
    "bagna": {
     "file": "audio/parole/bagna.mp3",
@@ -1337,6 +2412,11 @@
     "file": "audio/parole/bagno.mp3",
     "dur": 0.549,
     "spoken": "bagno"
+   },
+   "balena": {
+    "file": "audio/parole/balena.mp3",
+    "dur": 0.679,
+    "spoken": "balena"
    },
    "bambina": {
     "file": "audio/parole/bambina.mp3",
@@ -1353,6 +2433,41 @@
     "dur": 0.731,
     "spoken": "bambino"
    },
+   "banana": {
+    "file": "audio/parole/banana.mp3",
+    "dur": 0.653,
+    "spoken": "banana"
+   },
+   "banco": {
+    "file": "audio/parole/banco.mp3",
+    "dur": 0.679,
+    "spoken": "banco"
+   },
+   "bel": {
+    "file": "audio/parole/bel.mp3",
+    "dur": 0.444,
+    "spoken": "bel"
+   },
+   "bene": {
+    "file": "audio/parole/bene.mp3",
+    "dur": 0.575,
+    "spoken": "bene"
+   },
+   "beppe": {
+    "file": "audio/parole/beppe.mp3",
+    "dur": 0.679,
+    "spoken": "beppe"
+   },
+   "bere": {
+    "file": "audio/parole/bere.mp3",
+    "dur": 0.418,
+    "spoken": "bere"
+   },
+   "bevanda": {
+    "file": "audio/parole/bevanda.mp3",
+    "dur": 0.758,
+    "spoken": "bevanda"
+   },
    "beve": {
     "file": "audio/parole/beve.mp3",
     "dur": 0.522,
@@ -1363,15 +2478,140 @@
     "dur": 0.496,
     "spoken": "bevi"
    },
+   "bibi": {
+    "file": "audio/parole/bibi.mp3",
+    "dur": 0.496,
+    "spoken": "bibi"
+   },
+   "bici": {
+    "file": "audio/parole/bici.mp3",
+    "dur": 0.575,
+    "spoken": "bici"
+   },
+   "bicicletta": {
+    "file": "audio/parole/bicicletta.mp3",
+    "dur": 0.888,
+    "spoken": "bicicletta"
+   },
+   "bidone": {
+    "file": "audio/parole/bidone.mp3",
+    "dur": 0.653,
+    "spoken": "bidone"
+   },
+   "bilancia": {
+    "file": "audio/parole/bilancia.mp3",
+    "dur": 0.836,
+    "spoken": "bilancia"
+   },
    "bimbo": {
     "file": "audio/parole/bimbo.mp3",
     "dur": 0.496,
     "spoken": "bimbo"
    },
+   "biscotto": {
+    "file": "audio/parole/biscotto.mp3",
+    "dur": 0.836,
+    "spoken": "biscotto"
+   },
+   "blocco": {
+    "file": "audio/parole/blocco.mp3",
+    "dur": 0.679,
+    "spoken": "blocco"
+   },
+   "blusa": {
+    "file": "audio/parole/blusa.mp3",
+    "dur": 0.653,
+    "spoken": "blusa"
+   },
+   "boa": {
+    "file": "audio/parole/boa.mp3",
+    "dur": 0.392,
+    "spoken": "boa"
+   },
+   "bobo": {
+    "file": "audio/parole/bobo.mp3",
+    "dur": 0.496,
+    "spoken": "bobo"
+   },
+   "bosco": {
+    "file": "audio/parole/bosco.mp3",
+    "dur": 0.679,
+    "spoken": "bosco"
+   },
+   "bottone": {
+    "file": "audio/parole/bottone.mp3",
+    "dur": 0.758,
+    "spoken": "bottone"
+   },
+   "bove": {
+    "file": "audio/parole/bove.mp3",
+    "dur": 0.575,
+    "spoken": "bove"
+   },
+   "bravo": {
+    "file": "audio/parole/bravo.mp3",
+    "dur": 0.653,
+    "spoken": "bravo"
+   },
+   "breve": {
+    "file": "audio/parole/breve.mp3",
+    "dur": 0.601,
+    "spoken": "breve"
+   },
    "brillano": {
     "file": "audio/parole/brillano.mp3",
     "dur": 0.679,
     "spoken": "brillano"
+   },
+   "brivido": {
+    "file": "audio/parole/brivido.mp3",
+    "dur": 0.731,
+    "spoken": "brivido"
+   },
+   "brodo": {
+    "file": "audio/parole/brodo.mp3",
+    "dur": 0.496,
+    "spoken": "brodo"
+   },
+   "bruma": {
+    "file": "audio/parole/bruma.mp3",
+    "dur": 0.522,
+    "spoken": "bruma"
+   },
+   "buba": {
+    "file": "audio/parole/buba.mp3",
+    "dur": 0.601,
+    "spoken": "buba"
+   },
+   "budino": {
+    "file": "audio/parole/budino.mp3",
+    "dur": 0.679,
+    "spoken": "budino"
+   },
+   "bue": {
+    "file": "audio/parole/bue.mp3",
+    "dur": 0.496,
+    "spoken": "bue"
+   },
+   "bufalo": {
+    "file": "audio/parole/bufalo.mp3",
+    "dur": 0.627,
+    "spoken": "bufalo"
+   },
+   "buono": {
+    "file": "audio/parole/buono.mp3",
+    "dur": 0.575,
+    "spoken": "buono"
+   },
+   "caffè": {
+    "file": "audio/parole/caffe1.mp3",
+    "dur": 0.47,
+    "spoken": "caffè"
+   },
+   "camera": {
+    "file": "audio/parole/camera.mp3",
+    "dur": 0.653,
+    "spoken": "camera"
    },
    "camicia": {
     "file": "audio/parole/camicia.mp3",
@@ -1383,6 +2623,11 @@
     "dur": 0.679,
     "spoken": "campana"
    },
+   "campo": {
+    "file": "audio/parole/campo.mp3",
+    "dur": 0.549,
+    "spoken": "campo"
+   },
    "cane": {
     "file": "audio/parole/cane.mp3",
     "dur": 0.47,
@@ -1393,20 +2638,80 @@
     "dur": 0.758,
     "spoken": "cantano"
    },
+   "cappello": {
+    "file": "audio/parole/cappello.mp3",
+    "dur": 0.705,
+    "spoken": "cappello"
+   },
    "cappotto": {
     "file": "audio/parole/cappotto.mp3",
     "dur": 0.784,
     "spoken": "cappotto"
+   },
+   "capra": {
+    "file": "audio/parole/capra.mp3",
+    "dur": 0.47,
+    "spoken": "capra"
    },
    "casa": {
     "file": "audio/parole/casa.mp3",
     "dur": 0.496,
     "spoken": "casa"
    },
+   "cavolo": {
+    "file": "audio/parole/cavolo.mp3",
+    "dur": 0.575,
+    "spoken": "cavolo"
+   },
+   "cece": {
+    "file": "audio/parole/cece.mp3",
+    "dur": 0.522,
+    "spoken": "cece"
+   },
+   "cedro": {
+    "file": "audio/parole/cedro.mp3",
+    "dur": 0.47,
+    "spoken": "cedro"
+   },
+   "cena": {
+    "file": "audio/parole/cena.mp3",
+    "dur": 0.549,
+    "spoken": "cena"
+   },
    "cesto": {
     "file": "audio/parole/cesto.mp3",
     "dur": 0.575,
     "spoken": "cesto"
+   },
+   "che": {
+    "file": "audio/parole/che.mp3",
+    "dur": 0.261,
+    "spoken": "che"
+   },
+   "chela": {
+    "file": "audio/parole/chela.mp3",
+    "dur": 0.47,
+    "spoken": "chela"
+   },
+   "cherubino": {
+    "file": "audio/parole/cherubino.mp3",
+    "dur": 0.758,
+    "spoken": "cherubino"
+   },
+   "chi": {
+    "file": "audio/parole/chi.mp3",
+    "dur": 0.261,
+    "spoken": "chi"
+   },
+   "chiave": {
+    "file": "audio/parole/chiave.mp3",
+    "dur": 0.549,
+    "spoken": "chiave"
+   },
+   "chilo": {
+    "file": "audio/parole/chilo.mp3",
+    "dur": 0.522,
+    "spoken": "chilo"
    },
    "chitarra": {
     "file": "audio/parole/chitarra.mp3",
@@ -1418,6 +2723,36 @@
     "dur": 0.601,
     "spoken": "chiusa"
    },
+   "ciabatta": {
+    "file": "audio/parole/ciabatta.mp3",
+    "dur": 0.784,
+    "spoken": "ciabatta"
+   },
+   "cici": {
+    "file": "audio/parole/cici.mp3",
+    "dur": 0.549,
+    "spoken": "cici"
+   },
+   "ciliegia": {
+    "file": "audio/parole/ciliegia.mp3",
+    "dur": 0.81,
+    "spoken": "ciliegia"
+   },
+   "cima": {
+    "file": "audio/parole/cima.mp3",
+    "dur": 0.522,
+    "spoken": "cima"
+   },
+   "cinema": {
+    "file": "audio/parole/cinema.mp3",
+    "dur": 0.601,
+    "spoken": "cinema"
+   },
+   "cioccolata": {
+    "file": "audio/parole/cioccolata.mp3",
+    "dur": 0.862,
+    "spoken": "cioccolata"
+   },
    "ciotola": {
     "file": "audio/parole/ciotola.mp3",
     "dur": 0.601,
@@ -1427,6 +2762,11 @@
     "file": "audio/parole/citta1.mp3",
     "dur": 0.496,
     "spoken": "città"
+   },
+   "ciuco": {
+    "file": "audio/parole/ciuco.mp3",
+    "dur": 0.522,
+    "spoken": "ciuco"
    },
    "ciuffo": {
     "file": "audio/parole/ciuffo.mp3",
@@ -1438,15 +2778,75 @@
     "dur": 0.679,
     "spoken": "classe"
    },
+   "clima": {
+    "file": "audio/parole/clima.mp3",
+    "dur": 0.575,
+    "spoken": "clima"
+   },
+   "clown": {
+    "file": "audio/parole/clown.mp3",
+    "dur": 0.653,
+    "spoken": "clown"
+   },
+   "coco": {
+    "file": "audio/parole/coco.mp3",
+    "dur": 0.496,
+    "spoken": "coco"
+   },
+   "cocomero": {
+    "file": "audio/parole/cocomero.mp3",
+    "dur": 0.601,
+    "spoken": "cocomero"
+   },
+   "collina": {
+    "file": "audio/parole/collina.mp3",
+    "dur": 0.653,
+    "spoken": "collina"
+   },
+   "compagne": {
+    "file": "audio/parole/compagne.mp3",
+    "dur": 0.81,
+    "spoken": "compagne"
+   },
+   "compagni": {
+    "file": "audio/parole/compagni.mp3",
+    "dur": 0.836,
+    "spoken": "compagni"
+   },
    "con": {
     "file": "audio/parole/con_.mp3",
     "dur": 0.549,
     "spoken": "con"
    },
+   "coniglio": {
+    "file": "audio/parole/coniglio.mp3",
+    "dur": 0.679,
+    "spoken": "coniglio"
+   },
+   "cono": {
+    "file": "audio/parole/cono.mp3",
+    "dur": 0.444,
+    "spoken": "cono"
+   },
    "contadino": {
     "file": "audio/parole/contadino.mp3",
     "dur": 0.81,
     "spoken": "contadino"
+   },
+   "copre": {
+    "file": "audio/parole/copre.mp3",
+    "dur": 0.496,
+    "spoken": "copre"
+   },
+   "corona": {
+    "file": "audio/parole/corona.mp3",
+    "dur": 0.653,
+    "spoken": "corona"
+   },
+   "corone": {
+    "file": "audio/parole/corone.mp3",
+    "dur": 0.653,
+    "spoken": "corone"
    },
    "corre": {
     "file": "audio/parole/corre.mp3",
@@ -1458,30 +2858,150 @@
     "dur": 0.731,
     "spoken": "cortile"
    },
+   "cravatta": {
+    "file": "audio/parole/cravatta.mp3",
+    "dur": 0.758,
+    "spoken": "cravatta"
+   },
+   "crema": {
+    "file": "audio/parole/crema.mp3",
+    "dur": 0.575,
+    "spoken": "crema"
+   },
+   "crisi": {
+    "file": "audio/parole/crisi.mp3",
+    "dur": 0.575,
+    "spoken": "crisi"
+   },
+   "croce": {
+    "file": "audio/parole/croce.mp3",
+    "dur": 0.627,
+    "spoken": "croce"
+   },
+   "crudo": {
+    "file": "audio/parole/crudo.mp3",
+    "dur": 0.522,
+    "spoken": "crudo"
+   },
+   "cuba": {
+    "file": "audio/parole/cuba.mp3",
+    "dur": 0.522,
+    "spoken": "cuba"
+   },
+   "cubo": {
+    "file": "audio/parole/cubo.mp3",
+    "dur": 0.444,
+    "spoken": "cubo"
+   },
    "cucina": {
     "file": "audio/parole/cucina.mp3",
     "dur": 0.679,
     "spoken": "cucina"
+   },
+   "culla": {
+    "file": "audio/parole/culla.mp3",
+    "dur": 0.496,
+    "spoken": "culla"
+   },
+   "cuore": {
+    "file": "audio/parole/cuore.mp3",
+    "dur": 0.47,
+    "spoken": "cuore"
+   },
+   "dada": {
+    "file": "audio/parole/dada.mp3",
+    "dur": 0.575,
+    "spoken": "dada"
    },
    "dado": {
     "file": "audio/parole/dado.mp3",
     "dur": 0.575,
     "spoken": "dado"
    },
+   "dal": {
+    "file": "audio/parole/dal.mp3",
+    "dur": 0.47,
+    "spoken": "dal"
+   },
+   "dama": {
+    "file": "audio/parole/dama.mp3",
+    "dur": 0.575,
+    "spoken": "dama"
+   },
+   "dea": {
+    "file": "audio/parole/dea.mp3",
+    "dur": 0.366,
+    "spoken": "dea"
+   },
    "del": {
     "file": "audio/parole/del.mp3",
     "dur": 0.366,
     "spoken": "del"
+   },
+   "denaro": {
+    "file": "audio/parole/denaro.mp3",
+    "dur": 0.705,
+    "spoken": "denaro"
+   },
+   "dente": {
+    "file": "audio/parole/dente.mp3",
+    "dur": 0.627,
+    "spoken": "dente"
+   },
+   "deserto": {
+    "file": "audio/parole/deserto.mp3",
+    "dur": 0.836,
+    "spoken": "deserto"
    },
    "di": {
     "file": "audio/parole/di.mp3",
     "dur": 0.418,
     "spoken": "di"
    },
+   "didi": {
+    "file": "audio/parole/didi.mp3",
+    "dur": 0.575,
+    "spoken": "didi"
+   },
+   "diga": {
+    "file": "audio/parole/diga.mp3",
+    "dur": 0.601,
+    "spoken": "diga"
+   },
    "disegna": {
     "file": "audio/parole/disegna.mp3",
     "dur": 0.705,
     "spoken": "disegna"
+   },
+   "dito": {
+    "file": "audio/parole/dito.mp3",
+    "dur": 0.549,
+    "spoken": "dito"
+   },
+   "divano": {
+    "file": "audio/parole/divano.mp3",
+    "dur": 0.653,
+    "spoken": "divano"
+   },
+   "dodo": {
+    "file": "audio/parole/dodo.mp3",
+    "dur": 0.653,
+    "spoken": "dodo"
+   },
+   "domenica": {
+    "file": "audio/parole/domenica.mp3",
+    "dur": 0.81,
+    "spoken": "domenica"
+   },
+   "domino": {
+    "file": "audio/parole/domino.mp3",
+    "dur": 0.679,
+    "spoken": "domino"
+   },
+   "dono": {
+    "file": "audio/parole/dono.mp3",
+    "dur": 0.549,
+    "spoken": "dono"
    },
    "dopo": {
     "file": "audio/parole/dopo.mp3",
@@ -1493,6 +3013,31 @@
     "dur": 0.653,
     "spoken": "dorme"
    },
+   "dramma": {
+    "file": "audio/parole/dramma.mp3",
+    "dur": 0.627,
+    "spoken": "dramma"
+   },
+   "dritto": {
+    "file": "audio/parole/dritto.mp3",
+    "dur": 0.679,
+    "spoken": "dritto"
+   },
+   "dromedario": {
+    "file": "audio/parole/dromedario.mp3",
+    "dur": 0.967,
+    "spoken": "dromedario"
+   },
+   "duca": {
+    "file": "audio/parole/duca.mp3",
+    "dur": 0.549,
+    "spoken": "duca"
+   },
+   "due": {
+    "file": "audio/parole/due.mp3",
+    "dur": 0.444,
+    "spoken": "due"
+   },
    "e": {
     "file": "audio/parole/e.mp3",
     "dur": 0.287,
@@ -1503,15 +3048,100 @@
     "dur": 1.149,
     "spoken": "è"
    },
+   "edera": {
+    "file": "audio/parole/edera.mp3",
+    "dur": 0.601,
+    "spoken": "edera"
+   },
+   "elefante": {
+    "file": "audio/parole/elefante.mp3",
+    "dur": 0.862,
+    "spoken": "elefante"
+   },
+   "elena": {
+    "file": "audio/parole/elena.mp3",
+    "dur": 0.496,
+    "spoken": "elena"
+   },
+   "elica": {
+    "file": "audio/parole/elica.mp3",
+    "dur": 0.575,
+    "spoken": "elica"
+   },
+   "elmetto": {
+    "file": "audio/parole/elmetto.mp3",
+    "dur": 0.784,
+    "spoken": "elmetto"
+   },
+   "elmo": {
+    "file": "audio/parole/elmo.mp3",
+    "dur": 0.496,
+    "spoken": "elmo"
+   },
+   "emblema": {
+    "file": "audio/parole/emblema.mp3",
+    "dur": 0.679,
+    "spoken": "emblema"
+   },
+   "emporio": {
+    "file": "audio/parole/emporio.mp3",
+    "dur": 0.731,
+    "spoken": "emporio"
+   },
    "entrano": {
     "file": "audio/parole/entrano.mp3",
     "dur": 0.731,
     "spoken": "entrano"
    },
+   "entrata": {
+    "file": "audio/parole/entrata.mp3",
+    "dur": 0.758,
+    "spoken": "entrata"
+   },
+   "entusiasmo": {
+    "file": "audio/parole/entusiasmo.mp3",
+    "dur": 0.967,
+    "spoken": "entusiasmo"
+   },
+   "erba": {
+    "file": "audio/parole/erba.mp3",
+    "dur": 0.496,
+    "spoken": "erba"
+   },
+   "erbetta": {
+    "file": "audio/parole/erbetta.mp3",
+    "dur": 0.731,
+    "spoken": "erbetta"
+   },
+   "eroe": {
+    "file": "audio/parole/eroe.mp3",
+    "dur": 0.47,
+    "spoken": "eroe"
+   },
    "esce": {
     "file": "audio/parole/esce.mp3",
     "dur": 0.549,
     "spoken": "esce"
+   },
+   "fa": {
+    "file": "audio/parole/fa.mp3",
+    "dur": 0.366,
+    "spoken": "fa"
+   },
+   "fagiolo": {
+    "file": "audio/parole/fagiolo.mp3",
+    "dur": 0.731,
+    "spoken": "fagiolo"
+   },
+   "falena": {
+    "file": "audio/parole/falena.mp3",
+    "dur": 0.679,
+    "spoken": "falena"
+   },
+   "famiglia": {
+    "file": "audio/parole/famiglia.mp3",
+    "dur": 0.705,
+    "spoken": "famiglia"
    },
    "farfalla": {
     "file": "audio/parole/farfalla.mp3",
@@ -1523,10 +3153,60 @@
     "dur": 0.522,
     "spoken": "faro"
    },
+   "fata": {
+    "file": "audio/parole/fata.mp3",
+    "dur": 0.575,
+    "spoken": "fata"
+   },
+   "felice": {
+    "file": "audio/parole/felice.mp3",
+    "dur": 0.758,
+    "spoken": "felice"
+   },
+   "femore": {
+    "file": "audio/parole/femore.mp3",
+    "dur": 0.705,
+    "spoken": "femore"
+   },
+   "fenice": {
+    "file": "audio/parole/fenice.mp3",
+    "dur": 0.731,
+    "spoken": "fenice"
+   },
    "festa": {
     "file": "audio/parole/festa.mp3",
     "dur": 0.653,
     "spoken": "festa"
+   },
+   "fico": {
+    "file": "audio/parole/fico.mp3",
+    "dur": 0.601,
+    "spoken": "fico"
+   },
+   "figlie": {
+    "file": "audio/parole/figlie.mp3",
+    "dur": 0.601,
+    "spoken": "figlie"
+   },
+   "figlio": {
+    "file": "audio/parole/figlio.mp3",
+    "dur": 0.627,
+    "spoken": "figlio"
+   },
+   "fila": {
+    "file": "audio/parole/fila.mp3",
+    "dur": 0.549,
+    "spoken": "fila"
+   },
+   "filippo": {
+    "file": "audio/parole/filippo.mp3",
+    "dur": 0.758,
+    "spoken": "filippo"
+   },
+   "filo": {
+    "file": "audio/parole/filo.mp3",
+    "dur": 0.522,
+    "spoken": "filo"
    },
    "fiore": {
     "file": "audio/parole/fiore.mp3",
@@ -1538,6 +3218,41 @@
     "dur": 0.549,
     "spoken": "fiori"
    },
+   "fischio": {
+    "file": "audio/parole/fischio.mp3",
+    "dur": 0.731,
+    "spoken": "fischio"
+   },
+   "flauto": {
+    "file": "audio/parole/flauto.mp3",
+    "dur": 0.784,
+    "spoken": "flauto"
+   },
+   "flora": {
+    "file": "audio/parole/flora.mp3",
+    "dur": 0.601,
+    "spoken": "flora"
+   },
+   "flusso": {
+    "file": "audio/parole/flusso.mp3",
+    "dur": 0.731,
+    "spoken": "flusso"
+   },
+   "foca": {
+    "file": "audio/parole/foca.mp3",
+    "dur": 0.549,
+    "spoken": "foca"
+   },
+   "focolare": {
+    "file": "audio/parole/focolare.mp3",
+    "dur": 0.784,
+    "spoken": "focolare"
+   },
+   "foglia": {
+    "file": "audio/parole/foglia.mp3",
+    "dur": 0.705,
+    "spoken": "foglia"
+   },
    "formiche": {
     "file": "audio/parole/formiche.mp3",
     "dur": 0.81,
@@ -1548,35 +3263,200 @@
     "dur": 0.653,
     "spoken": "forte"
    },
+   "frate": {
+    "file": "audio/parole/frate.mp3",
+    "dur": 0.653,
+    "spoken": "frate"
+   },
+   "freccia": {
+    "file": "audio/parole/freccia.mp3",
+    "dur": 0.653,
+    "spoken": "freccia"
+   },
    "fredda": {
     "file": "audio/parole/fredda.mp3",
     "dur": 0.627,
     "spoken": "fredda"
+   },
+   "freno": {
+    "file": "audio/parole/freno.mp3",
+    "dur": 0.575,
+    "spoken": "freno"
+   },
+   "frigo": {
+    "file": "audio/parole/frigo.mp3",
+    "dur": 0.653,
+    "spoken": "frigo"
+   },
+   "frigorifero": {
+    "file": "audio/parole/frigorifero.mp3",
+    "dur": 0.94,
+    "spoken": "frigorifero"
+   },
+   "fronte": {
+    "file": "audio/parole/fronte.mp3",
+    "dur": 0.679,
+    "spoken": "fronte"
+   },
+   "frutta": {
+    "file": "audio/parole/frutta.mp3",
+    "dur": 0.627,
+    "spoken": "frutta"
+   },
+   "fuga": {
+    "file": "audio/parole/fuga.mp3",
+    "dur": 0.522,
+    "spoken": "fuga"
+   },
+   "fulmine": {
+    "file": "audio/parole/fulmine.mp3",
+    "dur": 0.731,
+    "spoken": "fulmine"
+   },
+   "fumetto": {
+    "file": "audio/parole/fumetto.mp3",
+    "dur": 0.784,
+    "spoken": "fumetto"
+   },
+   "fumo": {
+    "file": "audio/parole/fumo.mp3",
+    "dur": 0.522,
+    "spoken": "fumo"
+   },
+   "fusto": {
+    "file": "audio/parole/fusto.mp3",
+    "dur": 0.575,
+    "spoken": "fusto"
    },
    "gabbiano": {
     "file": "audio/parole/gabbiano.mp3",
     "dur": 0.784,
     "spoken": "gabbiano"
    },
+   "gaia": {
+    "file": "audio/parole/gaia.mp3",
+    "dur": 0.627,
+    "spoken": "gaia"
+   },
+   "gala": {
+    "file": "audio/parole/gala.mp3",
+    "dur": 0.549,
+    "spoken": "gala"
+   },
+   "gara": {
+    "file": "audio/parole/gara.mp3",
+    "dur": 0.575,
+    "spoken": "gara"
+   },
+   "gas": {
+    "file": "audio/parole/gas.mp3",
+    "dur": 0.679,
+    "spoken": "gas"
+   },
    "gatto": {
     "file": "audio/parole/gatto.mp3",
     "dur": 0.705,
     "spoken": "gatto"
+   },
+   "gege": {
+    "file": "audio/parole/gege.mp3",
+    "dur": 0.522,
+    "spoken": "gege"
    },
    "gelato": {
     "file": "audio/parole/gelato.mp3",
     "dur": 0.705,
     "spoken": "gelato"
    },
+   "gemello": {
+    "file": "audio/parole/gemello.mp3",
+    "dur": 0.731,
+    "spoken": "gemello"
+   },
+   "geranio": {
+    "file": "audio/parole/geranio.mp3",
+    "dur": 0.758,
+    "spoken": "geranio"
+   },
+   "ghela": {
+    "file": "audio/parole/ghela.mp3",
+    "dur": 0.549,
+    "spoken": "ghela"
+   },
+   "ghepardo": {
+    "file": "audio/parole/ghepardo.mp3",
+    "dur": 0.784,
+    "spoken": "ghepardo"
+   },
+   "gheriglio": {
+    "file": "audio/parole/gheriglio.mp3",
+    "dur": 0.758,
+    "spoken": "gheriglio"
+   },
    "ghiaccio": {
     "file": "audio/parole/ghiaccio.mp3",
     "dur": 0.731,
     "spoken": "ghiaccio"
    },
+   "ghiaia": {
+    "file": "audio/parole/ghiaia.mp3",
+    "dur": 0.679,
+    "spoken": "ghiaia"
+   },
+   "ghigo": {
+    "file": "audio/parole/ghigo.mp3",
+    "dur": 0.549,
+    "spoken": "ghigo"
+   },
+   "ghiro": {
+    "file": "audio/parole/ghiro.mp3",
+    "dur": 0.496,
+    "spoken": "ghiro"
+   },
+   "ghisa": {
+    "file": "audio/parole/ghisa.mp3",
+    "dur": 0.575,
+    "spoken": "ghisa"
+   },
+   "già": {
+    "file": "audio/parole/gia1.mp3",
+    "dur": 0.418,
+    "spoken": "già"
+   },
+   "giacinto": {
+    "file": "audio/parole/giacinto.mp3",
+    "dur": 0.862,
+    "spoken": "giacinto"
+   },
+   "giada": {
+    "file": "audio/parole/giada.mp3",
+    "dur": 0.627,
+    "spoken": "giada"
+   },
+   "giaguaro": {
+    "file": "audio/parole/giaguaro.mp3",
+    "dur": 0.758,
+    "spoken": "giaguaro"
+   },
    "giardino": {
     "file": "audio/parole/giardino.mp3",
     "dur": 0.784,
     "spoken": "giardino"
+   },
+   "gigi": {
+    "file": "audio/parole/gigi.mp3",
+    "dur": 0.601,
+    "spoken": "gigi"
+   },
+   "ginocchio": {
+    "file": "audio/parole/ginocchio.mp3",
+    "dur": 0.836,
+    "spoken": "ginocchio"
+   },
+   "gio": {
+    "file": "audio/parole/gio.mp3",
+    "dur": 0.366,
+    "spoken": "gio"
    },
    "gioca": {
     "file": "audio/parole/gioca.mp3",
@@ -1588,25 +3468,165 @@
     "dur": 0.679,
     "spoken": "giocano"
    },
+   "gioco": {
+    "file": "audio/parole/gioco.mp3",
+    "dur": 0.522,
+    "spoken": "gioco"
+   },
+   "gioiello": {
+    "file": "audio/parole/gioiello.mp3",
+    "dur": 0.81,
+    "spoken": "gioiello"
+   },
    "giornale": {
     "file": "audio/parole/giornale.mp3",
     "dur": 0.784,
     "spoken": "giornale"
+   },
+   "giostra": {
+    "file": "audio/parole/giostra.mp3",
+    "dur": 0.705,
+    "spoken": "giostra"
    },
    "giraffa": {
     "file": "audio/parole/giraffa.mp3",
     "dur": 0.784,
     "spoken": "giraffa"
    },
+   "girasole": {
+    "file": "audio/parole/girasole.mp3",
+    "dur": 0.94,
+    "spoken": "girasole"
+   },
+   "gita": {
+    "file": "audio/parole/gita.mp3",
+    "dur": 0.627,
+    "spoken": "gita"
+   },
+   "giudice": {
+    "file": "audio/parole/giudice.mp3",
+    "dur": 0.705,
+    "spoken": "giudice"
+   },
+   "giugno": {
+    "file": "audio/parole/giugno.mp3",
+    "dur": 0.653,
+    "spoken": "giugno"
+   },
+   "giulia": {
+    "file": "audio/parole/giulia.mp3",
+    "dur": 0.679,
+    "spoken": "giulia"
+   },
+   "gladiolo": {
+    "file": "audio/parole/gladiolo.mp3",
+    "dur": 0.731,
+    "spoken": "gladiolo"
+   },
    "gli": {
     "file": "audio/parole/gli.mp3",
     "dur": 0.366,
     "spoken": "gli"
    },
+   "globo": {
+    "file": "audio/parole/globo.mp3",
+    "dur": 0.601,
+    "spoken": "globo"
+   },
+   "glucosio": {
+    "file": "audio/parole/glucosio.mp3",
+    "dur": 0.81,
+    "spoken": "glucosio"
+   },
+   "gnomo": {
+    "file": "audio/parole/gnomo.mp3",
+    "dur": 0.601,
+    "spoken": "gnomo"
+   },
+   "gnu": {
+    "file": "audio/parole/gnu.mp3",
+    "dur": 0.392,
+    "spoken": "gnu"
+   },
+   "gogo": {
+    "file": "audio/parole/gogo.mp3",
+    "dur": 0.47,
+    "spoken": "gogo"
+   },
+   "gola": {
+    "file": "audio/parole/gola.mp3",
+    "dur": 0.575,
+    "spoken": "gola"
+   },
+   "gomito": {
+    "file": "audio/parole/gomito.mp3",
+    "dur": 0.758,
+    "spoken": "gomito"
+   },
+   "gomma": {
+    "file": "audio/parole/gomma.mp3",
+    "dur": 0.601,
+    "spoken": "gomma"
+   },
+   "gorilla": {
+    "file": "audio/parole/gorilla.mp3",
+    "dur": 0.679,
+    "spoken": "gorilla"
+   },
+   "grano": {
+    "file": "audio/parole/grano.mp3",
+    "dur": 0.601,
+    "spoken": "grano"
+   },
+   "grasso": {
+    "file": "audio/parole/grasso.mp3",
+    "dur": 0.758,
+    "spoken": "grasso"
+   },
+   "grigio": {
+    "file": "audio/parole/grigio.mp3",
+    "dur": 0.627,
+    "spoken": "grigio"
+   },
+   "grotta": {
+    "file": "audio/parole/grotta.mp3",
+    "dur": 0.679,
+    "spoken": "grotta"
+   },
+   "gru": {
+    "file": "audio/parole/gru.mp3",
+    "dur": 0.418,
+    "spoken": "gru"
+   },
+   "guarda": {
+    "file": "audio/parole/guarda.mp3",
+    "dur": 0.575,
+    "spoken": "guarda"
+   },
+   "gufo": {
+    "file": "audio/parole/gufo.mp3",
+    "dur": 0.47,
+    "spoken": "gufo"
+   },
+   "gugo": {
+    "file": "audio/parole/gugo.mp3",
+    "dur": 0.601,
+    "spoken": "gugo"
+   },
    "guida": {
     "file": "audio/parole/guida.mp3",
     "dur": 0.601,
     "spoken": "guida"
+   },
+   "guscio": {
+    "file": "audio/parole/guscio.mp3",
+    "dur": 0.522,
+    "spoken": "guscio"
+   },
+   "ha": {
+    "file": "audio/parole/ha.mp3",
+    "dur": 0.261,
+    "spoken": "ha"
    },
    "hai": {
     "file": "audio/parole/hai.mp3",
@@ -1618,20 +3638,65 @@
     "dur": 0.235,
     "spoken": "i"
    },
+   "ibisco": {
+    "file": "audio/parole/ibisco.mp3",
+    "dur": 0.731,
+    "spoken": "ibisco"
+   },
+   "idea": {
+    "file": "audio/parole/idea.mp3",
+    "dur": 0.549,
+    "spoken": "idea"
+   },
+   "igloo": {
+    "file": "audio/parole/igloo.mp3",
+    "dur": 0.522,
+    "spoken": "igloo"
+   },
    "il": {
     "file": "audio/parole/il.mp3",
     "dur": 0.444,
     "spoken": "il"
+   },
+   "imbuto": {
+    "file": "audio/parole/imbuto.mp3",
+    "dur": 0.679,
+    "spoken": "imbuto"
+   },
+   "impronta": {
+    "file": "audio/parole/impronta.mp3",
+    "dur": 0.784,
+    "spoken": "impronta"
    },
    "in": {
     "file": "audio/parole/in.mp3",
     "dur": 0.34,
     "spoken": "in"
    },
+   "inchiostro": {
+    "file": "audio/parole/inchiostro.mp3",
+    "dur": 0.888,
+    "spoken": "inchiostro"
+   },
+   "indice": {
+    "file": "audio/parole/indice.mp3",
+    "dur": 0.679,
+    "spoken": "indice"
+   },
+   "ingegnere": {
+    "file": "audio/parole/ingegnere.mp3",
+    "dur": 0.888,
+    "spoken": "ingegnere"
+   },
    "insegue": {
     "file": "audio/parole/insegue.mp3",
     "dur": 0.679,
     "spoken": "insegue"
+   },
+   "isola": {
+    "file": "audio/parole/isola.mp3",
+    "dur": 0.575,
+    "spoken": "isola"
    },
    "l'ombrello": {
     "file": "audio/parole/l-ombrello.mp3",
@@ -1652,6 +3717,21 @@
     "file": "audio/parole/lago.mp3",
     "dur": 0.575,
     "spoken": "lago"
+   },
+   "lana": {
+    "file": "audio/parole/lana.mp3",
+    "dur": 0.522,
+    "spoken": "lana"
+   },
+   "lapis": {
+    "file": "audio/parole/lapis.mp3",
+    "dur": 0.81,
+    "spoken": "lapis"
+   },
+   "lara": {
+    "file": "audio/parole/lara.mp3",
+    "dur": 0.496,
+    "spoken": "lara"
    },
    "latte": {
     "file": "audio/parole/latte.mp3",
@@ -1678,25 +3758,120 @@
     "dur": 0.549,
     "spoken": "legge"
    },
+   "legno": {
+    "file": "audio/parole/legno.mp3",
+    "dur": 0.496,
+    "spoken": "legno"
+   },
+   "lena": {
+    "file": "audio/parole/lena.mp3",
+    "dur": 0.392,
+    "spoken": "lena"
+   },
+   "leone": {
+    "file": "audio/parole/leone.mp3",
+    "dur": 0.601,
+    "spoken": "leone"
+   },
+   "lepre": {
+    "file": "audio/parole/lepre.mp3",
+    "dur": 0.522,
+    "spoken": "lepre"
+   },
    "letto": {
     "file": "audio/parole/letto.mp3",
     "dur": 0.575,
     "spoken": "letto"
+   },
+   "leva": {
+    "file": "audio/parole/leva.mp3",
+    "dur": 0.496,
+    "spoken": "leva"
+   },
+   "lezioni": {
+    "file": "audio/parole/lezioni.mp3",
+    "dur": 0.784,
+    "spoken": "lezioni"
    },
    "libro": {
     "file": "audio/parole/libro.mp3",
     "dur": 0.522,
     "spoken": "libro"
    },
+   "lido": {
+    "file": "audio/parole/lido.mp3",
+    "dur": 0.47,
+    "spoken": "lido"
+   },
+   "lima": {
+    "file": "audio/parole/lima.mp3",
+    "dur": 0.549,
+    "spoken": "lima"
+   },
+   "limone": {
+    "file": "audio/parole/limone.mp3",
+    "dur": 0.679,
+    "spoken": "limone"
+   },
+   "lina": {
+    "file": "audio/parole/lina.mp3",
+    "dur": 0.522,
+    "spoken": "lina"
+   },
    "lo": {
     "file": "audio/parole/lo.mp3",
     "dur": 0.261,
     "spoken": "lo"
    },
+   "locomotiva": {
+    "file": "audio/parole/locomotiva.mp3",
+    "dur": 0.967,
+    "spoken": "locomotiva"
+   },
+   "lolo": {
+    "file": "audio/parole/lolo.mp3",
+    "dur": 0.522,
+    "spoken": "lolo"
+   },
+   "loto": {
+    "file": "audio/parole/loto.mp3",
+    "dur": 0.549,
+    "spoken": "loto"
+   },
+   "luca": {
+    "file": "audio/parole/luca.mp3",
+    "dur": 0.575,
+    "spoken": "luca"
+   },
+   "luce": {
+    "file": "audio/parole/luce.mp3",
+    "dur": 0.549,
+    "spoken": "luce"
+   },
+   "lumaca": {
+    "file": "audio/parole/lumaca.mp3",
+    "dur": 0.705,
+    "spoken": "lumaca"
+   },
+   "lume": {
+    "file": "audio/parole/lume.mp3",
+    "dur": 0.549,
+    "spoken": "lume"
+   },
    "luna": {
     "file": "audio/parole/luna.mp3",
     "dur": 0.522,
     "spoken": "luna"
+   },
+   "lunedì": {
+    "file": "audio/parole/lunedi1.mp3",
+    "dur": 0.679,
+    "spoken": "lunedì"
+   },
+   "lupo": {
+    "file": "audio/parole/lupo.mp3",
+    "dur": 0.47,
+    "spoken": "lupo"
    },
    "ma": {
     "file": "audio/parole/ma.mp3",
@@ -1713,10 +3888,20 @@
     "dur": 0.836,
     "spoken": "maestra"
    },
+   "magia": {
+    "file": "audio/parole/magia.mp3",
+    "dur": 0.679,
+    "spoken": "magia"
+   },
    "maglia": {
     "file": "audio/parole/maglia.mp3",
     "dur": 0.679,
     "spoken": "maglia"
+   },
+   "mago": {
+    "file": "audio/parole/mago.mp3",
+    "dur": 0.627,
+    "spoken": "mago"
    },
    "mamma": {
     "file": "audio/parole/mamma.mp3",
@@ -1728,10 +3913,30 @@
     "dur": 0.679,
     "spoken": "mangia"
    },
+   "mano": {
+    "file": "audio/parole/mano.mp3",
+    "dur": 0.549,
+    "spoken": "mano"
+   },
+   "mara": {
+    "file": "audio/parole/mara.mp3",
+    "dur": 0.575,
+    "spoken": "mara"
+   },
    "mare": {
     "file": "audio/parole/mare.mp3",
     "dur": 0.549,
     "spoken": "mare"
+   },
+   "matita": {
+    "file": "audio/parole/matita.mp3",
+    "dur": 0.705,
+    "spoken": "matita"
+   },
+   "medico": {
+    "file": "audio/parole/medico.mp3",
+    "dur": 0.653,
+    "spoken": "medico"
    },
    "mela": {
     "file": "audio/parole/mela.mp3",
@@ -1743,40 +3948,320 @@
     "dur": 0.418,
     "spoken": "mele"
    },
+   "melone": {
+    "file": "audio/parole/melone.mp3",
+    "dur": 0.627,
+    "spoken": "melone"
+   },
+   "meloni": {
+    "file": "audio/parole/meloni.mp3",
+    "dur": 0.653,
+    "spoken": "meloni"
+   },
    "mentre": {
     "file": "audio/parole/mentre.mp3",
     "dur": 0.575,
     "spoken": "mentre"
+   },
+   "merenda": {
+    "file": "audio/parole/merenda.mp3",
+    "dur": 0.758,
+    "spoken": "merenda"
    },
    "mette": {
     "file": "audio/parole/mette.mp3",
     "dur": 0.627,
     "spoken": "mette"
    },
+   "microfono": {
+    "file": "audio/parole/microfono.mp3",
+    "dur": 0.862,
+    "spoken": "microfono"
+   },
+   "mima": {
+    "file": "audio/parole/mima.mp3",
+    "dur": 0.47,
+    "spoken": "mima"
+   },
+   "mimì": {
+    "file": "audio/parole/mimi1.mp3",
+    "dur": 0.444,
+    "spoken": "mimì"
+   },
+   "mimo": {
+    "file": "audio/parole/mimo.mp3",
+    "dur": 0.444,
+    "spoken": "mimo"
+   },
+   "mimosa": {
+    "file": "audio/parole/mimosa.mp3",
+    "dur": 0.705,
+    "spoken": "mimosa"
+   },
+   "minestra": {
+    "file": "audio/parole/minestra.mp3",
+    "dur": 0.836,
+    "spoken": "minestra"
+   },
+   "mirtillo": {
+    "file": "audio/parole/mirtillo.mp3",
+    "dur": 0.836,
+    "spoken": "mirtillo"
+   },
+   "moglie": {
+    "file": "audio/parole/moglie.mp3",
+    "dur": 0.627,
+    "spoken": "moglie"
+   },
+   "momo": {
+    "file": "audio/parole/momo.mp3",
+    "dur": 0.522,
+    "spoken": "momo"
+   },
+   "moneta": {
+    "file": "audio/parole/moneta.mp3",
+    "dur": 0.705,
+    "spoken": "moneta"
+   },
+   "montagna": {
+    "file": "audio/parole/montagna.mp3",
+    "dur": 0.862,
+    "spoken": "montagna"
+   },
+   "mora": {
+    "file": "audio/parole/mora.mp3",
+    "dur": 0.522,
+    "spoken": "mora"
+   },
+   "mostro": {
+    "file": "audio/parole/mostro.mp3",
+    "dur": 0.679,
+    "spoken": "mostro"
+   },
+   "moto": {
+    "file": "audio/parole/moto.mp3",
+    "dur": 0.496,
+    "spoken": "moto"
+   },
+   "mucca": {
+    "file": "audio/parole/mucca.mp3",
+    "dur": 0.627,
+    "spoken": "mucca"
+   },
+   "mulo": {
+    "file": "audio/parole/mulo.mp3",
+    "dur": 0.47,
+    "spoken": "mulo"
+   },
+   "muratore": {
+    "file": "audio/parole/muratore.mp3",
+    "dur": 0.758,
+    "spoken": "muratore"
+   },
+   "muro": {
+    "file": "audio/parole/muro.mp3",
+    "dur": 0.496,
+    "spoken": "muro"
+   },
+   "museo": {
+    "file": "audio/parole/museo.mp3",
+    "dur": 0.653,
+    "spoken": "museo"
+   },
+   "nana": {
+    "file": "audio/parole/nana.mp3",
+    "dur": 0.601,
+    "spoken": "nana"
+   },
+   "naso": {
+    "file": "audio/parole/naso.mp3",
+    "dur": 0.627,
+    "spoken": "naso"
+   },
+   "natale": {
+    "file": "audio/parole/natale.mp3",
+    "dur": 0.705,
+    "spoken": "natale"
+   },
    "nave": {
     "file": "audio/parole/nave.mp3",
     "dur": 0.549,
     "spoken": "nave"
+   },
+   "negozio": {
+    "file": "audio/parole/negozio.mp3",
+    "dur": 0.836,
+    "spoken": "negozio"
    },
    "nel": {
     "file": "audio/parole/nel.mp3",
     "dur": 0.366,
     "spoken": "nel"
    },
+   "nero": {
+    "file": "audio/parole/nero.mp3",
+    "dur": 0.47,
+    "spoken": "nero"
+   },
+   "nespola": {
+    "file": "audio/parole/nespola.mp3",
+    "dur": 0.758,
+    "spoken": "nespola"
+   },
+   "neve": {
+    "file": "audio/parole/neve.mp3",
+    "dur": 0.549,
+    "spoken": "neve"
+   },
+   "nido": {
+    "file": "audio/parole/nido.mp3",
+    "dur": 0.522,
+    "spoken": "nido"
+   },
+   "nino": {
+    "file": "audio/parole/nino.mp3",
+    "dur": 0.549,
+    "spoken": "nino"
+   },
+   "nipote": {
+    "file": "audio/parole/nipote.mp3",
+    "dur": 0.705,
+    "spoken": "nipote"
+   },
+   "noce": {
+    "file": "audio/parole/noce.mp3",
+    "dur": 0.601,
+    "spoken": "noce"
+   },
+   "noci": {
+    "file": "audio/parole/noci.mp3",
+    "dur": 0.575,
+    "spoken": "noci"
+   },
+   "nodo": {
+    "file": "audio/parole/nodo.mp3",
+    "dur": 0.627,
+    "spoken": "nodo"
+   },
+   "nome": {
+    "file": "audio/parole/nome.mp3",
+    "dur": 0.549,
+    "spoken": "nome"
+   },
+   "non": {
+    "file": "audio/parole/non.mp3",
+    "dur": 0.496,
+    "spoken": "non"
+   },
    "nonna": {
     "file": "audio/parole/nonna.mp3",
     "dur": 0.679,
     "spoken": "nonna"
+   },
+   "nove": {
+    "file": "audio/parole/nove.mp3",
+    "dur": 0.601,
+    "spoken": "nove"
+   },
+   "nube": {
+    "file": "audio/parole/nube.mp3",
+    "dur": 0.496,
+    "spoken": "nube"
+   },
+   "nucleo": {
+    "file": "audio/parole/nucleo.mp3",
+    "dur": 0.496,
+    "spoken": "nucleo"
+   },
+   "numero": {
+    "file": "audio/parole/numero.mp3",
+    "dur": 0.522,
+    "spoken": "numero"
    },
    "nuota": {
     "file": "audio/parole/nuota.mp3",
     "dur": 0.627,
     "spoken": "nuota"
    },
+   "nutria": {
+    "file": "audio/parole/nutria.mp3",
+    "dur": 0.549,
+    "spoken": "nutria"
+   },
+   "nuvola": {
+    "file": "audio/parole/nuvola.mp3",
+    "dur": 0.549,
+    "spoken": "nuvola"
+   },
+   "olio": {
+    "file": "audio/parole/olio.mp3",
+    "dur": 0.444,
+    "spoken": "olio"
+   },
+   "olmo": {
+    "file": "audio/parole/olmo.mp3",
+    "dur": 0.444,
+    "spoken": "olmo"
+   },
+   "oltre": {
+    "file": "audio/parole/oltre.mp3",
+    "dur": 0.522,
+    "spoken": "oltre"
+   },
+   "ombra": {
+    "file": "audio/parole/ombra.mp3",
+    "dur": 0.549,
+    "spoken": "ombra"
+   },
    "ombrello": {
     "file": "audio/parole/ombrello.mp3",
     "dur": 0.731,
     "spoken": "ombrello"
+   },
+   "omelette": {
+    "file": "audio/parole/omelette.mp3",
+    "dur": 0.731,
+    "spoken": "omelette"
+   },
+   "onda": {
+    "file": "audio/parole/onda.mp3",
+    "dur": 0.47,
+    "spoken": "onda"
+   },
+   "ontano": {
+    "file": "audio/parole/ontano.mp3",
+    "dur": 0.705,
+    "spoken": "ontano"
+   },
+   "oro": {
+    "file": "audio/parole/oro.mp3",
+    "dur": 0.444,
+    "spoken": "oro"
+   },
+   "orologio": {
+    "file": "audio/parole/orologio.mp3",
+    "dur": 0.758,
+    "spoken": "orologio"
+   },
+   "orso": {
+    "file": "audio/parole/orso.mp3",
+    "dur": 0.549,
+    "spoken": "orso"
+   },
+   "orto": {
+    "file": "audio/parole/orto.mp3",
+    "dur": 0.444,
+    "spoken": "orto"
+   },
+   "ospedale": {
+    "file": "audio/parole/ospedale.mp3",
+    "dur": 0.784,
+    "spoken": "ospedale"
+   },
+   "pala": {
+    "file": "audio/parole/pala.mp3",
+    "dur": 0.522,
+    "spoken": "pala"
    },
    "palla": {
     "file": "audio/parole/palla.mp3",
@@ -1803,20 +4288,95 @@
     "dur": 0.601,
     "spoken": "parte"
    },
+   "patata": {
+    "file": "audio/parole/patata.mp3",
+    "dur": 0.653,
+    "spoken": "patata"
+   },
+   "pavone": {
+    "file": "audio/parole/pavone.mp3",
+    "dur": 0.627,
+    "spoken": "pavone"
+   },
+   "peluche": {
+    "file": "audio/parole/peluche.mp3",
+    "dur": 0.705,
+    "spoken": "peluche"
+   },
+   "pennarello": {
+    "file": "audio/parole/pennarello.mp3",
+    "dur": 0.862,
+    "spoken": "pennarello"
+   },
+   "peperone": {
+    "file": "audio/parole/peperone.mp3",
+    "dur": 0.731,
+    "spoken": "peperone"
+   },
+   "peppe": {
+    "file": "audio/parole/peppe.mp3",
+    "dur": 0.575,
+    "spoken": "peppe"
+   },
+   "pera": {
+    "file": "audio/parole/pera.mp3",
+    "dur": 0.418,
+    "spoken": "pera"
+   },
    "perché": {
     "file": "audio/parole/perche2.mp3",
     "dur": 0.522,
     "spoken": "perché"
+   },
+   "pere": {
+    "file": "audio/parole/pere.mp3",
+    "dur": 0.366,
+    "spoken": "pere"
+   },
+   "però": {
+    "file": "audio/parole/pero1.mp3",
+    "dur": 0.418,
+    "spoken": "però"
    },
    "pesce": {
     "file": "audio/parole/pesce.mp3",
     "dur": 0.575,
     "spoken": "pesce"
    },
+   "piano": {
+    "file": "audio/parole/piano.mp3",
+    "dur": 0.549,
+    "spoken": "piano"
+   },
    "piatti": {
     "file": "audio/parole/piatti.mp3",
     "dur": 0.679,
     "spoken": "piatti"
+   },
+   "piede": {
+    "file": "audio/parole/piede.mp3",
+    "dur": 0.522,
+    "spoken": "piede"
+   },
+   "pigna": {
+    "file": "audio/parole/pigna.mp3",
+    "dur": 0.522,
+    "spoken": "pigna"
+   },
+   "pila": {
+    "file": "audio/parole/pila.mp3",
+    "dur": 0.418,
+    "spoken": "pila"
+   },
+   "pina": {
+    "file": "audio/parole/pina.mp3",
+    "dur": 0.444,
+    "spoken": "pina"
+   },
+   "pino": {
+    "file": "audio/parole/pino.mp3",
+    "dur": 0.418,
+    "spoken": "pino"
    },
    "pioggia": {
     "file": "audio/parole/pioggia.mp3",
@@ -1828,10 +4388,40 @@
     "dur": 0.522,
     "spoken": "piove"
    },
+   "pipa": {
+    "file": "audio/parole/pipa.mp3",
+    "dur": 0.522,
+    "spoken": "pipa"
+   },
+   "pirata": {
+    "file": "audio/parole/pirata.mp3",
+    "dur": 0.653,
+    "spoken": "pirata"
+   },
+   "più": {
+    "file": "audio/parole/piu1.mp3",
+    "dur": 0.34,
+    "spoken": "più"
+   },
+   "plastica": {
+    "file": "audio/parole/plastica.mp3",
+    "dur": 0.705,
+    "spoken": "plastica"
+   },
+   "plumcake": {
+    "file": "audio/parole/plumcake.mp3",
+    "dur": 0.914,
+    "spoken": "plumcake"
+   },
    "poca": {
     "file": "audio/parole/poca.mp3",
     "dur": 0.444,
     "spoken": "poca"
+   },
+   "poeta": {
+    "file": "audio/parole/poeta.mp3",
+    "dur": 0.627,
+    "spoken": "poeta"
    },
    "poi": {
     "file": "audio/parole/poi.mp3",
@@ -1842,6 +4432,31 @@
     "file": "audio/parole/poiche2.mp3",
     "dur": 0.522,
     "spoken": "poiché"
+   },
+   "polenta": {
+    "file": "audio/parole/polenta.mp3",
+    "dur": 0.705,
+    "spoken": "polenta"
+   },
+   "polo": {
+    "file": "audio/parole/polo.mp3",
+    "dur": 0.444,
+    "spoken": "polo"
+   },
+   "pomodoro": {
+    "file": "audio/parole/pomodoro.mp3",
+    "dur": 0.731,
+    "spoken": "pomodoro"
+   },
+   "ponte": {
+    "file": "audio/parole/ponte.mp3",
+    "dur": 0.549,
+    "spoken": "ponte"
+   },
+   "popone": {
+    "file": "audio/parole/popone.mp3",
+    "dur": 0.679,
+    "spoken": "popone"
    },
    "porta": {
     "file": "audio/parole/porta.mp3",
@@ -1858,6 +4473,21 @@
     "dur": 0.549,
     "spoken": "prato"
    },
+   "premio": {
+    "file": "audio/parole/premio.mp3",
+    "dur": 0.575,
+    "spoken": "premio"
+   },
+   "prende": {
+    "file": "audio/parole/prende.mp3",
+    "dur": 0.549,
+    "spoken": "prende"
+   },
+   "prepara": {
+    "file": "audio/parole/prepara.mp3",
+    "dur": 0.679,
+    "spoken": "prepara"
+   },
    "prima": {
     "file": "audio/parole/prima.mp3",
     "dur": 0.522,
@@ -1873,85 +4503,435 @@
     "dur": 0.601,
     "spoken": "pronto"
    },
+   "prova": {
+    "file": "audio/parole/prova.mp3",
+    "dur": 0.549,
+    "spoken": "prova"
+   },
+   "pruno": {
+    "file": "audio/parole/pruno.mp3",
+    "dur": 0.496,
+    "spoken": "pruno"
+   },
+   "pugno": {
+    "file": "audio/parole/pugno.mp3",
+    "dur": 0.549,
+    "spoken": "pugno"
+   },
+   "puma": {
+    "file": "audio/parole/puma.mp3",
+    "dur": 0.418,
+    "spoken": "puma"
+   },
+   "può": {
+    "file": "audio/parole/puo1.mp3",
+    "dur": 0.287,
+    "spoken": "può"
+   },
+   "pupa": {
+    "file": "audio/parole/pupa.mp3",
+    "dur": 0.47,
+    "spoken": "pupa"
+   },
+   "pupazzo": {
+    "file": "audio/parole/pupazzo.mp3",
+    "dur": 0.758,
+    "spoken": "pupazzo"
+   },
+   "qua": {
+    "file": "audio/parole/qua.mp3",
+    "dur": 0.313,
+    "spoken": "qua"
+   },
    "quaderno": {
     "file": "audio/parole/quaderno.mp3",
     "dur": 0.731,
     "spoken": "quaderno"
+   },
+   "quadro": {
+    "file": "audio/parole/quadro.mp3",
+    "dur": 0.575,
+    "spoken": "quadro"
    },
    "quando": {
     "file": "audio/parole/quando.mp3",
     "dur": 0.522,
     "spoken": "quando"
    },
+   "quesito": {
+    "file": "audio/parole/quesito.mp3",
+    "dur": 0.731,
+    "spoken": "quesito"
+   },
+   "questo": {
+    "file": "audio/parole/questo.mp3",
+    "dur": 0.522,
+    "spoken": "questo"
+   },
+   "qui": {
+    "file": "audio/parole/qui.mp3",
+    "dur": 0.366,
+    "spoken": "qui"
+   },
+   "quota": {
+    "file": "audio/parole/quota.mp3",
+    "dur": 0.549,
+    "spoken": "quota"
+   },
+   "quotidiano": {
+    "file": "audio/parole/quotidiano.mp3",
+    "dur": 0.81,
+    "spoken": "quotidiano"
+   },
    "raccoglie": {
     "file": "audio/parole/raccoglie.mp3",
     "dur": 0.862,
     "spoken": "raccoglie"
+   },
+   "radio": {
+    "file": "audio/parole/radio.mp3",
+    "dur": 0.627,
+    "spoken": "radio"
+   },
+   "ragni": {
+    "file": "audio/parole/ragni.mp3",
+    "dur": 0.601,
+    "spoken": "ragni"
    },
    "ragno": {
     "file": "audio/parole/ragno.mp3",
     "dur": 0.627,
     "spoken": "ragno"
    },
+   "ramo": {
+    "file": "audio/parole/ramo.mp3",
+    "dur": 0.496,
+    "spoken": "ramo"
+   },
    "rana": {
     "file": "audio/parole/rana.mp3",
     "dur": 0.549,
     "spoken": "rana"
+   },
+   "rasoio": {
+    "file": "audio/parole/rasoio.mp3",
+    "dur": 0.679,
+    "spoken": "rasoio"
+   },
+   "regala": {
+    "file": "audio/parole/regala.mp3",
+    "dur": 0.653,
+    "spoken": "regala"
+   },
+   "regalo": {
+    "file": "audio/parole/regalo.mp3",
+    "dur": 0.679,
+    "spoken": "regalo"
+   },
+   "regina": {
+    "file": "audio/parole/regina.mp3",
+    "dur": 0.705,
+    "spoken": "regina"
+   },
+   "remo": {
+    "file": "audio/parole/remo.mp3",
+    "dur": 0.47,
+    "spoken": "remo"
+   },
+   "renzo": {
+    "file": "audio/parole/renzo.mp3",
+    "dur": 0.679,
+    "spoken": "renzo"
    },
    "resta": {
     "file": "audio/parole/resta.mp3",
     "dur": 0.627,
     "spoken": "resta"
    },
+   "rete": {
+    "file": "audio/parole/rete.mp3",
+    "dur": 0.522,
+    "spoken": "rete"
+   },
    "ride": {
     "file": "audio/parole/ride.mp3",
     "dur": 0.522,
     "spoken": "ride"
+   },
+   "riempie": {
+    "file": "audio/parole/riempie.mp3",
+    "dur": 0.653,
+    "spoken": "riempie"
+   },
+   "riga": {
+    "file": "audio/parole/riga.mp3",
+    "dur": 0.496,
+    "spoken": "riga"
+   },
+   "rimorchio": {
+    "file": "audio/parole/rimorchio.mp3",
+    "dur": 0.862,
+    "spoken": "rimorchio"
+   },
+   "rino": {
+    "file": "audio/parole/rino.mp3",
+    "dur": 0.549,
+    "spoken": "rino"
+   },
+   "riso": {
+    "file": "audio/parole/riso.mp3",
+    "dur": 0.575,
+    "spoken": "riso"
+   },
+   "rita": {
+    "file": "audio/parole/rita.mp3",
+    "dur": 0.575,
+    "spoken": "rita"
+   },
+   "riva": {
+    "file": "audio/parole/riva.mp3",
+    "dur": 0.496,
+    "spoken": "riva"
+   },
+   "robot": {
+    "file": "audio/parole/robot.mp3",
+    "dur": 0.862,
+    "spoken": "robot"
+   },
+   "rosa": {
+    "file": "audio/parole/rosa.mp3",
+    "dur": 0.601,
+    "spoken": "rosa"
+   },
+   "rospo": {
+    "file": "audio/parole/rospo.mp3",
+    "dur": 0.679,
+    "spoken": "rospo"
    },
    "rossa": {
     "file": "audio/parole/rossa.mp3",
     "dur": 0.601,
     "spoken": "rossa"
    },
+   "rotella": {
+    "file": "audio/parole/rotella.mp3",
+    "dur": 0.731,
+    "spoken": "rotella"
+   },
    "rotola": {
     "file": "audio/parole/rotola.mp3",
     "dur": 0.601,
     "spoken": "rotola"
+   },
+   "ruben": {
+    "file": "audio/parole/ruben.mp3",
+    "dur": 0.653,
+    "spoken": "ruben"
+   },
+   "rubinetto": {
+    "file": "audio/parole/rubinetto.mp3",
+    "dur": 0.94,
+    "spoken": "rubinetto"
+   },
+   "ruga": {
+    "file": "audio/parole/ruga.mp3",
+    "dur": 0.549,
+    "spoken": "ruga"
+   },
+   "rumore": {
+    "file": "audio/parole/rumore.mp3",
+    "dur": 0.679,
+    "spoken": "rumore"
+   },
+   "ruspa": {
+    "file": "audio/parole/ruspa.mp3",
+    "dur": 0.575,
+    "spoken": "ruspa"
+   },
+   "salame": {
+    "file": "audio/parole/salame.mp3",
+    "dur": 0.758,
+    "spoken": "salame"
+   },
+   "sale": {
+    "file": "audio/parole/sale.mp3",
+    "dur": 0.575,
+    "spoken": "sale"
+   },
+   "salice": {
+    "file": "audio/parole/salice.mp3",
+    "dur": 0.862,
+    "spoken": "salice"
    },
    "salta": {
     "file": "audio/parole/salta.mp3",
     "dur": 0.731,
     "spoken": "salta"
    },
+   "sapone": {
+    "file": "audio/parole/sapone.mp3",
+    "dur": 0.758,
+    "spoken": "sapone"
+   },
+   "sara": {
+    "file": "audio/parole/sara.mp3",
+    "dur": 0.575,
+    "spoken": "sara"
+   },
+   "scala": {
+    "file": "audio/parole/scala.mp3",
+    "dur": 0.627,
+    "spoken": "scala"
+   },
    "scalda": {
     "file": "audio/parole/scalda.mp3",
     "dur": 0.784,
     "spoken": "scalda"
+   },
+   "scatola": {
+    "file": "audio/parole/scatola.mp3",
+    "dur": 0.679,
+    "spoken": "scatola"
+   },
+   "scavo": {
+    "file": "audio/parole/scavo.mp3",
+    "dur": 0.679,
+    "spoken": "scavo"
+   },
+   "scena": {
+    "file": "audio/parole/scena.mp3",
+    "dur": 0.549,
+    "spoken": "scena"
+   },
+   "sceriffo": {
+    "file": "audio/parole/sceriffo.mp3",
+    "dur": 0.758,
+    "spoken": "sceriffo"
+   },
+   "scia": {
+    "file": "audio/parole/scia.mp3",
+    "dur": 0.549,
+    "spoken": "scia"
+   },
+   "sciame": {
+    "file": "audio/parole/sciame.mp3",
+    "dur": 0.575,
+    "spoken": "sciame"
    },
    "sciarpa": {
     "file": "audio/parole/sciarpa.mp3",
     "dur": 0.627,
     "spoken": "sciarpa"
    },
+   "scienza": {
+    "file": "audio/parole/scienza.mp3",
+    "dur": 0.758,
+    "spoken": "scienza"
+   },
+   "scienziato": {
+    "file": "audio/parole/scienziato.mp3",
+    "dur": 0.914,
+    "spoken": "scienziato"
+   },
+   "sciogliere": {
+    "file": "audio/parole/sciogliere.mp3",
+    "dur": 0.705,
+    "spoken": "sciogliere"
+   },
+   "sciopero": {
+    "file": "audio/parole/sciopero.mp3",
+    "dur": 0.679,
+    "spoken": "sciopero"
+   },
+   "sciroppo": {
+    "file": "audio/parole/sciroppo.mp3",
+    "dur": 0.758,
+    "spoken": "sciroppo"
+   },
+   "sciupare": {
+    "file": "audio/parole/sciupare.mp3",
+    "dur": 0.784,
+    "spoken": "sciupare"
+   },
    "scivolo": {
     "file": "audio/parole/scivolo.mp3",
     "dur": 0.627,
     "spoken": "scivolo"
+   },
+   "scoglio": {
+    "file": "audio/parole/scoglio.mp3",
+    "dur": 0.81,
+    "spoken": "scoglio"
+   },
+   "scoiattolo": {
+    "file": "audio/parole/scoiattolo.mp3",
+    "dur": 1.071,
+    "spoken": "scoiattolo"
+   },
+   "scopa": {
+    "file": "audio/parole/scopa.mp3",
+    "dur": 0.679,
+    "spoken": "scopa"
    },
    "scrive": {
     "file": "audio/parole/scrive.mp3",
     "dur": 0.653,
     "spoken": "scrive"
    },
+   "scudo": {
+    "file": "audio/parole/scudo.mp3",
+    "dur": 0.627,
+    "spoken": "scudo"
+   },
    "scuola": {
     "file": "audio/parole/scuola.mp3",
     "dur": 0.679,
     "spoken": "scuola"
    },
+   "scusa": {
+    "file": "audio/parole/scusa.mp3",
+    "dur": 0.679,
+    "spoken": "scusa"
+   },
    "se": {
     "file": "audio/parole/se.mp3",
     "dur": 0.366,
     "spoken": "se"
+   },
+   "sedano": {
+    "file": "audio/parole/sedano.mp3",
+    "dur": 0.81,
+    "spoken": "sedano"
+   },
+   "sedia": {
+    "file": "audio/parole/sedia.mp3",
+    "dur": 0.601,
+    "spoken": "sedia"
+   },
+   "segue": {
+    "file": "audio/parole/segue.mp3",
+    "dur": 0.549,
+    "spoken": "segue"
+   },
+   "sente": {
+    "file": "audio/parole/sente.mp3",
+    "dur": 0.705,
+    "spoken": "sente"
+   },
+   "sera": {
+    "file": "audio/parole/sera.mp3",
+    "dur": 0.496,
+    "spoken": "sera"
+   },
+   "serena": {
+    "file": "audio/parole/serena.mp3",
+    "dur": 0.705,
+    "spoken": "serena"
+   },
+   "seta": {
+    "file": "audio/parole/seta.mp3",
+    "dur": 0.496,
+    "spoken": "seta"
    },
    "sete": {
     "file": "audio/parole/sete.mp3",
@@ -1963,20 +4943,65 @@
     "dur": 0.444,
     "spoken": "si"
    },
+   "silenzio": {
+    "file": "audio/parole/silenzio.mp3",
+    "dur": 0.862,
+    "spoken": "silenzio"
+   },
+   "sipario": {
+    "file": "audio/parole/sipario.mp3",
+    "dur": 0.81,
+    "spoken": "sipario"
+   },
+   "sirena": {
+    "file": "audio/parole/sirena.mp3",
+    "dur": 0.679,
+    "spoken": "sirena"
+   },
+   "siringa": {
+    "file": "audio/parole/siringa.mp3",
+    "dur": 0.784,
+    "spoken": "siringa"
+   },
+   "sisi": {
+    "file": "audio/parole/sisi.mp3",
+    "dur": 0.549,
+    "spoken": "sisi"
+   },
+   "sofà": {
+    "file": "audio/parole/sofa1.mp3",
+    "dur": 0.549,
+    "spoken": "sofà"
+   },
    "soffia": {
     "file": "audio/parole/soffia.mp3",
     "dur": 0.575,
     "spoken": "soffia"
+   },
+   "sofia": {
+    "file": "audio/parole/sofia.mp3",
+    "dur": 0.705,
+    "spoken": "sofia"
    },
    "sole": {
     "file": "audio/parole/sole.mp3",
     "dur": 0.522,
     "spoken": "sole"
    },
+   "sonaglio": {
+    "file": "audio/parole/sonaglio.mp3",
+    "dur": 0.784,
+    "spoken": "sonaglio"
+   },
    "sopra": {
     "file": "audio/parole/sopra.mp3",
     "dur": 0.496,
     "spoken": "sopra"
+   },
+   "sorella": {
+    "file": "audio/parole/sorella.mp3",
+    "dur": 0.731,
+    "spoken": "sorella"
    },
    "sorge": {
     "file": "audio/parole/sorge.mp3",
@@ -1988,50 +5013,250 @@
     "dur": 0.731,
     "spoken": "sorride"
    },
+   "spada": {
+    "file": "audio/parole/spada.mp3",
+    "dur": 0.653,
+    "spoken": "spada"
+   },
+   "spazio": {
+    "file": "audio/parole/spazio.mp3",
+    "dur": 0.758,
+    "spoken": "spazio"
+   },
+   "spiga": {
+    "file": "audio/parole/spiga.mp3",
+    "dur": 0.627,
+    "spoken": "spiga"
+   },
+   "spillo": {
+    "file": "audio/parole/spillo.mp3",
+    "dur": 0.679,
+    "spoken": "spillo"
+   },
+   "spina": {
+    "file": "audio/parole/spina.mp3",
+    "dur": 0.653,
+    "spoken": "spina"
+   },
    "splende": {
     "file": "audio/parole/splende.mp3",
     "dur": 0.705,
     "spoken": "splende"
+   },
+   "sport": {
+    "file": "audio/parole/sport.mp3",
+    "dur": 0.758,
+    "spoken": "sport"
+   },
+   "sposo": {
+    "file": "audio/parole/sposo.mp3",
+    "dur": 0.653,
+    "spoken": "sposo"
    },
    "spremuta": {
     "file": "audio/parole/spremuta.mp3",
     "dur": 0.784,
     "spoken": "spremuta"
    },
+   "spugna": {
+    "file": "audio/parole/spugna.mp3",
+    "dur": 0.705,
+    "spoken": "spugna"
+   },
    "squalo": {
     "file": "audio/parole/squalo.mp3",
     "dur": 0.679,
     "spoken": "squalo"
+   },
+   "stagione": {
+    "file": "audio/parole/stagione.mp3",
+    "dur": 0.784,
+    "spoken": "stagione"
+   },
+   "stampa": {
+    "file": "audio/parole/stampa.mp3",
+    "dur": 0.679,
+    "spoken": "stampa"
    },
    "stazione": {
     "file": "audio/parole/stazione.mp3",
     "dur": 0.888,
     "spoken": "stazione"
    },
+   "stella": {
+    "file": "audio/parole/stella.mp3",
+    "dur": 0.627,
+    "spoken": "stella"
+   },
    "stelle": {
     "file": "audio/parole/stelle.mp3",
     "dur": 0.653,
     "spoken": "stelle"
+   },
+   "stilo": {
+    "file": "audio/parole/stilo.mp3",
+    "dur": 0.575,
+    "spoken": "stilo"
+   },
+   "stivale": {
+    "file": "audio/parole/stivale.mp3",
+    "dur": 0.758,
+    "spoken": "stivale"
+   },
+   "stoffa": {
+    "file": "audio/parole/stoffa.mp3",
+    "dur": 0.679,
+    "spoken": "stoffa"
+   },
+   "storia": {
+    "file": "audio/parole/storia.mp3",
+    "dur": 0.679,
+    "spoken": "storia"
    },
    "strada": {
     "file": "audio/parole/strada.mp3",
     "dur": 0.653,
     "spoken": "strada"
    },
+   "studente": {
+    "file": "audio/parole/studente.mp3",
+    "dur": 0.81,
+    "spoken": "studente"
+   },
+   "stufa": {
+    "file": "audio/parole/stufa.mp3",
+    "dur": 0.601,
+    "spoken": "stufa"
+   },
+   "sughero": {
+    "file": "audio/parole/sughero.mp3",
+    "dur": 0.653,
+    "spoken": "sughero"
+   },
+   "sugo": {
+    "file": "audio/parole/sugo.mp3",
+    "dur": 0.575,
+    "spoken": "sugo"
+   },
    "sul": {
     "file": "audio/parole/sul.mp3",
     "dur": 0.34,
     "spoken": "sul"
+   },
+   "sulla": {
+    "file": "audio/parole/sulla.mp3",
+    "dur": 0.522,
+    "spoken": "sulla"
+   },
+   "sullo": {
+    "file": "audio/parole/sullo.mp3",
+    "dur": 0.522,
+    "spoken": "sullo"
    },
    "suona": {
     "file": "audio/parole/suona.mp3",
     "dur": 0.627,
     "spoken": "suona"
    },
+   "susi": {
+    "file": "audio/parole/susi.mp3",
+    "dur": 0.522,
+    "spoken": "susi"
+   },
+   "susina": {
+    "file": "audio/parole/susina.mp3",
+    "dur": 0.731,
+    "spoken": "susina"
+   },
+   "taglia": {
+    "file": "audio/parole/taglia.mp3",
+    "dur": 0.549,
+    "spoken": "taglia"
+   },
+   "taglio": {
+    "file": "audio/parole/taglio.mp3",
+    "dur": 0.522,
+    "spoken": "taglio"
+   },
+   "tana": {
+    "file": "audio/parole/tana.mp3",
+    "dur": 0.47,
+    "spoken": "tana"
+   },
    "tardi": {
     "file": "audio/parole/tardi.mp3",
     "dur": 0.549,
     "spoken": "tardi"
+   },
+   "tata": {
+    "file": "audio/parole/tata.mp3",
+    "dur": 0.444,
+    "spoken": "tata"
+   },
+   "tavoletta": {
+    "file": "audio/parole/tavoletta.mp3",
+    "dur": 0.81,
+    "spoken": "tavoletta"
+   },
+   "tavolo": {
+    "file": "audio/parole/tavolo.mp3",
+    "dur": 0.522,
+    "spoken": "tavolo"
+   },
+   "teiera": {
+    "file": "audio/parole/teiera.mp3",
+    "dur": 0.575,
+    "spoken": "teiera"
+   },
+   "tela": {
+    "file": "audio/parole/tela.mp3",
+    "dur": 0.366,
+    "spoken": "tela"
+   },
+   "telefono": {
+    "file": "audio/parole/telefono.mp3",
+    "dur": 0.705,
+    "spoken": "telefono"
+   },
+   "tema": {
+    "file": "audio/parole/tema.mp3",
+    "dur": 0.366,
+    "spoken": "tema"
+   },
+   "teo": {
+    "file": "audio/parole/teo.mp3",
+    "dur": 0.392,
+    "spoken": "teo"
+   },
+   "testo": {
+    "file": "audio/parole/testo.mp3",
+    "dur": 0.575,
+    "spoken": "testo"
+   },
+   "tigre": {
+    "file": "audio/parole/tigre.mp3",
+    "dur": 0.549,
+    "spoken": "tigre"
+   },
+   "timo": {
+    "file": "audio/parole/timo.mp3",
+    "dur": 0.418,
+    "spoken": "timo"
+   },
+   "timone": {
+    "file": "audio/parole/timone.mp3",
+    "dur": 0.653,
+    "spoken": "timone"
+   },
+   "tina": {
+    "file": "audio/parole/tina.mp3",
+    "dur": 0.47,
+    "spoken": "tina"
+   },
+   "tira": {
+    "file": "audio/parole/tira.mp3",
+    "dur": 0.496,
+    "spoken": "tira"
    },
    "topo": {
     "file": "audio/parole/topo.mp3",
@@ -2043,45 +5268,320 @@
     "dur": 0.758,
     "spoken": "topolino"
    },
+   "toro": {
+    "file": "audio/parole/toro.mp3",
+    "dur": 0.47,
+    "spoken": "toro"
+   },
    "torta": {
     "file": "audio/parole/torta.mp3",
     "dur": 0.496,
     "spoken": "torta"
+   },
+   "toto": {
+    "file": "audio/parole/toto.mp3",
+    "dur": 0.444,
+    "spoken": "toto"
+   },
+   "tovaglia": {
+    "file": "audio/parole/tovaglia.mp3",
+    "dur": 0.731,
+    "spoken": "tovaglia"
+   },
+   "treccia": {
+    "file": "audio/parole/treccia.mp3",
+    "dur": 0.653,
+    "spoken": "treccia"
    },
    "treno": {
     "file": "audio/parole/treno.mp3",
     "dur": 0.522,
     "spoken": "treno"
    },
+   "tribù": {
+    "file": "audio/parole/tribu1.mp3",
+    "dur": 0.444,
+    "spoken": "tribù"
+   },
+   "trono": {
+    "file": "audio/parole/trono.mp3",
+    "dur": 0.522,
+    "spoken": "trono"
+   },
+   "trova": {
+    "file": "audio/parole/trova.mp3",
+    "dur": 0.522,
+    "spoken": "trova"
+   },
+   "trucco": {
+    "file": "audio/parole/trucco.mp3",
+    "dur": 0.47,
+    "spoken": "trucco"
+   },
+   "tubo": {
+    "file": "audio/parole/tubo.mp3",
+    "dur": 0.444,
+    "spoken": "tubo"
+   },
+   "tulipano": {
+    "file": "audio/parole/tulipano.mp3",
+    "dur": 0.731,
+    "spoken": "tulipano"
+   },
+   "tuta": {
+    "file": "audio/parole/tuta.mp3",
+    "dur": 0.496,
+    "spoken": "tuta"
+   },
    "uccelli": {
     "file": "audio/parole/uccelli.mp3",
     "dur": 0.758,
     "spoken": "uccelli"
+   },
+   "ulna": {
+    "file": "audio/parole/ulna.mp3",
+    "dur": 0.392,
+    "spoken": "ulna"
+   },
+   "ultimo": {
+    "file": "audio/parole/ultimo.mp3",
+    "dur": 0.549,
+    "spoken": "ultimo"
    },
    "un": {
     "file": "audio/parole/un.mp3",
     "dur": 0.34,
     "spoken": "un"
    },
+   "una": {
+    "file": "audio/parole/una.mp3",
+    "dur": 0.418,
+    "spoken": "una"
+   },
+   "uncino": {
+    "file": "audio/parole/uncino.mp3",
+    "dur": 0.679,
+    "spoken": "uncino"
+   },
+   "unghia": {
+    "file": "audio/parole/unghia.mp3",
+    "dur": 0.444,
+    "spoken": "unghia"
+   },
+   "unicorno": {
+    "file": "audio/parole/unicorno.mp3",
+    "dur": 0.836,
+    "spoken": "unicorno"
+   },
+   "universo": {
+    "file": "audio/parole/universo.mp3",
+    "dur": 0.836,
+    "spoken": "universo"
+   },
+   "uno": {
+    "file": "audio/parole/uno.mp3",
+    "dur": 0.444,
+    "spoken": "uno"
+   },
+   "uovo": {
+    "file": "audio/parole/uovo.mp3",
+    "dur": 0.549,
+    "spoken": "uovo"
+   },
+   "urlo": {
+    "file": "audio/parole/urlo.mp3",
+    "dur": 0.418,
+    "spoken": "urlo"
+   },
+   "urna": {
+    "file": "audio/parole/urna.mp3",
+    "dur": 0.496,
+    "spoken": "urna"
+   },
+   "usa": {
+    "file": "audio/parole/usa.mp3",
+    "dur": 0.47,
+    "spoken": "usa"
+   },
    "uscire": {
     "file": "audio/parole/uscire.mp3",
     "dur": 0.653,
     "spoken": "uscire"
+   },
+   "uva": {
+    "file": "audio/parole/uva.mp3",
+    "dur": 0.392,
+    "spoken": "uva"
    },
    "va": {
     "file": "audio/parole/va.mp3",
     "dur": 0.392,
     "spoken": "va"
    },
+   "valeria": {
+    "file": "audio/parole/valeria.mp3",
+    "dur": 0.758,
+    "spoken": "valeria"
+   },
+   "vaniglia": {
+    "file": "audio/parole/vaniglia.mp3",
+    "dur": 0.784,
+    "spoken": "vaniglia"
+   },
+   "vapore": {
+    "file": "audio/parole/vapore.mp3",
+    "dur": 0.679,
+    "spoken": "vapore"
+   },
+   "vasca": {
+    "file": "audio/parole/vasca.mp3",
+    "dur": 0.705,
+    "spoken": "vasca"
+   },
+   "vaso": {
+    "file": "audio/parole/vaso.mp3",
+    "dur": 0.549,
+    "spoken": "vaso"
+   },
+   "vela": {
+    "file": "audio/parole/vela.mp3",
+    "dur": 0.522,
+    "spoken": "vela"
+   },
    "vento": {
     "file": "audio/parole/vento.mp3",
     "dur": 0.601,
     "spoken": "vento"
    },
+   "vespa": {
+    "file": "audio/parole/vespa.mp3",
+    "dur": 0.653,
+    "spoken": "vespa"
+   },
+   "vetro": {
+    "file": "audio/parole/vetro.mp3",
+    "dur": 0.549,
+    "spoken": "vetro"
+   },
+   "viaggio": {
+    "file": "audio/parole/viaggio.mp3",
+    "dur": 0.705,
+    "spoken": "viaggio"
+   },
+   "vino": {
+    "file": "audio/parole/vino.mp3",
+    "dur": 0.549,
+    "spoken": "vino"
+   },
+   "viso": {
+    "file": "audio/parole/viso.mp3",
+    "dur": 0.575,
+    "spoken": "viso"
+   },
+   "vite": {
+    "file": "audio/parole/vite.mp3",
+    "dur": 0.549,
+    "spoken": "vite"
+   },
+   "vivi": {
+    "file": "audio/parole/vivi.mp3",
+    "dur": 0.575,
+    "spoken": "vivi"
+   },
+   "voce": {
+    "file": "audio/parole/voce.mp3",
+    "dur": 0.653,
+    "spoken": "voce"
+   },
    "vola": {
     "file": "audio/parole/vola.mp3",
     "dur": 0.549,
     "spoken": "vola"
+   },
+   "volante": {
+    "file": "audio/parole/volante.mp3",
+    "dur": 0.731,
+    "spoken": "volante"
+   },
+   "volo": {
+    "file": "audio/parole/volo.mp3",
+    "dur": 0.496,
+    "spoken": "volo"
+   },
+   "vuvuzela": {
+    "file": "audio/parole/vuvuzela.mp3",
+    "dur": 0.836,
+    "spoken": "vuvuzela"
+   },
+   "zabaione": {
+    "file": "audio/parole/zabaione.mp3",
+    "dur": 0.836,
+    "spoken": "zabaione"
+   },
+   "zagara": {
+    "file": "audio/parole/zagara.mp3",
+    "dur": 0.679,
+    "spoken": "zagara"
+   },
+   "zaino": {
+    "file": "audio/parole/zaino.mp3",
+    "dur": 0.575,
+    "spoken": "zaino"
+   },
+   "zara": {
+    "file": "audio/parole/zara.mp3",
+    "dur": 0.601,
+    "spoken": "zara"
+   },
+   "zebra": {
+    "file": "audio/parole/zebra.mp3",
+    "dur": 0.653,
+    "spoken": "zebra"
+   },
+   "zebre": {
+    "file": "audio/parole/zebre.mp3",
+    "dur": 0.627,
+    "spoken": "zebre"
+   },
+   "zero": {
+    "file": "audio/parole/zero.mp3",
+    "dur": 0.627,
+    "spoken": "zero"
+   },
+   "zia": {
+    "file": "audio/parole/zia.mp3",
+    "dur": 0.522,
+    "spoken": "zia"
+   },
+   "zii": {
+    "file": "audio/parole/zii.mp3",
+    "dur": 0.444,
+    "spoken": "zii"
+   },
+   "zio": {
+    "file": "audio/parole/zio.mp3",
+    "dur": 0.575,
+    "spoken": "zio"
+   },
+   "zona": {
+    "file": "audio/parole/zona.mp3",
+    "dur": 0.601,
+    "spoken": "zona"
+   },
+   "zoo": {
+    "file": "audio/parole/zoo.mp3",
+    "dur": 0.496,
+    "spoken": "zoo"
+   },
+   "zucca": {
+    "file": "audio/parole/zucca.mp3",
+    "dur": 0.627,
+    "spoken": "zucca"
+   },
+   "zucchero": {
+    "file": "audio/parole/zucchero.mp3",
+    "dur": 0.679,
+    "spoken": "zucchero"
    },
    "zuppa": {
     "file": "audio/parole/zuppa.mp3",
@@ -2129,6 +5629,663 @@
     "file": "audio/ui/sillabe.mp3",
     "dur": 0.627,
     "spoken": "sillabe"
+   },
+   "Ascolta la sillaba e scegli quella giusta.": {
+    "file": "audio/ui/ascolta_la_sillaba_e_scegli_quella_giusta.mp3",
+    "dur": 2.456,
+    "spoken": "Ascolta la sillaba e scegli quella giusta."
+   },
+   "Ascolta con attenzione: quale sillaba hai sentito?": {
+    "file": "audio/ui/ascolta_con_attenzione__quale_sillaba_hai_sentito_.mp3",
+    "dur": 3.082,
+    "spoken": "Ascolta con attenzione: quale sillaba hai sentito?"
+   },
+   "Completa la famiglia: quale sillaba manca?": {
+    "file": "audio/ui/completa_la_famiglia__quale_sillaba_manca_.mp3",
+    "dur": 2.717,
+    "spoken": "Completa la famiglia: quale sillaba manca?"
+   },
+   "Guarda l'immagine e ascolta la parola. Qual è la prima sillaba?": {
+    "file": "audio/ui/guarda_l-immagine_e_ascolta_la_parola._qual_e1_la_prima_sillaba_.mp3",
+    "dur": 3.788,
+    "spoken": "Guarda l'immagine e ascolta la parola. Qual è la prima sillaba?"
+   },
+   "Ascolta la sillaba e trova la parola che inizia con questa sillaba.": {
+    "file": "audio/ui/ascolta_la_sillaba_e_trova_la_parola_che_inizia_con_questa_sillaba.mp3",
+    "dur": 3.762,
+    "spoken": "Ascolta la sillaba e trova la parola che inizia con questa sillaba."
+   },
+   "Guarda l'immagine e ascolta la parola. Qual è l'ultima sillaba?": {
+    "file": "audio/ui/guarda_l-immagine_e_ascolta_la_parola._qual_e1_l-ultima_sillaba_.mp3",
+    "dur": 3.788,
+    "spoken": "Guarda l'immagine e ascolta la parola. Qual è l'ultima sillaba?"
+   },
+   "Completa la parola con la sillaba giusta.": {
+    "file": "audio/ui/completa_la_parola_con_la_sillaba_giusta.mp3",
+    "dur": 2.377,
+    "spoken": "Completa la parola con la sillaba giusta."
+   },
+   "Metti le sillabe nel giusto ordine per scrivere la parola.": {
+    "file": "audio/ui/metti_le_sillabe_nel_giusto_ordine_per_scrivere_la_parola.mp3",
+    "dur": 3.37,
+    "spoken": "Metti le sillabe nel giusto ordine per scrivere la parola."
+   },
+   "Trova le coppie: ogni immagine con la sua prima sillaba.": {
+    "file": "audio/ui/trova_le_coppie__ogni_immagine_con_la_sua_prima_sillaba.mp3",
+    "dur": 3.448,
+    "spoken": "Trova le coppie: ogni immagine con la sua prima sillaba."
+   },
+   "Quante sillabe ha questa parola?": {
+    "file": "audio/ui/quante_sillabe_ha_questa_parola_.mp3",
+    "dur": 1.829,
+    "spoken": "Quante sillabe ha questa parola?"
+   },
+   "Riordina le parole per costruire la frase.": {
+    "file": "audio/ui/riordina_le_parole_per_costruire_la_frase.mp3",
+    "dur": 2.56,
+    "spoken": "Riordina le parole per costruire la frase."
+   },
+   "Ascolta la frase e scegli la parola che manca.": {
+    "file": "audio/ui/ascolta_la_frase_e_scegli_la_parola_che_manca.mp3",
+    "dur": 2.664,
+    "spoken": "Ascolta la frase e scegli la parola che manca."
+   },
+   "Inventa una frase con le parole disponibili.": {
+    "file": "audio/ui/inventa_una_frase_con_le_parole_disponibili.mp3",
+    "dur": 2.691,
+    "spoken": "Inventa una frase con le parole disponibili."
+   },
+   "Qual è davvero la prima sillaba? Attento: non basta guardare le prime lettere.": {
+    "file": "audio/ui/qual_e1_davvero_la_prima_sillaba__attento__non_basta_guardare_le_prime_lettere.mp3",
+    "dur": 4.702,
+    "spoken": "Qual è davvero la prima sillaba? Attento: non basta guardare le prime lettere."
+   },
+   "Come si scrive questa parola?": {
+    "file": "audio/ui/come_si_scrive_questa_parola_.mp3",
+    "dur": 1.724,
+    "spoken": "Come si scrive questa parola?"
+   },
+   "Qual è la sillaba accentata, quella che si sente più forte?": {
+    "file": "audio/ui/qual_e1_la_sillaba_accentata__quella_che_si_sente_piu1_forte_.mp3",
+    "dur": 3.553,
+    "spoken": "Qual è la sillaba accentata, quella che si sente più forte?"
+   },
+   "Con quale gruppo di lettere inizia la parola?": {
+    "file": "audio/ui/con_quale_gruppo_di_lettere_inizia_la_parola_.mp3",
+    "dur": 2.429,
+    "spoken": "Con quale gruppo di lettere inizia la parola?"
+   },
+   "Quale gruppo di vocali senti in questa parola?": {
+    "file": "audio/ui/quale_gruppo_di_vocali_senti_in_questa_parola_.mp3",
+    "dur": 2.534,
+    "spoken": "Quale gruppo di vocali senti in questa parola?"
+   },
+   "Ascolta il suono e scegli quello giusto.": {
+    "file": "audio/ui/ascolta_il_suono_e_scegli_quello_giusto.mp3",
+    "dur": 2.22,
+    "spoken": "Ascolta il suono e scegli quello giusto."
+   },
+   "Ascolta il gruppo e scegli quello giusto.": {
+    "file": "audio/ui/ascolta_il_gruppo_e_scegli_quello_giusto.mp3",
+    "dur": 2.325,
+    "spoken": "Ascolta il gruppo e scegli quello giusto."
+   },
+   "Qual è l'ultima sillaba della parola?": {
+    "file": "audio/ui/qual_e1_l-ultima_sillaba_della_parola_.mp3",
+    "dur": 2.064,
+    "spoken": "Qual è l'ultima sillaba della parola?"
+   },
+   "Trova le coppie: ogni immagine con la sua parola.": {
+    "file": "audio/ui/trova_le_coppie__ogni_immagine_con_la_sua_parola.mp3",
+    "dur": 2.978,
+    "spoken": "Trova le coppie: ogni immagine con la sua parola."
+   }
+  },
+  "frasiViaggio": {
+   "ma-1": {
+    "file": "audio/frasiViaggio/ma-1.mp3",
+    "dur": 1.254,
+    "spoken": "MARA AMA LA MAMMA"
+   },
+   "ma-2": {
+    "file": "audio/frasiViaggio/ma-2.mp3",
+    "dur": 1.593,
+    "spoken": "MARA AMA LA MAMMA E IL MIMO"
+   },
+   "me-1": {
+    "file": "audio/frasiViaggio/me-1.mp3",
+    "dur": 0.993,
+    "spoken": "MELE E MELONI"
+   },
+   "mi-1": {
+    "file": "audio/frasiViaggio/mi-1.mp3",
+    "dur": 1.071,
+    "spoken": "MIMÌ MIMA IL MIMO"
+   },
+   "mi-2": {
+    "file": "audio/frasiViaggio/mi-2.mp3",
+    "dur": 1.933,
+    "spoken": "MIMÌ MIMA IL MIMO E MIMO MIMA MIMÌ"
+   },
+   "mo-1": {
+    "file": "audio/frasiViaggio/mo-1.mp3",
+    "dur": 0.993,
+    "spoken": "MOMO HA UN MOTO"
+   },
+   "mu-1": {
+    "file": "audio/frasiViaggio/mu-1.mp3",
+    "dur": 1.332,
+    "spoken": "IL MULO GUARDA IL MURO"
+   },
+   "pa-1": {
+    "file": "audio/frasiViaggio/pa-1.mp3",
+    "dur": 1.332,
+    "spoken": "PAPÀ PORTA LA PALA"
+   },
+   "pa-2": {
+    "file": "audio/frasiViaggio/pa-2.mp3",
+    "dur": 1.933,
+    "spoken": "PAPÀ PORTA LA PALA E LA PATATA"
+   },
+   "pe-1": {
+    "file": "audio/frasiViaggio/pe-1.mp3",
+    "dur": 1.202,
+    "spoken": "PEPPE PORTA LE PERE"
+   },
+   "pi-1": {
+    "file": "audio/frasiViaggio/pi-1.mp3",
+    "dur": 0.914,
+    "spoken": "PINA HA UN PINO"
+   },
+   "po-1": {
+    "file": "audio/frasiViaggio/po-1.mp3",
+    "dur": 1.463,
+    "spoken": "POLO MANGIA UN POMODORO"
+   },
+   "pu-1": {
+    "file": "audio/frasiViaggio/pu-1.mp3",
+    "dur": 1.176,
+    "spoken": "PUPA GUARDA LA PUMA"
+   },
+   "la-1": {
+    "file": "audio/frasiViaggio/la-1.mp3",
+    "dur": 1.202,
+    "spoken": "LARA LAVA LA LANA"
+   },
+   "la-2": {
+    "file": "audio/frasiViaggio/la-2.mp3",
+    "dur": 2.09,
+    "spoken": "LARA LAVA LA LANA E LA LAVA ANCORA"
+   },
+   "le-1": {
+    "file": "audio/frasiViaggio/le-1.mp3",
+    "dur": 1.463,
+    "spoken": "LENA LEGGE LE LEZIONI"
+   },
+   "li-1": {
+    "file": "audio/frasiViaggio/li-1.mp3",
+    "dur": 1.28,
+    "spoken": "LINA LAVA IL LIMONE"
+   },
+   "lo-1": {
+    "file": "audio/frasiViaggio/lo-1.mp3",
+    "dur": 1.306,
+    "spoken": "LOLO GUARDA IL LOTO"
+   },
+   "lu-1": {
+    "file": "audio/frasiViaggio/lu-1.mp3",
+    "dur": 1.437,
+    "spoken": "LUCA ACCENDE LA LUCE"
+   },
+   "ta-1": {
+    "file": "audio/frasiViaggio/ta-1.mp3",
+    "dur": 1.332,
+    "spoken": "TATA TAGLIA LA TORTA"
+   },
+   "te-1": {
+    "file": "audio/frasiViaggio/te-1.mp3",
+    "dur": 1.28,
+    "spoken": "TEO LEGGE IL TESTO"
+   },
+   "ti-1": {
+    "file": "audio/frasiViaggio/ti-1.mp3",
+    "dur": 1.254,
+    "spoken": "TINA TIRA IL TIMONE"
+   },
+   "to-1": {
+    "file": "audio/frasiViaggio/to-1.mp3",
+    "dur": 1.28,
+    "spoken": "TOTO TROVA IL TOPO"
+   },
+   "tu-1": {
+    "file": "audio/frasiViaggio/tu-1.mp3",
+    "dur": 1.071,
+    "spoken": "LA TUTA E IL TUBO"
+   },
+   "sa-1": {
+    "file": "audio/frasiViaggio/sa-1.mp3",
+    "dur": 1.358,
+    "spoken": "SARA PRENDE IL SALE"
+   },
+   "se-1": {
+    "file": "audio/frasiViaggio/se-1.mp3",
+    "dur": 1.437,
+    "spoken": "SERENA PORTA LA SETA"
+   },
+   "si-1": {
+    "file": "audio/frasiViaggio/si-1.mp3",
+    "dur": 1.489,
+    "spoken": "SISI SENTE LA SIRENA"
+   },
+   "so-1": {
+    "file": "audio/frasiViaggio/so-1.mp3",
+    "dur": 1.593,
+    "spoken": "SOFIA SUONA IL SONAGLIO"
+   },
+   "su-1": {
+    "file": "audio/frasiViaggio/su-1.mp3",
+    "dur": 1.176,
+    "spoken": "SUSI AMA IL SUGO"
+   },
+   "na-1": {
+    "file": "audio/frasiViaggio/na-1.mp3",
+    "dur": 1.28,
+    "spoken": "NANA PORTA LA NAVE"
+   },
+   "ne-1": {
+    "file": "audio/frasiViaggio/ne-1.mp3",
+    "dur": 1.306,
+    "spoken": "LA NEVE COPRE IL NERO"
+   },
+   "ni-1": {
+    "file": "audio/frasiViaggio/ni-1.mp3",
+    "dur": 0.94,
+    "spoken": "NINO HA UN NIDO"
+   },
+   "no-1": {
+    "file": "audio/frasiViaggio/no-1.mp3",
+    "dur": 1.228,
+    "spoken": "NONNA HA NOVE NOCI"
+   },
+   "nu-1": {
+    "file": "audio/frasiViaggio/nu-1.mp3",
+    "dur": 1.149,
+    "spoken": "LA NUVOLA HA UN NUCLEO"
+   },
+   "ra-1": {
+    "file": "audio/frasiViaggio/ra-1.mp3",
+    "dur": 1.176,
+    "spoken": "LA RANA E IL RAGNO"
+   },
+   "re-1": {
+    "file": "audio/frasiViaggio/re-1.mp3",
+    "dur": 1.358,
+    "spoken": "RENZO REGALA UN REMO"
+   },
+   "ri-1": {
+    "file": "audio/frasiViaggio/ri-1.mp3",
+    "dur": 1.254,
+    "spoken": "RITA RIDE CON RINO"
+   },
+   "ro-1": {
+    "file": "audio/frasiViaggio/ro-1.mp3",
+    "dur": 1.202,
+    "spoken": "ROSA AMA IL ROBOT"
+   },
+   "ru-1": {
+    "file": "audio/frasiViaggio/ru-1.mp3",
+    "dur": 1.306,
+    "spoken": "RUBEN USA LA RUSPA"
+   },
+   "fa-1": {
+    "file": "audio/frasiViaggio/fa-1.mp3",
+    "dur": 1.437,
+    "spoken": "LA FATA FA UN FAGIOLO"
+   },
+   "fe-1": {
+    "file": "audio/frasiViaggio/fe-1.mp3",
+    "dur": 1.384,
+    "spoken": "LA FENICE È FELICE"
+   },
+   "fi-1": {
+    "file": "audio/frasiViaggio/fi-1.mp3",
+    "dur": 1.358,
+    "spoken": "FILIPPO FILA IL FILO"
+   },
+   "fo-1": {
+    "file": "audio/frasiViaggio/fo-1.mp3",
+    "dur": 1.515,
+    "spoken": "LA FOCA GUARDA LA FOGLIA"
+   },
+   "fu-1": {
+    "file": "audio/frasiViaggio/fu-1.mp3",
+    "dur": 1.071,
+    "spoken": "FUGA DAL FUMO"
+   },
+   "va-1": {
+    "file": "audio/frasiViaggio/va-1.mp3",
+    "dur": 1.149,
+    "spoken": "VALERIA HA UN VASO"
+   },
+   "ve-1": {
+    "file": "audio/frasiViaggio/ve-1.mp3",
+    "dur": 1.202,
+    "spoken": "LA VELA HA UNA VESPA"
+   },
+   "vi-1": {
+    "file": "audio/frasiViaggio/vi-1.mp3",
+    "dur": 1.045,
+    "spoken": "VIVI HA UN VISO"
+   },
+   "vo-1": {
+    "file": "audio/frasiViaggio/vo-1.mp3",
+    "dur": 1.071,
+    "spoken": "LA VOCE VOLA"
+   },
+   "ba-1": {
+    "file": "audio/frasiViaggio/ba-1.mp3",
+    "dur": 1.646,
+    "spoken": "LA BALENA MANGIA LA BANANA"
+   },
+   "be-1": {
+    "file": "audio/frasiViaggio/be-1.mp3",
+    "dur": 1.202,
+    "spoken": "BEPPE BEVE BENE"
+   },
+   "bi-1": {
+    "file": "audio/frasiViaggio/bi-1.mp3",
+    "dur": 1.149,
+    "spoken": "BIBI VA IN BICI"
+   },
+   "bo-1": {
+    "file": "audio/frasiViaggio/bo-1.mp3",
+    "dur": 1.28,
+    "spoken": "BOBO VA NEL BOSCO"
+   },
+   "bu-1": {
+    "file": "audio/frasiViaggio/bu-1.mp3",
+    "dur": 1.358,
+    "spoken": "BUBA MANGIA IL BUDINO"
+   },
+   "da-1": {
+    "file": "audio/frasiViaggio/da-1.mp3",
+    "dur": 1.045,
+    "spoken": "DADA HA UN DADO"
+   },
+   "de-1": {
+    "file": "audio/frasiViaggio/de-1.mp3",
+    "dur": 1.28,
+    "spoken": "DEA TROVA UN DENARO"
+   },
+   "di-1": {
+    "file": "audio/frasiViaggio/di-1.mp3",
+    "dur": 1.384,
+    "spoken": "DIDI ALZA UN DITO"
+   },
+   "do-1": {
+    "file": "audio/frasiViaggio/do-1.mp3",
+    "dur": 0.993,
+    "spoken": "DODO HA UN DONO"
+   },
+   "du-1": {
+    "file": "audio/frasiViaggio/du-1.mp3",
+    "dur": 1.306,
+    "spoken": "IL DUCA HA DUE CORONE"
+   },
+   "ca-1": {
+    "file": "audio/frasiViaggio/ca-1.mp3",
+    "dur": 1.28,
+    "spoken": "LA CAPRA VA A CASA"
+   },
+   "co-1": {
+    "file": "audio/frasiViaggio/co-1.mp3",
+    "dur": 0.967,
+    "spoken": "COCO HA UN CONO"
+   },
+   "cu-1": {
+    "file": "audio/frasiViaggio/cu-1.mp3",
+    "dur": 0.862,
+    "spoken": "CUBA HA UN CUBO"
+   },
+   "ce-1": {
+    "file": "audio/frasiViaggio/ce-1.mp3",
+    "dur": 1.437,
+    "spoken": "CECE PREPARA LA CENA"
+   },
+   "ci-1": {
+    "file": "audio/frasiViaggio/ci-1.mp3",
+    "dur": 1.358,
+    "spoken": "CICI GUARDA LA CIMA"
+   },
+   "che-1": {
+    "file": "audio/frasiViaggio/che-1.mp3",
+    "dur": 1.071,
+    "spoken": "CHE BEL CHERUBINO"
+   },
+   "chi-1": {
+    "file": "audio/frasiViaggio/chi-1.mp3",
+    "dur": 1.071,
+    "spoken": "CHI HA LA CHITARRA"
+   },
+   "ga-1": {
+    "file": "audio/frasiViaggio/ga-1.mp3",
+    "dur": 1.228,
+    "spoken": "GAIA VA ALLA GARA"
+   },
+   "go-1": {
+    "file": "audio/frasiViaggio/go-1.mp3",
+    "dur": 1.463,
+    "spoken": "GOGO GUARDA IL GORILLA"
+   },
+   "gu-1": {
+    "file": "audio/frasiViaggio/gu-1.mp3",
+    "dur": 0.993,
+    "spoken": "GUGO HA UN GUFO"
+   },
+   "ge-1": {
+    "file": "audio/frasiViaggio/ge-1.mp3",
+    "dur": 1.202,
+    "spoken": "GEGE HA UN GELATO"
+   },
+   "gi-1": {
+    "file": "audio/frasiViaggio/gi-1.mp3",
+    "dur": 1.384,
+    "spoken": "GIGI HA UNA GIRAFFA"
+   },
+   "ghe-1": {
+    "file": "audio/frasiViaggio/ghe-1.mp3",
+    "dur": 1.567,
+    "spoken": "GHELA GUARDA IL GHEPARDO"
+   },
+   "ghi-1": {
+    "file": "audio/frasiViaggio/ghi-1.mp3",
+    "dur": 1.019,
+    "spoken": "GHIGO HA UN GHIRO"
+   },
+   "cia-1": {
+    "file": "audio/frasiViaggio/cia-1.mp3",
+    "dur": 1.541,
+    "spoken": "LA CAMICIA HA UNA FRECCIA"
+   },
+   "cio-1": {
+    "file": "audio/frasiViaggio/cio-1.mp3",
+    "dur": 1.384,
+    "spoken": "UN BACIO E UN ABBRACCIO"
+   },
+   "ciu-1": {
+    "file": "audio/frasiViaggio/ciu-1.mp3",
+    "dur": 1.593,
+    "spoken": "IL CIUCO GUARDA L'ACCIUGA"
+   },
+   "gia-1": {
+    "file": "audio/frasiViaggio/gia-1.mp3",
+    "dur": 1.123,
+    "spoken": "GIADA HA UNA MAGIA"
+   },
+   "gio-1": {
+    "file": "audio/frasiViaggio/gio-1.mp3",
+    "dur": 1.019,
+    "spoken": "GIO HA UN GIOCO"
+   },
+   "giu-1": {
+    "file": "audio/frasiViaggio/giu-1.mp3",
+    "dur": 1.149,
+    "spoken": "GIULIA AMA GIUGNO"
+   },
+   "sca-1": {
+    "file": "audio/frasiViaggio/sca-1.mp3",
+    "dur": 1.567,
+    "spoken": "LA SCATOLA È SULLA SCALA"
+   },
+   "sco-1": {
+    "file": "audio/frasiViaggio/sco-1.mp3",
+    "dur": 1.489,
+    "spoken": "LO SCOIATTOLO HA UNA SCOPA"
+   },
+   "scu-1": {
+    "file": "audio/frasiViaggio/scu-1.mp3",
+    "dur": 1.463,
+    "spoken": "LO SCUDO È UNA SCUSA"
+   },
+   "sce-1": {
+    "file": "audio/frasiViaggio/sce-1.mp3",
+    "dur": 1.489,
+    "spoken": "LA SCENA HA UNO SCERIFFO"
+   },
+   "sci-1": {
+    "file": "audio/frasiViaggio/sci-1.mp3",
+    "dur": 1.593,
+    "spoken": "LO SCIROPPO È SULLO SCIVOLO"
+   },
+   "scia-1": {
+    "file": "audio/frasiViaggio/scia-1.mp3",
+    "dur": 1.463,
+    "spoken": "LO SCIAME SEGUE LA SCIA"
+   },
+   "scio-1": {
+    "file": "audio/frasiViaggio/scio-1.mp3",
+    "dur": 2.09,
+    "spoken": "LO SCIOPERO FA SCIOGLIERE IL GHIACCIO"
+   },
+   "sciu-1": {
+    "file": "audio/frasiViaggio/sciu-1.mp3",
+    "dur": 1.724,
+    "spoken": "NON SCIUPARE L'ASCIUGAMANO"
+   },
+   "gna-1": {
+    "file": "audio/frasiViaggio/gna-1.mp3",
+    "dur": 1.489,
+    "spoken": "LA MONTAGNA HA UNA PIGNA"
+   },
+   "gne-1": {
+    "file": "audio/frasiViaggio/gne-1.mp3",
+    "dur": 1.829,
+    "spoken": "L'INGEGNERE HA DUE COMPAGNE"
+   },
+   "gni-1": {
+    "file": "audio/frasiViaggio/gni-1.mp3",
+    "dur": 1.724,
+    "spoken": "I RAGNI E I COMPAGNI GIOCANO"
+   },
+   "gno-1": {
+    "file": "audio/frasiViaggio/gno-1.mp3",
+    "dur": 1.384,
+    "spoken": "LO GNOMO È NEL BAGNO"
+   },
+   "glia-1": {
+    "file": "audio/frasiViaggio/glia-1.mp3",
+    "dur": 1.411,
+    "spoken": "LA FAMIGLIA HA UNA MAGLIA"
+   },
+   "glie-1": {
+    "file": "audio/frasiViaggio/glie-1.mp3",
+    "dur": 1.358,
+    "spoken": "LA MOGLIE HA DUE FIGLIE"
+   },
+   "glio-1": {
+    "file": "audio/frasiViaggio/glio-1.mp3",
+    "dur": 1.463,
+    "spoken": "IL FIGLIO MANGIA L'AGLIO"
+   },
+   "qua-1": {
+    "file": "audio/frasiViaggio/qua-1.mp3",
+    "dur": 0.967,
+    "spoken": "IL QUADRO È QUA"
+   },
+   "que-1": {
+    "file": "audio/frasiViaggio/que-1.mp3",
+    "dur": 1.228,
+    "spoken": "QUESTO È UN QUESITO"
+   },
+   "quo-1": {
+    "file": "audio/frasiViaggio/quo-1.mp3",
+    "dur": 1.541,
+    "spoken": "IL QUOTIDIANO HA UNA QUOTA"
+   },
+   "acqua-1": {
+    "file": "audio/frasiViaggio/acqua-1.mp3",
+    "dur": 1.567,
+    "spoken": "L'ACQUA RIEMPIE L'ACQUARIO"
+   },
+   "a-1": {
+    "file": "audio/frasiViaggio/a-1.mp3",
+    "dur": 0.993,
+    "spoken": "ANNA AMA L'ALA"
+   },
+   "e-1": {
+    "file": "audio/frasiViaggio/e-1.mp3",
+    "dur": 0.993,
+    "spoken": "ELENA È UN EROE"
+   },
+   "i-1": {
+    "file": "audio/frasiViaggio/i-1.mp3",
+    "dur": 1.123,
+    "spoken": "L'IDEA È UN'ISOLA"
+   },
+   "o-1": {
+    "file": "audio/frasiViaggio/o-1.mp3",
+    "dur": 1.019,
+    "spoken": "ORO E OROLOGIO"
+   },
+   "u-1": {
+    "file": "audio/frasiViaggio/u-1.mp3",
+    "dur": 1.437,
+    "spoken": "L'UNICORNO MANGIA L'UVA"
+   },
+   "vu-1": {
+    "file": "audio/frasiViaggio/vu-1.mp3",
+    "dur": 1.306,
+    "spoken": "LA VUVUZELA SUONA"
+   },
+   "za-1": {
+    "file": "audio/frasiViaggio/za-1.mp3",
+    "dur": 1.332,
+    "spoken": "ZARA HA UNA ZAGARA"
+   },
+   "ze-1": {
+    "file": "audio/frasiViaggio/ze-1.mp3",
+    "dur": 1.515,
+    "spoken": "ZERO ZEBRE NEL ZOO"
+   },
+   "zi-1": {
+    "file": "audio/frasiViaggio/zi-1.mp3",
+    "dur": 0.731,
+    "spoken": "ZIA E ZII"
+   },
+   "zo-1": {
+    "file": "audio/frasiViaggio/zo-1.mp3",
+    "dur": 1.358,
+    "spoken": "LO ZOO HA UNA ZONA"
+   },
+   "gnu-1": {
+    "file": "audio/frasiViaggio/gnu-1.mp3",
+    "dur": 1.176,
+    "spoken": "LO GNU È NEL ZOO"
+   },
+   "qui-1": {
+    "file": "audio/frasiViaggio/qui-1.mp3",
+    "dur": 0.653,
+    "spoken": "QUI E QUI"
    }
   }
  }

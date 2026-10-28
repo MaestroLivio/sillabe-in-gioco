@@ -1,0 +1,2664 @@
+{
+  "generated": "2026-10-28T08:27:29.136Z",
+  "count": 443,
+  "items": [
+    {
+      "id": "ago",
+      "parola": "AGO",
+      "file": "illustrations/parole/ago.svg",
+      "alt": "Un ago da cucito"
+    },
+    {
+      "id": "arancia",
+      "parola": "ARANCIA",
+      "file": "illustrations/parole/arancia.svg",
+      "alt": "Un'arancia"
+    },
+    {
+      "id": "amico",
+      "parola": "AMICO",
+      "file": "illustrations/parole/amico.svg",
+      "alt": "Due amici"
+    },
+    {
+      "id": "aria",
+      "parola": "ARIA",
+      "file": "illustrations/parole/aria.svg",
+      "alt": "Il vento"
+    },
+    {
+      "id": "elefante",
+      "parola": "ELEFANTE",
+      "file": "illustrations/parole/elefante.svg",
+      "alt": "Un elefante"
+    },
+    {
+      "id": "elica",
+      "parola": "ELICA",
+      "file": "illustrations/parole/elica.svg",
+      "alt": "L'elica di un elicottero"
+    },
+    {
+      "id": "eroe",
+      "parola": "EROE",
+      "file": "illustrations/parole/eroe.svg",
+      "alt": "Un eroe"
+    },
+    {
+      "id": "edera",
+      "parola": "EDERA",
+      "file": "illustrations/parole/edera.svg",
+      "alt": "Una pianta di edera"
+    },
+    {
+      "id": "isola",
+      "parola": "ISOLA",
+      "file": "illustrations/parole/isola.svg",
+      "alt": "Un'isola"
+    },
+    {
+      "id": "idea",
+      "parola": "IDEA",
+      "file": "illustrations/parole/idea.svg",
+      "alt": "Una lampadina accesa: un'idea"
+    },
+    {
+      "id": "igloo",
+      "parola": "IGLOO",
+      "file": "illustrations/parole/igloo.svg",
+      "alt": "Un igloo"
+    },
+    {
+      "id": "ibisco",
+      "parola": "IBISCO",
+      "file": "illustrations/parole/ibisco.svg",
+      "alt": "Un fiore di ibisco"
+    },
+    {
+      "id": "oro",
+      "parola": "ORO",
+      "file": "illustrations/parole/oro.svg",
+      "alt": "Una moneta d'oro"
+    },
+    {
+      "id": "orologio",
+      "parola": "OROLOGIO",
+      "file": "illustrations/parole/orologio.svg",
+      "alt": "Un orologio"
+    },
+    {
+      "id": "omelette",
+      "parola": "OMELETTE",
+      "file": "illustrations/parole/omelette.svg",
+      "alt": "Una omelette"
+    },
+    {
+      "id": "ospedale",
+      "parola": "OSPEDALE",
+      "file": "illustrations/parole/ospedale.svg",
+      "alt": "Un ospedale"
+    },
+    {
+      "id": "uva",
+      "parola": "UVA",
+      "file": "illustrations/parole/uva.svg",
+      "alt": "Un grappolo d'uva"
+    },
+    {
+      "id": "unicorno",
+      "parola": "UNICORNO",
+      "file": "illustrations/parole/unicorno.svg",
+      "alt": "Un unicorno"
+    },
+    {
+      "id": "universo",
+      "parola": "UNIVERSO",
+      "file": "illustrations/parole/universo.svg",
+      "alt": "Le stelle dell'universo"
+    },
+    {
+      "id": "mare",
+      "parola": "MARE",
+      "file": "illustrations/parole/mare.svg",
+      "alt": "Il mare con le onde"
+    },
+    {
+      "id": "mano",
+      "parola": "MANO",
+      "file": "illustrations/parole/mano.svg",
+      "alt": "Una mano aperta"
+    },
+    {
+      "id": "matita",
+      "parola": "MATITA",
+      "file": "illustrations/parole/matita.svg",
+      "alt": "Una matita"
+    },
+    {
+      "id": "mago",
+      "parola": "MAGO",
+      "file": "illustrations/parole/mago.svg",
+      "alt": "Un mago"
+    },
+    {
+      "id": "mamma",
+      "parola": "MAMMA",
+      "file": "illustrations/parole/mamma.svg",
+      "alt": "Una mamma"
+    },
+    {
+      "id": "medico",
+      "parola": "MEDICO",
+      "file": "illustrations/parole/medico.svg",
+      "alt": "Un medico"
+    },
+    {
+      "id": "merenda",
+      "parola": "MERENDA",
+      "file": "illustrations/parole/merenda.svg",
+      "alt": "Una merenda con un biscotto"
+    },
+    {
+      "id": "melone",
+      "parola": "MELONE",
+      "file": "illustrations/parole/melone.svg",
+      "alt": "Un melone"
+    },
+    {
+      "id": "mimo",
+      "parola": "MIMO",
+      "file": "illustrations/parole/mimo.svg",
+      "alt": "Un mimo con la maschera"
+    },
+    {
+      "id": "mimosa",
+      "parola": "MIMOSA",
+      "file": "illustrations/parole/mimosa.svg",
+      "alt": "Un fiore di mimosa"
+    },
+    {
+      "id": "minestra",
+      "parola": "MINESTRA",
+      "file": "illustrations/parole/minestra.svg",
+      "alt": "Una scodella di minestra"
+    },
+    {
+      "id": "microfono",
+      "parola": "MICROFONO",
+      "file": "illustrations/parole/microfono.svg",
+      "alt": "Un microfono"
+    },
+    {
+      "id": "moto",
+      "parola": "MOTO",
+      "file": "illustrations/parole/moto.svg",
+      "alt": "Una moto"
+    },
+    {
+      "id": "mora",
+      "parola": "MORA",
+      "file": "illustrations/parole/mora.svg",
+      "alt": "Una mora"
+    },
+    {
+      "id": "moneta",
+      "parola": "MONETA",
+      "file": "illustrations/parole/moneta.svg",
+      "alt": "Una moneta"
+    },
+    {
+      "id": "mostro",
+      "parola": "MOSTRO",
+      "file": "illustrations/parole/mostro.svg",
+      "alt": "Un mostro buffo"
+    },
+    {
+      "id": "mulo",
+      "parola": "MULO",
+      "file": "illustrations/parole/mulo.svg",
+      "alt": "Un mulo"
+    },
+    {
+      "id": "muro",
+      "parola": "MURO",
+      "file": "illustrations/parole/muro.svg",
+      "alt": "Un muro di mattoni"
+    },
+    {
+      "id": "museo",
+      "parola": "MUSEO",
+      "file": "illustrations/parole/museo.svg",
+      "alt": "Un museo"
+    },
+    {
+      "id": "muratore",
+      "parola": "MURATORE",
+      "file": "illustrations/parole/muratore.svg",
+      "alt": "Un muratore"
+    },
+    {
+      "id": "pala",
+      "parola": "PALA",
+      "file": "illustrations/parole/pala.svg",
+      "alt": "Una pala"
+    },
+    {
+      "id": "papa",
+      "parola": "PAPÀ",
+      "file": "illustrations/parole/papa.svg",
+      "alt": "Un papà"
+    },
+    {
+      "id": "pavone",
+      "parola": "PAVONE",
+      "file": "illustrations/parole/pavone.svg",
+      "alt": "Un pavone"
+    },
+    {
+      "id": "patata",
+      "parola": "PATATA",
+      "file": "illustrations/parole/patata.svg",
+      "alt": "Una patata"
+    },
+    {
+      "id": "pera",
+      "parola": "PERA",
+      "file": "illustrations/parole/pera.svg",
+      "alt": "Una pera"
+    },
+    {
+      "id": "peperone",
+      "parola": "PEPERONE",
+      "file": "illustrations/parole/peperone.svg",
+      "alt": "Un peperone"
+    },
+    {
+      "id": "peluche",
+      "parola": "PELUCHE",
+      "file": "illustrations/parole/peluche.svg",
+      "alt": "Un peluche"
+    },
+    {
+      "id": "pipa",
+      "parola": "PIPA",
+      "file": "illustrations/parole/pipa.svg",
+      "alt": "Una pipa di legno"
+    },
+    {
+      "id": "pino",
+      "parola": "PINO",
+      "file": "illustrations/parole/pino.svg",
+      "alt": "Un pino"
+    },
+    {
+      "id": "pirata",
+      "parola": "PIRATA",
+      "file": "illustrations/parole/pirata.svg",
+      "alt": "Un pirata"
+    },
+    {
+      "id": "pila",
+      "parola": "PILA",
+      "file": "illustrations/parole/pila.svg",
+      "alt": "Una pila"
+    },
+    {
+      "id": "pomodoro",
+      "parola": "POMODORO",
+      "file": "illustrations/parole/pomodoro.svg",
+      "alt": "Un pomodoro"
+    },
+    {
+      "id": "polenta",
+      "parola": "POLENTA",
+      "file": "illustrations/parole/polenta.svg",
+      "alt": "Una scodella di polenta"
+    },
+    {
+      "id": "popone",
+      "parola": "POPONE",
+      "file": "illustrations/parole/popone.svg",
+      "alt": "Un popone"
+    },
+    {
+      "id": "poeta",
+      "parola": "POETA",
+      "file": "illustrations/parole/poeta.svg",
+      "alt": "Un poeta con un foglio"
+    },
+    {
+      "id": "puma",
+      "parola": "PUMA",
+      "file": "illustrations/parole/puma.svg",
+      "alt": "Un puma"
+    },
+    {
+      "id": "pugno",
+      "parola": "PUGNO",
+      "file": "illustrations/parole/pugno.svg",
+      "alt": "Un pugno chiuso"
+    },
+    {
+      "id": "pupazzo",
+      "parola": "PUPAZZO",
+      "file": "illustrations/parole/pupazzo.svg",
+      "alt": "Un pupazzo"
+    },
+    {
+      "id": "lana",
+      "parola": "LANA",
+      "file": "illustrations/parole/lana.svg",
+      "alt": "Un gomitolo di lana"
+    },
+    {
+      "id": "lago",
+      "parola": "LAGO",
+      "file": "illustrations/parole/lago.svg",
+      "alt": "Un lago"
+    },
+    {
+      "id": "lapis",
+      "parola": "LAPIS",
+      "file": "illustrations/parole/lapis.svg",
+      "alt": "Una matita lapis"
+    },
+    {
+      "id": "lavagna",
+      "parola": "LAVAGNA",
+      "file": "illustrations/parole/lavagna.svg",
+      "alt": "Una lavagna"
+    },
+    {
+      "id": "leone",
+      "parola": "LEONE",
+      "file": "illustrations/parole/leone.svg",
+      "alt": "Un leone"
+    },
+    {
+      "id": "leva",
+      "parola": "LEVA",
+      "file": "illustrations/parole/leva.svg",
+      "alt": "Una leva"
+    },
+    {
+      "id": "lepre",
+      "parola": "LEPRE",
+      "file": "illustrations/parole/lepre.svg",
+      "alt": "Una lepre"
+    },
+    {
+      "id": "legno",
+      "parola": "LEGNO",
+      "file": "illustrations/parole/legno.svg",
+      "alt": "Un pezzo di legno"
+    },
+    {
+      "id": "lima",
+      "parola": "LIMA",
+      "file": "illustrations/parole/lima.svg",
+      "alt": "Una lima"
+    },
+    {
+      "id": "limone",
+      "parola": "LIMONE",
+      "file": "illustrations/parole/limone.svg",
+      "alt": "Un limone"
+    },
+    {
+      "id": "lido",
+      "parola": "LIDO",
+      "file": "illustrations/parole/lido.svg",
+      "alt": "Un lido con la spiaggia"
+    },
+    {
+      "id": "loto",
+      "parola": "LOTO",
+      "file": "illustrations/parole/loto.svg",
+      "alt": "Un fiore di loto"
+    },
+    {
+      "id": "locomotiva",
+      "parola": "LOCOMOTIVA",
+      "file": "illustrations/parole/locomotiva.svg",
+      "alt": "Una locomotiva"
+    },
+    {
+      "id": "luce",
+      "parola": "LUCE",
+      "file": "illustrations/parole/luce.svg",
+      "alt": "Una lampadina accesa"
+    },
+    {
+      "id": "lupo",
+      "parola": "LUPO",
+      "file": "illustrations/parole/lupo.svg",
+      "alt": "Un lupo"
+    },
+    {
+      "id": "lume",
+      "parola": "LUME",
+      "file": "illustrations/parole/lume.svg",
+      "alt": "Una candela accesa"
+    },
+    {
+      "id": "tavolo",
+      "parola": "TAVOLO",
+      "file": "illustrations/parole/tavolo.svg",
+      "alt": "Un tavolo"
+    },
+    {
+      "id": "tana",
+      "parola": "TANA",
+      "file": "illustrations/parole/tana.svg",
+      "alt": "Una tana"
+    },
+    {
+      "id": "taglio",
+      "parola": "TAGLIO",
+      "file": "illustrations/parole/taglio.svg",
+      "alt": "Delle forbici che tagliano"
+    },
+    {
+      "id": "tavoletta",
+      "parola": "TAVOLETTA",
+      "file": "illustrations/parole/tavoletta.svg",
+      "alt": "Una tavoletta per scrivere"
+    },
+    {
+      "id": "tela",
+      "parola": "TELA",
+      "file": "illustrations/parole/tela.svg",
+      "alt": "Un tessuto di tela"
+    },
+    {
+      "id": "tema",
+      "parola": "TEMA",
+      "file": "illustrations/parole/tema.svg",
+      "alt": "Un tema scritto"
+    },
+    {
+      "id": "telefono",
+      "parola": "TELEFONO",
+      "file": "illustrations/parole/telefono.svg",
+      "alt": "Un telefono"
+    },
+    {
+      "id": "teiera",
+      "parola": "TEIERA",
+      "file": "illustrations/parole/teiera.svg",
+      "alt": "Una teiera"
+    },
+    {
+      "id": "tigre",
+      "parola": "TIGRE",
+      "file": "illustrations/parole/tigre.svg",
+      "alt": "Una tigre"
+    },
+    {
+      "id": "timone",
+      "parola": "TIMONE",
+      "file": "illustrations/parole/timone.svg",
+      "alt": "Il timone di una barca"
+    },
+    {
+      "id": "timo",
+      "parola": "TIMO",
+      "file": "illustrations/parole/timo.svg",
+      "alt": "Una piantina di timo"
+    },
+    {
+      "id": "toro",
+      "parola": "TORO",
+      "file": "illustrations/parole/toro.svg",
+      "alt": "Un toro"
+    },
+    {
+      "id": "tovaglia",
+      "parola": "TOVAGLIA",
+      "file": "illustrations/parole/tovaglia.svg",
+      "alt": "Una tovaglia apparecchiata"
+    },
+    {
+      "id": "tuta",
+      "parola": "TUTA",
+      "file": "illustrations/parole/tuta.svg",
+      "alt": "Una tuta"
+    },
+    {
+      "id": "tubo",
+      "parola": "TUBO",
+      "file": "illustrations/parole/tubo.svg",
+      "alt": "Un tubo"
+    },
+    {
+      "id": "tulipano",
+      "parola": "TULIPANO",
+      "file": "illustrations/parole/tulipano.svg",
+      "alt": "Un tulipano"
+    },
+    {
+      "id": "sale",
+      "parola": "SALE",
+      "file": "illustrations/parole/sale.svg",
+      "alt": "Un sale"
+    },
+    {
+      "id": "sapone",
+      "parola": "SAPONE",
+      "file": "illustrations/parole/sapone.svg",
+      "alt": "Una saponetta"
+    },
+    {
+      "id": "salame",
+      "parola": "SALAME",
+      "file": "illustrations/parole/salame.svg",
+      "alt": "Una fetta di salame"
+    },
+    {
+      "id": "salice",
+      "parola": "SALICE",
+      "file": "illustrations/parole/salice.svg",
+      "alt": "Un salice"
+    },
+    {
+      "id": "sedia",
+      "parola": "SEDIA",
+      "file": "illustrations/parole/sedia.svg",
+      "alt": "Una sedia"
+    },
+    {
+      "id": "seta",
+      "parola": "SETA",
+      "file": "illustrations/parole/seta.svg",
+      "alt": "Un filo di seta"
+    },
+    {
+      "id": "sera",
+      "parola": "SERA",
+      "file": "illustrations/parole/sera.svg",
+      "alt": "Il cielo della sera"
+    },
+    {
+      "id": "sedano",
+      "parola": "SEDANO",
+      "file": "illustrations/parole/sedano.svg",
+      "alt": "Un sedano"
+    },
+    {
+      "id": "sirena",
+      "parola": "SIRENA",
+      "file": "illustrations/parole/sirena.svg",
+      "alt": "Una sirena"
+    },
+    {
+      "id": "siringa",
+      "parola": "SIRINGA",
+      "file": "illustrations/parole/siringa.svg",
+      "alt": "Una siringa"
+    },
+    {
+      "id": "sipario",
+      "parola": "SIPARIO",
+      "file": "illustrations/parole/sipario.svg",
+      "alt": "Un sipario del teatro"
+    },
+    {
+      "id": "silenzio",
+      "parola": "SILENZIO",
+      "file": "illustrations/parole/silenzio.svg",
+      "alt": "Un dito sulle labbra: silenzio"
+    },
+    {
+      "id": "sonaglio",
+      "parola": "SONAGLIO",
+      "file": "illustrations/parole/sonaglio.svg",
+      "alt": "Un sonaglio"
+    },
+    {
+      "id": "sorella",
+      "parola": "SORELLA",
+      "file": "illustrations/parole/sorella.svg",
+      "alt": "Una sorella"
+    },
+    {
+      "id": "sofa",
+      "parola": "SOFÀ",
+      "file": "illustrations/parole/sofa.svg",
+      "alt": "Un divano"
+    },
+    {
+      "id": "sugo",
+      "parola": "SUGO",
+      "file": "illustrations/parole/sugo.svg",
+      "alt": "Un barattolo di sugo"
+    },
+    {
+      "id": "susina",
+      "parola": "SUSINA",
+      "file": "illustrations/parole/susina.svg",
+      "alt": "Una susina"
+    },
+    {
+      "id": "sughero",
+      "parola": "SUGHERO",
+      "file": "illustrations/parole/sughero.svg",
+      "alt": "Un tappo di sughero"
+    },
+    {
+      "id": "naso",
+      "parola": "NASO",
+      "file": "illustrations/parole/naso.svg",
+      "alt": "Un naso"
+    },
+    {
+      "id": "natale",
+      "parola": "NATALE",
+      "file": "illustrations/parole/natale.svg",
+      "alt": "Un albero di Natale"
+    },
+    {
+      "id": "neve",
+      "parola": "NEVE",
+      "file": "illustrations/parole/neve.svg",
+      "alt": "Un fiocco di neve"
+    },
+    {
+      "id": "nero",
+      "parola": "NERO",
+      "file": "illustrations/parole/nero.svg",
+      "alt": "Un cerchio nero"
+    },
+    {
+      "id": "nespola",
+      "parola": "NESPOLA",
+      "file": "illustrations/parole/nespola.svg",
+      "alt": "Una nespola"
+    },
+    {
+      "id": "negozio",
+      "parola": "NEGOZIO",
+      "file": "illustrations/parole/negozio.svg",
+      "alt": "Un negozio"
+    },
+    {
+      "id": "nido",
+      "parola": "NIDO",
+      "file": "illustrations/parole/nido.svg",
+      "alt": "Un nido"
+    },
+    {
+      "id": "nipote",
+      "parola": "NIPOTE",
+      "file": "illustrations/parole/nipote.svg",
+      "alt": "Un nipote"
+    },
+    {
+      "id": "nome",
+      "parola": "NOME",
+      "file": "illustrations/parole/nome.svg",
+      "alt": "Un cartellino con un nome"
+    },
+    {
+      "id": "nodo",
+      "parola": "NODO",
+      "file": "illustrations/parole/nodo.svg",
+      "alt": "Un nodo"
+    },
+    {
+      "id": "noce",
+      "parola": "NOCE",
+      "file": "illustrations/parole/noce.svg",
+      "alt": "Una noce"
+    },
+    {
+      "id": "nove",
+      "parola": "NOVE",
+      "file": "illustrations/parole/nove.svg",
+      "alt": "Il numero nove"
+    },
+    {
+      "id": "nuvola",
+      "parola": "NUVOLA",
+      "file": "illustrations/parole/nuvola.svg",
+      "alt": "Una nuvola"
+    },
+    {
+      "id": "nucleo",
+      "parola": "NUCLEO",
+      "file": "illustrations/parole/nucleo.svg",
+      "alt": "Il nucleo di un atomo"
+    },
+    {
+      "id": "nube",
+      "parola": "NUBE",
+      "file": "illustrations/parole/nube.svg",
+      "alt": "Una nube"
+    },
+    {
+      "id": "nutria",
+      "parola": "NUTRIA",
+      "file": "illustrations/parole/nutria.svg",
+      "alt": "Una nutria"
+    },
+    {
+      "id": "ramo",
+      "parola": "RAMO",
+      "file": "illustrations/parole/ramo.svg",
+      "alt": "Un ramo"
+    },
+    {
+      "id": "radio",
+      "parola": "RADIO",
+      "file": "illustrations/parole/radio.svg",
+      "alt": "Una radio"
+    },
+    {
+      "id": "rasoio",
+      "parola": "RASOIO",
+      "file": "illustrations/parole/rasoio.svg",
+      "alt": "Un rasoio"
+    },
+    {
+      "id": "regalo",
+      "parola": "REGALO",
+      "file": "illustrations/parole/regalo.svg",
+      "alt": "Un regalo"
+    },
+    {
+      "id": "remo",
+      "parola": "REMO",
+      "file": "illustrations/parole/remo.svg",
+      "alt": "Un remo"
+    },
+    {
+      "id": "rete",
+      "parola": "RETE",
+      "file": "illustrations/parole/rete.svg",
+      "alt": "Una rete da gioco"
+    },
+    {
+      "id": "regina",
+      "parola": "REGINA",
+      "file": "illustrations/parole/regina.svg",
+      "alt": "Una regina"
+    },
+    {
+      "id": "riso",
+      "parola": "RISO",
+      "file": "illustrations/parole/riso.svg",
+      "alt": "Una ciotola di riso"
+    },
+    {
+      "id": "riga",
+      "parola": "RIGA",
+      "file": "illustrations/parole/riga.svg",
+      "alt": "Una riga"
+    },
+    {
+      "id": "riva",
+      "parola": "RIVA",
+      "file": "illustrations/parole/riva.svg",
+      "alt": "La riva di un lago"
+    },
+    {
+      "id": "rimorchio",
+      "parola": "RIMORCHIO",
+      "file": "illustrations/parole/rimorchio.svg",
+      "alt": "Un rimorchio"
+    },
+    {
+      "id": "rosa",
+      "parola": "ROSA",
+      "file": "illustrations/parole/rosa.svg",
+      "alt": "Una rosa"
+    },
+    {
+      "id": "robot",
+      "parola": "ROBOT",
+      "file": "illustrations/parole/robot.svg",
+      "alt": "Un robot"
+    },
+    {
+      "id": "rotella",
+      "parola": "ROTELLA",
+      "file": "illustrations/parole/rotella.svg",
+      "alt": "Una rotella"
+    },
+    {
+      "id": "rospo",
+      "parola": "ROSPO",
+      "file": "illustrations/parole/rospo.svg",
+      "alt": "Un rospo"
+    },
+    {
+      "id": "rubinetto",
+      "parola": "RUBINETTO",
+      "file": "illustrations/parole/rubinetto.svg",
+      "alt": "Un rubinetto"
+    },
+    {
+      "id": "ruspa",
+      "parola": "RUSPA",
+      "file": "illustrations/parole/ruspa.svg",
+      "alt": "Una ruspa"
+    },
+    {
+      "id": "rumore",
+      "parola": "RUMORE",
+      "file": "illustrations/parole/rumore.svg",
+      "alt": "Un altoparlante che fa rumore"
+    },
+    {
+      "id": "ruga",
+      "parola": "RUGA",
+      "file": "illustrations/parole/ruga.svg",
+      "alt": "Le rughe di un viso"
+    },
+    {
+      "id": "fata",
+      "parola": "FATA",
+      "file": "illustrations/parole/fata.svg",
+      "alt": "Una fata"
+    },
+    {
+      "id": "fagiolo",
+      "parola": "FAGIOLO",
+      "file": "illustrations/parole/fagiolo.svg",
+      "alt": "Un fagiolo"
+    },
+    {
+      "id": "falena",
+      "parola": "FALENA",
+      "file": "illustrations/parole/falena.svg",
+      "alt": "Una falena"
+    },
+    {
+      "id": "fenice",
+      "parola": "FENICE",
+      "file": "illustrations/parole/fenice.svg",
+      "alt": "Una fenice"
+    },
+    {
+      "id": "femore",
+      "parola": "FEMORE",
+      "file": "illustrations/parole/femore.svg",
+      "alt": "Il femore, un osso della gamba"
+    },
+    {
+      "id": "filo",
+      "parola": "FILO",
+      "file": "illustrations/parole/filo.svg",
+      "alt": "Un filo"
+    },
+    {
+      "id": "fico",
+      "parola": "FICO",
+      "file": "illustrations/parole/fico.svg",
+      "alt": "Un fico"
+    },
+    {
+      "id": "fischio",
+      "parola": "FISCHIO",
+      "file": "illustrations/parole/fischio.svg",
+      "alt": "Un fischietto"
+    },
+    {
+      "id": "foca",
+      "parola": "FOCA",
+      "file": "illustrations/parole/foca.svg",
+      "alt": "Una foca"
+    },
+    {
+      "id": "foglia",
+      "parola": "FOGLIA",
+      "file": "illustrations/parole/foglia.svg",
+      "alt": "Una foglia"
+    },
+    {
+      "id": "focolare",
+      "parola": "FOCOLARE",
+      "file": "illustrations/parole/focolare.svg",
+      "alt": "Un focolare acceso"
+    },
+    {
+      "id": "fumo",
+      "parola": "FUMO",
+      "file": "illustrations/parole/fumo.svg",
+      "alt": "Del fumo"
+    },
+    {
+      "id": "fuga",
+      "parola": "FUGA",
+      "file": "illustrations/parole/fuga.svg",
+      "alt": "Una persona che fugge"
+    },
+    {
+      "id": "fusto",
+      "parola": "FUSTO",
+      "file": "illustrations/parole/fusto.svg",
+      "alt": "Il fusto di una pianta"
+    },
+    {
+      "id": "vaso",
+      "parola": "VASO",
+      "file": "illustrations/parole/vaso.svg",
+      "alt": "Un vaso"
+    },
+    {
+      "id": "vasca",
+      "parola": "VASCA",
+      "file": "illustrations/parole/vasca.svg",
+      "alt": "Una vasca da bagno"
+    },
+    {
+      "id": "vaniglia",
+      "parola": "VANIGLIA",
+      "file": "illustrations/parole/vaniglia.svg",
+      "alt": "Un fiore di vaniglia"
+    },
+    {
+      "id": "vapore",
+      "parola": "VAPORE",
+      "file": "illustrations/parole/vapore.svg",
+      "alt": "Del vapore"
+    },
+    {
+      "id": "vela",
+      "parola": "VELA",
+      "file": "illustrations/parole/vela.svg",
+      "alt": "Una vela"
+    },
+    {
+      "id": "vespa",
+      "parola": "VESPA",
+      "file": "illustrations/parole/vespa.svg",
+      "alt": "Una vespa"
+    },
+    {
+      "id": "vetro",
+      "parola": "VETRO",
+      "file": "illustrations/parole/vetro.svg",
+      "alt": "Un vetro"
+    },
+    {
+      "id": "vino",
+      "parola": "VINO",
+      "file": "illustrations/parole/vino.svg",
+      "alt": "Un bicchiere di vino"
+    },
+    {
+      "id": "vite",
+      "parola": "VITE",
+      "file": "illustrations/parole/vite.svg",
+      "alt": "Una vite con l'uva"
+    },
+    {
+      "id": "viso",
+      "parola": "VISO",
+      "file": "illustrations/parole/viso.svg",
+      "alt": "Un viso sorridente"
+    },
+    {
+      "id": "volo",
+      "parola": "VOLO",
+      "file": "illustrations/parole/volo.svg",
+      "alt": "Un aereo in volo"
+    },
+    {
+      "id": "volante",
+      "parola": "VOLANTE",
+      "file": "illustrations/parole/volante.svg",
+      "alt": "Un volante"
+    },
+    {
+      "id": "voce",
+      "parola": "VOCE",
+      "file": "illustrations/parole/voce.svg",
+      "alt": "Una voce che parla"
+    },
+    {
+      "id": "vuvuzela",
+      "parola": "VUVUZELA",
+      "file": "illustrations/parole/vuvuzela.svg",
+      "alt": "Una vuvuzela"
+    },
+    {
+      "id": "banana",
+      "parola": "BANANA",
+      "file": "illustrations/parole/banana.svg",
+      "alt": "Una banana"
+    },
+    {
+      "id": "balena",
+      "parola": "BALENA",
+      "file": "illustrations/parole/balena.svg",
+      "alt": "Una balena"
+    },
+    {
+      "id": "bene",
+      "parola": "BENE",
+      "file": "illustrations/parole/bene.svg",
+      "alt": "Un pollice in su: bene"
+    },
+    {
+      "id": "bere",
+      "parola": "BERE",
+      "file": "illustrations/parole/bere.svg",
+      "alt": "Una persona che beve"
+    },
+    {
+      "id": "bevanda",
+      "parola": "BEVANDA",
+      "file": "illustrations/parole/bevanda.svg",
+      "alt": "Una bevanda"
+    },
+    {
+      "id": "bici",
+      "parola": "BICI",
+      "file": "illustrations/parole/bici.svg",
+      "alt": "Una bicicletta"
+    },
+    {
+      "id": "bilancia",
+      "parola": "BILANCIA",
+      "file": "illustrations/parole/bilancia.svg",
+      "alt": "Una bilancia"
+    },
+    {
+      "id": "biscotto",
+      "parola": "BISCOTTO",
+      "file": "illustrations/parole/biscotto.svg",
+      "alt": "Un biscotto"
+    },
+    {
+      "id": "bidone",
+      "parola": "BIDONE",
+      "file": "illustrations/parole/bidone.svg",
+      "alt": "Un bidone"
+    },
+    {
+      "id": "boa",
+      "parola": "BOA",
+      "file": "illustrations/parole/boa.svg",
+      "alt": "Un boa"
+    },
+    {
+      "id": "bosco",
+      "parola": "BOSCO",
+      "file": "illustrations/parole/bosco.svg",
+      "alt": "Un bosco"
+    },
+    {
+      "id": "bove",
+      "parola": "BOVE",
+      "file": "illustrations/parole/bove.svg",
+      "alt": "Un bove"
+    },
+    {
+      "id": "budino",
+      "parola": "BUDINO",
+      "file": "illustrations/parole/budino.svg",
+      "alt": "Un budino"
+    },
+    {
+      "id": "bufalo",
+      "parola": "BUFALO",
+      "file": "illustrations/parole/bufalo.svg",
+      "alt": "Un bufalo"
+    },
+    {
+      "id": "bue",
+      "parola": "BUE",
+      "file": "illustrations/parole/bue.svg",
+      "alt": "Un bue"
+    },
+    {
+      "id": "dama",
+      "parola": "DAMA",
+      "file": "illustrations/parole/dama.svg",
+      "alt": "Una dama del gioco"
+    },
+    {
+      "id": "denaro",
+      "parola": "DENARO",
+      "file": "illustrations/parole/denaro.svg",
+      "alt": "Un sacchetto di denaro"
+    },
+    {
+      "id": "deserto",
+      "parola": "DESERTO",
+      "file": "illustrations/parole/deserto.svg",
+      "alt": "Un deserto"
+    },
+    {
+      "id": "dito",
+      "parola": "DITO",
+      "file": "illustrations/parole/dito.svg",
+      "alt": "Un dito"
+    },
+    {
+      "id": "divano",
+      "parola": "DIVANO",
+      "file": "illustrations/parole/divano.svg",
+      "alt": "Un divano"
+    },
+    {
+      "id": "diga",
+      "parola": "DIGA",
+      "file": "illustrations/parole/diga.svg",
+      "alt": "Una diga"
+    },
+    {
+      "id": "domino",
+      "parola": "DOMINO",
+      "file": "illustrations/parole/domino.svg",
+      "alt": "Una tessera del domino"
+    },
+    {
+      "id": "dono",
+      "parola": "DONO",
+      "file": "illustrations/parole/dono.svg",
+      "alt": "Un dono"
+    },
+    {
+      "id": "domenica",
+      "parola": "DOMENICA",
+      "file": "illustrations/parole/domenica.svg",
+      "alt": "Un calendario con la domenica"
+    },
+    {
+      "id": "duca",
+      "parola": "DUCA",
+      "file": "illustrations/parole/duca.svg",
+      "alt": "Un duca"
+    },
+    {
+      "id": "due",
+      "parola": "DUE",
+      "file": "illustrations/parole/due.svg",
+      "alt": "Il numero due"
+    },
+    {
+      "id": "zabaione",
+      "parola": "ZABAIONE",
+      "file": "illustrations/parole/zabaione.svg",
+      "alt": "Una coppa di zabaione"
+    },
+    {
+      "id": "zagara",
+      "parola": "ZAGARA",
+      "file": "illustrations/parole/zagara.svg",
+      "alt": "Un fiore di zagara"
+    },
+    {
+      "id": "zebra",
+      "parola": "ZEBRA",
+      "file": "illustrations/parole/zebra.svg",
+      "alt": "Una zebra"
+    },
+    {
+      "id": "zero",
+      "parola": "ZERO",
+      "file": "illustrations/parole/zero.svg",
+      "alt": "Il numero zero"
+    },
+    {
+      "id": "zia",
+      "parola": "ZIA",
+      "file": "illustrations/parole/zia.svg",
+      "alt": "Una zia"
+    },
+    {
+      "id": "zio",
+      "parola": "ZIO",
+      "file": "illustrations/parole/zio.svg",
+      "alt": "Uno zio"
+    },
+    {
+      "id": "zii",
+      "parola": "ZII",
+      "file": "illustrations/parole/zii.svg",
+      "alt": "Due zii"
+    },
+    {
+      "id": "zoo",
+      "parola": "ZOO",
+      "file": "illustrations/parole/zoo.svg",
+      "alt": "Un leone allo zoo"
+    },
+    {
+      "id": "zona",
+      "parola": "ZONA",
+      "file": "illustrations/parole/zona.svg",
+      "alt": "Una zona sulla mappa"
+    },
+    {
+      "id": "zuppa",
+      "parola": "ZUPPA",
+      "file": "illustrations/parole/zuppa.svg",
+      "alt": "Una zuppa"
+    },
+    {
+      "id": "zucchero",
+      "parola": "ZUCCHERO",
+      "file": "illustrations/parole/zucchero.svg",
+      "alt": "Delle zollette di zucchero"
+    },
+    {
+      "id": "zucca",
+      "parola": "ZUCCA",
+      "file": "illustrations/parole/zucca.svg",
+      "alt": "Una zucca"
+    },
+    {
+      "id": "camera",
+      "parola": "CAMERA",
+      "file": "illustrations/parole/camera.svg",
+      "alt": "Una camera da letto"
+    },
+    {
+      "id": "cavolo",
+      "parola": "CAVOLO",
+      "file": "illustrations/parole/cavolo.svg",
+      "alt": "Un cavolo"
+    },
+    {
+      "id": "coniglio",
+      "parola": "CONIGLIO",
+      "file": "illustrations/parole/coniglio.svg",
+      "alt": "Un coniglio"
+    },
+    {
+      "id": "cocomero",
+      "parola": "COCOMERO",
+      "file": "illustrations/parole/cocomero.svg",
+      "alt": "Un cocomero"
+    },
+    {
+      "id": "corona",
+      "parola": "CORONA",
+      "file": "illustrations/parole/corona.svg",
+      "alt": "Una corona"
+    },
+    {
+      "id": "cono",
+      "parola": "CONO",
+      "file": "illustrations/parole/cono.svg",
+      "alt": "Un cono gelato"
+    },
+    {
+      "id": "cubo",
+      "parola": "CUBO",
+      "file": "illustrations/parole/cubo.svg",
+      "alt": "Un cubo"
+    },
+    {
+      "id": "cucina",
+      "parola": "CUCINA",
+      "file": "illustrations/parole/cucina.svg",
+      "alt": "Una cucina"
+    },
+    {
+      "id": "cena",
+      "parola": "CENA",
+      "file": "illustrations/parole/cena.svg",
+      "alt": "Una tavola apparecchiata per cena"
+    },
+    {
+      "id": "cedro",
+      "parola": "CEDRO",
+      "file": "illustrations/parole/cedro.svg",
+      "alt": "Un cedro"
+    },
+    {
+      "id": "ciliegia",
+      "parola": "CILIEGIA",
+      "file": "illustrations/parole/ciliegia.svg",
+      "alt": "Una ciliegia"
+    },
+    {
+      "id": "cima",
+      "parola": "CIMA",
+      "file": "illustrations/parole/cima.svg",
+      "alt": "Una cima"
+    },
+    {
+      "id": "cinema",
+      "parola": "CINEMA",
+      "file": "illustrations/parole/cinema.svg",
+      "alt": "Un cinema"
+    },
+    {
+      "id": "chela",
+      "parola": "CHELA",
+      "file": "illustrations/parole/chela.svg",
+      "alt": "La chela di un granchio"
+    },
+    {
+      "id": "cherubino",
+      "parola": "CHERUBINO",
+      "file": "illustrations/parole/cherubino.svg",
+      "alt": "Un cherubino"
+    },
+    {
+      "id": "chilo",
+      "parola": "CHILO",
+      "file": "illustrations/parole/chilo.svg",
+      "alt": "Un peso da un chilo"
+    },
+    {
+      "id": "gara",
+      "parola": "GARA",
+      "file": "illustrations/parole/gara.svg",
+      "alt": "Una gara podistica"
+    },
+    {
+      "id": "gas",
+      "parola": "GAS",
+      "file": "illustrations/parole/gas.svg",
+      "alt": "Una bombola di gas"
+    },
+    {
+      "id": "gala",
+      "parola": "GALA",
+      "file": "illustrations/parole/gala.svg",
+      "alt": "Una festa di gala"
+    },
+    {
+      "id": "gorilla",
+      "parola": "GORILLA",
+      "file": "illustrations/parole/gorilla.svg",
+      "alt": "Un gorilla"
+    },
+    {
+      "id": "gomito",
+      "parola": "GOMITO",
+      "file": "illustrations/parole/gomito.svg",
+      "alt": "Un gomito"
+    },
+    {
+      "id": "gola",
+      "parola": "GOLA",
+      "file": "illustrations/parole/gola.svg",
+      "alt": "La gola"
+    },
+    {
+      "id": "gufo",
+      "parola": "GUFO",
+      "file": "illustrations/parole/gufo.svg",
+      "alt": "Un gufo"
+    },
+    {
+      "id": "guscio",
+      "parola": "GUSCIO",
+      "file": "illustrations/parole/guscio.svg",
+      "alt": "Un guscio d'uovo"
+    },
+    {
+      "id": "gelato",
+      "parola": "GELATO",
+      "file": "illustrations/parole/gelato.svg",
+      "alt": "Un gelato"
+    },
+    {
+      "id": "gemello",
+      "parola": "GEMELLO",
+      "file": "illustrations/parole/gemello.svg",
+      "alt": "Due gemelli"
+    },
+    {
+      "id": "geranio",
+      "parola": "GERANIO",
+      "file": "illustrations/parole/geranio.svg",
+      "alt": "Un geranio"
+    },
+    {
+      "id": "giraffa",
+      "parola": "GIRAFFA",
+      "file": "illustrations/parole/giraffa.svg",
+      "alt": "Una giraffa"
+    },
+    {
+      "id": "gita",
+      "parola": "GITA",
+      "file": "illustrations/parole/gita.svg",
+      "alt": "Una gita a piedi"
+    },
+    {
+      "id": "girasole",
+      "parola": "GIRASOLE",
+      "file": "illustrations/parole/girasole.svg",
+      "alt": "Un girasole"
+    },
+    {
+      "id": "ginocchio",
+      "parola": "GINOCCHIO",
+      "file": "illustrations/parole/ginocchio.svg",
+      "alt": "Un ginocchio"
+    },
+    {
+      "id": "ghepardo",
+      "parola": "GHEPARDO",
+      "file": "illustrations/parole/ghepardo.svg",
+      "alt": "Un ghepardo"
+    },
+    {
+      "id": "gheriglio",
+      "parola": "GHERIGLIO",
+      "file": "illustrations/parole/gheriglio.svg",
+      "alt": "Un gheriglio di noce"
+    },
+    {
+      "id": "ghisa",
+      "parola": "GHISA",
+      "file": "illustrations/parole/ghisa.svg",
+      "alt": "Un pezzo di ghisa"
+    },
+    {
+      "id": "ghiro",
+      "parola": "GHIRO",
+      "file": "illustrations/parole/ghiro.svg",
+      "alt": "Un ghiro"
+    },
+    {
+      "id": "ciabatta",
+      "parola": "CIABATTA",
+      "file": "illustrations/parole/ciabatta.svg",
+      "alt": "Una ciabatta"
+    },
+    {
+      "id": "camicia",
+      "parola": "CAMICIA",
+      "file": "illustrations/parole/camicia.svg",
+      "alt": "Una camicia"
+    },
+    {
+      "id": "freccia",
+      "parola": "FRECCIA",
+      "file": "illustrations/parole/freccia.svg",
+      "alt": "Una freccia"
+    },
+    {
+      "id": "ciotola",
+      "parola": "CIOTOLA",
+      "file": "illustrations/parole/ciotola.svg",
+      "alt": "Una ciotola"
+    },
+    {
+      "id": "bacio",
+      "parola": "BACIO",
+      "file": "illustrations/parole/bacio.svg",
+      "alt": "Un bacio"
+    },
+    {
+      "id": "abbraccio",
+      "parola": "ABBRACCIO",
+      "file": "illustrations/parole/abbraccio.svg",
+      "alt": "Un abbraccio"
+    },
+    {
+      "id": "ciuco",
+      "parola": "CIUCO",
+      "file": "illustrations/parole/ciuco.svg",
+      "alt": "Un ciuco"
+    },
+    {
+      "id": "acciuga",
+      "parola": "ACCIUGA",
+      "file": "illustrations/parole/acciuga.svg",
+      "alt": "Un'acciuga"
+    },
+    {
+      "id": "giaguaro",
+      "parola": "GIAGUARO",
+      "file": "illustrations/parole/giaguaro.svg",
+      "alt": "Un giaguaro"
+    },
+    {
+      "id": "giacinto",
+      "parola": "GIACINTO",
+      "file": "illustrations/parole/giacinto.svg",
+      "alt": "Un giacinto"
+    },
+    {
+      "id": "magia",
+      "parola": "MAGIA",
+      "file": "illustrations/parole/magia.svg",
+      "alt": "Una bacchetta magica"
+    },
+    {
+      "id": "gioco",
+      "parola": "GIOCO",
+      "file": "illustrations/parole/gioco.svg",
+      "alt": "Un gioco"
+    },
+    {
+      "id": "gioiello",
+      "parola": "GIOIELLO",
+      "file": "illustrations/parole/gioiello.svg",
+      "alt": "Un gioiello"
+    },
+    {
+      "id": "giostra",
+      "parola": "GIOSTRA",
+      "file": "illustrations/parole/giostra.svg",
+      "alt": "Una giostra"
+    },
+    {
+      "id": "giudice",
+      "parola": "GIUDICE",
+      "file": "illustrations/parole/giudice.svg",
+      "alt": "Un giudice"
+    },
+    {
+      "id": "giugno",
+      "parola": "GIUGNO",
+      "file": "illustrations/parole/giugno.svg",
+      "alt": "Il mese di giugno"
+    },
+    {
+      "id": "scala",
+      "parola": "SCALA",
+      "file": "illustrations/parole/scala.svg",
+      "alt": "Una scala"
+    },
+    {
+      "id": "scatola",
+      "parola": "SCATOLA",
+      "file": "illustrations/parole/scatola.svg",
+      "alt": "Una scatola"
+    },
+    {
+      "id": "scavo",
+      "parola": "SCAVO",
+      "file": "illustrations/parole/scavo.svg",
+      "alt": "Uno scavo"
+    },
+    {
+      "id": "scoiattolo",
+      "parola": "SCOIATTOLO",
+      "file": "illustrations/parole/scoiattolo.svg",
+      "alt": "Uno scoiattolo"
+    },
+    {
+      "id": "scopa",
+      "parola": "SCOPA",
+      "file": "illustrations/parole/scopa.svg",
+      "alt": "Una scopa"
+    },
+    {
+      "id": "scoglio",
+      "parola": "SCOGLIO",
+      "file": "illustrations/parole/scoglio.svg",
+      "alt": "Uno scoglio"
+    },
+    {
+      "id": "scudo",
+      "parola": "SCUDO",
+      "file": "illustrations/parole/scudo.svg",
+      "alt": "Uno scudo"
+    },
+    {
+      "id": "scusa",
+      "parola": "SCUSA",
+      "file": "illustrations/parole/scusa.svg",
+      "alt": "Un gesto di scusa"
+    },
+    {
+      "id": "scena",
+      "parola": "SCENA",
+      "file": "illustrations/parole/scena.svg",
+      "alt": "Una scena del teatro"
+    },
+    {
+      "id": "sceriffo",
+      "parola": "SCERIFFO",
+      "file": "illustrations/parole/sceriffo.svg",
+      "alt": "Uno sceriffo"
+    },
+    {
+      "id": "sciroppo",
+      "parola": "SCIROPPO",
+      "file": "illustrations/parole/sciroppo.svg",
+      "alt": "Uno sciroppo"
+    },
+    {
+      "id": "sciame",
+      "parola": "SCIAME",
+      "file": "illustrations/parole/sciame.svg",
+      "alt": "Uno sciame di api"
+    },
+    {
+      "id": "scia",
+      "parola": "SCIA",
+      "file": "illustrations/parole/scia.svg",
+      "alt": "La scia di una barca"
+    },
+    {
+      "id": "sciopero",
+      "parola": "SCIOPERO",
+      "file": "illustrations/parole/sciopero.svg",
+      "alt": "Uno sciopero"
+    },
+    {
+      "id": "sciogliere",
+      "parola": "SCIOGLIERE",
+      "file": "illustrations/parole/sciogliere.svg",
+      "alt": "Ghiaccio che si scioglie"
+    },
+    {
+      "id": "sciupare",
+      "parola": "SCIUPARE",
+      "file": "illustrations/parole/sciupare.svg",
+      "alt": "Un vestito sciupato"
+    },
+    {
+      "id": "asciugamano",
+      "parola": "ASCIUGAMANO",
+      "file": "illustrations/parole/asciugamano.svg",
+      "alt": "Un asciugamano"
+    },
+    {
+      "id": "scienza",
+      "parola": "SCIENZA",
+      "file": "illustrations/parole/scienza.svg",
+      "alt": "Un microscopio: la scienza"
+    },
+    {
+      "id": "scienziato",
+      "parola": "SCIENZIATO",
+      "file": "illustrations/parole/scienziato.svg",
+      "alt": "Uno scienziato"
+    },
+    {
+      "id": "pigna",
+      "parola": "PIGNA",
+      "file": "illustrations/parole/pigna.svg",
+      "alt": "Una pigna"
+    },
+    {
+      "id": "montagna",
+      "parola": "MONTAGNA",
+      "file": "illustrations/parole/montagna.svg",
+      "alt": "Una montagna"
+    },
+    {
+      "id": "compagne",
+      "parola": "COMPAGNE",
+      "file": "illustrations/parole/compagne.svg",
+      "alt": "Due compagne"
+    },
+    {
+      "id": "ingegnere",
+      "parola": "INGEGNERE",
+      "file": "illustrations/parole/ingegnere.svg",
+      "alt": "Un ingegnere"
+    },
+    {
+      "id": "ragni",
+      "parola": "RAGNI",
+      "file": "illustrations/parole/ragni.svg",
+      "alt": "Due ragni"
+    },
+    {
+      "id": "compagni",
+      "parola": "COMPAGNI",
+      "file": "illustrations/parole/compagni.svg",
+      "alt": "Due compagni"
+    },
+    {
+      "id": "gnomo",
+      "parola": "GNOMO",
+      "file": "illustrations/parole/gnomo.svg",
+      "alt": "Uno gnomo"
+    },
+    {
+      "id": "gnu",
+      "parola": "GNU",
+      "file": "illustrations/parole/gnu.svg",
+      "alt": "Uno gnu"
+    },
+    {
+      "id": "famiglia",
+      "parola": "FAMIGLIA",
+      "file": "illustrations/parole/famiglia.svg",
+      "alt": "Una famiglia"
+    },
+    {
+      "id": "moglie",
+      "parola": "MOGLIE",
+      "file": "illustrations/parole/moglie.svg",
+      "alt": "Una moglie"
+    },
+    {
+      "id": "figlie",
+      "parola": "FIGLIE",
+      "file": "illustrations/parole/figlie.svg",
+      "alt": "Due figlie"
+    },
+    {
+      "id": "figlio",
+      "parola": "FIGLIO",
+      "file": "illustrations/parole/figlio.svg",
+      "alt": "Un figlio"
+    },
+    {
+      "id": "quadro",
+      "parola": "QUADRO",
+      "file": "illustrations/parole/quadro.svg",
+      "alt": "Un quadro"
+    },
+    {
+      "id": "quaderno",
+      "parola": "QUADERNO",
+      "file": "illustrations/parole/quaderno.svg",
+      "alt": "Un quaderno"
+    },
+    {
+      "id": "questo",
+      "parola": "QUESTO",
+      "file": "illustrations/parole/questo.svg",
+      "alt": "Una mano che indica: questo"
+    },
+    {
+      "id": "quesito",
+      "parola": "QUESITO",
+      "file": "illustrations/parole/quesito.svg",
+      "alt": "Un punto interrogativo: un quesito"
+    },
+    {
+      "id": "qui",
+      "parola": "QUI",
+      "file": "illustrations/parole/qui.svg",
+      "alt": "Una mano che indica il posto: qui"
+    },
+    {
+      "id": "quota",
+      "parola": "QUOTA",
+      "file": "illustrations/parole/quota.svg",
+      "alt": "Una quota misurata"
+    },
+    {
+      "id": "quotidiano",
+      "parola": "QUOTIDIANO",
+      "file": "illustrations/parole/quotidiano.svg",
+      "alt": "Un quotidiano"
+    },
+    {
+      "id": "acqua",
+      "parola": "ACQUA",
+      "file": "illustrations/parole/acqua.svg",
+      "alt": "Una goccia d'acqua"
+    },
+    {
+      "id": "acquario",
+      "parola": "ACQUARIO",
+      "file": "illustrations/parole/acquario.svg",
+      "alt": "Un acquario"
+    },
+    {
+      "id": "acquerello",
+      "parola": "ACQUERELLO",
+      "file": "illustrations/parole/acquerello.svg",
+      "alt": "Un acquerello"
+    },
+    {
+      "id": "ambra",
+      "parola": "AMBRA",
+      "file": "illustrations/parole/ambra.svg",
+      "alt": "Un pezzo di ambra"
+    },
+    {
+      "id": "ambulatorio",
+      "parola": "AMBULATORIO",
+      "file": "illustrations/parole/ambulatorio.svg",
+      "alt": "Un ambulatorio"
+    },
+    {
+      "id": "ambiente",
+      "parola": "AMBIENTE",
+      "file": "illustrations/parole/ambiente.svg",
+      "alt": "L'ambiente"
+    },
+    {
+      "id": "emblema",
+      "parola": "EMBLEMA",
+      "file": "illustrations/parole/emblema.svg",
+      "alt": "Un emblema"
+    },
+    {
+      "id": "emporio",
+      "parola": "EMPORIO",
+      "file": "illustrations/parole/emporio.svg",
+      "alt": "Un emporio"
+    },
+    {
+      "id": "imbuto",
+      "parola": "IMBUTO",
+      "file": "illustrations/parole/imbuto.svg",
+      "alt": "Un imbuto"
+    },
+    {
+      "id": "impronta",
+      "parola": "IMPRONTA",
+      "file": "illustrations/parole/impronta.svg",
+      "alt": "Un'impronta"
+    },
+    {
+      "id": "ombra",
+      "parola": "OMBRA",
+      "file": "illustrations/parole/ombra.svg",
+      "alt": "Un'ombra"
+    },
+    {
+      "id": "fumetto",
+      "parola": "FUMETTO",
+      "file": "illustrations/parole/fumetto.svg",
+      "alt": "Un fumetto"
+    },
+    {
+      "id": "lumaca",
+      "parola": "LUMACA",
+      "file": "illustrations/parole/lumaca.svg",
+      "alt": "Una lumaca"
+    },
+    {
+      "id": "numero",
+      "parola": "NUMERO",
+      "file": "illustrations/parole/numero.svg",
+      "alt": "I numeri"
+    },
+    {
+      "id": "albero",
+      "parola": "ALBERO",
+      "file": "illustrations/parole/albero.svg",
+      "alt": "Un albero"
+    },
+    {
+      "id": "alto",
+      "parola": "ALTO",
+      "file": "illustrations/parole/alto.svg",
+      "alt": "Una freccia verso l'alto"
+    },
+    {
+      "id": "elmo",
+      "parola": "ELMO",
+      "file": "illustrations/parole/elmo.svg",
+      "alt": "Un elmo"
+    },
+    {
+      "id": "elmetto",
+      "parola": "ELMETTO",
+      "file": "illustrations/parole/elmetto.svg",
+      "alt": "Un elmetto"
+    },
+    {
+      "id": "il",
+      "parola": "IL",
+      "file": "illustrations/parole/il.svg",
+      "alt": "Un libro: l'articolo IL"
+    },
+    {
+      "id": "olmo",
+      "parola": "OLMO",
+      "file": "illustrations/parole/olmo.svg",
+      "alt": "Un olmo"
+    },
+    {
+      "id": "oltre",
+      "parola": "OLTRE",
+      "file": "illustrations/parole/oltre.svg",
+      "alt": "Una freccia oltre"
+    },
+    {
+      "id": "olio",
+      "parola": "OLIO",
+      "file": "illustrations/parole/olio.svg",
+      "alt": "Una bottiglia d'olio"
+    },
+    {
+      "id": "collina",
+      "parola": "COLLINA",
+      "file": "illustrations/parole/collina.svg",
+      "alt": "Una collina"
+    },
+    {
+      "id": "ultimo",
+      "parola": "ULTIMO",
+      "file": "illustrations/parole/ultimo.svg",
+      "alt": "L'ultimo posto"
+    },
+    {
+      "id": "culla",
+      "parola": "CULLA",
+      "file": "illustrations/parole/culla.svg",
+      "alt": "Una culla"
+    },
+    {
+      "id": "ulna",
+      "parola": "ULNA",
+      "file": "illustrations/parole/ulna.svg",
+      "alt": "L'ulna, un osso del braccio"
+    },
+    {
+      "id": "fulmine",
+      "parola": "FULMINE",
+      "file": "illustrations/parole/fulmine.svg",
+      "alt": "Un fulmine"
+    },
+    {
+      "id": "arco",
+      "parola": "ARCO",
+      "file": "illustrations/parole/arco.svg",
+      "alt": "Un arco"
+    },
+    {
+      "id": "argento",
+      "parola": "ARGENTO",
+      "file": "illustrations/parole/argento.svg",
+      "alt": "Un oggetto d'argento"
+    },
+    {
+      "id": "erba",
+      "parola": "ERBA",
+      "file": "illustrations/parole/erba.svg",
+      "alt": "Un ciuffo d'erba"
+    },
+    {
+      "id": "erbetta",
+      "parola": "ERBETTA",
+      "file": "illustrations/parole/erbetta.svg",
+      "alt": "Un'erbetta"
+    },
+    {
+      "id": "mirtillo",
+      "parola": "MIRTILLO",
+      "file": "illustrations/parole/mirtillo.svg",
+      "alt": "Un mirtillo"
+    },
+    {
+      "id": "orso",
+      "parola": "ORSO",
+      "file": "illustrations/parole/orso.svg",
+      "alt": "Un orso"
+    },
+    {
+      "id": "orto",
+      "parola": "ORTO",
+      "file": "illustrations/parole/orto.svg",
+      "alt": "Un orto"
+    },
+    {
+      "id": "urlo",
+      "parola": "URLO",
+      "file": "illustrations/parole/urlo.svg",
+      "alt": "Un urlo"
+    },
+    {
+      "id": "urna",
+      "parola": "URNA",
+      "file": "illustrations/parole/urna.svg",
+      "alt": "Un'urna"
+    },
+    {
+      "id": "ancora",
+      "parola": "ANCORA",
+      "file": "illustrations/parole/ancora.svg",
+      "alt": "Un'ancora"
+    },
+    {
+      "id": "angelo",
+      "parola": "ANGELO",
+      "file": "illustrations/parole/angelo.svg",
+      "alt": "Un angelo"
+    },
+    {
+      "id": "entrata",
+      "parola": "ENTRATA",
+      "file": "illustrations/parole/entrata.svg",
+      "alt": "Un'entrata"
+    },
+    {
+      "id": "entusiasmo",
+      "parola": "ENTUSIASMO",
+      "file": "illustrations/parole/entusiasmo.svg",
+      "alt": "Una festa: entusiasmo"
+    },
+    {
+      "id": "inchiostro",
+      "parola": "INCHIOSTRO",
+      "file": "illustrations/parole/inchiostro.svg",
+      "alt": "Un calamaio d'inchiostro"
+    },
+    {
+      "id": "indice",
+      "parola": "INDICE",
+      "file": "illustrations/parole/indice.svg",
+      "alt": "L'indice della mano"
+    },
+    {
+      "id": "onda",
+      "parola": "ONDA",
+      "file": "illustrations/parole/onda.svg",
+      "alt": "Un'onda"
+    },
+    {
+      "id": "ontano",
+      "parola": "ONTANO",
+      "file": "illustrations/parole/ontano.svg",
+      "alt": "Un ontano"
+    },
+    {
+      "id": "uncino",
+      "parola": "UNCINO",
+      "file": "illustrations/parole/uncino.svg",
+      "alt": "Un uncino"
+    },
+    {
+      "id": "unghia",
+      "parola": "UNGHIA",
+      "file": "illustrations/parole/unghia.svg",
+      "alt": "Un'unghia"
+    },
+    {
+      "id": "gomma",
+      "parola": "GOMMA",
+      "file": "illustrations/parole/gomma.svg",
+      "alt": "Una gomma per cancellare"
+    },
+    {
+      "id": "mucca",
+      "parola": "MUCCA",
+      "file": "illustrations/parole/mucca.svg",
+      "alt": "Una mucca"
+    },
+    {
+      "id": "chiave",
+      "parola": "CHIAVE",
+      "file": "illustrations/parole/chiave.svg",
+      "alt": "Una chiave"
+    },
+    {
+      "id": "zaino",
+      "parola": "ZAINO",
+      "file": "illustrations/parole/zaino.svg",
+      "alt": "Uno zaino"
+    },
+    {
+      "id": "farfalla",
+      "parola": "FARFALLA",
+      "file": "illustrations/parole/farfalla.svg",
+      "alt": "Una farfalla"
+    },
+    {
+      "id": "cioccolata",
+      "parola": "CIOCCOLATA",
+      "file": "illustrations/parole/cioccolata.svg",
+      "alt": "Una tavoletta di cioccolata"
+    },
+    {
+      "id": "bicicletta",
+      "parola": "BICICLETTA",
+      "file": "illustrations/parole/bicicletta.svg",
+      "alt": "Una bicicletta"
+    },
+    {
+      "id": "cappello",
+      "parola": "CAPPELLO",
+      "file": "illustrations/parole/cappello.svg",
+      "alt": "Un cappello"
+    },
+    {
+      "id": "bottone",
+      "parola": "BOTTONE",
+      "file": "illustrations/parole/bottone.svg",
+      "alt": "Un bottone"
+    },
+    {
+      "id": "pennarello",
+      "parola": "PENNARELLO",
+      "file": "illustrations/parole/pennarello.svg",
+      "alt": "Un pennarello"
+    },
+    {
+      "id": "torta",
+      "parola": "TORTA",
+      "file": "illustrations/parole/torta.svg",
+      "alt": "Una torta"
+    },
+    {
+      "id": "bravo",
+      "parola": "BRAVO",
+      "file": "illustrations/parole/bravo.svg",
+      "alt": "Un applauso: bravo"
+    },
+    {
+      "id": "breve",
+      "parola": "BREVE",
+      "file": "illustrations/parole/breve.svg",
+      "alt": "Un intervallo breve"
+    },
+    {
+      "id": "brivido",
+      "parola": "BRIVIDO",
+      "file": "illustrations/parole/brivido.svg",
+      "alt": "Un brivido di freddo"
+    },
+    {
+      "id": "brodo",
+      "parola": "BRODO",
+      "file": "illustrations/parole/brodo.svg",
+      "alt": "Una scodella di brodo"
+    },
+    {
+      "id": "bruma",
+      "parola": "BRUMA",
+      "file": "illustrations/parole/bruma.svg",
+      "alt": "La bruma"
+    },
+    {
+      "id": "cravatta",
+      "parola": "CRAVATTA",
+      "file": "illustrations/parole/cravatta.svg",
+      "alt": "Una cravatta"
+    },
+    {
+      "id": "crema",
+      "parola": "CREMA",
+      "file": "illustrations/parole/crema.svg",
+      "alt": "Una crema"
+    },
+    {
+      "id": "crisi",
+      "parola": "CRISI",
+      "file": "illustrations/parole/crisi.svg",
+      "alt": "Una crisi"
+    },
+    {
+      "id": "croce",
+      "parola": "CROCE",
+      "file": "illustrations/parole/croce.svg",
+      "alt": "Una croce"
+    },
+    {
+      "id": "crudo",
+      "parola": "CRUDO",
+      "file": "illustrations/parole/crudo.svg",
+      "alt": "Del cibo crudo"
+    },
+    {
+      "id": "dramma",
+      "parola": "DRAMMA",
+      "file": "illustrations/parole/dramma.svg",
+      "alt": "Una maschera del dramma"
+    },
+    {
+      "id": "dritto",
+      "parola": "DRITTO",
+      "file": "illustrations/parole/dritto.svg",
+      "alt": "Una freccia dritta"
+    },
+    {
+      "id": "dromedario",
+      "parola": "DROMEDARIO",
+      "file": "illustrations/parole/dromedario.svg",
+      "alt": "Un dromedario"
+    },
+    {
+      "id": "frate",
+      "parola": "FRATE",
+      "file": "illustrations/parole/frate.svg",
+      "alt": "Un frate"
+    },
+    {
+      "id": "freno",
+      "parola": "FRENO",
+      "file": "illustrations/parole/freno.svg",
+      "alt": "Un freno"
+    },
+    {
+      "id": "frigo",
+      "parola": "FRIGO",
+      "file": "illustrations/parole/frigo.svg",
+      "alt": "Un frigorifero"
+    },
+    {
+      "id": "fronte",
+      "parola": "FRONTE",
+      "file": "illustrations/parole/fronte.svg",
+      "alt": "La fronte"
+    },
+    {
+      "id": "frutta",
+      "parola": "FRUTTA",
+      "file": "illustrations/parole/frutta.svg",
+      "alt": "Della frutta"
+    },
+    {
+      "id": "grano",
+      "parola": "GRANO",
+      "file": "illustrations/parole/grano.svg",
+      "alt": "Del grano"
+    },
+    {
+      "id": "grasso",
+      "parola": "GRASSO",
+      "file": "illustrations/parole/grasso.svg",
+      "alt": "Del grasso"
+    },
+    {
+      "id": "grigio",
+      "parola": "GRIGIO",
+      "file": "illustrations/parole/grigio.svg",
+      "alt": "Il colore grigio"
+    },
+    {
+      "id": "grotta",
+      "parola": "GROTTA",
+      "file": "illustrations/parole/grotta.svg",
+      "alt": "Una grotta"
+    },
+    {
+      "id": "gru",
+      "parola": "GRU",
+      "file": "illustrations/parole/gru.svg",
+      "alt": "Una gru"
+    },
+    {
+      "id": "prato",
+      "parola": "PRATO",
+      "file": "illustrations/parole/prato.svg",
+      "alt": "Un prato"
+    },
+    {
+      "id": "premio",
+      "parola": "PREMIO",
+      "file": "illustrations/parole/premio.svg",
+      "alt": "Un premio"
+    },
+    {
+      "id": "prima",
+      "parola": "PRIMA",
+      "file": "illustrations/parole/prima.svg",
+      "alt": "Il numero uno: prima"
+    },
+    {
+      "id": "prova",
+      "parola": "PROVA",
+      "file": "illustrations/parole/prova.svg",
+      "alt": "Una prova scritta"
+    },
+    {
+      "id": "pruno",
+      "parola": "PRUNO",
+      "file": "illustrations/parole/pruno.svg",
+      "alt": "Un pruno"
+    },
+    {
+      "id": "treccia",
+      "parola": "TRECCIA",
+      "file": "illustrations/parole/treccia.svg",
+      "alt": "Una treccia"
+    },
+    {
+      "id": "tribu",
+      "parola": "TRIBÙ",
+      "file": "illustrations/parole/tribu.svg",
+      "alt": "Una tribù"
+    },
+    {
+      "id": "trono",
+      "parola": "TRONO",
+      "file": "illustrations/parole/trono.svg",
+      "alt": "Un trono"
+    },
+    {
+      "id": "trucco",
+      "parola": "TRUCCO",
+      "file": "illustrations/parole/trucco.svg",
+      "alt": "Del trucco"
+    },
+    {
+      "id": "blusa",
+      "parola": "BLUSA",
+      "file": "illustrations/parole/blusa.svg",
+      "alt": "Una blusa"
+    },
+    {
+      "id": "blocco",
+      "parola": "BLOCCO",
+      "file": "illustrations/parole/blocco.svg",
+      "alt": "Un blocco"
+    },
+    {
+      "id": "classe",
+      "parola": "CLASSE",
+      "file": "illustrations/parole/classe.svg",
+      "alt": "Una classe"
+    },
+    {
+      "id": "clima",
+      "parola": "CLIMA",
+      "file": "illustrations/parole/clima.svg",
+      "alt": "Il clima"
+    },
+    {
+      "id": "clown",
+      "parola": "CLOWN",
+      "file": "illustrations/parole/clown.svg",
+      "alt": "Un clown"
+    },
+    {
+      "id": "flauto",
+      "parola": "FLAUTO",
+      "file": "illustrations/parole/flauto.svg",
+      "alt": "Un flauto"
+    },
+    {
+      "id": "flora",
+      "parola": "FLORA",
+      "file": "illustrations/parole/flora.svg",
+      "alt": "La flora"
+    },
+    {
+      "id": "flusso",
+      "parola": "FLUSSO",
+      "file": "illustrations/parole/flusso.svg",
+      "alt": "Un flusso d'acqua"
+    },
+    {
+      "id": "globo",
+      "parola": "GLOBO",
+      "file": "illustrations/parole/globo.svg",
+      "alt": "Un globo"
+    },
+    {
+      "id": "gladiolo",
+      "parola": "GLADIOLO",
+      "file": "illustrations/parole/gladiolo.svg",
+      "alt": "Un gladiolo"
+    },
+    {
+      "id": "glucosio",
+      "parola": "GLUCOSIO",
+      "file": "illustrations/parole/glucosio.svg",
+      "alt": "Il glucosio"
+    },
+    {
+      "id": "plastica",
+      "parola": "PLASTICA",
+      "file": "illustrations/parole/plastica.svg",
+      "alt": "Un oggetto di plastica"
+    },
+    {
+      "id": "plumcake",
+      "parola": "PLUMCAKE",
+      "file": "illustrations/parole/plumcake.svg",
+      "alt": "Un plumcake"
+    },
+    {
+      "id": "spazio",
+      "parola": "SPAZIO",
+      "file": "illustrations/parole/spazio.svg",
+      "alt": "Lo spazio"
+    },
+    {
+      "id": "spada",
+      "parola": "SPADA",
+      "file": "illustrations/parole/spada.svg",
+      "alt": "Una spada"
+    },
+    {
+      "id": "spiga",
+      "parola": "SPIGA",
+      "file": "illustrations/parole/spiga.svg",
+      "alt": "Una spiga"
+    },
+    {
+      "id": "spillo",
+      "parola": "SPILLO",
+      "file": "illustrations/parole/spillo.svg",
+      "alt": "Uno spillo"
+    },
+    {
+      "id": "spina",
+      "parola": "SPINA",
+      "file": "illustrations/parole/spina.svg",
+      "alt": "Una spina"
+    },
+    {
+      "id": "sposo",
+      "parola": "SPOSO",
+      "file": "illustrations/parole/sposo.svg",
+      "alt": "Uno sposo"
+    },
+    {
+      "id": "sport",
+      "parola": "SPORT",
+      "file": "illustrations/parole/sport.svg",
+      "alt": "Lo sport"
+    },
+    {
+      "id": "spugna",
+      "parola": "SPUGNA",
+      "file": "illustrations/parole/spugna.svg",
+      "alt": "Una spugna"
+    },
+    {
+      "id": "stagione",
+      "parola": "STAGIONE",
+      "file": "illustrations/parole/stagione.svg",
+      "alt": "Le stagioni"
+    },
+    {
+      "id": "stampa",
+      "parola": "STAMPA",
+      "file": "illustrations/parole/stampa.svg",
+      "alt": "Una stampa"
+    },
+    {
+      "id": "stella",
+      "parola": "STELLA",
+      "file": "illustrations/parole/stella.svg",
+      "alt": "Una stella"
+    },
+    {
+      "id": "stivale",
+      "parola": "STIVALE",
+      "file": "illustrations/parole/stivale.svg",
+      "alt": "Uno stivale"
+    },
+    {
+      "id": "stilo",
+      "parola": "STILO",
+      "file": "illustrations/parole/stilo.svg",
+      "alt": "Uno stilo"
+    },
+    {
+      "id": "storia",
+      "parola": "STORIA",
+      "file": "illustrations/parole/storia.svg",
+      "alt": "Una storia"
+    },
+    {
+      "id": "stoffa",
+      "parola": "STOFFA",
+      "file": "illustrations/parole/stoffa.svg",
+      "alt": "Una stoffa"
+    },
+    {
+      "id": "studente",
+      "parola": "STUDENTE",
+      "file": "illustrations/parole/studente.svg",
+      "alt": "Uno studente"
+    },
+    {
+      "id": "stufa",
+      "parola": "STUFA",
+      "file": "illustrations/parole/stufa.svg",
+      "alt": "Una stufa"
+    },
+    {
+      "id": "piede",
+      "parola": "PIEDE",
+      "file": "illustrations/parole/piede.svg",
+      "alt": "Un piede"
+    },
+    {
+      "id": "uovo",
+      "parola": "UOVO",
+      "file": "illustrations/parole/uovo.svg",
+      "alt": "Un uovo"
+    },
+    {
+      "id": "aereo",
+      "parola": "AEREO",
+      "file": "illustrations/parole/aereo.svg",
+      "alt": "Un aereo"
+    },
+    {
+      "id": "aiuola",
+      "parola": "AIUOLA",
+      "file": "illustrations/parole/aiuola.svg",
+      "alt": "Un'aiuola"
+    },
+    {
+      "id": "ghiaia",
+      "parola": "GHIAIA",
+      "file": "illustrations/parole/ghiaia.svg",
+      "alt": "Della ghiaia"
+    },
+    {
+      "id": "cuore",
+      "parola": "CUORE",
+      "file": "illustrations/parole/cuore.svg",
+      "alt": "Un cuore"
+    },
+    {
+      "id": "scuola",
+      "parola": "SCUOLA",
+      "file": "illustrations/parole/scuola.svg",
+      "alt": "Una scuola"
+    },
+    {
+      "id": "buono",
+      "parola": "BUONO",
+      "file": "illustrations/parole/buono.svg",
+      "alt": "Un pollice in su: buono"
+    },
+    {
+      "id": "viaggio",
+      "parola": "VIAGGIO",
+      "file": "illustrations/parole/viaggio.svg",
+      "alt": "Un viaggio"
+    },
+    {
+      "id": "piano",
+      "parola": "PIANO",
+      "file": "illustrations/parole/piano.svg",
+      "alt": "Un pianoforte"
+    },
+    {
+      "id": "porta",
+      "parola": "PORTA",
+      "file": "illustrations/parole/porta.svg",
+      "alt": "Una porta"
+    },
+    {
+      "id": "campo",
+      "parola": "CAMPO",
+      "file": "illustrations/parole/campo.svg",
+      "alt": "Un campo"
+    },
+    {
+      "id": "banco",
+      "parola": "BANCO",
+      "file": "illustrations/parole/banco.svg",
+      "alt": "Un banco"
+    },
+    {
+      "id": "cesto",
+      "parola": "CESTO",
+      "file": "illustrations/parole/cesto.svg",
+      "alt": "Un cesto"
+    },
+    {
+      "id": "ponte",
+      "parola": "PONTE",
+      "file": "illustrations/parole/ponte.svg",
+      "alt": "Un ponte"
+    },
+    {
+      "id": "dente",
+      "parola": "DENTE",
+      "file": "illustrations/parole/dente.svg",
+      "alt": "Un dente"
+    },
+    {
+      "id": "automobile",
+      "parola": "AUTOMOBILE",
+      "file": "illustrations/parole/automobile.svg",
+      "alt": "Un'automobile"
+    },
+    {
+      "id": "frigorifero",
+      "parola": "FRIGORIFERO",
+      "file": "illustrations/parole/frigorifero.svg",
+      "alt": "Un frigorifero"
+    },
+    {
+      "id": "citta",
+      "parola": "CITTÀ",
+      "file": "illustrations/parole/citta.svg",
+      "alt": "Una città"
+    },
+    {
+      "id": "perche",
+      "parola": "PERCHÉ",
+      "file": "illustrations/parole/perche.svg",
+      "alt": "Un punto interrogativo: perché"
+    },
+    {
+      "id": "poiche",
+      "parola": "POICHÉ",
+      "file": "illustrations/parole/poiche.svg",
+      "alt": "Una freccia: poiché"
+    },
+    {
+      "id": "gia",
+      "parola": "GIÀ",
+      "file": "illustrations/parole/gia.svg",
+      "alt": "Un segno di spunta: già"
+    },
+    {
+      "id": "piu",
+      "parola": "PIÙ",
+      "file": "illustrations/parole/piu.svg",
+      "alt": "Il segno più"
+    },
+    {
+      "id": "puo",
+      "parola": "PUÒ",
+      "file": "illustrations/parole/puo.svg",
+      "alt": "Un braccio forte: può"
+    },
+    {
+      "id": "lunedi",
+      "parola": "LUNEDÌ",
+      "file": "illustrations/parole/lunedi.svg",
+      "alt": "Il lunedì sul calendario"
+    },
+    {
+      "id": "caffe",
+      "parola": "CAFFÈ",
+      "file": "illustrations/parole/caffe.svg",
+      "alt": "Una tazza di caffè"
+    },
+    {
+      "id": "pero",
+      "parola": "PERÒ",
+      "file": "illustrations/parole/pero.svg",
+      "alt": "Una freccia che cambia: però"
+    }
+  ]
+}

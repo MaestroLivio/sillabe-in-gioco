@@ -19,6 +19,12 @@ const path = require("path");
 const ROOT = path.join(__dirname, "..", "..");
 const html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
 
+/* Il «Viaggio delle sillabe» vive in js/viaggio-dati.js: stessa fonte per
+   browser, test e generazione audio. Se il file non c'è (checkout vecchio)
+   l'estrazione continua a funzionare per la parte storica. */
+let viaggio = null;
+try { viaggio = require(path.join(ROOT, "js", "viaggio-dati.js")); } catch (e) { viaggio = null; }
+
 /* --- blocchi di codice sorgente --- */
 function block(startMarker, endMarker) {
   const a = html.indexOf(startMarker);
@@ -65,7 +71,30 @@ const uiSource = [
   "Mancano",
   "La prossima sillaba è",
   "Hai già finito questo livello. Bravo!",
-  "sillabe"
+  "sillabe",
+  /* consegne fisse del «Viaggio delle sillabe» */
+  "Ascolta la sillaba e scegli quella giusta.",
+  "Ascolta con attenzione: quale sillaba hai sentito?",
+  "Completa la famiglia: quale sillaba manca?",
+  "Guarda l'immagine e ascolta la parola. Qual è la prima sillaba?",
+  "Ascolta la sillaba e trova la parola che inizia con questa sillaba.",
+  "Guarda l'immagine e ascolta la parola. Qual è l'ultima sillaba?",
+  "Completa la parola con la sillaba giusta.",
+  "Metti le sillabe nel giusto ordine per scrivere la parola.",
+  "Trova le coppie: ogni immagine con la sua prima sillaba.",
+  "Quante sillabe ha questa parola?",
+  "Riordina le parole per costruire la frase.",
+  "Ascolta la frase e scegli la parola che manca.",
+  "Inventa una frase con le parole disponibili.",
+  "Qual è davvero la prima sillaba? Attento: non basta guardare le prime lettere.",
+  "Come si scrive questa parola?",
+  "Qual è la sillaba accentata, quella che si sente più forte?",
+  "Con quale gruppo di lettere inizia la parola?",
+  "Quale gruppo di vocali senti in questa parola?",
+  "Ascolta il suono e scegli quello giusto.",
+  "Ascolta il gruppo e scegli quello giusto.",
+  "Qual è l'ultima sillaba della parola?",
+  "Trova le coppie: ogni immagine con la sua parola."
 ];
 
 /* --- 4b. laboratorio «Formazione di parole» ---
@@ -129,12 +158,43 @@ const words = [...new Set(
 const allSyllables = [...new Set([...syllables, ...distractors, ...labUnits, ...syllSyllables])]
   .sort((a, b) => a.localeCompare(b, "it"));
 
+/* --- 6. «Il viaggio delle sillabe» ---
+   Le unità con audioKey (sillabe, segmenti, grafemi) entrano nel gruppo
+   `syl`; le parole nel gruppo `parole`; le frasi hanno un gruppo proprio
+   (`frasiViaggio`) perché il loro id è stabile e non un indice. Le parole
+   grammaticali con apostrofo (L', UN') non hanno un clip isolato: la frase
+   intera viene letta dal file della frase. */
+const viaggioUnits = viaggio ? viaggio.UNITA.filter(u => u.audioKey) : [];
+const viaggioSyllables = viaggioUnits.map(u => u.audioKey.toLowerCase());
+const viaggioWordSyllables = viaggio
+  ? [...new Set(
+      viaggio.PAROLE.flatMap(w => w.sillabe)
+        .concat(viaggio.FRASI.flatMap(f => f.parole.flatMap(p => p.sillabe)))
+        .map(s => s.toLowerCase())
+    )].filter(s => s && !s.endsWith("'"))
+  : [];
+const viaggioWords = viaggio ? viaggio.PAROLE.map(w => w.audioKey) : [];
+const viaggioSentenceWords = viaggio
+  ? viaggio.FRASI.flatMap(f => f.parole.map(p => p.audioKey)).filter(w => !w.endsWith("'"))
+  : [];
+const viaggioSentences = viaggio
+  ? viaggio.FRASI.map(f => ({ id: f.id, testo: f.testo }))
+  : [];
+
+const allWords = [...new Set([...words, ...viaggioWords, ...viaggioSentenceWords])]
+  .sort((a, b) => a.localeCompare(b, "it"));
+const allSyllablesWithViaggio = [...new Set([...allSyllables, ...viaggioSyllables, ...viaggioWordSyllables])]
+  .sort((a, b) => a.localeCompare(b, "it"));
+
 module.exports = {
-  syllables: allSyllables,  levelSyllables: [...syllables].sort((a, b) => a.localeCompare(b, "it")),
+  syllables: allSyllablesWithViaggio,  levelSyllables: [...syllables].sort((a, b) => a.localeCompare(b, "it")),
   distractors: [...new Set(distractors)].sort((a, b) => a.localeCompare(b, "it")),
   sentences,
-  words,
+  words: allWords,
   uiSource,
+  viaggioSentences,
+  viaggioSyllables: [...new Set(viaggioSyllables)].sort((a, b) => a.localeCompare(b, "it")),
+  viaggioWords: [...new Set(viaggioWords)].sort((a, b) => a.localeCompare(b, "it")),
   wordLabWords,
   wordLabUnits: labUnits,
   letterPool,
@@ -155,7 +215,10 @@ if (require.main === module) {
       words: d.words.length,
       wordLab: d.wordLabWords.length,
       labUnits: d.wordLabUnits.length,
-      soundWords: d.soundWords.length
+      soundWords: d.soundWords.length,
+      viaggioSyllables: d.viaggioSyllables.length,
+      viaggioWords: d.viaggioWords.length,
+      viaggioSentences: d.viaggioSentences.length
     },
     syllables: d.syllables
   }, null, 1));

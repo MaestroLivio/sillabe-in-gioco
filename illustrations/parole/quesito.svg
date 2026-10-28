@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="640" height="360" role="img" aria-label="Un punto interrogativo: un quesito">
+  <title>Un punto interrogativo: un quesito</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8f4ef"/><stop offset="62%" stop-color="#ece2d4"/><stop offset="100%" stop-color="#c2b09a"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff8cc"/><stop offset="100%" stop-color="#ffe27a"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#25384d" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="554" cy="62" r="32" fill="url(#sun)" opacity=".95"/>
+  <g fill="#ffffff" opacity=".72">
+    <ellipse cx="110" cy="62" rx="44" ry="22"/><ellipse cx="146" cy="54" rx="30" ry="18"/>
+    <ellipse cx="330" cy="42" rx="34" ry="16"/><ellipse cx="360" cy="48" rx="22" ry="13"/>
+  </g>
+  <path d="M0 280 Q160 250 320 274 T640 268 L640 360 L0 360 Z" fill="#ffffff" opacity=".28"/>
+  <path d="M0 306 Q170 282 330 302 T640 296 L640 360 L0 360 Z" fill="#ffffff" opacity=".22"/>
+  <rect x="36" y="28" width="568" height="294" rx="30" fill="none" stroke="#ffffff" stroke-width="6" opacity=".55"/>
+  <ellipse cx="320" cy="318" rx="112" ry="16" fill="#25384d" opacity=".12"/>
+  <text x="320" y="218" font-size="172" text-anchor="middle" dominant-baseline="middle"
+    font-family="Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif"
+    filter="url(#soft)">❓</text>
+  <g fill="#ffffff" opacity=".55">
+    <circle cx="82" cy="286" r="7"/><circle cx="104" cy="270" r="5"/><circle cx="556" cy="286" r="8"/><circle cx="534" cy="266" r="5"/>
+  </g>
+</svg>

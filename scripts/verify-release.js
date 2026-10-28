@@ -26,7 +26,12 @@ const TAG = process.argv[2] || "v2.0.2";
 const KEEP = process.argv.includes("--keep");
 const REPO = "MaestroLivio/sillabe-in-gioco";
 const EXPECTED = 67;            // illustrazioni attese in ogni artefatto
-const EXPECTED_AUDIO = 424;      // clip vocali attesi (211 sillabe + 40 frasi + 165 parole + 8 battute)
+const EXPECTED_AUDIO = (() => {
+  try {
+    const m = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "audio", "manifest.json"), "utf8"));
+    return Object.values(m.groups || {}).reduce((a, g) => a + Object.keys(g).length, 0);
+  } catch (e) { return 424; }
+})();
 
 const WORK = path.join(os.tmpdir(), `sillabe-release-${TAG.replace(/[^\w.]/g, "")}`);
 const ASAR = path.join(__dirname, "..", "node_modules", ".bin", "asar");

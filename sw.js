@@ -1,7 +1,7 @@
 /* Service worker — cache offline per l'app Sillabe in Gioco */
-const CACHE = "sillabe-v2.2.7";
-/* 40 illustrazioni delle frasi + 20 del laboratorio «Formazione di parole» */
-const ILLUSTRATIONS = Array.from({ length: 60 }, (_, i) => `./illustrations/${String(i + 1).padStart(2, "0")}.png`);
+const CACHE = "sillabe-v2.3.0";
+/* 40 frasi + 20 parole + 7 gruppi del percorso sillabico */
+const ILLUSTRATIONS = Array.from({ length: 67 }, (_, i) => `./illustrations/${String(i + 1).padStart(2, "0")}.png`);
 // Solo l'indice audio si precarica: i singoli clip sono centinaia e vengono
 // messi in cache al primo ascolto (vedi la strategia cache-first dei media).
 const ASSETS = [
@@ -9,6 +9,10 @@ const ASSETS = [
   "./index.html",
   "./manifest.webmanifest",
   "./audio/manifest.json",
+  "./css/viaggio.css",
+  "./js/viaggio-dati.js",
+  "./js/viaggio.js",
+  "./illustrations/parole/manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
   ...ILLUSTRATIONS
@@ -22,7 +26,19 @@ function isAudio(url) {
 
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(async cache => {
+      await cache.addAll(ASSETS);
+      // Le schede delle parole sono tante ma leggere: si prova a metterle
+      // in cache una per una, senza far fallire l'installazione se una manca.
+      try {
+        const res = await fetch("./illustrations/parole/manifest.json");
+        if (res.ok) {
+          const m = await res.json();
+          const cards = (m.items || []).map(x => "./" + x.file);
+          await Promise.all(cards.map(c => cache.add(c).catch(() => {})));
+        }
+      } catch (e) { /* la cache lazy coprirà le schede al primo uso */ }
+    }).then(() => self.skipWaiting())
   );
 });
 

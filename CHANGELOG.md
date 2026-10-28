@@ -4,6 +4,45 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.3.0] — 2026-10-28
+
+### Aggiunto
+- **«Il viaggio delle sillabe»**: percorso fonico-sillabico sistematico
+  accessibile dalla home, con 8 livelli e 136 unità (104 sillabe, 20 segmenti,
+  3 grafemi, 9 moduli).
+- **Dizionario di 469 parole illustrate** con sillabazione esplicita, categoria,
+  difficoltà lessicale, prerequisiti, sillaba iniziale/finale/interna e stato di
+  revisione.
+- **109 frasi delle sillabe** con occorrenze calcolate sulla sillabazione vera e
+  quattro modalità: ascolta e osserva, ascolta e completa, costruisci, inventa
+  (solo con soluzioni approvate).
+- **Generatore di esercizi** con 40 modelli didattici e almeno 12 attività
+  giocabili per ogni unità; 1.971 esercizi generati nella configurazione
+  predefinita.
+- **7 giochi**: mercato, bosco, trenino, pesca, ponte, detective, famiglie.
+- **Pannello insegnante**: profili, selezione unità, ordine famiglie, posizione,
+  2–5 alternative, tipologie attive, soglia, bassa stimolazione, voce lenta,
+  stampato maiuscolo/minuscolo, parole con immagini/audio, correzione
+  sillabazioni, frasi con parole del dizionario, risultati, CSV/PDF, azzeramento
+  per unità.
+- **Progressi per competenza** (uditivo, grafico, iniziale, finale, interna,
+  segmentazione, composizione, frase, lettura, posizione), ripasso consigliato
+  e soglia di acquisizione configurabile.
+- **Schede illustrate SVG** per le parole senza un PNG storico, generate da
+  `scripts/illustrations/word-cards.js`.
+- **Nuovo gruppo audio** `frasiViaggio` e nuove consegne preregistrate; il
+  pannello docente può sostituire l'audio di ogni parola.
+- **Test**: `npm run test:viaggio` (contenuti e generatore) e
+  `npm run test:viaggio:ui` (Electron), integrati nella suite.
+
+### Corretto / chiarito
+- La sillabazione non viene mai dedotta cercando lettere: MAMMA è MAM-MA,
+  MUCCA è MUC-CA, GATTO è GAT-TO, CHIAVE è CHIA-VE, ZAINO è ZAI-NO.
+- I segmenti (`AM`, `EM`, …) e i grafemi (`GLI`, `SCIE`, `ZU`) non sono
+  presentati come sillabe; le consegne dicono «suono» o «gruppo».
+- Il service worker cacha anche CSS/JS del nuovo modulo e le schede delle
+  parole; il pacchetto Electron include `css/` e `js/`.
+
 ## [2.2.7] — 2026-10-26
 
 ### Aggiunto

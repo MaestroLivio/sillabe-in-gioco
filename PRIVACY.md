@@ -49,7 +49,8 @@ L'app salva **solo sul dispositivo** due categorie di informazioni:
 | Dato | Dove | Perché | Chi può vederlo |
 |---|---|---|---|
 | Progressi di gioco (livelli completati, stelle, errori, tempi, trofei) | `localStorage` del browser o cartella dati dell'app | Mostrare avanzamento, statistiche e trofei | Solo chi usa quel dispositivo |
-| Impostazioni (dimensione testo, velocità voce, tema, suoni, maiuscolo, lettura parole, esercizio scelto) | `localStorage` del browser o cartella dati dell'app | Ricordare le preferenze di accessibilità | Solo chi usa quel dispositivo |
+| Impostazioni (dimensione testo, velocità e volume voce, tema, suoni, maiuscolo, lettura parole, esercizio scelto) | `localStorage` del browser o cartella dati dell'app | Ricordare le preferenze di accessibilità | Solo chi usa quel dispositivo |
+| Profili del «Viaggio delle sillabe», progressi per competenza, percorsi personalizzati, immagini/audio aggiunti dal docente | `localStorage` del browser o cartella dati dell'app | Conservare il percorso individuale e i materiali caricati | Solo chi usa quel dispositivo |
 
 Non vengono salvati nomi, età, email, indirizzi, foto, testi digitati liberamente né
 identificatori del dispositivo. Non esiste alcun campo che raccolga dati del bambino.

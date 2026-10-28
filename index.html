@@ -503,6 +503,7 @@ body.theme-night .trophy.unlocked{background:#3a3222}
   .ps-foot{margin-top:22px;font-size:9pt;border-top:1px solid #999;padding-top:8px;color:#444}
 }
 </style>
+<link rel="stylesheet" href="css/viaggio.css">
 </head>
 <body>
 <div class="app">
@@ -534,6 +535,8 @@ body.theme-night .trophy.unlocked{background:#3a3222}
       </div>
       <div class="progress-ring" id="progressRing" role="img" aria-label="Progresso complessivo"><span id="progressPct">0%</span></div>
     </div>
+
+    <div class="card" id="viaggioHomeCard" style="grid-column:1/-1"></div>
 
     <div class="card">
       <h2>I cinque percorsi</h2>
@@ -855,6 +858,28 @@ body.theme-night .trophy.unlocked{background:#3a3222}
       <button class="btn ghost small" id="resetProgressBtn">🗑️ Azzera i progressi</button>
     </div>
   </div>
+</section>
+
+<section id="screen-viaggio" class="screen" aria-label="Il viaggio delle sillabe">
+  <header class="topbar">
+    <div class="titlewrap">
+      <span class="badge">Percorso fonico-sillabico</span>
+      <div>
+        <h1 id="viaggioTitle">Il viaggio delle sillabe</h1>
+        <p id="viaggioSubtitle">Ascoltare · riconoscere · segmentare · comporre · leggere</p>
+      </div>
+    </div>
+    <div class="topActions">
+      <div class="v-profile" id="viaggioProfileWrap" aria-label="Profilo attivo">
+        <span aria-hidden="true">👤</span>
+        <select id="viaggioProfile" aria-label="Scegli il profilo"></select>
+      </div>
+      <button class="icon-btn" id="viaggioDocenteBtn" aria-label="Pannello insegnante" title="Pannello insegnante">🎓</button>
+      <button class="icon-btn" id="viaggioHomeBtn" aria-label="Torna alla home">🏠</button>
+      <button class="btn-close" id="viaggioCloseBtn" aria-label="Chiudi il viaggio delle sillabe">✕</button>
+    </div>
+  </header>
+  <div id="viaggioView" class="v-shell"></div>
 </section>
 </div>
 
@@ -1271,6 +1296,7 @@ const DEFAULT_SETTINGS = {
   fontScale: 1,
   theme: "day",
   rate: 0.9,
+  volume: 0.9,
   voiceURI: "",
   soundOn: true,
   autoRead: true,
@@ -1438,7 +1464,7 @@ function playClip(file, opts = {}) {
     a.onended = () => end(true);
     a.onerror = () => end(false);
     // il volume segue le impostazioni, il ritmo è già nel file
-    a.volume = 1;
+    a.volume = typeof settings.volume === "number" ? Math.max(0, Math.min(1, settings.volume)) : 1;
     const p = a.play();
     if (p && p.catch) p.catch(() => end(false));
   });
@@ -1534,7 +1560,7 @@ function speakSynth(text, opts = {}) {
   // il limite inferiore scende per i fonemi: una lettera va tenuta lenta
   u.rate = Math.max(opts.allowSlow ? 0.3 : 0.5, Math.min(1.6, rate));
   u.pitch = opts.pitch !== undefined ? opts.pitch : 1.05;
-  u.volume = 1;
+  u.volume = typeof settings.volume === "number" ? Math.max(0, Math.min(1, settings.volume)) : 1;
   if (itVoice) u.voice = itVoice;
   if (opts.onend) u.onend = opts.onend;
   if (opts.onstart) u.onstart = opts.onstart;
@@ -1705,7 +1731,7 @@ function illustrationSVG(level) {
 /* ------------------------------------------------------------------
    6. NAVIGAZIONE SCHERMATE
    ------------------------------------------------------------------ */
-const SCREENS = ["home", "words", "syll", "level", "exercises", "results", "trophies"];
+const SCREENS = ["home", "words", "syll", "level", "exercises", "results", "trophies", "viaggio"];
 function showScreen(name) {
   SCREENS.forEach(s => {
     const node = $("#screen-" + s);
@@ -3251,6 +3277,8 @@ function openSettings() {
       <input id="setFont" type="range" min="0.9" max="1.5" step="0.05" value="${settings.fontScale}"></div>
     <div class="field"><label for="setRate">Velocità voce<span class="hint">0,6 lenta · 1,4 veloce</span></label>
       <input id="setRate" type="range" min="0.6" max="1.4" step="0.05" value="${settings.rate}"></div>
+    <div class="field"><label for="setVolume">Volume voce<span class="hint">0 = muto · 1 = massimo</span></label>
+      <input id="setVolume" type="range" min="0" max="1" step="0.05" value="${settings.volume}"></div>
     <div class="field"><label for="setVoice">Voce italiana<span class="hint">Dipende dal sistema</span></label>
       <select id="setVoice"><option value="">Automatica</option>${voiceOpts}</select></div>
     <div class="field"><label for="setCaps">Tutto maiuscolo<span class="hint">Tessere, caselle e parole in MAIUSCOLO</span></label>
@@ -3288,6 +3316,7 @@ function openSettings() {
   };
   bind("setFont", "fontScale", i => parseFloat(i.value));
   bind("setRate", "rate", i => parseFloat(i.value));
+  bind("setVolume", "volume", i => parseFloat(i.value));
   bind("setVoice", "voiceURI", i => { refreshVoices(); return i.value; });
   bind("setCaps", "allCaps", i => i.checked);
   bind("setReadWords", "readWords", i => i.checked);
@@ -3345,6 +3374,9 @@ function openHelp() {
       <li><b>7. Suoni difficili</b>: 20 schede finali su <i>che, chi, ce, ci, cia, cio, sci, sce, gn, gli, str, spr…</i></li>
       <li><b>8. Esercizi</b> propone 8 domande su sillabe, parole e conteggi; il docente può
         scegliere dal menu impostazioni quale esercizio avviare.</li>
+      <li><b>9. Il viaggio delle sillabe</b>: il percorso fonico-sillabico completo, con 8 livelli,
+        136 unità, parole illustrate, frasi, giochi e un pannello insegnante (🎓). Si apre dalla
+        card nella home, sotto il riquadro di benvenuto.</li>
     </ul>
     <p class="muted" style="font-size:.78rem">I cinque percorsi sono: <b>La prima parola</b> (suoni e sillabe),
       <b>La prima frase</b>, <b>Frasi semplici</b>, <b>Frasi che si uniscono</b>, <b>Frasi che si intrecciano</b>.
@@ -3560,5 +3592,7 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
   });
 }
 </script>
+<script src="js/viaggio-dati.js"></script>
+<script src="js/viaggio.js"></script>
 </body>
 </html>

@@ -33,7 +33,7 @@ if (!fs.existsSync(MANIFEST)) {
   process.exit(1);
 }
 const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));
-for (const g of ["syl", "parole", "frasi", "ui"]) {
+for (const g of ["syl", "parole", "frasi", "frasiViaggio", "ui"]) {
   if (!manifest.groups || !manifest.groups[g]) fail(`gruppo «${g}» assente dal manifest`);
 }
 if (manifest.voice !== "Emma") warn(`voce del manifest: ${manifest.voice} (attesa «Emma», neurale)`);
@@ -68,7 +68,7 @@ for (const [group, entries] of Object.entries(manifest.groups)) {
     if (dur === null) { fail(`${group}/«${key}»: durata illeggibile`); continue; }
     if (dur < 0.12) fail(`${group}/«${key}»: durata ${dur.toFixed(2)}s troppo breve, sillaba troncata`);
     if (group === "syl" && dur > 2.2) fail(`${group}/«${key}»: durata ${dur.toFixed(2)}s sospetta (compitata?)`);
-    if (group === "frasi" && dur < 0.6) fail(`${group}/«${key}»: frase troppo breve (${dur.toFixed(2)}s)`);
+    if ((group === "frasi" || group === "frasiViaggio") && dur < 0.6) fail(`${group}/«${key}»: frase troppo breve (${dur.toFixed(2)}s)`);
     checked++;
   }
 }
@@ -90,6 +90,9 @@ if (missParole.length) fail(`parole senza clip (${missParole.length}): ${missPar
 
 const missUi = missingKeys("ui", data.uiSource);
 if (missUi.length) fail(`battute interfaccia senza clip: ${missUi.join(", ")}`);
+
+const missViaggioFrasi = missingKeys("frasiViaggio", (data.viaggioSentences || []).map(s => s.id));
+if (missViaggioFrasi.length) fail(`frasi del viaggio senza clip (${missViaggioFrasi.length}): ${missViaggioFrasi.join(", ")}`);
 
 /* --- 5. file orfani --- */
 const onDisk = [];
@@ -175,4 +178,4 @@ if (errors.length) {
   for (const e of errors) console.error("  - " + e);
   process.exit(1);
 }
-console.log(`✔ audio: ${checked} clip verificati (${data.syllables.length} sillabe, ${data.sentences.length} frasi, ${data.words.length} parole, ${data.uiSource.length} battute)`);
+console.log(`✔ audio: ${checked} clip verificati (${data.syllables.length} sillabe, ${data.sentences.length} frasi storiche, ${data.viaggioSentences.length} frasi del viaggio, ${data.words.length} parole, ${data.uiSource.length} battute)`);

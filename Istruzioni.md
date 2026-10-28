@@ -11,7 +11,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 |---|---|
 | **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
 | **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
-| **Windows** | Esegui `SillabeInGioco-Setup-2.2.0.exe` e segui la procedura |
+| **Windows** | Esegui `SillabeInGioco-Setup-2.3.0.exe` e segui la procedura |
 | **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
 | **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
 
@@ -31,6 +31,29 @@ Per l'installazione tecnica vedi [README.md](README.md).
   tocca una parola per aprirla.
 - **Il tuo progresso**: livelli completati, stelle, precisione, tempo di gioco.
 - L'ingranaggio in alto a destra apre le **impostazioni**; la ✕ chiude l'app (nel browser torna alla scheda precedente).
+
+---
+
+## 2b. Il viaggio delle sillabe (novità 2.3.0)
+
+La card **«Il viaggio delle sillabe»**, sotto il riquadro di benvenuto, apre il
+percorso fonico-sillabico completo.
+
+1. **Scegli il livello** (0–7) e la famiglia: le tessere mostrano le stelle e
+   lo stato di acquisizione.
+2. **Apri una sillaba**: trovi almeno 12 attività, la padronanza per competenza
+   e i pulsanti per la sessione o per ripassare solo gli errori.
+3. **Gioca**: ogni attività ha la consegna vocale, il pulsante 🔁 per ripetere e
+   💡 per l'aiuto. Non ci sono limiti di tempo e non si perdono punti.
+4. **Le frasi delle sillabe**: ascolta, completa, costruisci o inventa. La
+   lettura a pezzi illumina ogni sillaba mentre viene pronunciata.
+5. **Giochi**: mercato, bosco, trenino, pesca, ponte, detective, famiglie.
+6. **Pannello insegnante** (🎓, PIN predefinito `1234`): selezione unità, ordine
+   famiglie, alternative, tipologie, soglia, percorso semplificato, parole/immagini/audio personali,
+   correzione sillabazioni, frasi, risultati CSV/PDF e azzeramento per unità.
+7. **Profili**: il selettore in alto a destra conserva i progressi separati.
+
+Dettagli e limiti: [`docs/VIAGGIO.md`](docs/VIAGGIO.md).
 
 ---
 

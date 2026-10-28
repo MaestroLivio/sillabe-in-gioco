@@ -22,7 +22,7 @@ const path = require("path");
 const os = require("os");
 const { execFileSync, spawnSync } = require("child_process");
 
-const { syllables, sentences, words, uiSource } = require("./extract");
+const { syllables, sentences, words, uiSource, viaggioSentences } = require("./extract");
 const { OVERRIDES, LETTER_PHONEMES, STOP_PAD, PHONEME_LUFS, PHONEME_CEILING, PHONEME_PEAK } = require("./pronunciation");
 
 const ROOT = path.join(__dirname, "..", "..");
@@ -41,7 +41,9 @@ const onlyMissing = args.includes("--missing");
 
 /* --- utilità --- */
 function sh(cmd, argv) {
-  return execFileSync(cmd, argv, { stdio: ["ignore", "pipe", "pipe"] }).toString();
+  // Un timeout evita che un servizio di sintesi bloccato fermi l'intera
+  // generazione: il token che fallisce viene segnalato e si può rigenerare.
+  return execFileSync(cmd, argv, { stdio: ["ignore", "pipe", "pipe"], timeout: 60000 }).toString();
 }
 
 /** Durata in secondi di un file audio (afinfo). */
@@ -304,7 +306,12 @@ function slug(token) {
     "à": "a1", "è": "e1", "é": "e2", "ì": "i1", "ò": "o1", "ù": "u1",
     "'": "-", " ": "_"
   };
-  const s = token.toLowerCase().split("").map(c => map[c] !== undefined ? map[c] : c).join("");
+  let s = token.toLowerCase().split("").map(c => map[c] !== undefined ? map[c] : c).join("");
+  /* I nomi file devono essere validi anche su Windows: niente ? : * , ; | "
+     slash, né punti o spazi finali. Le vecchie consegne con questi caratteri
+     vengono rigenerate con un nome sicuro. */
+  s = s.replace(/[<>:"/\\|?*,;]/g, "_").replace(/^\.+/, "").replace(/[. ]+$/, "");
+  if (!s) s = "clip";
   return RESERVED.test(s) ? s + "_" : s;
 }
 
@@ -450,6 +457,17 @@ async function generate() {
     });
     manifest.groups.parole = parole;
     if (!checkOnly) console.log(`parole: ${Object.keys(parole).length}`);
+  }
+
+  if (only === "all" || only === "viaggio") {
+    const frasiViaggio = {};
+    await pool(viaggioSentences, PARALLEL, ({ id, testo }) => {
+      frasiViaggio[id] = checkOnly
+        ? { file: `audio/frasiViaggio/${slug(id)}.mp3`, spoken: testo }
+        : write("frasiViaggio", slug(id), testo, { rate: RATE });
+    });
+    manifest.groups.frasiViaggio = frasiViaggio;
+    if (!checkOnly) console.log(`frasi del viaggio: ${Object.keys(frasiViaggio).length}`);
   }
 
   if (only === "all" || only === "ui") {
