@@ -2199,7 +2199,6 @@ function updateProgressText() {
 const FIT_MIN = 0.4;    // sotto questa scala il testo non sarebbe leggibile
 let fitZoom = 1;        // scala applicata adesso (la usa il fantasma del drag)
 let fitQueued = false;
-let fitVerifiche = 0;   // verifiche differite rimaste per la misura in corso
 
 /** Altezza reale della barra inferiore come variabile CSS (in px dello spazio
     zoomato, così il padding del contenuto scala insieme alla barra). */
@@ -2299,13 +2298,6 @@ function fitScreen() {
     applica(scelto);
   }
   chiudi(scelto);
-  /* Verifica differita: font, figure o messa in pagina possono cambiare dopo
-     la misura, senza mutazioni del DOM da osservare. Si rifà il calcolo una
-     volta — due al massimo — solo se nel frattempo non entra più. */
-  if (fitVerifiche < 2) {
-    fitVerifiche++;
-    setTimeout(() => { if (nonEntra()) fitScreen(); }, 250);
-  }
 }
 
 /** Stessa cosa per i pannelli (impostazioni, aiuto, tappe): niente scorrimento. */
@@ -2353,7 +2345,6 @@ function scheduleFit() {
      finestra non disegna (avvio minimizzato, test in background) */
   setTimeout(() => {
     fitQueued = false;
-    fitVerifiche = 0;
     // durante un trascinamento non si rimisura: le classi cambiano a ogni
     // movimento e il layout è già a posto
     if (typeof drag !== "undefined" && drag && drag.moved) return;
