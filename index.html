@@ -2357,6 +2357,15 @@ function scheduleFit() {
 window.__scheduleFit = scheduleFit;
 /* i font possono arrivare dopo il primo fit e cambiare l'altezza della barra */
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => scheduleFit());
+/* Le figure arrivano dopo il primo fit: prima di decodificare un <img> ha
+   altezza zero, quindi la schermata sembra più bassa di quello che sarà (in
+   CI l'immagine arrivava dopo la misura e la barra finiva sulle tessere). */
+document.addEventListener("load", e => {
+  if (e.target && e.target.tagName === "IMG") scheduleFit();
+}, true);
+document.addEventListener("error", e => {
+  if (e.target && e.target.tagName === "IMG") scheduleFit();
+}, true);
 
 window.addEventListener("resize", scheduleFit);
 window.addEventListener("orientationchange", () => setTimeout(scheduleFit, 260));
