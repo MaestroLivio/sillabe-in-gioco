@@ -26,11 +26,28 @@ const TAG = process.argv[2] || "v2.0.2";
 const KEEP = process.argv.includes("--keep");
 const REPO = "MaestroLivio/sillabe-in-gioco";
 const EXPECTED = 67;            // illustrazioni attese in ogni artefatto
+/* Clip vocali attesi in ogni artefatto.
+   I fonemi delle lettere (audio/fonemi/) non passano dal manifest della voce:
+   sono registrazioni CC0 con un generatore proprio (`npm run fonemi`), quindi
+   il totale è «manifest + file presenti in quella cartella». Contando solo il
+   manifest l'attesa restava più bassa di 30 e ogni pacchetto sembrava pieno di
+   clip di troppo. */
 const EXPECTED_AUDIO = (() => {
+  let dalManifest = 424;
   try {
     const m = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "audio", "manifest.json"), "utf8"));
-    return Object.values(m.groups || {}).reduce((a, g) => a + Object.keys(g).length, 0);
-  } catch (e) { return 424; }
+    dalManifest = Object.values(m.groups || {}).reduce((a, g) => a + Object.keys(g).length, 0);
+  } catch (e) { /* resta il valore di ripiego */ }
+  let fonemi = 0;
+  try {
+    const dir = path.join(__dirname, "..", "audio", "fonemi");
+    fonemi = fs.readdirSync(dir).filter(n => /\.mp3$/i.test(n)).length;
+  } catch (e) { /* nessuna cartella: si controlla solo la voce */ }
+  /* I fonemi esistono dalla 2.4.0: verificando una release più vecchia
+     l'attesa deve restare quella di allora, senza i 30 clip. */
+  const [maggiore, minore] = String(TAG).replace(/^v/, "").split(".").map(Number);
+  const fonemiInRelease = maggiore > 2 || (maggiore === 2 && minore >= 4);
+  return dalManifest + (fonemiInRelease ? fonemi : 0);
 })();
 
 const WORK = path.join(os.tmpdir(), `sillabe-release-${TAG.replace(/[^\w.]/g, "")}`);
