@@ -4,7 +4,7 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
-## [Non pubblicato]
+## [2.5.0] — 2026-11-08
 
 ### Cambiato
 - **L'interfaccia sta sempre in una schermata: niente più scorrimento.** La pagina
@@ -238,7 +238,7 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
 - Download e calcolo dell'hash provati **contro la release vera** su GitHub
   (`scripts/test-updater-net.js`): hash calcolato = hash dichiarato.
 
-## [Non pubblicato]
+## [2.5.0] — 2026-11-08
 
 ### Cambiato
 - **Licenza: da MIT a CC BY 4.0** (Creative Commons Attribuzione 4.0

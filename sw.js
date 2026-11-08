@@ -1,5 +1,5 @@
 /* Service worker — cache offline per l'app Sillabe in Gioco */
-const CACHE = "sillabe-v2.4.0";
+const CACHE = "sillabe-v2.5.0";
 /* 40 frasi + 20 parole + 7 gruppi del percorso sillabico */
 const ILLUSTRATIONS = Array.from({ length: 67 }, (_, i) => `./illustrations/${String(i + 1).padStart(2, "0")}.png`);
 // Solo l'indice audio si precarica: i singoli clip sono centinaia e vengono

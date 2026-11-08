@@ -112,6 +112,12 @@ app.whenReady().then(async () => {
     await sleep(120);
     out.afterResetFilled = document.querySelectorAll('.slot.filled').length;
 
+    /* il completamento del livello 1 arma showResults a 1,5 s: si lascia
+       scattare adesso, altrimenti potrebbe portare la schermata sui risultati
+       proprio mentre si misura il quiz (in CI il test corre più veloce e la
+       corsa diventa visibile). */
+    await waitFor(() => document.getElementById('screen-results').classList.contains('active'), 2500);
+
     // esercizi
     buildQuiz();
     await sleep(120);
@@ -132,10 +138,6 @@ app.whenReady().then(async () => {
     // dei suoni non catturano i timer di apertura della parola
     const autoReadBefore = settings.autoRead;
     settings.autoRead = false;
-    /* il completamento del livello 1 ha armato showResults a 1,5 s: se
-       scattasse dopo l'apertura del laboratorio riporterebbe la schermata
-       sui risultati. Lo si fa scattare adesso, prima di cambiare schermata. */
-    await waitFor(() => document.getElementById('screen-results').classList.contains('active'), 2500);
     startWord(0);
     await waitFor(() => document.getElementById('screen-words').classList.contains('active'), 2000);
     out.wordsActive = document.getElementById('screen-words').classList.contains('active');
