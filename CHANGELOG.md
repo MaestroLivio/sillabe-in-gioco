@@ -238,7 +238,7 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
 - Download e calcolo dell'hash provati **contro la release vera** su GitHub
   (`scripts/test-updater-net.js`): hash calcolato = hash dichiarato.
 
-## [2.5.0] — 2026-11-08
+## [Non pubblicato]
 
 ### Cambiato
 - **Licenza: da MIT a CC BY 4.0** (Creative Commons Attribuzione 4.0
