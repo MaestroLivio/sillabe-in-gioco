@@ -44,6 +44,8 @@ function strings(src) {
    Estraiamo solo gli array che seguono una graffa di `parts:[[`. */
 const rawSrc = block("const RAW = [", "const DISTRACTOR_POOL");
 const syllables = new Set();
+/* «è» è una parola di una lettera, non una lettera-tessera: resta una sillaba */
+const PAROLE_UNA_LETTERA = new Set(["è"]);
 for (const m of rawSrc.matchAll(/parts:\s*\[([\s\S]*?)\]\s*\}/g)) {
   for (const arr of m[1].matchAll(/\["([^"]*)",\s*\[([^\]]*)\]/g)) {
     for (const s of strings("[" + arr[2] + "]")) syllables.add(s);
@@ -183,7 +185,16 @@ const viaggioSentences = viaggio
 
 const allWords = [...new Set([...words, ...viaggioWords, ...viaggioSentenceWords])]
   .sort((a, b) => a.localeCompare(b, "it"));
+/* Le LETTERE SINGOLE non sono sillabe e non si generano più con la voce.
+   Dal sistema dei fonemi (js/fonemi.js) un «a», un «s» o una «m» isolati
+   sono fonemi, registrati una volta in audio/fonemi/. Se restassero qui, il
+   prossimo `npm run audio` rigenererebbe i vecchi clip del NOME della
+   lettera («esse», «emme») e la libreria conterrebbe due verità diverse.
+   Eccezione: «è» è una parola di una lettera («il pane è pronto»), non una
+   tessera: la sua tessera è il verbo e ha la propria registrazione. */
+const isLetteraSingola = s => /^[a-zàèéìòù]$/i.test(s) && !PAROLE_UNA_LETTERA.has(s.toLowerCase());
 const allSyllablesWithViaggio = [...new Set([...allSyllables, ...viaggioSyllables, ...viaggioWordSyllables])]
+  .filter(s => !isLetteraSingola(s))
   .sort((a, b) => a.localeCompare(b, "it"));
 
 module.exports = {

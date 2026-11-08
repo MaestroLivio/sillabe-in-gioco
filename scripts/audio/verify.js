@@ -99,57 +99,40 @@ const onDisk = [];
 (function walk(d) {
   for (const e of fs.readdirSync(d, { withFileTypes: true })) {
     const p = path.join(d, e.name);
-    if (e.isDirectory()) walk(p);
-    else if (p.endsWith(".mp3")) onDisk.push(path.resolve(p));
+    if (e.isDirectory()) {
+      /* audio/fonemi/ non è indicizzato da questo manifest: ha il suo indice
+         (js/fonemi.js) e il suo test (`npm run test:fonemi`). Non è orfano. */
+      if (e.name === "fonemi") continue;
+      walk(p);
+    } else if (p.endsWith(".mp3")) onDisk.push(path.resolve(p));
   }
 })(AUDIO);
 const orphans = onDisk.filter(p => !referenced.has(p));
 if (orphans.length) warn(`file non indicizzati nel manifest: ${orphans.length}`);
 
-/* --- 6. le singole lettere del laboratorio ---
-   La durata da sola non basta a distinguere un fonema da un nome ripetuto:
-   la voce, scritta `"sss"`, compita «esse esse esse» e il clip risulta anzi
-   più lungo del nome. La verifica vera sulla forma d'onda è in
-   `test-pronunciation.js` (blocchi di suono e ripetizione dell'inviluppo); qui
-   si controlla che ogni lettera continui ad avere il suo clip e che il
-   manifest dichiari il fonema e non il nome. */
-const { LETTER_PHONEMES } = require("./pronunciation");
-for (const tok of data.syllables) {
-  const info = (manifest.groups.syl || {})[tok];
-  if (!info) continue;
-  const abs = path.join(ROOT, info.file);
-  if (!fs.existsSync(abs)) continue;
-  if (LETTER_PHONEMES[tok]) {
-    const spec = LETTER_PHONEMES[tok];
-    /* tutte le lettere del laboratorio sono fonemi ritagliati: le vocali e le
-       continue hanno `hold`, le occlusive sono corte. Le vocali durano ~0,44 s
-       e le continue 0,36-0,40 s, quindi lo stesso tetto vale per entrambe;
-       uno scoppio sta sotto i 0,3 s. */
-    const max = spec.hold ? 0.75 : 0.45;
-    const dur = duration(abs);
-    if (!info.spoken || info.spoken === tok) {
-      fail(`lettera «${tok}»: clip letto come nome della lettera, non come fonema`);
-    }
-    if (dur !== null && dur > max) {
-      fail(`lettera «${tok}»: ${dur.toFixed(2)}s, troppo lungo per un fonema (nome ripetuto?)`);
-    }
-    if (dur !== null && dur < 0.12) {
-      fail(`lettera «${tok}»: ${dur.toFixed(2)}s, fonema troppo breve per essere udibile`);
-    }
-    continue;
-  }
-  const dur = duration(abs);
-  if (dur && /^[a-zàèéìòù]{1,3}$/.test(tok) && dur > 1.6) {
-    fail(`sillaba «${tok}»: ${dur.toFixed(2)}s, sembra compitata lettera per lettera`);
+/* --- 6. le lettere singole NON sono più clip della voce ---
+   Fino alla 2.3.1 una lettera isolata era un clip del gruppo «syl», con il
+   fonema ritagliato dalla voce. Ora è una registrazione fonetica in
+   audio/fonemi/, con il suo motore (js/fonemi.js) e il suo test
+   (`npm run test:fonemi`). Qui si controlla solo che il vecchio percorso sia
+   davvero chiuso: nel gruppo «syl» non deve restare nessuna lettera sciolta,
+   altrimenti qualche schermata potrebbe ancora far sentire il nome. */
+for (const tok of Object.keys(manifest.groups.syl || {})) {
+  if (tok === "è") continue;   // «è» è una parola di una lettera, non una tessera
+  if (/^[a-zàèéìòù]$/i.test(tok)) {
+    fail(`syl/«${tok}»: una lettera isolata non è una sillaba, il suo suono sta in audio/fonemi/`);
   }
 }
 
-/* --- 6b. ogni lettera del laboratorio deve avere il suo fonema ---
-   `LETTER_PHONEMES` è la tabella di verità: se una lettera compare nel pool
-   delle tessere e non ha un fonema, il tap leggerebbe il nome («emme»). */
-const { LETTER_POOL } = require("./extract");
-for (const tok of LETTER_POOL || []) {
-  if (!LETTER_PHONEMES[tok]) fail(`lettera «${tok}»: nessun fonema in LETTER_PHONEMES`);
+/* --- 6b. la libreria dei fonemi deve essere completa ---
+   Il motore è la fonte di verità delle lettere: se un fonema non ha il file,
+   il tap resta muto (non ripiega sul nome, per scelta). Meglio saperlo qui. */
+const Fonemi = require(path.join(ROOT, "js", "fonemi.js"));
+const libreria = Fonemi.creaGestoreAudio({}).validatePhonemeLibrary({
+  esiste: rel => fs.existsSync(path.join(ROOT, rel))
+});
+if (!libreria.ok) {
+  for (const p of libreria.problemi) fail(`fonemi: ${p}`);
 }
 
 /* --- 7. i nomi dei file devono essere portabili su Windows ---

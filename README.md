@@ -57,25 +57,32 @@ Si ascolta la parola intera (*formiche, chitarra, cesto, città…*) e si scegli
 fra quattro; la scheda del suono mostra il gruppo e la parola con il gruppo evidenziato.
 
 ### Voce
-- **Voci preregistrate con voce neurale italiana**, incluse nel pacchetto: 182 sillabe e lettere,
-  40 frasi, 165 parole e le battute dell'interfaccia (424 clip, ≈1 MB). Identiche su ogni
-  dispositivo, anche senza voci italiane installate nel sistema.
+- **Voci preregistrate con voce neurale italiana**, incluse nel pacchetto: 380 sillabe,
+  40 frasi, 677 parole, 109 frasi del viaggio e le battute dell'interfaccia
+  (1.236 clip, ≈3,7 MB). Identiche su ogni dispositivo, anche senza voci italiane
+  installate nel sistema.
 - **Le sillabe non vengono più compitate.** Con la sintesi di sistema alcune sillabe
   isolate (`ac`, `ap`, `ia`, `ta`, `uc`) venivano lette come sigle, lettera per lettera;
   i clip preregistrati eliminano il problema alla radice. Un test di regressione
   (`npm run test:pronuncia`) confronta ogni sillaba critica con la sua lettura
   compitata e fallisce se le due coincidono.
-- **Le lettere suonano come fonema, non come nome.** La tessera `s` fa sentire un /s/
-  tenuto, non «esse»; `m` un /m/ tenuto, non «emme». Attenzione: scrivere la lettera
-  ripetuta (`sss`) **non** funziona — la voce la legge come una sigla e compita il nome
-  tre volte («esse esse esse»). I clip si ricavano quindi **ritagliando** il fonema
-  dall'audio della voce — la geminata che ogni nome di lettera contiene (*e**ss**e*,
-  *e**mm**e*) o una parola vera per `v` (*a**vv**io*) — e **rallentandolo** con `atempo`
-  fino a 0,40 s: un solo suono continuo, pronunciato adagio, senza loop e senza
-  ripetizioni. Quelli che non si possono tenere (`t`, `p`, `b`, `d`, `c`, `g`) sono
-  chiusura + scoppio, una volta sola, senza la /i/ di «ti», «pi», «bi».
-  Il test `npm run test:pronuncia` analizza la forma d'onda e fallisce se un clip
-  contiene più di un blocco di suono o se l'inviluppo si ripete (cioè se è un loop).
+- **Le lettere suonano come fonema, non come nome**, e ora sono registrazioni
+  fonetiche vere, non ritagli della voce. `audio/fonemi/` contiene **30 suoni**: i 27
+  delle *IPA sound files* di Ruben Schachtenhaufen (CC0) più `/tʃ/`, `/dʒ/` e `/dz/`
+  da Wikimedia Commons (vedi `audio/fonemi/ATTRIBUZIONI.md`). La tessera `s` fa sentire
+  /s/, non «esse»; la `m` /m/, non «emme». La lettera non è più un suono isolato:
+  `js/fonemi.js` legge **la parola e la posizione della lettera**, quindi la `c` di
+  CASA è /k/ e quella di CENA è /tʃ/, la `g` di GATTO è /g/ e quella di GELO è /dʒ/,
+  la `s` di SOLE è sorda e quella di CASA sonora, la `z` di ZERO è /dz/ e quella di
+  ZIO è /ts/. La `i` di CIA e la `h` di CHI sono mute e non producono suono; la doppia
+  di GATTO e PALLA è un suono solo. Le vocali aperte e chiuse vengono dal lessico
+  della parola (o, se la parola non c'è, da un ripiego **dichiarato ambiguo**).
+- **Ascolto in sequenza**: il pulsante **SUONI** del laboratorio parole fa sentire i
+  fonemi uno dopo l'altro (`/s/ — /o/ — /l/ — /e/`), con la pausa regolabile dalle
+  impostazioni. Non è una fusione fonetica: resta l'ascolto dei singoli suoni, e la
+  parola intera resta la registrazione naturale.
+- Il test `npm run test:fonemi` controlla i 30 file, le associazioni grafema→fonema
+  delle parole di prova, il lessico, le sequenze e l'assenza di doppie riproduzioni.
 - **Sintesi di sistema come riserva** (Web Speech API, `it-IT`): se un file audio manca,
   l'app torna a leggere con la voce del dispositivo e preferisce le voci neurali/premium.
 - Lettura **scandita sillaba per sillaba** con la pausa giusta tra una sillaba e l'altra.
@@ -237,8 +244,8 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.2.5-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.2.5.dmg` (Intel)
+- `Sillabe in Gioco-2.4.0-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.4.0.dmg` (Intel)
 - versioni `.zip` per gli aggiornamenti automatici
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
@@ -264,8 +271,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.3.0.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.3.0.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.4.0.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.4.0.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -283,7 +290,7 @@ Due strade, entrambe incluse.
 npm run build:chromeos
 ```
 
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.3.0.zip`.
+Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.4.0.zip`.
 
 Installazione in modalità sviluppatore:
 
@@ -307,7 +314,7 @@ privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
 ### Web / PWA
 
 ```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.3.0.zip
+npm run build:web      # crea dist/web + dist/sillabe-web-v2.4.0.zip
 npm run serve          # prova locale con service worker attivo
 ```
 
@@ -332,7 +339,7 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run test:viaggio:ui` | Audit Electron del viaggio: mappa, unità, esercizi, memoria, treno, frasi, pannello docente |
 | `npm run test:audio` | Verifica i clip: copertura di sillabe/frasi/parole, durate, file orfani |
 | `npm run test:pronuncia` | Controlla che le sillabe critiche non siano compitate lettera per lettera |
-| `npm run test:release -- v2.3.0` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i clip audio dichiarati dal manifest |
+| `npm run test:release -- v2.4.0` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i clip audio dichiarati dal manifest |
 | `npm run test:smoke` | Smoke test headless Electron: schermate, laboratorio parole, suoni, impostazioni e accesso al viaggio |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |

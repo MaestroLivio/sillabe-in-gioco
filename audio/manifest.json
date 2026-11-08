@@ -4,11 +4,6 @@
  "rate": 165,
  "groups": {
   "syl": {
-   "a": {
-    "file": "audio/syl/a.mp3",
-    "dur": 0.496,
-    "spoken": "a (fonema di «tappo» tenuto 0.45s)"
-   },
    "ab": {
     "file": "audio/syl/ab.mp3",
     "dur": 0.392,
@@ -48,11 +43,6 @@
     "file": "audio/syl/au.mp3",
     "dur": 0.418,
     "spoken": "au"
-   },
-   "b": {
-    "file": "audio/syl/b.mp3",
-    "dur": 0.235,
-    "spoken": "b (scoppio da «gabbia»)"
    },
    "ba": {
     "file": "audio/syl/ba.mp3",
@@ -198,11 +188,6 @@
     "file": "audio/syl/buo.mp3",
     "dur": 0.418,
     "spoken": "buo"
-   },
-   "c": {
-    "file": "audio/syl/c.mp3",
-    "dur": 0.235,
-    "spoken": "c (scoppio da «cima»)"
    },
    "ca": {
     "file": "audio/syl/ca.mp3",
@@ -409,11 +394,6 @@
     "dur": 0.313,
     "spoken": "cuo"
    },
-   "d": {
-    "file": "audio/syl/d.mp3",
-    "dur": 0.235,
-    "spoken": "d (scoppio da «freddo»)"
-   },
    "da": {
     "file": "audio/syl/da.mp3",
     "dur": 0.34,
@@ -494,11 +474,6 @@
     "dur": 0.366,
     "spoken": "du"
    },
-   "e": {
-    "file": "audio/syl/e.mp3",
-    "dur": 0.496,
-    "spoken": "e (fonema di «pelo» tenuto 0.45s)"
-   },
    "è": {
     "file": "audio/syl/e1.mp3",
     "dur": 1.202,
@@ -523,11 +498,6 @@
     "file": "audio/syl/er.mp3",
     "dur": 0.366,
     "spoken": "er"
-   },
-   "f": {
-    "file": "audio/syl/f.mp3",
-    "dur": 0.444,
-    "spoken": "f (fonema di «effe» tenuto 0.4s)"
    },
    "fa": {
     "file": "audio/syl/fa.mp3",
@@ -653,11 +623,6 @@
     "file": "audio/syl/ful.mp3",
     "dur": 0.549,
     "spoken": "ful"
-   },
-   "g": {
-    "file": "audio/syl/g.mp3",
-    "dur": 0.235,
-    "spoken": "g (scoppio da «gallo»)"
    },
    "ga": {
     "file": "audio/syl/ga.mp3",
@@ -884,11 +849,6 @@
     "dur": 0.366,
     "spoken": "hai"
    },
-   "i": {
-    "file": "audio/syl/i.mp3",
-    "dur": 0.496,
-    "spoken": "i (fonema di «tipo» tenuto 0.45s)"
-   },
    "ia": {
     "file": "audio/syl/ia.mp3",
     "dur": 0.366,
@@ -938,11 +898,6 @@
     "file": "audio/syl/iuo.mp3",
     "dur": 0.47,
     "spoken": "iuo"
-   },
-   "l": {
-    "file": "audio/syl/l.mp3",
-    "dur": 0.47,
-    "spoken": "l (fonema di «elle» tenuto 0.4s)"
    },
    "l'om": {
     "file": "audio/syl/l-om.mp3",
@@ -1029,11 +984,6 @@
     "dur": 0.418,
     "spoken": "lun"
    },
-   "m": {
-    "file": "audio/syl/m.mp3",
-    "dur": 0.47,
-    "spoken": "m (fonema di «emme» tenuto 0.4s)"
-   },
    "ma": {
     "file": "audio/syl/ma.mp3",
     "dur": 0.366,
@@ -1119,11 +1069,6 @@
     "dur": 0.549,
     "spoken": "muc"
    },
-   "n": {
-    "file": "audio/syl/n.mp3",
-    "dur": 0.47,
-    "spoken": "n (fonema di «enne» tenuto 0.4s)"
-   },
    "na": {
     "file": "audio/syl/na.mp3",
     "dur": 0.366,
@@ -1179,11 +1124,6 @@
     "dur": 0.418,
     "spoken": "nuo"
    },
-   "o": {
-    "file": "audio/syl/o.mp3",
-    "dur": 0.496,
-    "spoken": "o (fonema di «rosa» tenuto 0.45s)"
-   },
    "ol": {
     "file": "audio/syl/ol.mp3",
     "dur": 0.34,
@@ -1203,11 +1143,6 @@
     "file": "audio/syl/or.mp3",
     "dur": 0.34,
     "spoken": "or"
-   },
-   "p": {
-    "file": "audio/syl/p.mp3",
-    "dur": 0.235,
-    "spoken": "p (scoppio da «pala»)"
    },
    "pa": {
     "file": "audio/syl/pa.mp3",
@@ -1404,11 +1339,6 @@
     "dur": 0.34,
     "spoken": "quo"
    },
-   "r": {
-    "file": "audio/syl/r.mp3",
-    "dur": 0.418,
-    "spoken": "r (fonema di «erre» tenuto 0.38s)"
-   },
    "ra": {
     "file": "audio/syl/ra.mp3",
     "dur": 0.34,
@@ -1513,11 +1443,6 @@
     "file": "audio/syl/ru.mp3",
     "dur": 0.287,
     "spoken": "ru"
-   },
-   "s": {
-    "file": "audio/syl/s.mp3",
-    "dur": 0.444,
-    "spoken": "s (fonema di «esse» tenuto 0.4s)"
    },
    "sa": {
     "file": "audio/syl/sa.mp3",
@@ -1759,11 +1684,6 @@
     "dur": 0.313,
     "spoken": "suo"
    },
-   "t": {
-    "file": "audio/syl/t.mp3",
-    "dur": 0.235,
-    "spoken": "t (scoppio da «tana»)"
-   },
    "ta": {
     "file": "audio/syl/ta.mp3",
     "dur": 0.313,
@@ -1854,11 +1774,6 @@
     "dur": 0.235,
     "spoken": "tu"
    },
-   "u": {
-    "file": "audio/syl/u.mp3",
-    "dur": 0.496,
-    "spoken": "u (fonema di «lupo» tenuto 0.45s)"
-   },
    "uc": {
     "file": "audio/syl/uc.mp3",
     "dur": 0.418,
@@ -1888,11 +1803,6 @@
     "file": "audio/syl/ur.mp3",
     "dur": 0.418,
     "spoken": "ur"
-   },
-   "v": {
-    "file": "audio/syl/v.mp3",
-    "dur": 0.47,
-    "spoken": "v (fonema di «avvio» tenuto 0.4s)"
    },
    "va": {
     "file": "audio/syl/va.mp3",
@@ -1943,11 +1853,6 @@
     "file": "audio/syl/vu.mp3",
     "dur": 0.418,
     "spoken": "vu"
-   },
-   "z": {
-    "file": "audio/syl/z.mp3",
-    "dur": 0.235,
-    "spoken": "z (scoppio da «zio»)"
    },
    "za": {
     "file": "audio/syl/za.mp3",

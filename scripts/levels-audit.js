@@ -58,13 +58,26 @@ app.whenReady().then(async () => {
       const slots = document.querySelectorAll('#slotsWrap .slot').length;
       const tiles = document.querySelectorAll('#tilePool .tile').length;
       const prefilled = document.querySelectorAll('#slotsWrap .slot.prefilled').length;
+      /* Le caselle devono stare per parola, con un divisore fra le parole:
+         se l'allineamento testo→sillabe fallisce, la riga resta senza
+         divisori e questo controllo lo segnala. */
+      const words = lvl.text.split(/\s+/).filter(Boolean).length;
+      const groups = document.querySelectorAll('#slotsWrap .wordgroup').length;
+      const gaps = document.querySelectorAll('#slotsWrap .wordgap').length;
+      const wordsOk = words <= lvl.parts.length || (gaps > 0 && groups === gaps + lvl.parts.length);
       const total = lvl.syllables.length;
       // nel pool finiscono solo le sillabe da collocare più i 3 distrattori
       const expectedTiles = total - prefilled + 3;
       // voce: il livello deve avere il clip della frase e quello di ogni sillaba
       await loadAudioManifest();
       const fraseClip = audioFileFor(String(lvl.id), 'frasi');
-      const sylMissing = lvl.syllables.filter(s => !audioFileFor(s, 'syl'));
+      /* Una lettera isolata (le sillabe A, I, E di «a-pre», «i piatti»,
+         «è tardi») non ha un clip nel gruppo syl: il suo suono è un fonema di
+         audio/fonemi/, scelto da js/fonemi.js. Senza questo, il controllo
+         segnalerebbe un buco che non c'è. */
+      const hasClip = s => !!audioFileFor(s, 'syl') ||
+        !!(window.Fonemi && window.Fonemi.fonemaPerLettera(s, '').file);
+      const sylMissing = lvl.syllables.filter(s => !hasClip(s));
       let fraseOk = false;
       if (fraseClip) {
         fraseOk = await new Promise(res => {
@@ -83,10 +96,11 @@ app.whenReady().then(async () => {
         imgOk: !!img && img.naturalWidth > 0,
         colors,
         slots, tiles, prefilled, total,
+        groups, gaps, wordsOk,
         fraseClip: !!fraseClip, fraseOk,
         sylMissing: sylMissing.length,
         ok: !!img && img.naturalWidth > 0 && colors > 12 && slots === total && tiles === expectedTiles
-            && !!fraseClip && fraseOk && sylMissing.length === 0
+            && !!fraseClip && fraseOk && sylMissing.length === 0 && wordsOk
       });
     }
     return out;
@@ -97,7 +111,7 @@ app.whenReady().then(async () => {
   const srcs = report.map(r => r.src);
   const duplicated = srcs.filter((s, i) => s && srcs.indexOf(s) !== i);
   report.forEach(r => {
-    console.log(`${r.ok ? "✔" : "✖"} ${String(r.id).padStart(2)} [${r.mode}] img:${r.imgOk ? r.colors + "c" : "NO"} slots:${r.slots}/${r.total} pre:${r.prefilled} tiles:${r.tiles} voce:${r.fraseOk ? "ok" : "NO"}${r.sylMissing ? " mancano " + r.sylMissing + " sillabe" : ""} — ${r.text}`);
+    console.log(`${r.ok ? "✔" : "✖"} ${String(r.id).padStart(2)} [${r.mode}] img:${r.imgOk ? r.colors + "c" : "NO"} slots:${r.slots}/${r.total} pre:${r.prefilled} tiles:${r.tiles} parole:${r.groups}g/${r.gaps}sep voce:${r.fraseOk ? "ok" : "NO"}${r.sylMissing ? " mancano " + r.sylMissing + " sillabe" : ""}${r.wordsOk ? "" : " SENZA DIVISORI"} — ${r.text}`);
   });
   if (duplicated.length) {
     console.log(`\n✖ illustrazioni condivise: ${duplicated.join(", ")}`);

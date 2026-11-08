@@ -1,15 +1,26 @@
 /* Service worker — cache offline per l'app Sillabe in Gioco */
-const CACHE = "sillabe-v2.3.0";
+const CACHE = "sillabe-v2.4.0";
 /* 40 frasi + 20 parole + 7 gruppi del percorso sillabico */
 const ILLUSTRATIONS = Array.from({ length: 67 }, (_, i) => `./illustrations/${String(i + 1).padStart(2, "0")}.png`);
 // Solo l'indice audio si precarica: i singoli clip sono centinaia e vengono
 // messi in cache al primo ascolto (vedi la strategia cache-first dei media).
+// Eccezione: i 30 fonemi delle lettere. Sono ~84 kB in tutto e servono alle
+// prime tessere di «Formazione di parole»: se non fossero in cache, la prima
+// lettera toccata resterebbe muta giocando senza rete.
+const FONEMI = [
+  "a", "e", "e_aperta", "i", "o", "o_aperta", "u",
+  "p", "b", "t", "d", "k", "g", "f", "v", "s", "z_sonora_fricativa",
+  "m", "n", "gn", "l", "gli", "r", "sc_dolce", "j", "w",
+  "z_sorda_affricata", "z_sonora_affricata", "c_dolce", "g_dolce"
+].map(id => `./audio/fonemi/${id}.mp3`);
 const ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./audio/manifest.json",
   "./css/viaggio.css",
+  "./js/fonemi.js",
+  ...FONEMI,
   "./js/viaggio-dati.js",
   "./js/viaggio.js",
   "./illustrations/parole/manifest.json",

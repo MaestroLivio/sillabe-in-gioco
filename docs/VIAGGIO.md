@@ -138,6 +138,11 @@ Tutto resta nel browser (localStorage). Non ci sono account né servizi online.
   indicizzato in `audio/manifest.json`. Le unità rare e i gruppi complessi
   vanno ascoltati e, se necessario, sostituiti dal docente: il pannello accetta
   un audio personalizzato per ogni parola.
+- **Le singole lettere non passano dalla voce.** Una lettera isolata è un fonema:
+  i 30 suoni vivono in `audio/fonemi/` (registrazioni CC0 e CC BY-SA, vedi
+  `audio/fonemi/ATTRIBUIZIONI.md`) e la scelta del suono nel contesto della parola
+  sta in `js/fonemi.js`. Nel viaggio le unità sono sillabe, segmenti e grafemi
+  (`syl`): lì si ascolta la registrazione dell'unità, non i suoi fonemi.
 - Le immagini e gli audio personali sono data URL locali, con limiti di
   dimensione (320 KB immagine, 900 KB audio) per non saturare lo spazio.
 

@@ -4,6 +4,67 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.4.0] — 2026-11-08
+
+### Cambiato
+- **I fonemi delle lettere singole sono registrazioni fonetiche, non più ritagli
+  della voce sintetica.** Nuova libreria `audio/fonemi/`: 30 suoni — i 27 delle
+  *IPA sound files* di Ruben Schachtenhaufen (CC0 1.0) più `/tʃ/`, `/dʒ/` e `/dz/`
+  da Wikimedia Commons — con nomi stabili (`a`, `e_aperta`, `k`, `gn`, `gli`,
+  `sc_dolce`, `z_sorda_affricata`, `c_dolce`, …), MP3 mono 64 kbps (≈84 kB in
+  tutto, scelti al posto dell'OGG perché Safari non decodifica Vorbis in
+  `<audio>`). Fonti, autori, licenze e ritagli sono in
+  `audio/fonemi/ATTRIBUZIONI.md`; si rigenerano con `npm run fonemi`.
+- **Nuovo motore grafema→fonema** in `js/fonemi.js`: una sola fonte per tutte le
+  attività. Riceve parola, lettera e posizione e restituisce fonema, file,
+  gruppo ortografico e casi ambigui (`getPhonemeForLetter`, `getPhonemesForWord`,
+  `playPhoneme`, `playLetter`, `playPhonemeSequence`, `stopPhoneme`,
+  `preloadPhonemes`, `validatePhonemeLibrary`). Regole per C e G (dure, dolci,
+  CH/GH, CIA/GIA con I muta), S e Z dal lessico, E e O aperte o chiuse, GN,
+  GLI (con le eccezioni come GLICINE), SCI/SCE, SC + A/O/U, QU, CQ, doppie e
+  lettere mute. Niente nomi di lettera, niente Web Speech per le lettere: se un
+  file manca il motore lo dichiara in console e tace.
+- **Ascolto in sequenza dei fonemi** di una parola (pulsante **SUONI** nel
+  laboratorio, pausa regolabile dalle impostazioni), con la parola intera che
+  resta la registrazione naturale.
+- **Pulizia del vecchio sistema**: rimossi i 20 clip di lettere/nome dal gruppo
+  `syl` (`a…z` e `è` è rimasto: è una parola), e tutta la pipeline che li
+  ritagliava dalla voce (`LETTER_PHONEMES`, `STOP_PAD`, i passaggi di
+  `scripts/audio/build.js`, il blocco 3 di `test-pronunciation.js`).
+  `audio/syl/` non contiene più lettere: un test lo verifica.
+
+### Corretto
+- `analizzaParola` non riconosceva le consonanti semplici (B D F L M N P R T V):
+  MARE dava `a e`. Aggiunto il ramo, più la doppia dolce di C e G (GHIACCIO,
+  MAGGIO) che produceva `/k/ + /tʃ/` invece di un solo `/tʃ/`.
+- Corretti cinque indici del lessico (CROCE, LIBRO, GHIRO, GHIACCIO, SCIVOLO) e
+  SCENA, che dichiarava la E dove c'è la C: il motore restava sul ripiego
+  silenziosamente. Ora un test verifica che ogni voce del lessico cada su una
+  lettera vera.
+
+### Aggiunto
+- **Confine di parola nei livelli**: le caselle della frase sono raggruppate per
+  parola, con una barra azzurra fra una parola e la successiva e il trattino
+  arancione riservato alle sillabe della stessa parola; lo stesso segno compare
+  sulla scheda stampata. Vale per tutti i 40 livelli, comprese le frasi
+  coordinate e complesse.
+- **Lettura animata del viaggio**: la parola in corso si illumina intera e fra
+  una parola e la successiva la pausa è più lunga, così il confine si vede e si
+  sente anche mentre si legge sillaba per sillaba.
+- `npm run test:fonemi`, nella suite `npm test`: presenza e integrità dei 30
+  clip, associazioni lettera→fonema, C/G, S/Z, vocali aperte e chiuse, GN/GLI/
+  SC/CH/GH, lettere mute, doppie, riproduzione con un solo gesto, sillabe e
+  frasi intatte, funzionamento offline, nessuna doppia riproduzione.
+- Il service worker precarica i 30 fonemi (cache `sillabe-v2.4.0`) e `index.html`
+  carica `js/fonemi.js` prima dello script dell'app.
+
+## [2.3.1] — 2026-10-31
+
+### Corretto
+- Gli interruttori delle impostazioni (compreso «Tutto maiuscolo» e «Testi in
+  stampato maiuscolo» del viaggio) ora si attivano anche toccando la levetta,
+  non solo il testo dell'etichetta.
+
 ## [2.3.0] — 2026-10-28
 
 ### Aggiunto

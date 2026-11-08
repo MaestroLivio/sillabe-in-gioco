@@ -243,10 +243,15 @@ app.whenReady().then(async () => {
     out.syllWordCompleted = SY.completed;
     out.syllWordBig = document.getElementById('syllWordBig').textContent;
 
-    // ogni sillaba e ogni parola del percorso devono avere un clip
+    // ogni sillaba e ogni parola del percorso devono avere un clip.
+    // Una lettera isolata (le vocali A, E, I, O, U del percorso) non è più un
+    // clip del gruppo syl: il suo suono è un fonema di audio/fonemi/, scelto
+    // da js/fonemi.js. Il controllo di copertura deve cercarlo lì.
+    const hasClip = s => !!audioFileFor(s, 'syl') ||
+      !!(window.Fonemi && window.Fonemi.fonemaPerLettera(s, '').file);
     await loadAudioManifest();
     out.syllAudioSyl = SYLL_ITEMS.every(it =>
-      it.kind === 'word' ? it.units.every(u => audioFileFor(u, 'syl')) : audioFileFor(it.say, 'syl'));
+      it.kind === 'word' ? it.units.every(hasClip) : hasClip(it.say));
     out.syllAudioWords = SYLL_ITEMS.filter(it => it.kind === 'word')
       .every(it => audioFileFor(it.say, 'parole'));
     settings.autoRead = autoReadBefore;
@@ -308,19 +313,21 @@ app.whenReady().then(async () => {
     out.viaggioHomeCard = !!document.querySelector('#viaggioHomeCard #vHomeEntra');
     out.viaggioScreen = !!document.querySelector('#screen-viaggio');
     // ogni sillaba del livello 1 e la frase 1 devono avere un clip
-    out.audioSylL1 = LEVELS[0].syllables.every(s => audioFileFor(s, 'syl'));
+    out.audioSylL1 = LEVELS[0].syllables.every(hasClip);
     out.audioFraseL1 = audioFileFor('1', 'frasi');
-    // il file dichiarato dal manifest deve essere raggiungibile
-    const probe = audioFileFor('a', 'syl');
-    if (probe) {
-      out.audioFileOk = await new Promise(res => {
-        const a = new Audio(probe);
-        a.oncanplaythrough = () => res(true);
-        a.onerror = () => res(false);
-        setTimeout(() => res(false), 3000);
-        a.load();
-      });
-    } else out.audioFileOk = false;
+    // i file dichiarati devono essere raggiungibili: uno dal manifest delle
+    // sillabe, uno dalla libreria dei fonemi (le lettere non sono più nel syl)
+    const leggibile = file => new Promise(res => {
+      const a = new Audio(file);
+      a.oncanplaythrough = () => res(true);
+      a.onerror = () => res(false);
+      setTimeout(() => res(false), 3000);
+      a.load();
+    });
+    const probe = audioFileFor('ma', 'syl');
+    const probeFonema = window.Fonemi ? window.Fonemi.fonemaPerLettera('m', '').file : null;
+    out.audioFileOk = probe ? await leggibile(probe) : false;
+    out.audioFonemaOk = probeFonema ? await leggibile(probeFonema) : false;
 
     return out;
   })()`);
@@ -435,6 +442,7 @@ app.whenReady().then(async () => {
   expect("ogni sillaba del livello 1 ha il clip", results.audioSylL1);
   expect("la frase 1 ha il clip", !!results.audioFraseL1, results.audioFraseL1);
   expect("il file audio è leggibile", results.audioFileOk);
+  expect("il file del fonema è leggibile", results.audioFonemaOk);
 
   console.log("\n— VIAGGIO DELLE SILLABE —");
   expect("card del viaggio nella home", results.viaggioHomeCard);

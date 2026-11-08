@@ -166,7 +166,11 @@ body.theme-night .v-mcard.flipped{background:var(--paper)}
 .v-sentence .v-gap{min-width:70px;border-bottom:3px solid var(--ink-soft);height:30px;display:inline-block}
 .v-sentence .v-punct{font-weight:900;font-size:1.1rem}
 body.theme-night .v-sentence{background:#22334a;border-color:#3a5876}
+/* la parola che si sta leggendo: si illumina tutta, così il confine fra le
+   parole resta visibile anche durante la lettura sillaba per sillaba */
+.v-sentence .v-sword.reading{background:#fff7d6;box-shadow:0 0 0 3px #ffe27a}
 body.theme-night .v-sentence .v-sword{background:rgba(255,255,255,.06)}
+body.theme-night .v-sentence .v-sword.reading{background:#4a3f18;box-shadow:0 0 0 3px #8a6a1a}
 body.theme-night .v-sentence .v-syl{background:#2a3d55;color:var(--ink)}
 
 .v-phrase-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}

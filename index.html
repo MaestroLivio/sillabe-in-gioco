@@ -232,6 +232,16 @@ body.theme-night .slot{background:#2a3d55;border-color:#43648a;color:#dbeeff}
   background:var(--orange);opacity:.75
 }
 .slotrow .slot:last-child::after{display:none}
+/* CONFINE DI PAROLA — le caselle sono raggruppate per parola: il trattino
+   arancione segna il passaggio fra sillabe della stessa parola, la barra
+   azzurra quello fra una parola e la successiva. Senza questo, «il gatto
+   dorme» e «ilgatttodorme» si leggono uguali sulla riga delle caselle. */
+.wordgroup{display:flex;align-items:center;gap:8px}
+.wordgap{
+  width:0;align-self:stretch;min-height:38px;margin:0 4px;
+  border-left:3px dashed #8ec0e6
+}
+body.theme-night .wordgap{border-color:#4f7ba3}
 .slot.prefilled{background:#e9edf2;border-color:#c4ccd6;border-style:dashed;color:#7b8794}
 body.theme-night .slot.prefilled{background:#31435c;border-color:#4a6484;color:#a9bdd3}
 .slot.filled{background:#eaf9ee;border-color:var(--green);color:var(--green-d);animation:pop .25s ease}
@@ -498,6 +508,8 @@ body.theme-night .trophy.unlocked{background:#3a3222}
   .ps-slots{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 18px}
   .ps-slot{border:2px solid #333;border-radius:6px;min-width:52px;min-height:42px;padding:4px 8px;display:flex;align-items:center;justify-content:center;font-size:13pt}
   .ps-slot.pre{background:#e9e9e9;color:#777}
+  .ps-word{display:flex;gap:6px}
+  .ps-wordgap{align-self:center;font-size:16pt;color:#333;margin:0 4px}
   .ps-tiles{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
   .ps-tile{border:2px dashed #333;border-radius:8px;padding:8px 14px;font-size:13pt}
   .ps-foot{margin-top:22px;font-size:9pt;border-top:1px solid #999;padding-top:8px;color:#444}
@@ -709,6 +721,7 @@ body.theme-night .trophy.unlocked{background:#3a3222}
       <div class="toolrow">
         <button class="tool" id="wordsHintBtn" aria-label="Suggerimento"><span class="ti">💡</span><span class="tl">SUGGERIMENTO</span></button>
         <button class="tool" id="wordsReadBtn" aria-label="Ascolta la parola"><span class="ti">🔊</span><span class="tl">ASCOLTA</span></button>
+        <button class="tool" id="wordsSoundsBtn" aria-label="Ascolta i suoni delle lettere"><span class="ti">🔤</span><span class="tl">SUONI</span></button>
         <button class="tool" id="wordsResetBtn" aria-label="Rifai la parola"><span class="ti">🔄</span><span class="tl">RIFAI</span></button>
       </div>
       <div class="navrow">
@@ -897,6 +910,9 @@ body.theme-night .trophy.unlocked{background:#3a3222}
 <div class="confetti" id="confetti" aria-hidden="true"></div>
 <div id="printSheet"></div>
 <div class="sr-only" id="live" role="status" aria-live="polite"></div>
+<!-- Motore grafema→fonema: deve esserci PRIMA della logica dell'app,
+     che lo usa per le lettere singole (vedi sezione 3). -->
+<script src="js/fonemi.js"></script>
 <script>
 "use strict";
 /* ==========================================================================
@@ -1024,9 +1040,91 @@ const SENTENCES = [
   "Poiché è festa la scuola resta chiusa"
 ];
 
+/* ------------------------------------------------------------------
+   0b. CONFINE DI PAROLA
+
+   Le caselle mostrano un suono alla volta, ma la frase è fatta di parole:
+   senza un segno, «il gatto dorme» e «ilgatttodorme» si leggono uguali.
+   Queste due funzioni dicono dove finisce una parola e comincia la
+   successiva, allineando le sillabe al testo della frase.
+   ------------------------------------------------------------------ */
+
+/* Testo compatto: minuscolo, senza spazi né apostrofi. «l'om» e «l'ombrello»
+   diventano «lom» e «lombrello», così il confronto funziona. */
+function compatta(s) {
+  return String(s == null ? "" : s).toLowerCase()
+    .replace(/[’']/g, "").replace(/\s+/g, "");
+}
+
+/**
+ * Confini delle parole in una frase di sillabe.
+ * Ritorna [{ start, end, parola }] con indici nell'elenco piatto delle
+ * sillabe, oppure null se il testo non torna con le sillabe: in quel caso
+ * la riga si disegna come prima, senza divisori, invece di rompersi.
+ * `connettore` è la congiunzione fra le due frasi: non ha caselle, quindi
+ * quando una parola non consuma sillabe e coincide con lei, si salta.
+ */
+function confiniParole(testo, sillabe, connettore) {
+  const chiavi = sillabe.map(compatta);
+  const parole = String(testo || "").split(/\s+/).filter(Boolean);
+  const conn = compatta(connettore);
+  const out = [];
+  let i = 0;
+  for (const parola of parole) {
+    const w = compatta(parola);
+    if (!w) continue;
+    const inizio = i;
+    let acc = "";
+    while (i < chiavi.length && w.startsWith(acc + chiavi[i])) { acc += chiavi[i]; i++; }
+    if (acc !== w) {
+      i = inizio;
+      if (conn && w === conn) continue;   // congiunzione fra le due frasi
+      return null;
+    }
+    out.push({ start: inizio, end: i, parola });
+  }
+  return i === chiavi.length ? out : null;
+}
+
+/** Indice della parola che contiene la casella `piatto`, oppure -1. */
+function parolaDellaCasella(level, piatto) {
+  if (!level.words) return -1;
+  for (let k = 0; k < level.words.length; k++) {
+    const w = level.words[k];
+    if (piatto >= w.start && piatto < w.end) return k;
+  }
+  return -1;
+}
+
+/**
+ * Le caselle di una riga raggruppate per parola: per ogni parte un array di
+ * gruppi, e ogni gruppo è l'elenco degli indici (dentro la parte) delle
+ * caselle di quella parola. Senza confini noti resta un gruppo per parte,
+ * cioè la riga senza divisori di prima.
+ */
+function slotWordGroups(level) {
+  const out = [];
+  let piatto = 0;
+  for (const part of level.parts) {
+    const gruppi = [];
+    let corrente = null;
+    let ultima = -1;
+    part.syllables.forEach((syl, i) => {
+      const w = parolaDellaCasella(level, piatto + i);
+      if (w >= 0 && w !== ultima) { corrente = []; gruppi.push(corrente); ultima = w; }
+      if (!corrente) { corrente = []; gruppi.push(corrente); }
+      corrente.push(i);
+    });
+    out.push(gruppi);
+    piatto += part.syllables.length;
+  }
+  return out;
+}
+
 const LEVELS = RAW.map((r, i) => {
   const groupIdx = Math.floor(i / 10);
   const syllables = r.parts.reduce((acc, p) => acc.concat(p[1]), []);
+  const frase = SENTENCES[i] || syllables.join(" ");
   const lower = syllables.map(s => s.toLowerCase());
   const distractors = shuffleArr(DISTRACTOR_POOL.filter(s => !lower.includes(s))).slice(0, 3);
   return {
@@ -1046,8 +1144,11 @@ const LEVELS = RAW.map((r, i) => {
     })),
     syllables,
     distractors,
-    sentence: SENTENCES[i] || syllables.join(""),
-    text: SENTENCES[i] || syllables.join("")
+    sentence: frase,
+    text: frase,
+    /* dove finisce una parola: null se il testo non si allinea alle
+       sillabe (la riga resta senza divisori, come prima) */
+    words: confiniParole(frase, syllables, r.conn)
   };
 });
 
@@ -1304,6 +1405,9 @@ const DEFAULT_SETTINGS = {
   reduceMotion: false,
   allCaps: false,
   readWords: true,
+  /* pausa fra un fonema e il successivo nell'ascolto «a suoni» (s):
+     un fonema dietro l'altro senza pausa non si distingue */
+  fonemeGap: 0.28,
   exercise: "all"
 };
 
@@ -1489,30 +1593,54 @@ if (synth) {
   synth.onvoiceschanged = refreshVoices;
 }
 
-/**
- * Forma da far pronunciare alla voce di sistema per una singola lettera.
- *
- * Nel laboratorio la tessera mostra una lettera e deve suonare il *suono*,
- * non il nome. La sintesi di sistema non accetta input fonetico e legge
- * sempre il nome, quindi questa è solo una riserva (i clip preregistrati
- * hanno la precedenza e contengono il fonema vero).
- *
- * ATTENZIONE: NON usare grafie ripetute («sss», «mmm», «fff»). La voce le
- * legge come sigle e compita il nome tre volte: «esse esse esse». È il
- * difetto corretto in 2.2.2. Qui si passa una lettera sola: la sintesi
- * dirà comunque il nome, ma almeno una volta, senza ripeterlo.
- * Le occlusive restano la lettera: la sintesi non sa ritagliare lo scoppio.
- */
-const LETTER_SAY = {
-  a: "a", e: "e", i: "i", o: "o", u: "u",
-  f: "f", l: "l", m: "m", n: "n", r: "r", s: "s", v: "v", z: "z",
-  b: "b", c: "c", d: "d", g: "g", p: "p", t: "t"
-};
+/* ------------------------------------------------------------------
+   IL MOTORE DEI FONEMI
 
-/** Testo di riserva per la sintesi: fonema per le lettere, il resto uguale. */
-function fallbackFor(text, group) {
-  if (group !== "syl" || !text || text.length !== 1) return text;
-  return LETTER_SAY[text.toLowerCase()] || text;
+   Le lettere singole non si leggono più con la voce: hanno una libreria
+   propria (audio/fonemi/, 30 registrazioni fonetiche) e un motore che sa
+   che suono ha una lettera *dentro la parola*. La logica sta tutta in
+   js/fonemi.js: qui si crea un solo gestore, condiviso da tutte le
+   attività, che ferma la voce dell'app prima di suonare (un suono alla
+   volta) e legge volume e pausa dalle impostazioni.
+
+   Se manca un file, il gestore lo segnala in console: NON ripiega sul
+   nome della lettera. «Emme» al posto di /m/ è esattamente l'errore da
+   non fare.
+   ------------------------------------------------------------------ */
+const FonemiAudio = (window.Fonemi && typeof window.Fonemi.creaGestoreAudio === "function")
+  ? window.Fonemi.creaGestoreAudio({
+      stopOther: stopAudio,
+      volume: () => (typeof settings.volume === "number" ? settings.volume : 1),
+      intervallo: () => (typeof settings.fonemeGap === "number" ? settings.fonemeGap : 0.28),
+      log: msg => console.warn("[fonemi] " + msg)
+    })
+  : null;
+
+if (!FonemiAudio) console.warn("[fonemi] js/fonemi.js non caricato: le lettere non hanno il loro suono");
+
+/** Parole di una sola lettera: si leggono come parole, non come tessere.
+    «il pane è pronto»: la tessera «è» è il verbo, non la lettera E, e ha la
+    sua registrazione in audio/syl/. Trattarla come fonema sarebbe un errore
+    di lettura (e perderebbe l'accento della frase). */
+const PAROLE_UNA_LETTERA = new Set(["è"]);
+
+/** Vero solo per una tessera-lettera: «a», «M», «c». Non per «ma», «gli»,
+    e non per le parole di una lettera («è»). */
+function isSingleLetter(text) {
+  if (typeof text !== "string") return false;
+  const t = text.trim();
+  return /^[a-zàèéìòù]$/i.test(t) && !PAROLE_UNA_LETTERA.has(t.toLowerCase());
+}
+
+/**
+ * Riproduce il suono di una lettera nel contesto della parola.
+ * `parola` e `posizione` scelgono il fonema giusto: la C di CASA è /k/,
+ * quella di CENA è /tʃ/. Senza contesto valgono le associazioni semplici e
+ * il risultato è marcato ambiguo dal motore.
+ */
+function playLetterSound(letter, parola, posizione) {
+  if (!FonemiAudio) return Promise.resolve(false);
+  return FonemiAudio.playLetter(letter, { parola: parola || "", posizione: posizione });
 }
 
 /**
@@ -1526,26 +1654,28 @@ function fallbackFor(text, group) {
 function speak(text, opts = {}) {
   if (!text) return;
 
+  /* UNA LETTERA ISOLATA È UN FONEMA. La regola vale qui, in un punto solo:
+     anche se un'attività passasse dal vecchio percorso, non può più
+     pronunciare il nome della lettera né finire nella sintesi di sistema.
+     `parola` e `posizione` (quando ci sono) scelgono il suono nel contesto;
+     senza contesto il motore usa le associazioni semplici e lo dichiara. */
+  if (isSingleLetter(text) && (!opts.group || opts.group === "syl")) {
+    playLetterSound(text, opts.parola, opts.posizione).then(() => {
+      if (opts.onend) opts.onend();
+    });
+    return;
+  }
+
   // il manifest può non essere ancora arrivato: si aspetta, altrimenti la
   // prima frase verrebbe letta con la voce di sistema (quella che compita)
   const ready = (audioManifestPromise && audioIndex === null) ? audioManifestPromise : Promise.resolve(audioIndex);
 
   ready.then(() => {
     const file = audioFileFor(text, opts.group);
-    /* una lettera isolata del laboratorio va letta al 30% della velocità: il
-       fonema deve durare, altrimenti il bambino non lo distingue dal nome.
-       Solo nel gruppo «syl»: «a», «e», «i» sono anche parole intere. */
-    const isLetter = opts.group === "syl" && text.length === 1 && !!LETTER_SAY[text.toLowerCase()];
-    const slow = isLetter
-      ? Object.assign({}, opts, {
-          rate: (opts.rate !== undefined ? opts.rate : settings.rate) * 0.3,
-          allowSlow: true
-        })
-      : opts;
-    if (!file) { speakSynth(slow.fallbackText || fallbackFor(text, opts.group), slow); return; }
+    if (!file) { speakSynth(opts.fallbackText || text, opts); return; }
     if (!opts.queue) stopAudio();
     playClip(file).then(ok => {
-      if (!ok) { speakSynth(slow.fallbackText || fallbackFor(text, opts.group), slow); return; }
+      if (!ok) { speakSynth(opts.fallbackText || text, opts); return; }
       if (opts.onend) opts.onend();
     });
   });
@@ -1943,12 +2073,24 @@ function buildLevel() {
     row.setAttribute("role", "group");
     row.setAttribute("aria-label", `${part.label}: ${part.syllables.length} caselle`);
 
-    part.syllables.forEach((syl, sIdx) => {
+    /* Le caselle stanno per parola: fra una parola e la successiva c'è un
+       divisore, così si vede dove finisce «gatto» e comincia «dorme».
+       Dentro la parola resta il trattino arancione fra sillaba e sillaba. */
+    const wordGroups = slotWordGroups(lvl)[pIdx];
+    wordGroups.forEach((indici, gi) => {
+      if (gi > 0) row.appendChild(el("span", "wordgap"));
+      const group = el("span", "wordgroup");
+      group.setAttribute("role", "group");
+      group.setAttribute("aria-label", `Parola ${gi + 1} di ${wordGroups.length}`);
+      row.appendChild(group);
+      indici.forEach(sIdx => {
+      const syl = part.syllables[sIdx];
       const slot = el("button", "slot");
       slot.type = "button";
       slot.dataset.index = String(globalIdx);
       slot.dataset.part = String(pIdx);
       slot.dataset.pos = String(sIdx);
+      slot.dataset.word = String(gi);
       const pre = part.prefilled[sIdx];
       if (pre) {
         slot.classList.add("prefilled");
@@ -1964,9 +2106,10 @@ function buildLevel() {
       }
       slot.addEventListener("dragover", e => { e.preventDefault(); slot.classList.add("drop-hover"); });
       slot.addEventListener("dragleave", () => slot.classList.remove("drop-hover"));
-      row.appendChild(slot);
+      group.appendChild(slot);
       L.slots.push({ index: globalIdx, part: pIdx, pos: sIdx, syllable: syl, prefilled: pre, filled: pre });
       globalIdx++;
+      });
     });
 
     partBox.appendChild(row);
@@ -2099,6 +2242,17 @@ function buildWordLab() {
   $("#wordsPrevBtn").disabled = W.index === 0;
   $("#wordsNextBtn").disabled = W.index === WORDS.length - 1;
   $("#wordsTilesHead").textContent = w.stage === "letters" ? "Lettere" : "Sillabe";
+  /* I suoni in sequenza esistono solo dove i pezzi sono lettere: nella tappa
+     delle sillabe si ascoltano le sillabe registrate, non i loro fonemi. */
+  const soundsBtn = $("#wordsSoundsBtn");
+  if (soundsBtn) {
+    soundsBtn.disabled = w.stage !== "letters";
+    soundsBtn.setAttribute("aria-label", w.stage === "letters"
+      ? `Ascolta uno alla volta i suoni delle lettere di ${w.word}`
+      : "I suoni delle lettere si ascoltano nella tappa delle lettere");
+  }
+  if (w.stage === "letters" && FonemiAudio) FonemiAudio.preloadPhonemes();
+  if (FonemiAudio) FonemiAudio.stopPhoneme();
   $("#wordsModeNote").textContent = w.stage === "letters"
     ? " Una lettera alla volta: la parola cresce sotto le caselle."
     : " Un pezzo (una sillaba) alla volta: la parola cresce sotto le caselle.";
@@ -2178,7 +2332,7 @@ function onWordTileClick(tile, t) {
   if (W.completed) return;
   fx("click");
   // una sola lettura per gesto: il pointerdown non parla (vedi startDrag)
-  speak(t.text, { group: "syl", rate: Math.max(0.6, settings.rate - 0.2) });
+  speak(t.text, { group: "syl", parola: currentWord().word, rate: Math.max(0.6, settings.rate - 0.2) });
   if (tile.classList.contains("selected")) {
     tile.classList.remove("selected");
     W.selectedTile = null;
@@ -2234,7 +2388,9 @@ function placeWordUnit(slotEl, slot, data) {
   const tile = $$("#wordsTilePool .tile").find(t => t.dataset.tile === String(W.tiles.indexOf(data)));
   if (tile) tile.remove();
   fx("place");
-  speak(slot.unit, { group: "syl", rate: Math.max(0.6, settings.rate - 0.15) });
+  /* la lettera ha la sua POSIZIONE: è quella che decide /k/ o /tʃ/ */
+  speak(slot.unit, { group: "syl", parola: currentWord().word, posizione: slot.index,
+    rate: Math.max(0.6, settings.rate - 0.15) });
   $("#wordsMascotText").textContent = `Bravo! «${slot.unit}» è al posto giusto.`;
   updateWordProgress();
   checkWordCompletion();
@@ -2257,6 +2413,33 @@ function checkWordCompletion() {
   setTimeout(() => speakWord(w), 420);
 }
 
+/**
+ * Ascolta la parola «a suoni»: un fonema alla volta, nell'ordine delle
+ * lettere, con la pausa scelta nelle impostazioni.
+ *
+ * È un ascolto, non una promessa di fusione: la concatenazione di fonemi
+ * non produce la parola. La parola intera resta quella registrata, che si
+ * ascolta con il pulsante ASCOLTA. Nella tappa delle sillabe il pulsante è
+ * disattivato: lì si ascoltano le sillabe vere, non i loro fonemi.
+ */
+function wordSounds() {
+  const w = currentWord();
+  if (!w || W.completed) return;
+  if (w.stage !== "letters") {
+    toast("Qui i pezzi sono sillabe: ascolta le sillabe, una alla volta.");
+    return;
+  }
+  if (!FonemiAudio) { toast("I suoni delle lettere non sono disponibili."); return; }
+  stopAudio();
+  W.selectedTile = null;
+  $$("#wordsTilePool .tile.selected").forEach(n => n.classList.remove("selected"));
+  const pausa = typeof settings.fonemeGap === "number" ? settings.fonemeGap : 0.28;
+  const suoni = FonemiAudio.getPhonemesForWord(w.word).map(f => f.ipa).join(" ");
+  $("#wordsMascotText").textContent = `Ascolta i suoni: ${suoni}.`;
+  announce(`Ascolto dei suoni della parola ${w.word}`);
+  FonemiAudio.playPhonemeSequence(w.word, { intervallo: pausa });
+}
+
 function wordHint() {
   if (W.completed) { toast("Parola già completata! 🎉"); return; }
   const slot = W.slots.find(s => !s.filled);
@@ -2271,7 +2454,8 @@ function wordHint() {
     setTimeout(() => tileEl.classList.remove("blink"), 2000);
   }
   fx("hint");
-  speak(slot.unit, { group: "syl", rate: Math.max(0.6, settings.rate - 0.25) });
+  speak(slot.unit, { group: "syl", parola: w.word, posizione: slot.index,
+    rate: Math.max(0.6, settings.rate - 0.25) });
   $("#wordsMascotText").textContent = `Il prossimo pezzo è «${slot.unit}».`;
 }
 
@@ -2512,7 +2696,7 @@ function onSyllTileClick(tile, t) {
   fx("click");
   // la tessera fa sentire il proprio suono: è il gesto che insegna
   speak(t.text, { group: t.text.length > 1 ? ["syl", "parole"] : "syl",
-    rate: Math.max(0.55, settings.rate - 0.2) });
+    parola: currentSyll().say, rate: Math.max(0.55, settings.rate - 0.2) });
   if (tile.classList.contains("selected")) {
     tile.classList.remove("selected");
     SY.selectedTile = null;
@@ -2573,7 +2757,8 @@ function placeSyllUnit(slotEl, slot, data) {
     // il pezzo appena messo si sente; se la sillaba è finita si sente intera
     const complete = SY.slots.every(s => s.filled);
     if (complete) speakSyllTarget();
-    else speak(slot.unit, { group: "syl", rate: Math.max(0.55, settings.rate - 0.2) });
+    else speak(slot.unit, { group: "syl", parola: currentSyll().say, posizione: slot.index,
+      rate: Math.max(0.55, settings.rate - 0.2) });
     $("#syllMascotText").textContent = `Bravo! «${slot.unit}» è al posto giusto.`;
   }
   updateSyllProgress();
@@ -2615,7 +2800,8 @@ function syllHint() {
     setTimeout(() => tileEl.classList.remove("blink"), 2000);
   }
   fx("hint");
-  speak(slot.unit, { group: "syl", rate: Math.max(0.55, settings.rate - 0.25) });
+  speak(slot.unit, { group: "syl", parola: currentSyll().say, posizione: slot.index,
+    rate: Math.max(0.55, settings.rate - 0.25) });
   $("#syllMascotText").textContent = `Il prossimo pezzo è «${slot.unit}».`;
 }
 
@@ -2745,7 +2931,9 @@ function onDragMove(e) {
     // il trascinamento è iniziato davvero: qui parte l'unico suono della
     // tessera (il click non arriva, perché il dito si è mosso)
     fx("click");
-    speak(drag.data.text, { group: "syl", rate: Math.max(0.6, settings.rate - 0.2) });
+    speak(drag.data.text, { group: "syl",
+      parola: drag.area === "words" ? currentWord().word : "",
+      rate: Math.max(0.6, settings.rate - 0.2) });
   }
   if (drag.ghost) {
     drag.ghost.style.left = (e.clientX - drag.offsetX + drag.ghost.offsetWidth / 2) + "px";
@@ -3170,10 +3358,17 @@ function finishQuiz() {
    ------------------------------------------------------------------ */
 function buildPrintSheet(level) {
   const sheet = $("#printSheet");
-  const slotHtml = lvl => lvl.parts.map(p => `
+  /* Anche sulla scheda stampata le caselle stanno per parola, separate da un
+     punto medio: chi ritaglia le sillabe vede dove finisce una parola. */
+  const slotHtml = lvl => lvl.parts.map((p, pIdx) => {
+    const groups = slotWordGroups(lvl)[pIdx];
+    const celle = groups.map(g => `<span class="ps-word">${g.map(i =>
+      `<div class="ps-slot ${p.prefilled[i] ? "pre" : ""}">${p.prefilled[i] ? p.syllables[i] : ""}</div>`).join("")}</span>`);
+    return `
       <div class="ps-line">${p.label}</div>
-      <div class="ps-slots">${p.syllables.map((s, i) => `<div class="ps-slot ${p.prefilled[i] ? "pre" : ""}">${p.prefilled[i] ? s : ""}</div>`).join("")}</div>
-    `).join("");
+      <div class="ps-slots">${celle.join('<span class="ps-wordgap">·</span>')}</div>
+    `;
+  }).join("");
 
   const tiles = shuffleArr(level.parts.flatMap(p => p.syllables).filter((s, i, a) => a.indexOf(s) === i));
   sheet.innerHTML = `
@@ -3267,7 +3462,7 @@ function openSettings() {
      il browser si occupa da sé di servire la versione nuova. */
   const updateField = window.desktopAPI && window.desktopAPI.updaterPrefs
     ? `<div class="field"><label for="setUpdateCheck">Avvisami delle nuove versioni<span class="hint">Controllo all'avvio</span></label>
-         <span class="switch"><input id="setUpdateCheck" type="checkbox" ${UPDATE_PREF.checkOnStartup ? "checked" : ""}><span></span></span></div>
+         <label class="switch"><input id="setUpdateCheck" type="checkbox" ${UPDATE_PREF.checkOnStartup ? "checked" : ""}><span></span></label></div>
        <div class="row" style="justify-content:flex-end;margin:-4px 0 6px">
          <button class="btn ghost small" id="checkUpdatesNow">⇩ Controlla adesso</button>
        </div>`
@@ -3279,22 +3474,24 @@ function openSettings() {
       <input id="setRate" type="range" min="0.6" max="1.4" step="0.05" value="${settings.rate}"></div>
     <div class="field"><label for="setVolume">Volume voce<span class="hint">0 = muto · 1 = massimo</span></label>
       <input id="setVolume" type="range" min="0" max="1" step="0.05" value="${settings.volume}"></div>
+    <div class="field"><label for="setFonemeGap">Pausa fra i suoni<span class="hint">0,1 s veloce · 0,6 s lenta</span></label>
+      <input id="setFonemeGap" type="range" min="0.1" max="0.6" step="0.02" value="${settings.fonemeGap}"></div>
     <div class="field"><label for="setVoice">Voce italiana<span class="hint">Dipende dal sistema</span></label>
       <select id="setVoice"><option value="">Automatica</option>${voiceOpts}</select></div>
     <div class="field"><label for="setCaps">Tutto maiuscolo<span class="hint">Tessere, caselle e parole in MAIUSCOLO</span></label>
-      <span class="switch"><input id="setCaps" type="checkbox" ${settings.allCaps ? "checked" : ""}><span></span></span></div>
+      <label class="switch"><input id="setCaps" type="checkbox" ${settings.allCaps ? "checked" : ""}><span></span></label></div>
     <div class="field"><label for="setReadWords">Leggi le parole<span class="hint">La voce legge la parola intera</span></label>
-      <span class="switch"><input id="setReadWords" type="checkbox" ${settings.readWords ? "checked" : ""}><span></span></span></div>
+      <label class="switch"><input id="setReadWords" type="checkbox" ${settings.readWords ? "checked" : ""}><span></span></label></div>
     <div class="field"><label for="setTheme">Tema scuro<span class="hint">Meno luce, stesso divertimento</span></label>
-      <span class="switch"><input id="setTheme" type="checkbox" ${settings.theme === "night" ? "checked" : ""}><span></span></span></div>
+      <label class="switch"><input id="setTheme" type="checkbox" ${settings.theme === "night" ? "checked" : ""}><span></span></label></div>
     <div class="field"><label for="setSound">Effetti sonori<span class="hint">Suoni di conferma e vittoria</span></label>
-      <span class="switch"><input id="setSound" type="checkbox" ${settings.soundOn ? "checked" : ""}><span></span></span></div>
+      <label class="switch"><input id="setSound" type="checkbox" ${settings.soundOn ? "checked" : ""}><span></span></label></div>
     <div class="field"><label for="setAuto">Lettura automatica<span class="hint">Legge la frase all'apertura del livello</span></label>
-      <span class="switch"><input id="setAuto" type="checkbox" ${settings.autoRead ? "checked" : ""}><span></span></span></div>
+      <label class="switch"><input id="setAuto" type="checkbox" ${settings.autoRead ? "checked" : ""}><span></span></label></div>
     <div class="field"><label for="setHints">Mostra riga suggerimento<span class="hint">Solo nei livelli guidati</span></label>
-      <span class="switch"><input id="setHints" type="checkbox" ${settings.showHints ? "checked" : ""}><span></span></span></div>
+      <label class="switch"><input id="setHints" type="checkbox" ${settings.showHints ? "checked" : ""}><span></span></label></div>
     <div class="field"><label for="setMotion">Riduci animazioni<span class="hint">Per chi preferisce meno movimento</span></label>
-      <span class="switch"><input id="setMotion" type="checkbox" ${settings.reduceMotion ? "checked" : ""}><span></span></span></div>
+      <label class="switch"><input id="setMotion" type="checkbox" ${settings.reduceMotion ? "checked" : ""}><span></span></label></div>
     <div class="field"><label for="setExercise">Esercizio scelto dal docente<span class="hint">Su cosa lavorare adesso</span></label>
       <select id="setExercise">${exOpts}</select></div>
     ${updateField}
@@ -3317,6 +3514,7 @@ function openSettings() {
   bind("setFont", "fontScale", i => parseFloat(i.value));
   bind("setRate", "rate", i => parseFloat(i.value));
   bind("setVolume", "volume", i => parseFloat(i.value));
+  bind("setFonemeGap", "fonemeGap", i => parseFloat(i.value));
   bind("setVoice", "voiceURI", i => { refreshVoices(); return i.value; });
   bind("setCaps", "allCaps", i => i.checked);
   bind("setReadWords", "readWords", i => i.checked);
@@ -3489,6 +3687,7 @@ $("#wordsShuffleBtn").onclick = () => {
 };
 $("#wordsMascotBtn").onclick = wordHint;
 $("#wordsHintBtn").onclick = wordHint;
+$("#wordsSoundsBtn").onclick = wordSounds;
 $("#wordsResetBtn").onclick = wordReset;
 $("#wordsPrevBtn").onclick = () => { if (W.index > 0) startWord(W.index - 1); };
 $("#wordsNextBtn").onclick = () => { if (W.index < WORDS.length - 1) startWord(W.index + 1); };

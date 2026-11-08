@@ -32,3 +32,6 @@ logs/
 tmp/
 cache/
 *.tmp
+
+# File AppleDouble (macOS)
+._*

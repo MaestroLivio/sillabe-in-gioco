@@ -20,6 +20,7 @@ const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
 const D = require(path.join(ROOT, "js", "viaggio-dati.js"));
+const Fonemi = require(path.join(ROOT, "js", "fonemi.js"));
 
 const errors = [];
 const warnings = [];
@@ -189,7 +190,16 @@ else {
     const missing = [...new Set(keys)].filter(k => !g[k]);
     if (missing.length) fail(`${label} senza audio (${missing.length}): ${missing.slice(0, 20).join(", ")}${missing.length > 20 ? "…" : ""}`);
   };
-  checkKeys("syl", D.UNITA.filter(u => u.audioKey).map(u => u.audioKey), "Unità");
+  /* Una lettera isolata non è una sillaba e non ha più un clip in `syl`: il
+     suo suono è un fonema di audio/fonemi/ (js/fonemi.js). Le cinque vocali
+     del viaggio sono unità di una lettera: la registrazione giusta è il
+     fonema, non il nome della lettera. */
+  const coverFonema = k => {
+    if (!/^[a-zàèéìòù]$/i.test(k)) return false;
+    const file = Fonemi.fonemaPerLettera(k, "").file;
+    return !!file && fs.existsSync(path.join(ROOT, file));
+  };
+  checkKeys("syl", D.UNITA.filter(u => u.audioKey && !coverFonema(u.audioKey)).map(u => u.audioKey), "Unità");
   checkKeys("parole", D.PAROLE.map(w => w.audioKey), "Parole");
   checkKeys("parole", D.FRASI.flatMap(f => f.parole.map(p => p.audioKey)).filter(w => !w.endsWith("'")), "Parole delle frasi");
   checkKeys("frasiViaggio", D.FRASI.map(f => f.id), "Frasi del viaggio");

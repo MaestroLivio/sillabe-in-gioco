@@ -1604,14 +1604,26 @@
     if (!sentence) { V.frasi.playing = false; return; }
     const nodes = Array.from(sentence.querySelectorAll(".v-syl"));
     let i = 0;
+    const pulisci = () => {
+      nodes.forEach(n => n.classList.remove("highlight"));
+      sentence.querySelectorAll(".v-sword.reading").forEach(w => w.classList.remove("reading"));
+    };
     const next = () => {
       nodes.forEach(n => n.classList.remove("highlight"));
-      if (i >= nodes.length) { V.frasi.playing = false; return; }
+      if (i >= nodes.length) { pulisci(); V.frasi.playing = false; return; }
       const n = nodes[i++];
+      /* la parola in corso si illumina tutta: durante la lettura sillaba per
+         sillaba si vede dove finisce una parola e comincia la successiva */
+      const parola = n.closest(".v-sword");
+      const prima = sentence.querySelector(".v-sword.reading");
+      if (prima && prima !== parola) prima.classList.remove("reading");
+      if (parola) parola.classList.add("reading");
       n.classList.add("highlight");
       n.scrollIntoView({ block: "nearest", behavior: settings.reduceMotion ? "auto" : "smooth" });
+      /* al cambio di parola la pausa è più lunga: il confine si sente */
+      const pausa = prima && prima !== parola ? 320 : 120;
       if (/^[A-ZÀ-Ù]+'$/i.test(n.textContent.trim())) { setTimeout(next, 150); return; }
-      speakV(n.textContent, { group: "syl", rate: 0.85, onend: () => setTimeout(next, 120) });
+      speakV(n.textContent, { group: "syl", rate: 0.85, onend: () => setTimeout(next, pausa) });
     };
     next();
   }
@@ -1776,15 +1788,15 @@
       <div class="field"><label for="vDocSoglia">Soglia di acquisizione <span class="hint">Regola di gioco, non diagnosi</span></label>
         <input id="vDocSoglia" type="range" min="0.5" max="1" step="0.05" value="${store.config.soglia}"></div>
       <div class="field"><label for="vDocLow">Bassa stimolazione <span class="hint">Meno decorazioni e animazioni</span></label>
-        <span class="switch"><input id="vDocLow" type="checkbox" ${store.config.riduciStimoli ? "checked" : ""}><span></span></span></div>
+        <label class="switch"><input id="vDocLow" type="checkbox" ${store.config.riduciStimoli ? "checked" : ""}><span></span></label></div>
       <div class="field"><label for="vDocSimple">Percorso semplificato <span class="hint">Due alternative, meno stimoli, esercizi guidati</span></label>
-        <span class="switch"><input id="vDocSimple" type="checkbox" ${store.config.semplificato ? "checked" : ""}><span></span></span></div>
+        <label class="switch"><input id="vDocSimple" type="checkbox" ${store.config.semplificato ? "checked" : ""}><span></span></label></div>
       <div class="field"><label for="vDocSlow">Voce più lenta</label>
-        <span class="switch"><input id="vDocSlow" type="checkbox" ${store.config.audioLento ? "checked" : ""}><span></span></span></div>
+        <label class="switch"><input id="vDocSlow" type="checkbox" ${store.config.audioLento ? "checked" : ""}><span></span></label></div>
       <div class="field"><label for="vDocCaps">Testi in STAMPATO MAIUSCOLO</label>
-        <span class="switch"><input id="vDocCaps" type="checkbox" ${store.config.maiuscolo ? "checked" : ""}><span></span></span></div>
+        <label class="switch"><input id="vDocCaps" type="checkbox" ${store.config.maiuscolo ? "checked" : ""}><span></span></label></div>
       <div class="field"><label for="vDocReview">Ripasso mirato consigliato</label>
-        <span class="switch"><input id="vDocReview" type="checkbox" ${store.config.ripassoSuggerito ? "checked" : ""}><span></span></span></div>
+        <label class="switch"><input id="vDocReview" type="checkbox" ${store.config.ripassoSuggerito ? "checked" : ""}><span></span></label></div>
     </div>
     <div class="v-panel">
       <h3>4. Tipologie di esercizio</h3>

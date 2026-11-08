@@ -11,7 +11,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 |---|---|
 | **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
 | **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
-| **Windows** | Esegui `SillabeInGioco-Setup-2.3.0.exe` e segui la procedura |
+| **Windows** | Esegui `SillabeInGioco-Setup-2.4.0.exe` e segui la procedura |
 | **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
 | **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
 
@@ -69,6 +69,14 @@ Dettagli e limiti: [`docs/VIAGGIO.md`](docs/VIAGGIO.md).
 4. **Completa** — quando tutte le caselle sono piene, gli slot diventano verdi,
    partono i coriandoli e la voce legge la frase **scandita sillaba per sillaba**.
    Compare il pannello del risultato con le stelle e il pulsante per il livello successivo.
+
+> [!TIP]
+> **Dove finisce una parola.** Sulla riga delle caselle il *trattino arancione*
+> separa le sillabe della stessa parola, la *barra azzurra* separa una parola
+> dalla successiva: si vede sempre dove finisce «gatto» e comincia «dorme».
+> Lo stesso confine c'è nella scheda stampata, come punto medio fra le parole.
+> Nella lettura animata del viaggio la parola in corso si illumina tutta e fra
+> una parola e l'altra c'è una pausa più lunga.
 
 ### I pulsanti in basso
 
@@ -158,19 +166,21 @@ Dal riquadro **PAROLE** in home, oppure toccando una parola dall'elenco «Formaz
 - La TV mostra la **figura** della parola (nessun testo nel disegno).
 - Sotto le caselle la parola **cresce** (`a ·· e` → `ape`) mentre la componi.
 - Ogni pezzo si ascolta toccandolo; la radio legge la parola intera.
-- **Le singole lettere si sentono come suono, non come nome.** Toccando la tessera
-  `s` non si sente «esse» ma un /s/ tenuto e lento, e così `m` → /m:/, `f` → /f:/,
-  `r` → /r/ col trillo. Il fonema è ritagliato dall'audio della voce e
-  **rallentato** fino a 0,40 s: è un unico suono continuo, senza loop e senza
-  ripetizioni. Le consonanti che non si possono tenere (`t`, `p`, `b`, `d`,
-  `c`, `g`) si sentono come **chiusura + scoppio, una volta sola**, senza la
-  vocale che la voce aggiungerebbe.
-  - Il suono di `c` è quello **duro** di *cima*, `/k/` (non quello di *cena*).
-  - Il suono di `g` è quello **duro** di *gallo*, `/g/`.
-  - Il suono di `z` è lo scoppio dell'**affricata** `/ts/` di *zio*.
-  - Il suono di `v` è labiodentale ma **non perfettamente sibilante**: è il più
-    vicino che la voce sintetica sappia produrre, e resta distinto da `b` e da `f`.
-- Pulsanti in basso: **SUGGERIMENTO**, **ASCOLTA**, **RIFAI**, **← →** per cambiare parola.
+- **Le singole lettere si sentono come fonema, non come nome**, e il fonema dipende
+  dalla parola. Toccando `s` non si sente «esse» ma /s/; la `m` fa /m/. Nella parola
+  CASA la `c` è /k/, in CENA è /tʃ/; in GATTO la `g` è /g/, in GELO è /dʒ/; la `s`
+  di SOLE è sorda, quella di CASA sonora; la `z` di ZERO è /dz/, quella di ZIO /ts/.
+  La `h` di CHIAVE e la `i` di CAMICIA non hanno un suono proprio e restano mute;
+  in GATTO e PALLA la doppia è **un suono solo**.
+- I 30 suoni sono **registrazioni fonetiche vere** (`audio/fonemi/`), non ritagli
+  della voce dell'app: fonti, autori e licenze sono in
+  `audio/fonemi/ATTRIBUZIONI.md`. Per le lettere la voce del dispositivo non si usa:
+  se un suono mancasse l'app lo segnala, invece di leggere il nome.
+- **SUONI** ascolta i fonemi della parola uno dopo l'altro
+  (`/s/ · /o/ · /l/ · /e/`): non è una fusione, è l'ascolto dei singoli suoni. La
+  pausa fra un suono e l'altro si regola dalle impostazioni; la parola intera resta
+  la registrazione naturale (ASCOLTA).
+- Pulsanti in basso: **SUGGERIMENTO**, **ASCOLTA**, **SUONI**, **RIFAI**, **← →** per cambiare parola.
 - Scorciatoie: `←` `→` cambiano parola, `H` suggerimento, `R` rifai.
 - Se la lettura delle parole è spenta nelle impostazioni, ASCOLTA lo segnala con un avviso.
 
