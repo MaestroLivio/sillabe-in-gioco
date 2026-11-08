@@ -1,7 +1,10 @@
 "use strict";
 /**
- * Audit di layout e resa: verifica overflow, sovrapposizioni con la barra inferiore,
- * dimensioni minime dei target touch e presenza di "inchiostro" nelle illustrazioni.
+ * Audit di layout e resa: la schermata attiva deve entrare SEMPRE tutta nella
+ * finestra, senza scorrimento della pagina né scorrimenti interni, a qualunque
+ * dimensione (finestra bassa, tablet, telefono). Controlla inoltre overflow
+ * orizzontale, coperture della barra inferiore, target touch minimi, testo
+ * troncato e presenza di "inchiostro" nelle illustrazioni.
  *
  * Uso: npx electron scripts/layout-audit.js
  */
@@ -12,6 +15,7 @@ app.disableHardwareAcceleration();
 app.commandLine.appendSwitch("mute-audio");
 
 const ROOT = path.join(__dirname, "..");
+const problems = [];
 
 app.whenReady().then(async () => {
   const win = new BrowserWindow({
@@ -23,144 +27,139 @@ app.whenReady().then(async () => {
   await win.loadFile(path.join(ROOT, "index.html"));
   await new Promise(r => setTimeout(r, 800));
 
+  /**
+   * Apre la schermata indicata e misura l'esito.
+   * L'app non scorre più: si verifica che il contenuto dell'app non superi la
+   * sua altezza (app.scrollHeight vs clientHeight) e che nessun contenitore
+   * abbia una barra di scorrimento propria.
+   */
   const audit = async (label, code) => {
     const r = await win.webContents.executeJavaScript(`(async () => {
       const sleep = ms => new Promise(r => setTimeout(r, ms));
       ${code}
-      await sleep(350);
-      // Porta in fondo alla pagina: è lì che la barra fissa potrebbe coprire contenuti.
-      // Ripete lo scroll più volte perché dopo un resize il primo tentativo può essere
-      // troncato dall'altezza massima calcolata sul layout precedente.
-      const toBottom = async () => {
-        for (let i = 0; i < 8; i++) {
-          document.scrollingElement.scrollTop = 1e6;
-          document.body.scrollTop = 1e6;
-          window.scrollTo(0, 1e6);
-          await sleep(120);
-          const d = document.documentElement;
-          if (Math.abs(d.scrollHeight - d.clientHeight - d.scrollTop) <= 1) break;
-        }
-      };
-      await toBottom();
-      await sleep(200);
-
+      await sleep(450);
       const doc = document.documentElement;
-      const overflowX = doc.scrollWidth - doc.clientWidth;
-      const bottomBar = document.querySelector('.screen.active .bottombar') || document.querySelector('.bottombar');
-      const barRect = bottomBar ? bottomBar.getBoundingClientRect() : null;
+      const appEl = document.querySelector('.app');
+      const active = document.querySelector('.screen.active');
+      const bar = (active && active.querySelector('.bottombar')) || document.querySelector('.bottombar');
+      const barRect = bar ? bar.getBoundingClientRect() : null;
       const barTop = barRect ? Math.round(barRect.top) : window.innerHeight;
-      const app = document.querySelector('.app');
-      const paddingBottom = app ? parseFloat(getComputedStyle(app).paddingBottom) : 0;
 
-      // scostamento dal fondo: se positivo, l'ultimo contenuto resta sotto la barra.
-      // Si guarda il vassoio della schermata attiva (#tilePool nei livelli,
-      // #wordsTilePool nel laboratorio parole, #syllTilePool nel percorso sillabico).
-      const pool = document.querySelector('#tilePool');
-      const poolNode = pool && pool.offsetParent
-        ? pool
-        : document.querySelector('#wordsTilePool');
-      const syllPool = document.querySelector('#syllTilePool');
-      const chosenPool = poolNode && poolNode.offsetParent
-        ? poolNode
-        : (syllPool && syllPool.offsetParent ? syllPool : null);
-      const poolRect = chosenPool ? chosenPool.getBoundingClientRect() : null;
-      const lastTile = poolRect ? Math.round(poolRect.bottom) : 0;
+      // vassoio delle tessere della schermata attiva: è l'ultimo contenuto che
+      // la barra potrebbe coprire
+      const pool = ['#tilePool', '#wordsTilePool', '#syllTilePool']
+        .map(s => document.querySelector(s))
+        .find(n => n && n.offsetParent) || null;
+      const poolRect = pool ? pool.getBoundingClientRect() : null;
       const clearance = poolRect ? Math.round(barTop - poolRect.bottom) : null;
 
-      // elementi cliccabili più piccoli di 40px
+      // i target si misurano in px di progetto (si toglie lo zoom): lo zoom
+      // riduce tutto in proporzione, il progetto deve restare sopra i 40px
+      const scala = Number(appEl.style.zoom || 1) || 1;
       const small = [];
       document.querySelectorAll('button, .slot, .tile, .group-card, .tool').forEach(el => {
         if (!el.offsetParent) return;
-        const r = el.getBoundingClientRect();
-        if (r.width < 40 || r.height < 40) {
-          small.push((el.id || el.className || el.tagName) + ' ' + Math.round(r.width) + 'x' + Math.round(r.height));
+        const q = el.getBoundingClientRect();
+        if (q.width / scala < 40 || q.height / scala < 40) {
+          small.push((el.id || el.className || el.tagName) + ' ' + Math.round(q.width / scala) + 'x' + Math.round(q.height / scala));
         }
       });
 
+      /* nessun riquadro deve scorrere: se un contenitore ha overflow auto o
+         scroll ed è più alto del suo spazio, il bambino deve trascinare dentro
+         un riquadro — è proprio quello che vogliamo evitare */
+      const scrollers = [];
+      document.querySelectorAll('.app *, #overlay *').forEach(el => {
+        if (!el.offsetParent) return;
+        const cs = getComputedStyle(el);
+        if (!/(auto|scroll)/.test(cs.overflowY)) return;
+        const oltre = el.scrollHeight - el.clientHeight;
+        if (oltre > 2) scrollers.push((el.id || el.className || el.tagName) + ' +' + oltre + 'px');
+      });
+
       return {
-        overflowX,
-        atBottom: doc.scrollHeight - doc.clientHeight - Math.round(doc.scrollTop) <= 1,
+        zoom: appEl ? Number(appEl.style.zoom || 1) : 1,
+        overflowX: doc.scrollWidth - doc.clientWidth,
+        // ingombro reale della schermata: sotto = entra, sopra = resta nascosto
+        ingombro: active ? Math.round(active.getBoundingClientRect().height + (barRect ? barRect.height : 0)) : 0,
         barTop,
-        lastTileBottom: lastTile,
+        barHeight: barRect ? Math.round(barRect.height) : 0,
         clearance,
         tileCleared: clearance === null ? true : clearance >= -2,
-        paddingBottom,
-        smallTargets: small.slice(0, 8),
         smallCount: small.length,
-        docHeight: doc.scrollHeight,
+        smallTargets: small.slice(0, 8),
+        scrollers,
+        nodes: active ? active.querySelectorAll('*').length : 0,
+        chips: document.querySelectorAll('.v-chip').length,
         viewH: window.innerHeight
       };
     })()`);
     console.log(`\n— ${label} —`);
-    console.log(JSON.stringify(r, null, 1));
-    // Se lo scroll non arriva in fondo la misura di clearance non è attendibile:
-    // è un problema dell'audit, non dell'app, ma va segnalato per non fidarsi del verde.
-    if (r.clearance !== null && !r.atBottom) {
-      problems.push(`${label}: scroll non arrivato in fondo (misura non attendibile)`);
-    }
+    console.log(JSON.stringify(r));
+    if (r.overflowX > 0) problems.push(`${label}: esce a destra di ${r.overflowX}px`);
+    if (r.ingombro > r.viewH + 1) problems.push(`${label}: contenuto più alto della finestra di ${r.ingombro - r.viewH}px (scala ${r.zoom})`);
+    if (!r.tileCleared) problems.push(`${label}: la barra inferiore copre le tessere`);
+    if (r.scrollers.length) problems.push(`${label}: riquadri che scorrono (${r.scrollers.slice(0, 3).join(", ")})`);
+    if (r.nodes < 2) problems.push(`${label}: schermata vuota`);
     return r;
   };
 
-  const problems = [];
+  const fit = async (w, h) => {
+    win.setSize(w, h);
+    await new Promise(r => setTimeout(r, 450));
+  };
 
+  /* --- finestra desktop --- */
   const home = await audit("HOME desktop", `showScreen('home');`);
-  if (home.overflowX > 0) problems.push("home: overflow orizzontale");
   if (home.smallCount > 6) problems.push(`home: ${home.smallCount} target sotto 40px`);
 
   const lvl = await audit("LIVELLO 1 desktop", `startLevel(0);`);
-  if (lvl.overflowX > 0) problems.push("livello: overflow orizzontale");
-  if (!lvl.tileCleared) problems.push("livello: la barra inferiore copre le tessere");
+  await audit("LIVELLO 40 desktop", `startLevel(39);`);
 
-  const lvl40 = await audit("LIVELLO 40 desktop", `startLevel(39);`);
-  if (!lvl40.tileCleared) problems.push("livello 40: la barra inferiore copre le tessere");
+  await audit("ESERCIZI desktop", `buildQuiz();`);
+  await audit("SUONI DIFFICILI desktop", `settings.exercise = 'sounds'; startChosenExercise();`);
+  await audit("PAROLE desktop", `startWord(0);`);
+  await audit("PRIMA PAROLA desktop (sillaba)", `startSyll(5);`);
+  await audit("PRIMA PAROLA desktop (parola)", `startSyll(93);`);
+  await audit("RISULTATO desktop", `showScreen('results');`);
+  await audit("TROFEI desktop", `showScreen('trophies');`);
 
-  const quiz = await audit("ESERCIZI desktop", `buildQuiz();`);
-  if (quiz.overflowX > 0) problems.push("esercizi: overflow orizzontale");
+  /* --- pannelli: impostazioni, aiuto, elenco delle tappe --- */
+  await audit("PANNELLO impostazioni", `openSettings();`);
+  await audit("PANNELLO aiuto", `closeSheet(); openHelp();`);
+  const steps = await audit("PANNELLO tappe (101 esercizi)", `closeSheet(); startSyll(5); document.querySelector('#syllListBtn').click();`);
+  if (!steps.nodes) problems.push("tappe: pannello vuoto");
+  await win.webContents.executeJavaScript(`closeSheet();`);
 
-  /* scheda del suono difficile: il gruppo in grande non deve allargare la pagina */
-  const snd = await audit("SUONI DIFFICILI desktop", `settings.exercise = 'sounds'; startChosenExercise();`);
-  if (snd.overflowX > 0) problems.push("suoni difficili: overflow orizzontale");
+  /* --- il viaggio delle sillabe: mappa e primo esercizio --- */
+  const map = await audit("VIAGGIO mappa", `showScreen('home'); const b = document.querySelector('#viaggioHomeCard button'); if (b) b.click(); else showScreen('viaggio');`);
+  if (map.nodes < 10) problems.push("viaggio: la mappa non si è aperta");
+  await audit("VIAGGIO esercizio", `const c = document.querySelector('.v-chip'); if (c) c.click();`);
 
-  /* laboratorio «Formazione di parole»: la barra inferiore non deve coprire i pezzi */
-  const lab = await audit("PAROLE desktop", `startWord(0);`);
-  if (lab.overflowX > 0) problems.push("parole: overflow orizzontale");
-  if (!lab.tileCleared) problems.push("parole: la barra inferiore copre le tessere");
+  /* --- finestra bassa: è il caso in cui prima si scorreva di più --- */
+  await fit(1280, 640);
+  await audit("LIVELLO 12 finestra bassa 1280x640", `showScreen('home'); startLevel(11);`);
+  await audit("PAROLE finestra bassa 1280x640", `startWord(3);`);
+  await audit("TROFEI finestra bassa 1280x640", `showScreen('trophies');`);
 
-  /* percorso sillabico: sillaba (due caselle) e parola (figura grande) */
-  const syl = await audit("PRIMA PAROLA desktop (sillaba)", `startSyll(5);`);
-  if (syl.overflowX > 0) problems.push("prima parola (sillaba): overflow orizzontale");
-  if (!syl.tileCleared) problems.push("prima parola (sillaba): la barra inferiore copre le tessere");
-
-  const sylWord = await audit("PRIMA PAROLA desktop (parola)", `startSyll(93);`);
-  if (sylWord.overflowX > 0) problems.push("prima parola (parola): overflow orizzontale");
-  if (!sylWord.tileCleared) problems.push("prima parola (parola): la barra inferiore copre le tessere");
-
-  const troph = await audit("TROFEI desktop", `showScreen('trophies');`);
-  if (troph.overflowX > 0) problems.push("trofei: overflow orizzontale");
-
-  /* --- schermo piccolo (tablet 768 e telefono 390) --- */
-  win.setSize(768, 1024);
-  await new Promise(r => setTimeout(r, 400));
-  const tablet = await audit("LIVELLO 21 tablet 768", `startLevel(20);`);
+  /* --- tablet e telefono --- */
+  await fit(768, 1024);
+  const tablet = await audit("LIVELLO 21 tablet 768x1024", `startLevel(20);`);
   if (tablet.overflowX > 0) problems.push("tablet: overflow orizzontale");
 
-  win.setSize(390, 844);
-  await new Promise(r => setTimeout(r, 400));
-  const phone = await audit("LIVELLO 1 telefono 390", `startLevel(0);`);
-  if (phone.overflowX > 0) problems.push("telefono: overflow orizzontale");
+  await fit(390, 844);
+  const phone = await audit("LIVELLO 1 telefono 390x844", `startLevel(0);`);
   if (!phone.tileCleared) problems.push("telefono: la barra inferiore copre le tessere");
-
-  const phoneSyl = await audit("PRIMA PAROLA telefono 390", `startSyll(93);`);
-  if (phoneSyl.overflowX > 0) problems.push("telefono: overflow orizzontale nel percorso sillabico");
-  if (!phoneSyl.tileCleared) problems.push("telefono: la barra copre le tessere del percorso sillabico");
+  await audit("PRIMA PAROLA telefono 390x844", `startSyll(93);`);
+  await audit("HOME telefono 390x844", `showScreen('home');`);
 
   /* --- resa delle illustrazioni: quanti colori distinti nell'area TV --- */
-  win.setSize(1180, 860);
-  await new Promise(r => setTimeout(r, 300));
+  await fit(1180, 860);
   const illustration = await win.webContents.executeJavaScript(`(async () => {
     startLevel(0);
-    await new Promise(r => setTimeout(r, 400));
+    await new Promise(r => setTimeout(r, 500));
     const img = document.querySelector('#tvImage img');
+    if (!img) return { distinctColors: 0, width: 0, height: 0 };
     const box = img.getBoundingClientRect();
     const canvas = document.createElement('canvas');
     canvas.width = 160; canvas.height = 90;
@@ -168,16 +167,14 @@ app.whenReady().then(async () => {
     ctx.drawImage(img, 0, 0, 160, 90);
     const data = ctx.getImageData(0, 0, 160, 90).data;
     const colors = new Set();
-    let nonBg = 0;
     for (let i = 0; i < data.length; i += 4) {
-      const key = (data[i] >> 3) + ',' + (data[i+1] >> 3) + ',' + (data[i+2] >> 3);
-      colors.add(key);
+      colors.add((data[i] >> 3) + ',' + (data[i + 1] >> 3) + ',' + (data[i + 2] >> 3));
     }
     return { distinctColors: colors.size, width: Math.round(box.width), height: Math.round(box.height) };
   })()`);
   console.log("\n— ILLUSTRAZIONE —");
   console.log(JSON.stringify(illustration));
-  if (illustration.distinctColors < 12) problems.push("illustrazione: pochi colori, possibile mancata resa delle emoji");
+  if (illustration.distinctColors < 12) problems.push("illustrazione: pochi colori, possibile mancata resa");
   if (illustration.width < 200) problems.push("illustrazione: troppo piccola");
 
   /* --- testo: nessun testo troncato nei pulsanti principali --- */

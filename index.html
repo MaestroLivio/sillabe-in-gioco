@@ -29,7 +29,7 @@
   --font-scale:1;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{height:100%;overflow:hidden}
 body{
   font-family:var(--font);
   color:var(--ink);
@@ -105,8 +105,26 @@ button:disabled{opacity:.45;cursor:not-allowed}
 /* ==========================================================================
    3. HOME / DASHBOARD
    ========================================================================== */
-.home-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:16px}
-@media (max-width:820px){.home-grid{grid-template-columns:1fr}}
+/* Home a colonne: le schede si incolonnano riempiendo l'altezza disponibile
+   (una griglia lascerebbe buchi e allungherebbe la pagina), così la schermata
+   entra nella finestra senza dover scorrere. */
+.home-grid{column-count:3;column-gap:16px;margin-top:16px}
+.home-grid > .card{
+  break-inside:avoid;page-break-inside:avoid;display:inline-block;width:100%;
+  vertical-align:top;margin-bottom:16px
+}
+@media (max-width:980px){.home-grid{column-count:2}}
+/* telefono: due colonne strette e gettoni più compatti, perché la pagina deve
+   entrare in una schermata sola */
+@media (max-width:680px){
+  .home-grid{column-count:2;column-gap:10px;margin-top:10px}
+  .home-grid > .card{margin-bottom:10px}
+  .wordlist{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px}
+  .wordchip{padding:6px 4px}
+  .hero{flex-wrap:wrap;gap:10px}
+  .hero .mascot{font-size:2.6rem}
+  .progress-ring{width:64px;height:64px}
+}
 .hero{display:flex;gap:18px;align-items:center;background:linear-gradient(140deg,#fffdf8,#eaf6ff)}
 .hero .mascot{font-size:4.2rem;line-height:1;filter:drop-shadow(0 6px 0 rgba(37,56,77,.12));animation:bob 2.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
@@ -168,6 +186,20 @@ button:disabled{opacity:.45;cursor:not-allowed}
   position:relative;overflow:hidden
 }
 .tv-screen svg{display:block;width:100%;height:auto;border-radius:10px}
+/* La scena resta la parte più grande della schermata, ma senza dominarla: si
+   limita in altezza (e con lei la finestra bassa), così il resto si legge
+   grande invece di far rimpicciolire tutto. */
+.tv-screen svg{max-height:min(42vh,340px)}
+.tv-screen img{display:block;width:100%;max-height:min(34vh,260px);object-fit:contain;border-radius:10px;background:#0e1f1d}
+/* Finestra bassa: la figura si abbassa e le zone di lavoro si stringono, così
+   il testo resta grande e la schermata entra tutta senza scorrere. */
+@media (max-height:760px){
+  .tv-screen svg{max-height:30vh}
+  .syllfigure{min-height:0;padding:4px}
+  .syllfigure .fimg{max-height:22vh}
+  .slotrow,.tile-pool{min-height:0}
+  .stage{margin-top:6px}
+}
 .tv-glare{position:absolute;inset:8px;background:linear-gradient(115deg,rgba(255,255,255,.2),transparent 42%);pointer-events:none;border-radius:12px}
 .tv-knobs{position:absolute;right:14px;bottom:9px;display:flex;gap:10px;align-items:center}
 .knob{width:14px;height:14px;border-radius:50%;background:#d8e8e4;box-shadow:inset 0 -2px 0 rgba(0,0,0,.25)}
@@ -345,6 +377,9 @@ body.theme-night .bottombar{background:linear-gradient(180deg,#26374b,#1d2a3b)}
   background:var(--paper);border-radius:22px;max-width:620px;width:100%;max-height:88vh;overflow:auto;
   padding:20px;box-shadow:0 24px 60px rgba(0,0,0,.35);border:3px solid var(--line)
 }
+/* fogli con elenchi lunghi (le 101 tappe): più larghi, così le colonne
+   stanno tutte e la lista non ha bisogno di scorrere */
+.sheet.wide{max-width:min(1100px,94vw)}
 .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;gap:10px}
 .sheet-head h2{font-size:1.05rem}
 .close-x{width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;font-weight:700;flex:0 0 auto}
@@ -420,13 +455,13 @@ body.theme-night .syll-path{background:linear-gradient(160deg,#22334a,#1a2839);b
    disegnata (la stessa del laboratorio): riempie la TV e la sua altezza resta
    stabile, così passando da una parola all'altra lo schermo non "salta". Se
    il disegno manca, al suo posto compare l'emoji grande della parola. */
-.syllfigure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 8px;min-height:150px}
+.syllfigure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px;min-height:0}
 .syllfigure .fem{font-size:4.4rem;line-height:1}
-.syllfigure .fimg{display:block;width:100%;max-height:210px;object-fit:contain;border-radius:10px;background:#0e1f1d}
+.syllfigure .fimg{display:block;width:100%;max-height:min(22vh,170px);object-fit:contain;border-radius:10px;background:#0e1f1d}
 .syllfigure .fcap{font-size:1.15rem;font-weight:700;letter-spacing:1.5px;color:#eaf7ff;text-transform:uppercase}
 
 /* Elenco delle tappe nel foglio «TAPPE» */
-.steplist{display:grid;gap:8px;max-height:52vh;overflow:auto}
+.steplist{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
 .steprow{
   display:flex;align-items:center;gap:10px;text-align:left;width:100%;
   padding:10px 12px;border-radius:14px;background:var(--cream);border:2px solid var(--line);
@@ -498,6 +533,7 @@ body.theme-night .trophy.unlocked{background:#3a3222}
    ========================================================================== */
 #printSheet{display:none}
 @media print{
+  html,body{height:auto!important;overflow:visible!important}
   body{background:#fff!important;color:#000!important;font-size:12pt}
   .app,.overlay,.toast,.bottombar,.confetti{display:none!important}
   #printSheet{display:block!important;padding:0}
@@ -569,7 +605,7 @@ body.theme-night .trophy.unlocked{background:#3a3222}
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="wordsHomeCard">
       <h2>Formazione di parole</h2>
       <p class="muted" style="margin-bottom:10px">Prima si uniscono le lettere, poi le sillabe. Ogni parola ha la sua figura.</p>
       <div class="wordlist" id="wordList"></div>
@@ -614,11 +650,6 @@ body.theme-night .trophy.unlocked{background:#3a3222}
         <span class="rlabel">ASCOLTA</span>
         <span class="rsub" id="radioSub">la frase intera</span>
       </button>
-      <div class="info-card">
-        <strong>Come si gioca</strong>
-        Trascina ogni tessera nella casella giusta. Tocca una tessera per sentirne il suono.
-        <span id="modeNote"></span>
-      </div>
       <div class="info-card" id="progressCard">
         <strong>Questo livello</strong>
         <span id="levelProgressText">0 di 0 sillabe</span>
@@ -689,11 +720,6 @@ body.theme-night .trophy.unlocked{background:#3a3222}
         <span class="rlabel">ASCOLTA</span>
         <span class="rsub">la parola intera</span>
       </button>
-      <div class="info-card">
-        <strong>Come si gioca</strong>
-        Metti i pezzi nell'ordine giusto: prima si formano le lettere, poi le sillabe.
-        <span id="wordsModeNote"></span>
-      </div>
       <div class="info-card" id="wordsProgressCard">
         <strong>Questa parola</strong>
         <span id="wordsProgressText">0 di 0 pezzi</span>
@@ -764,10 +790,6 @@ body.theme-night .trophy.unlocked{background:#3a3222}
         <span class="rlabel">ASCOLTA</span>
         <span class="rsub" id="syllRadioSub">il suono</span>
       </button>
-      <div class="info-card">
-        <strong>Come si gioca</strong>
-        <span id="syllNote">Ascolta il suono e metti le lettere al posto giusto.</span>
-      </div>
       <div class="info-card">
         <strong>Questo esercizio</strong>
         <span id="syllProgressText">0 di 0 caselle</span>
@@ -1868,7 +1890,9 @@ function showScreen(name) {
     if (node) node.classList.toggle("active", s === name);
   });
   L.screen = name;
-  window.scrollTo({ top: 0, behavior: settings.reduceMotion ? "auto" : "smooth" });
+  // non c'è niente da scorrere: la schermata viene ridimensionata per entrare
+  // tutta nella finestra (vedi «Adattamento alla finestra»)
+  scheduleFit();
   // ogni schermata ha la sua barra inferiore, di altezza diversa: si ricalcola
   // la variabile --bar-h dopo lo scambio, altrimenti il padding resta quello
   // della schermata precedente e l'ultima tessera finisce sotto la barra
@@ -2128,13 +2152,6 @@ function buildLevel() {
 
   // pannello laterale
   $("#radioSub").textContent = lvl.mode === "coordinated" ? "le due frasi" : lvl.mode === "complex" ? "la frase intera" : "la frase intera";
-  $("#modeNote").textContent = lvl.guided
-    ? " In questo percorso alcune caselle sono già compilate: completa tu le altre."
-    : lvl.mode === "coordinated"
-      ? " Ogni riga è una frase: uniscile con il connettore al centro."
-      : lvl.mode === "complex"
-        ? " La prima parte è la subordinata, la seconda la frase principale."
-        : " Trascina tutte le sillabe nell'ordine giusto.";
   updateProgressText();
   setMascot(lvl.guided ? "Guarda le caselle grigie: sono già fatte!" : "Tocca una tessera per ascoltarla.");
   syncBottomBarHeight();
@@ -2169,34 +2186,166 @@ function updateProgressText() {
   $("#levelProgressText").textContent = `${done} di ${total} sillabe al posto giusto`;
 }
 
-/** Misura l'altezza reale della barra inferiore e la espone come variabile CSS:
-    così il contenuto non finisce mai sotto la barra, a nessuna larghezza. */
+/* ------------------------------------------------------------------
+   9b. ADATTAMENTO ALLA FINESTRA — niente scrolling
+
+   La pagina non si scorre (html e body sono overflow:hidden): l'app viene
+   ridotta con `zoom` quel tanto che serve perché ogni schermata entri tutta
+   fra il bordo alto e la barra inferiore. Si misura l'ingombro naturale a
+   scala 1, si applica il fattore e si ripete: stringendo il testo va a capo
+   diversamente, quindi al primo calcolo non ci si può fermare. Se la finestra
+   è abbastanza alta la scala resta 1 e non cambia nulla.
+   ------------------------------------------------------------------ */
+const FIT_MIN = 0.4;    // sotto questa scala il testo non sarebbe leggibile
+let fitZoom = 1;        // scala applicata adesso (la usa il fantasma del drag)
+let fitQueued = false;
+
+/** Altezza reale della barra inferiore come variabile CSS (in px dello spazio
+    zoomato, così il padding del contenuto scala insieme alla barra). */
 let barObserver = null;
-function syncBottomBarHeight() {
+function syncBottomBarHeight(zoom) {
+  const z = zoom || fitZoom || 1;
   // ogni schermata (livello, parole) ha la sua barra fissa: si misura quella
   // visibile, non la prima del documento, che potrebbe essere nascosta
   const active = document.querySelector(".screen.active");
   const bar = (active && active.querySelector(".bottombar")) || document.querySelector(".bottombar");
   if (!bar) return;
-  const apply = () => {
-    const h = Math.ceil(bar.getBoundingClientRect().height);
-    if (h > 0) document.documentElement.style.setProperty("--bar-h", h + "px");
+  const set = node => {
+    const h = Math.ceil(node.getBoundingClientRect().height);
+    if (h > 0) document.documentElement.style.setProperty("--bar-h", Math.ceil(h / z) + "px");
   };
-  apply();
+  set(bar);
   if (!barObserver && "ResizeObserver" in window) {
     barObserver = new ResizeObserver(() => {
       // la barra osservata può cambiare quando si cambia schermata
       const now = document.querySelector(".screen.active .bottombar");
       if (!now) return;
       if (now !== bar) { barObserver.unobserve(bar); barObserver.observe(now); }
-      const h = Math.ceil(now.getBoundingClientRect().height);
-      if (h > 0) document.documentElement.style.setProperty("--bar-h", h + "px");
+      set(now);
     });
     barObserver.observe(bar);
   }
 }
-window.addEventListener("resize", syncBottomBarHeight);
-window.addEventListener("orientationchange", () => setTimeout(syncBottomBarHeight, 260));
+
+/** Riduce l'app quanto basta perché la schermata attiva entri nella finestra.
+    L'ingombro si misura sulla schermata vera e sulla sua barra: `scrollHeight`
+    di un riquadro con overflow visibile non dice quanto sborda davvero. */
+function fitScreen() {
+  const app = document.querySelector(".app");
+  const active = document.querySelector(".screen.active");
+  if (!app || !active) return;
+  const H = window.innerHeight;
+  const widthMax = Math.min(1080, document.documentElement.clientWidth);
+  const RESPIRO = 18;   // spazio fra l'ultimo contenuto e la barra
+  const bar = active.querySelector(".bottombar");
+  app.style.zoom = "";
+  app.style.height = "";
+  app.style.width = "";
+  app.style.maxWidth = "";
+  const applica = valore => {
+    app.style.zoom = String(valore);
+    app.style.width = (widthMax / valore) + "px";
+    app.style.maxWidth = (widthMax / valore) + "px";
+    syncBottomBarHeight(valore);
+  };
+  // ingombro alla scala appena applicata, in px fisici
+  const ingombroOra = () => {
+    const barH = bar ? bar.getBoundingClientRect().height : 0;
+    return active.getBoundingClientRect().height + barH + RESPIRO * Number(app.style.zoom || 1);
+  };
+  const chiudi = valore => {
+    applica(valore);
+    fitZoom = valore;
+    window.__fitZoom = valore;   // lo leggono anche i fantasmi del trascinamento
+  };
+  applica(1);
+  if (ingombroOra() <= H + 1) return chiudi(1);
+  /* Si cerca il fattore più grande che entra, per bisezione: ridurre di colpo
+     al rapporto H/ingombro sarebbe troppo prudente, perché allargando il
+     riquadro il testo va a capo diversamente e serve meno riduzione. */
+  let basso = FIT_MIN, alto = 1, scelto = FIT_MIN;
+  for (let giro = 0; giro < 6; giro++) {
+    const prova = (basso + alto) / 2;
+    applica(prova);
+    if (ingombroOra() <= H + 1) { scelto = prova; basso = prova; } else { alto = prova; }
+  }
+  // ritocco finale: pochi pixel che mancano dopo la bisezione
+  for (let giro = 0; giro < 4 && ingombroOra() > H + 1; giro++) {
+    scelto = Math.max(FIT_MIN, scelto * 0.97);
+    applica(scelto);
+  }
+  chiudi(scelto);
+}
+
+/** Stessa cosa per i pannelli (impostazioni, aiuto, tappe): niente scorrimento. */
+function fitSheet() {
+  const sheet = document.querySelector("#overlay.open .sheet");
+  if (!sheet) return;
+  const H = window.innerHeight;
+  const larghezza = sheet.classList.contains("wide") ? 1100 : 620;
+  const widthMax = Math.min(larghezza, sheet.parentElement.clientWidth - 32);
+  sheet.style.zoom = "";
+  sheet.style.width = "";
+  sheet.style.maxHeight = "";
+  const applica = valore => {
+    const disponibile = Math.round(H * 0.88) / valore;
+    sheet.style.zoom = String(valore);
+    sheet.style.width = (widthMax / valore) + "px";
+    sheet.style.maxHeight = disponibile + "px";
+    return disponibile;
+  };
+  const entraOra = () => {
+    const disponibile = Math.round(H * 0.88) / Number(sheet.style.zoom || 1);
+    return sheet.scrollHeight <= disponibile + 1;
+  };
+  applica(1);
+  if (entraOra()) return;
+  let basso = FIT_MIN, alto = 1, scelto = FIT_MIN;
+  for (let giro = 0; giro < 6; giro++) {
+    const prova = (basso + alto) / 2;
+    applica(prova);
+    if (entraOra()) { scelto = prova; basso = prova; } else { alto = prova; }
+  }
+  /* ritocco: se dopo la bisezione mancano ancora pochi pixel (un testo che va
+     a capo diversamente), si scende finché ci sta davvero */
+  for (let giro = 0; giro < 4 && !entraOra(); giro++) {
+    scelto = Math.max(FIT_MIN, scelto * 0.97);
+    applica(scelto);
+  }
+  applica(scelto);
+}
+
+function scheduleFit() {
+  if (fitQueued) return;
+  fitQueued = true;
+  /* timer e non requestAnimationFrame: il fit deve girare anche quando la
+     finestra non disegna (avvio minimizzato, test in background) */
+  setTimeout(() => {
+    fitQueued = false;
+    // durante un trascinamento non si rimisura: le classi cambiano a ogni
+    // movimento e il layout è già a posto
+    if (typeof drag !== "undefined" && drag && drag.moved) return;
+    fitScreen();
+    fitSheet();
+  }, 0);
+}
+
+window.addEventListener("resize", scheduleFit);
+window.addEventListener("orientationchange", () => setTimeout(scheduleFit, 260));
+if (window.visualViewport) window.visualViewport.addEventListener("resize", scheduleFit);
+// qualunque cosa cambi dentro l'app (schermata nuova, tessera in più, figura
+// caricata) cambia l'ingombro: si rimisura al frame successivo
+if ("MutationObserver" in window) {
+  const opzioni = {
+    childList: true, subtree: true, characterData: true,
+    attributes: true, attributeFilter: ["class", "hidden"]
+  };
+  new MutationObserver(scheduleFit).observe(document.querySelector(".app"), opzioni);
+  // i pannelli stanno fuori dall'app (sono sopra tutto): si osservano a parte
+  const pannello = document.querySelector("#overlay");
+  if (pannello) new MutationObserver(scheduleFit).observe(pannello, opzioni);
+}
+document.addEventListener("load", scheduleFit, true);
 
 function setMascot(text) {
   const node = $("#mascotText");
@@ -2253,10 +2402,6 @@ function buildWordLab() {
   }
   if (w.stage === "letters" && FonemiAudio) FonemiAudio.preloadPhonemes();
   if (FonemiAudio) FonemiAudio.stopPhoneme();
-  $("#wordsModeNote").textContent = w.stage === "letters"
-    ? " Una lettera alla volta: la parola cresce sotto le caselle."
-    : " Un pezzo (una sillaba) alla volta: la parola cresce sotto le caselle.";
-
   // illustrazione della parola (PNG 41-60, nessun testo)
   const tv = $("#wordsImage");
   tv.innerHTML = "";
@@ -2552,7 +2697,6 @@ function buildSyllLab() {
 
   $("#syllBadge").textContent = `La prima parola · tappa ${step.index + 1}`;
   $("#syllTitle").textContent = `${step.name}`;
-  $("#syllNote").textContent = step.note;
   $("#syllCounter").textContent = `${syllFlatIndex() + 1} / ${SYLL_ITEMS.length}`;
   $("#syllPrevBtn").disabled = syllFlatIndex() === 0;
   $("#syllNextBtn").disabled = syllFlatIndex() === SYLL_ITEMS.length - 1;
@@ -2842,7 +2986,7 @@ function openSyllSteps() {
     <div class="row" style="justify-content:flex-end;margin-top:12px">
       <button class="btn ghost small" id="stepsDone">Chiudi</button>
     </div>
-  `);
+  `, { wide: true });
   $$("#overlayBody .steprow").forEach(btn => {
     btn.addEventListener("click", () => {
       const step = SYLL_STEPS[Number(btn.dataset.step)];
@@ -2922,6 +3066,9 @@ function onDragMove(e) {
     ghost.classList.remove("selected");
     ghost.style.width = rect.width + "px";
     ghost.style.height = rect.height + "px";
+    // il fantasma è agganciato al body, fuori dallo zoom dell'app: si scala a
+    // mano, altrimenti in una schermata ridotta il suo testo sembra enorme
+    ghost.style.transform = `translate(-50%,-50%) scale(${(1.06 * (window.__fitZoom || 1)).toFixed(3)})`;
     document.body.appendChild(ghost);
     drag.ghost = ghost;
     drag.offsetX = drag.startX - rect.left;
@@ -2936,8 +3083,10 @@ function onDragMove(e) {
       rate: Math.max(0.6, settings.rate - 0.2) });
   }
   if (drag.ghost) {
-    drag.ghost.style.left = (e.clientX - drag.offsetX + drag.ghost.offsetWidth / 2) + "px";
-    drag.ghost.style.top = (e.clientY - drag.offsetY + drag.ghost.offsetHeight / 2) + "px";
+    // misura reale (zoom compreso), così il fantasma resta sotto il dito
+    const g = drag.ghost.getBoundingClientRect();
+    drag.ghost.style.left = (e.clientX - drag.offsetX + g.width / 2) + "px";
+    drag.ghost.style.top = (e.clientY - drag.offsetY + g.height / 2) + "px";
   }
   $$(".slot.drop-hover").forEach(s => s.classList.remove("drop-hover"));
   const target = slotAt(e.clientX, e.clientY);
@@ -3429,10 +3578,13 @@ function renderTrophies() {
 /* ------------------------------------------------------------------
    15. IMPOSTAZIONI E AIUTO (sheet)
    ------------------------------------------------------------------ */
-function openSheet(title, html) {
+function openSheet(title, html, opts) {
+  const sheet = document.querySelector("#overlay .sheet");
+  if (sheet) sheet.classList.toggle("wide", !!(opts && opts.wide));
   $("#overlayTitle").textContent = title;
   $("#overlayBody").innerHTML = html;
   $("#overlay").classList.add("open");
+  fitSheet();
   $("#overlayClose").focus();
 }
 function closeSheet() { $("#overlay").classList.remove("open"); }
@@ -3773,7 +3925,7 @@ applySettings();
 renderHome();
 $$(".screen").forEach(s => s.classList.remove("active"));
 $("#screen-home").classList.add("active");
-syncBottomBarHeight();
+fitScreen();
 if (synth) refreshVoices();
 
 /* Preferenza aggiornamenti: si legge una volta sola all'avvio (solo desktop).

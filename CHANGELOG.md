@@ -4,6 +4,27 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [Non pubblicato]
+
+### Cambiato
+- **L'interfaccia sta sempre in una schermata: niente più scorrimento.** La pagina
+  non si scorre più (`html` e `body` con `overflow:hidden`) e un motore di
+  adattamento (`fitScreen`) misura la schermata attiva e la riduce con `zoom` quel
+  tanto che serve perché entri fra il bordo alto e la barra inferiore. La scala si
+  cerca per bisezione, così resta la più grande possibile (e vale 1 quando c'è
+  spazio); si ricalcola a ogni cambio di schermata, ridimensionamento della
+  finestra e variazione del contenuto, e il fantasma del trascinamento segue la
+  stessa scala. I pannelli (impostazioni, aiuto, tappe) usano lo stesso criterio
+  con `fitSheet` e non hanno più scorrimento interno.
+- Home e mappa del viaggio impacchettano le schede su più colonne, la lista delle
+  20 parole prende tutta la larghezza e, nelle finestre basse, le figure si
+  abbassano invece di far rimpicciolire il testo.
+- **Meno testo, più gioco negli esercizi.** Tolte le schede «Come si gioca» dai tre
+  schermi di lavoro (frase, formazione di parole, prima parola): restano il
+  pulsante ASCOLTA e l'avanzamento. La scena sulla TV si dimensiona sull'altezza
+  della finestra (42% per la frase, 34% per le parole, 22% per la figura del
+  percorso), così i livelli entrano a scala piena invece di ridurre tutto.
+
 ## [2.4.0] — 2026-11-08
 
 ### Cambiato

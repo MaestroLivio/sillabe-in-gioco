@@ -15,22 +15,29 @@
 .v-profile select{background:transparent;color:#fff;border:none;padding:2px;max-width:150px;font-weight:700}
 .v-profile select option{color:var(--ink)}
 
-.v-map{display:grid;gap:14px}
+/* la mappa ha quaranta livelli: su schermi larghi si distribuiscono su più
+   colonne, così si vedono tutti senza scorrere */
+.v-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;align-items:start}
 .v-level{border-left:8px solid var(--v-level, var(--blue));padding-left:12px}
-.v-level-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap}
-.v-level-title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:.98rem}
-.v-level-title .v-num{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:var(--v-level,var(--blue));color:#fff;font-size:.82rem}
-.v-level-sub{font-size:.72rem;color:var(--ink-soft);margin-left:38px}
-.v-families{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:10px}
-.v-family{background:var(--cream);border:2px solid var(--line);border-radius:16px;padding:10px 12px}
-.v-family-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.v-family-head .v-emoji{font-size:1.3rem;line-height:1}
-.v-family-name{font-weight:800;font-size:.82rem;flex:1;min-width:0}
-.v-family-name small{display:block;font-weight:400;font-size:.66rem;color:var(--ink-soft)}
-.v-chips{display:flex;flex-wrap:wrap;gap:6px}
+/* Mappa compatta: quaranta livelli con le loro famiglie devono entrare in una
+   schermata, quindi intestazioni su una riga sola e famiglie strette. */
+.v-level-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.v-level-title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:.9rem}
+.v-level-title .v-num{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--v-level,var(--blue));color:#fff;font-size:.76rem}
+/* titolo e sottotitolo sulla stessa riga: risparmia una riga per ciascuno
+   dei quaranta livelli della mappa */
+.v-level-head > div:first-child{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.v-level-sub{font-size:.66rem;color:var(--ink-soft)}
+.v-families{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:6px;margin-top:6px}
+.v-family{background:var(--cream);border:2px solid var(--line);border-radius:12px;padding:5px 7px}
+.v-family-head{display:flex;align-items:center;gap:5px;margin-bottom:4px}
+.v-family-head .v-emoji{font-size:1rem;line-height:1}
+.v-family-name{font-weight:800;font-size:.74rem;flex:1;min-width:0;line-height:1.2}
+.v-family-name small{display:inline;font-weight:400;font-size:.62rem;color:var(--ink-soft);margin-left:4px}
+.v-chips{display:flex;flex-wrap:wrap;gap:4px}
 .v-chip{
-  min-width:64px;min-height:46px;padding:6px 10px;border-radius:12px;border:2px solid var(--line);
-  background:var(--paper);font-weight:800;font-size:.9rem;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  min-width:52px;min-height:40px;padding:3px 8px;border-radius:10px;border:2px solid var(--line);
+  background:var(--paper);font-weight:800;font-size:.82rem;display:inline-flex;align-items:center;justify-content:center;gap:5px;
   transition:transform .12s,border-color .12s;position:relative
 }
 .v-chip:hover{transform:translateY(-2px);border-color:var(--blue-l)}
@@ -192,7 +199,7 @@ body.theme-night .v-highlight{background:#5a4a1a;box-shadow:0 0 0 2px #8a6a1a}
 .v-teacher{display:grid;gap:14px}
 .v-teacher .v-panel{display:grid;gap:8px}
 .v-teacher h3{font-size:.9rem;display:flex;align-items:center;gap:8px}
-.v-check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;max-height:220px;overflow:auto;padding:4px}
+.v-check-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:6px;padding:4px}
 .v-check{display:flex;align-items:center;gap:6px;font-size:.74rem;background:var(--cream);border:2px solid var(--line);border-radius:10px;padding:6px 8px}
 .v-check input{width:18px;height:18px;accent-color:var(--blue)}
 .v-order{display:grid;gap:6px}
@@ -215,8 +222,9 @@ body.reduce-motion .v-shell *{animation:none!important;transition:none!important
 .v-toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media (max-width:520px){
-  .v-families,.v-exlist,.v-games{grid-template-columns:1fr}
-  .v-chip{min-width:58px;font-size:.82rem}
+  .v-families{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .v-exlist,.v-games{grid-template-columns:1fr}
+  .v-chip{min-width:50px;font-size:.8rem}
   .v-option{min-height:56px;font-size:1.05rem}
   .v-stage{gap:10px}
 }

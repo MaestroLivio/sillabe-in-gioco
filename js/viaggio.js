@@ -602,7 +602,6 @@
     V.screen = "unit";
     startSession(unitId);
     renderViaggio();
-    window.scrollTo({ top: 0, behavior: settings.reduceMotion ? "auto" : "smooth" });
   }
 
   function renderUnit(box) {
@@ -702,7 +701,6 @@
     V.screen = "play";
     renderViaggio();
     announce(V.current.consegna);
-    window.scrollTo({ top: 0, behavior: settings.reduceMotion ? "auto" : "smooth" });
     if (settings.autoRead) setTimeout(() => {
       playPrompt(V.current);
       setTimeout(() => playExerciseAudio(V.current), 900);
@@ -1206,6 +1204,10 @@
     let moved = false;
     const ghost = tileEl.cloneNode(true);
     ghost.classList.add("ghost");
+    /* il fantasma vive fuori dall'app (fuori dallo zoom): si scala a mano,
+       così ha la stessa misura della tessera che sta trascinando */
+    const scala = window.__fitZoom || 1;
+    ghost.style.transform = `translate(-50%,-50%) scale(${(1.06 * scala).toFixed(3)})`;
     document.body.appendChild(ghost);
     ghost.style.left = startX + "px";
     ghost.style.top = startY + "px";
