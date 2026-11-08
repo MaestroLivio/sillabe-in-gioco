@@ -240,6 +240,10 @@ button:disabled{opacity:.45;cursor:not-allowed}
   padding:8px 18px;display:table;max-width:94%
 }
 .hintline b{color:var(--blue-d)}
+/* Su schermo stretto la riga «La frase è: …» costerebbe un quinto della
+   schermata e costringerebbe a rimpicciolire tutto: il suggerimento resta nel
+   pulsante SUGGERIMENTO e nella mascotte. */
+@media (max-width:520px){.hintline{display:none}}
 
 /* SLOT ROWS */
 #slotsWrap{margin-top:12px}
