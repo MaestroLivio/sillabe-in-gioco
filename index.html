@@ -2220,9 +2220,10 @@ function syncBottomBarHeight(zoom) {
   const set = node => {
     const h = Math.ceil(node.getBoundingClientRect().height);
     if (h <= 0) return false;
-    // 4px di cuscinetto: la barra può crescere di poco quando un'etichetta va
-    // a capo, e la riserva deve coprirla
-    const next = Math.ceil(h / z) + 4 + "px";
+    /* 10px di cuscinetto: la barra può crescere di qualche pixel quando un
+       font di ripiego manda a capo un'etichetta, e la riserva deve coprirla
+       anche quando la crescita arriva dopo la misura. */
+    const next = Math.ceil(h / z) + 10 + "px";
     if (document.documentElement.style.getPropertyValue("--bar-h") === next) return false;
     document.documentElement.style.setProperty("--bar-h", next);
     return true;
@@ -2253,7 +2254,7 @@ function fitScreen() {
   if (!app || !active) return;
   const H = window.innerHeight;
   const widthMax = Math.min(1080, document.documentElement.clientWidth);
-  const RESPIRO = 18;   // spazio fra l'ultimo contenuto e la barra
+  const RESPIRO = 24;   // spazio fra l'ultimo contenuto e la barra
   const bar = active.querySelector(".bottombar");
   app.style.zoom = "";
   app.style.height = "";
