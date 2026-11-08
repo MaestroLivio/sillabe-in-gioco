@@ -2212,7 +2212,13 @@ function syncBottomBarHeight(zoom) {
   if (!bar) return;
   const set = node => {
     const h = Math.ceil(node.getBoundingClientRect().height);
-    if (h > 0) document.documentElement.style.setProperty("--bar-h", Math.ceil(h / z) + "px");
+    // 4px di cuscinetto: la barra può crescere di poco quando un'etichetta va
+    // a capo, e la riserva deve coprirla
+    if (h <= 0) return;
+    const next = Math.ceil(h / z) + 4 + "px";
+    if (document.documentElement.style.getPropertyValue("--bar-h") !== next) {
+      document.documentElement.style.setProperty("--bar-h", next);
+    }
   };
   set(bar);
   if (!barObserver && "ResizeObserver" in window) {
@@ -2222,6 +2228,8 @@ function syncBottomBarHeight(zoom) {
       if (!now) return;
       if (now !== bar) { barObserver.unobserve(bar); barObserver.observe(now); }
       set(now);
+      /* Niente riadattamento da qui: la barra cambia altezza anche quando
+         cambia lo zoom, e richiamare il fit innescherebbe un ciclo. */
     });
     barObserver.observe(bar);
   }
@@ -2253,13 +2261,23 @@ function fitScreen() {
     const barH = bar ? bar.getBoundingClientRect().height : 0;
     return active.getBoundingClientRect().height + barH + RESPIRO * Number(app.style.zoom || 1);
   };
+  /* Le tessere sono l'ultimo contenuto prima della barra: se la barra le copre
+     la schermata non entra, anche quando l'altezza complessiva sembra bastare. */
+  const tessereCoperte = () => {
+    const pool = ["#tilePool", "#wordsTilePool", "#syllTilePool"]
+      .map(s => document.querySelector(s))
+      .find(n => n && n.offsetParent);
+    if (!pool || !bar) return false;
+    return pool.getBoundingClientRect().bottom > bar.getBoundingClientRect().top - 2;
+  };
+  const nonEntra = () => ingombroOra() > H + 1 || tessereCoperte();
   const chiudi = valore => {
     applica(valore);
     fitZoom = valore;
     window.__fitZoom = valore;   // lo leggono anche i fantasmi del trascinamento
   };
   applica(1);
-  if (ingombroOra() <= H + 1) return chiudi(1);
+  if (!nonEntra()) return chiudi(1);
   /* Si cerca il fattore più grande che entra, per bisezione: ridurre di colpo
      al rapporto H/ingombro sarebbe troppo prudente, perché allargando il
      riquadro il testo va a capo diversamente e serve meno riduzione. */
@@ -2267,10 +2285,10 @@ function fitScreen() {
   for (let giro = 0; giro < 6; giro++) {
     const prova = (basso + alto) / 2;
     applica(prova);
-    if (ingombroOra() <= H + 1) { scelto = prova; basso = prova; } else { alto = prova; }
+    if (!nonEntra()) { scelto = prova; basso = prova; } else { alto = prova; }
   }
   // ritocco finale: pochi pixel che mancano dopo la bisezione
-  for (let giro = 0; giro < 4 && ingombroOra() > H + 1; giro++) {
+  for (let giro = 0; giro < 8 && nonEntra(); giro++) {
     scelto = Math.max(FIT_MIN, scelto * 0.97);
     applica(scelto);
   }
