@@ -72,7 +72,9 @@ app.whenReady().then(async () => {
           imgSeen++;
           if (!(img.complete && img.naturalWidth > 0)) {
             await new Promise(res => {
-              const t = setTimeout(res, 700);
+              /* 2,5 s e non 0,7: in CI la macchina è occupata dal riadattamento
+                 della schermata e una figura su disco può arrivare dopo */
+              const t = setTimeout(res, 2500);
               img.onload = () => { clearTimeout(t); res(); };
               img.onerror = () => { clearTimeout(t); res(); };
             });
