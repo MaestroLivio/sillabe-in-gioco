@@ -91,6 +91,9 @@ app.whenReady().then(async () => {
         scrollers,
         nodes: active ? active.querySelectorAll('*').length : 0,
         chips: document.querySelectorAll('.v-chip').length,
+        // diagnostica: suggerimento rimasto appeso e altezza del vassoio
+        hint: !!document.querySelector('#hintLine'),
+        poolH: poolRect ? Math.round(poolRect.height) : null,
         viewH: window.innerHeight
       };
     })()`);
