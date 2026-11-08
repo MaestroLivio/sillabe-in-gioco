@@ -2210,15 +2210,18 @@ function syncBottomBarHeight(zoom) {
   const active = document.querySelector(".screen.active");
   const bar = (active && active.querySelector(".bottombar")) || document.querySelector(".bottombar");
   if (!bar) return;
+  /* Aggiorna la riserva e dice se è cambiata davvero (in px di progetto):
+     quando cambia solo lo zoom il rapporto resta uguale, quindi non si
+     rientra nel riadattamento. */
   const set = node => {
     const h = Math.ceil(node.getBoundingClientRect().height);
+    if (h <= 0) return false;
     // 4px di cuscinetto: la barra può crescere di poco quando un'etichetta va
     // a capo, e la riserva deve coprirla
-    if (h <= 0) return;
     const next = Math.ceil(h / z) + 4 + "px";
-    if (document.documentElement.style.getPropertyValue("--bar-h") !== next) {
-      document.documentElement.style.setProperty("--bar-h", next);
-    }
+    if (document.documentElement.style.getPropertyValue("--bar-h") === next) return false;
+    document.documentElement.style.setProperty("--bar-h", next);
+    return true;
   };
   set(bar);
   if (!barObserver && "ResizeObserver" in window) {
@@ -2227,9 +2230,11 @@ function syncBottomBarHeight(zoom) {
       const now = document.querySelector(".screen.active .bottombar");
       if (!now) return;
       if (now !== bar) { barObserver.unobserve(bar); barObserver.observe(now); }
-      set(now);
-      /* Niente riadattamento da qui: la barra cambia altezza anche quando
-         cambia lo zoom, e richiamare il fit innescherebbe un ciclo. */
+      /* Se la barra è cresciuta davvero (font di ripiego, etichetta andata a
+         capo) va rimisurata, altrimenti copre l'ultima fila di tessere. Se è
+         cambiata solo per lo zoom il valore in px di progetto resta uguale e
+         non si rientra qui. */
+      if (set(now)) scheduleFit();
     });
     barObserver.observe(bar);
   }
@@ -2350,6 +2355,8 @@ function scheduleFit() {
 // il viaggio (js/viaggio.js) lo richiama dopo ogni render: è un modulo, quindi
 // non vede direttamente le funzioni di questo script
 window.__scheduleFit = scheduleFit;
+/* i font possono arrivare dopo il primo fit e cambiare l'altezza della barra */
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => scheduleFit());
 
 window.addEventListener("resize", scheduleFit);
 window.addEventListener("orientationchange", () => setTimeout(scheduleFit, 260));
