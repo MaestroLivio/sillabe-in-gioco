@@ -2329,6 +2329,9 @@ function scheduleFit() {
     fitSheet();
   }, 0);
 }
+// il viaggio (js/viaggio.js) lo richiama dopo ogni render: è un modulo, quindi
+// non vede direttamente le funzioni di questo script
+window.__scheduleFit = scheduleFit;
 
 window.addEventListener("resize", scheduleFit);
 window.addEventListener("orientationchange", () => setTimeout(scheduleFit, 260));

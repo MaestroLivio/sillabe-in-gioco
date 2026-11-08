@@ -132,6 +132,9 @@ app.whenReady().then(async () => {
   await win.webContents.executeJavaScript(`closeSheet();`);
 
   /* --- il viaggio delle sillabe: mappa e primo esercizio --- */
+  /* La finestra si dichiara: quella del runner è più bassa e i risultati non
+     sarebbero confrontabili con quelli misurati in locale. */
+  await fit(1180, 860);
   const map = await audit("VIAGGIO mappa", `showScreen('home'); const b = document.querySelector('#viaggioHomeCard button'); if (b) b.click(); else showScreen('viaggio');`);
   if (map.nodes < 10) problems.push("viaggio: la mappa non si è aperta");
   await audit("VIAGGIO esercizio", `const c = document.querySelector('.v-chip'); if (c) c.click();`);

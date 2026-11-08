@@ -424,6 +424,10 @@
     else if (V.screen === "docente") renderDocente(box);
     else if (V.screen === "summary") renderSummary(box);
     else renderMap(box);
+    /* la vista è appena stata riscritta: si chiede subito il riadattamento alla
+       finestra senza aspettare l'osservatore del DOM (in CI il test misurava
+       la schermata prima che il riadattamento arrivasse) */
+    if (window.__scheduleFit) window.__scheduleFit();
   }
 
   function setTitle(t, sub) {
