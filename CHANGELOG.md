@@ -16,6 +16,11 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
   il gruppo da riconoscere in grande («CHI») e la parola che lo contiene con il
   gruppo evidenziato, e il titolo diceva «Suono CHI»: bastava copiare invece di
   scegliere. Ora la parola si ascolta soltanto e la scelta è sulle tessere.
+- **Qualche pixel fuori quando la misura arrivava troppo presto.** Il
+  riadattamento misura il layout appena ricostruito; se un'altezza cambia dopo
+  (figura decodificata, font di ripiego, tessera in più) la schermata restava
+  più alta della finestra di pochi pixel e la barra copriva l'ultima fila di
+  tessere. Dopo il disegno una verifica rimisura e, se serve, riadatta.
 
 ### Cambiato
 - **Tolte le scritte che regalavano la risposta.** Le domande «con quale sillaba

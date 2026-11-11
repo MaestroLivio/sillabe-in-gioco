@@ -2243,17 +2243,33 @@ function syncBottomBarHeight(zoom) {
   }
 }
 
-/** Riduce l'app quanto basta perché la schermata attiva entri nella finestra.
+/** Vero se la schermata attiva non sta nella finestra, misurata com'è adesso.
+
     L'ingombro si misura sulla schermata vera e sulla sua barra: `scrollHeight`
     di un riquadro con overflow visibile non dice quanto sborda davvero. */
+function fitSfora() {
+  const app = document.querySelector(".app");
+  const active = document.querySelector(".screen.active");
+  if (!app || !active) return false;
+  const z = Number(app.style.zoom || 1);
+  const bar = active.querySelector(".bottombar");
+  const altezza = active.getBoundingClientRect().height +
+    (bar ? bar.getBoundingClientRect().height : 0) + 24 * z;
+  if (altezza > window.innerHeight + 1) return true;
+  /* Le tessere sono l'ultimo contenuto prima della barra: se la barra le copre
+     la schermata non entra, anche quando l'altezza complessiva sembra bastare. */
+  const pool = ["#tilePool", "#wordsTilePool", "#syllTilePool"]
+    .map(s => document.querySelector(s))
+    .find(n => n && n.offsetParent);
+  return !!(pool && bar && pool.getBoundingClientRect().bottom > bar.getBoundingClientRect().top - 2);
+}
+
+/** Riduce l'app quanto basta perché la schermata attiva entri nella finestra. */
 function fitScreen() {
   const app = document.querySelector(".app");
   const active = document.querySelector(".screen.active");
   if (!app || !active) return;
-  const H = window.innerHeight;
   const widthMax = Math.min(1080, document.documentElement.clientWidth);
-  const RESPIRO = 24;   // spazio fra l'ultimo contenuto e la barra
-  const bar = active.querySelector(".bottombar");
   app.style.zoom = "";
   app.style.height = "";
   app.style.width = "";
@@ -2264,21 +2280,9 @@ function fitScreen() {
     app.style.maxWidth = (widthMax / valore) + "px";
     syncBottomBarHeight(valore);
   };
-  // ingombro alla scala appena applicata, in px fisici
-  const ingombroOra = () => {
-    const barH = bar ? bar.getBoundingClientRect().height : 0;
-    return active.getBoundingClientRect().height + barH + RESPIRO * Number(app.style.zoom || 1);
-  };
-  /* Le tessere sono l'ultimo contenuto prima della barra: se la barra le copre
-     la schermata non entra, anche quando l'altezza complessiva sembra bastare. */
-  const tessereCoperte = () => {
-    const pool = ["#tilePool", "#wordsTilePool", "#syllTilePool"]
-      .map(s => document.querySelector(s))
-      .find(n => n && n.offsetParent);
-    if (!pool || !bar) return false;
-    return pool.getBoundingClientRect().bottom > bar.getBoundingClientRect().top - 2;
-  };
-  const nonEntra = () => ingombroOra() > H + 1 || tessereCoperte();
+  /* la stessa misura che usa la verifica differita: così le due non possono
+     divergere sul significato di «non entra» */
+  const nonEntra = fitSfora;
   const chiudi = valore => {
     applica(valore);
     fitZoom = valore;
@@ -2341,6 +2345,7 @@ function fitSheet() {
   applica(scelto);
 }
 
+let fitVerificaTimer = null;
 function scheduleFit() {
   if (fitQueued) return;
   fitQueued = true;
@@ -2353,6 +2358,16 @@ function scheduleFit() {
     if (typeof drag !== "undefined" && drag && drag.moved) return;
     fitScreen();
     fitSheet();
+    /* Verifica dopo il disegno. Certe altezze arrivano quando la misura è già
+       stata fatta — una figura decodificata, un font di ripiego, una tessera
+       in più — e lasciano qualche pixel fuori: in CI la barra finiva sopra
+       l'ultima fila di tessere per 4 px. Se la schermata sfora ancora si
+       riadatta; il secondo giro non riarma il timer, quindi non c'è ciclo. */
+    clearTimeout(fitVerificaTimer);
+    fitVerificaTimer = setTimeout(() => {
+      if (typeof drag !== "undefined" && drag && drag.moved) return;
+      if (fitSfora()) fitScreen();
+    }, 240);
   }, 0);
 }
 // il viaggio (js/viaggio.js) lo richiama dopo ogni render: è un modulo, quindi
