@@ -407,13 +407,12 @@ body.all-caps .tile,
 body.all-caps .slot,
 body.all-caps .opt,
 body.all-caps .hintline b,
-body.all-caps .soundcard .w,
 body.all-caps .wordbig,
 body.all-caps .quiz-q b{text-transform:uppercase}
 
-/* Scheda del suono difficile: al posto dell'illustrazione la TV mostra il
-   gruppo di lettere da riconoscere e la parola che lo contiene, con il
-   suono evidenziato. */
+/* Riquadro della TV negli esercizi senza figura: contiene solo il simbolo
+   dell'ascolto. Il gruppo o la parola non si scrivono, altrimenti la risposta
+   si copia. */
 .soundcard{
   background:linear-gradient(160deg,#f2f9ff,#d6ebff);border:3px solid #b9dcf7;border-radius:16px;
   padding:20px 14px;text-align:center
@@ -425,8 +424,6 @@ body.theme-night .soundcard{background:linear-gradient(160deg,#22334a,#1a2839);b
   line-height:1.2
 }
 body.theme-night .soundcard .focus{color:#bcdcff;box-shadow:0 5px 0 rgba(0,0,0,.35)}
-.soundcard .w{font-size:1.3rem;margin-top:14px;font-weight:700;letter-spacing:.5px}
-.soundcard .w em{font-style:normal;color:var(--red-d);text-decoration:underline;text-decoration-thickness:3px}
 .soundcard .cap{font-size:.7rem;letter-spacing:1.6px;text-transform:uppercase;color:var(--ink-soft);margin-top:8px}
 
 /* Riga della parola intera: mostrata sotto le caselle nelle esercitazioni
@@ -462,7 +459,6 @@ body.theme-night .syll-path{background:linear-gradient(160deg,#22334a,#1a2839);b
 .syllfigure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px;min-height:0}
 .syllfigure .fem{font-size:4.4rem;line-height:1}
 .syllfigure .fimg{display:block;width:100%;max-height:min(22vh,170px);object-fit:contain;border-radius:10px;background:#0e1f1d}
-.syllfigure .fcap{font-size:1.15rem;font-weight:700;letter-spacing:1.5px;color:#eaf7ff;text-transform:uppercase}
 
 /* Elenco delle tappe nel foglio «TAPPE» */
 .steplist{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
@@ -1228,7 +1224,9 @@ const WORDS = WORD_LAB.map((w, i) => {
     units: w.units,
     img: w.img,
     emo: w.emo,
-    title: `${i + 1}. ${w.word}`,
+    // nel laboratorio la parola si ascolta e si guarda: scritta nel titolo
+    // si copierebbe lettera per lettera invece di comporla
+    title: `${i + 1}. Parola`,
     distractors: shuffleArr(pool.filter(u => !lower.includes(u.toLowerCase()))).slice(0, 3)
   };
 });
@@ -2448,7 +2446,7 @@ function buildWordLab() {
   const tv = $("#wordsImage");
   tv.innerHTML = "";
   const img = new Image();
-  img.alt = `Illustrazione della parola ${w.word}`;
+  img.alt = "Illustrazione della parola da comporre";
   img.style.width = "100%";
   img.style.display = "block";
   img.style.borderRadius = "10px";
@@ -2460,7 +2458,7 @@ function buildWordLab() {
   wrap.innerHTML = "";
   const row = el("div", "slotrow");
   row.setAttribute("role", "group");
-  row.setAttribute("aria-label", `La parola ${w.word}: ${w.units.length} caselle`);
+  row.setAttribute("aria-label", `${w.units.length} caselle da riempire`);
   w.units.forEach((unit, i) => {
     const slot = el("button", "slot");
     slot.type = "button";
@@ -2771,12 +2769,15 @@ function buildSyllLab() {
       span.textContent = emo;
       box.appendChild(span);
     }
-    box.appendChild(el("div", "fcap", item.say));
+    /* la parola non si scrive sopra il disegno: si ascolta, e il disegno dice
+       di cosa si tratta. Scritta, la si copierebbe invece di comporla. */
     tv.appendChild(box);
   } else {
+    /* Nemmeno la sillaba da comporre si scrive: la TV resta un invito ad
+       ascoltare, senza la risposta da copiare. */
     const card = el("div", "soundcard");
-    card.innerHTML = `<span class="focus">${item.title}${item.kind === "syl" ? "" : ""}</span>
-      <div class="cap">${item.kind === "syl" ? "una consonante + una vocale" : "un suono"}</div>`;
+    card.innerHTML = `<span class="focus" aria-hidden="true">🔊</span>
+      <div class="cap">${item.kind === "syl" ? "una consonante + una vocale" : "un suono da ascoltare"}</div>`;
     tv.appendChild(card);
   }
 
@@ -2785,7 +2786,7 @@ function buildSyllLab() {
   wrap.innerHTML = "";
   const row = el("div", "slotrow");
   row.setAttribute("role", "group");
-  row.setAttribute("aria-label", `${item.title}: ${item.units.length} caselle`);
+  row.setAttribute("aria-label", `${item.units.length} caselle da riempire`);
   item.units.forEach((u, i) => {
     const slot = el("button", "slot");
     slot.type = "button";
@@ -3379,7 +3380,8 @@ function buildSoundQuiz(onlyId) {
     word: s.word
   }));
   quiz.i = 0; quiz.score = 0; quiz.streak = 0;
-  $("#quizTitle").textContent = onlyId ? `Suono ${list[0].sound}` : "Suoni difficili";
+  /* il titolo non dice quale gruppo si cerca: «Suono CHI» era la risposta */
+  $("#quizTitle").textContent = onlyId ? "Un suono difficile" : "Suoni difficili";
   showScreen("exercises");
   renderQuestion();
 }
@@ -3402,7 +3404,8 @@ function buildQuiz() {
       const answer = seq[0];
       const word = seq.join("");
       quiz.items.push({
-        type, prompt: `Con quale sillaba inizia la parola «${word}»?`,
+        // la parola non si scrive: scritta, la prima sillaba si legge
+        type, prompt: "Con quale sillaba inizia la parola che ascolti?",
         speak: word, answer, options: shuffleArr([answer].concat(pick(syls, 3, answer)))
       });
     } else if (type === "count") {
@@ -3411,7 +3414,8 @@ function buildQuiz() {
       const opts = new Set([answer]);
       while (opts.size < 4) opts.add(String(Math.max(2, Math.min(12, seq.length + Math.floor(Math.random() * 5) - 2))));
       quiz.items.push({
-        type, prompt: `Quante sillabe ha la parola «${seq.join("")}»?`,
+        // idem: il conteggio si fa sull'ascolto, non sulla lettura
+        type, prompt: "Quante sillabe ha la parola che ascolti?",
         speak: seq.join(""), answer, options: shuffleArr(Array.from(opts))
       });
     } else {
@@ -3430,29 +3434,14 @@ function buildQuiz() {
   renderQuestion();
 }
 
-/* Scheda del suono difficile: TV con il gruppo da riconoscere e la parola
-   che lo contiene, con il gruppo evidenziato. Per gli altri quiz il riquadro
-   resta vuoto (l'illustrazione non serve: conta l'ascolto). */
-function renderQuizFocus(item) {
-  const box = $("#quizFocus");
-  box.innerHTML = "";
-  if (!item || item.type !== "sound") return;
-  const card = el("div", "soundcard");
-  const focus = el("div", "focus", item.sound);
-  const word = el("div", "w");
-  const at = item.word.toLowerCase().indexOf(item.sound.toLowerCase());
-  if (at < 0) {
-    word.textContent = item.word;
-  } else {
-    // il gruppo è evidenziato dentro la parola: aiuta a vederlo, non solo a sentirlo
-    word.appendChild(document.createTextNode(item.word.slice(0, at)));
-    word.appendChild(el("em", "", item.word.slice(at, at + item.sound.length)));
-    word.appendChild(document.createTextNode(item.word.slice(at + item.sound.length)));
-  }
-  card.appendChild(focus);
-  card.appendChild(word);
-  card.appendChild(el("div", "cap", "Suono difficile"));
-  box.appendChild(card);
+/* Il riquadro sopra la domanda resta vuoto in tutti i quiz.
+
+   Nella versione precedente mostrava il gruppo da riconoscere («CHI» grande)
+   e la parola che lo contiene con il gruppo evidenziato: bastava copiare,
+   non scegliere. Il compito è ascoltare la parola e decidere la grafia, quindi
+   l'unica cosa da mostrare è il pulsante che la fa risentire. */
+function renderQuizFocus() {
+  $("#quizFocus").innerHTML = "";
 }
 
 function renderQuestion() {
@@ -3462,7 +3451,7 @@ function renderQuestion() {
   $("#quizCounter").textContent = `Domanda ${quiz.i + 1} di ${quiz.items.length}`;
   $("#quizScore").textContent = `Punteggio ${quiz.score}`;
   $("#quizQuestion").textContent = item.prompt;
-  renderQuizFocus(item);
+  renderQuizFocus();
 
   const audioWrap = $("#quizAudioWrap");
   audioWrap.innerHTML = "";

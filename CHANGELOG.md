@@ -4,6 +4,28 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.5.1] — 2026-11-11
+
+### Corretto
+- **La lettera O si sentiva come una U.** La registrazione usata per /o/ era una
+  vocale arretrata e chiusa: al bambino arrivava il suono di una «u». La /o/ è
+  ora una vocale italiana registrata con la stessa voce delle sillabe, e si
+  distingue nettamente da /u/: F1 e F2 non sono più sovrapposte a quelle della
+  «u». Gli altri 29 fonemi restano le registrazioni fonetiche di prima.
+- **Nei suoni difficili la risposta era scritta.** Sopra la domanda comparivano
+  il gruppo da riconoscere in grande («CHI») e la parola che lo contiene con il
+  gruppo evidenziato, e il titolo diceva «Suono CHI»: bastava copiare invece di
+  scegliere. Ora la parola si ascolta soltanto e la scelta è sulle tessere.
+
+### Cambiato
+- **Tolte le scritte che regalavano la risposta.** Le domande «con quale sillaba
+  inizia la parola…» e «quante sillabe ha la parola…» non scrivono più la parola
+  (il conteggio e la sillaba iniziale si fanno sull'ascolto); il laboratorio
+  «Formazione di parole» non intitola più la scheda con la parola da comporre; la
+  TV del percorso sillabico mostra il disegno o il simbolo dell'ascolto, non la
+  parola o la sillaba da mettere nelle caselle. Resta la domanda «quale sillaba
+  manca», dove la parola con i puntini *è* il compito.
+
 ## [2.5.0] — 2026-11-08
 
 ### Cambiato

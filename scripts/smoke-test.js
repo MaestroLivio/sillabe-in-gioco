@@ -142,6 +142,7 @@ app.whenReady().then(async () => {
     await waitFor(() => document.getElementById('screen-words').classList.contains('active'), 2000);
     out.wordsActive = document.getElementById('screen-words').classList.contains('active');
     out.wordsTitle = document.getElementById('wordsTitle').textContent;
+    out.wordsWord = WORDS[0].word;
     out.wordsSlots = document.querySelectorAll('#wordsSlotsWrap .slot').length;
     out.wordsUnits = WORDS[0].units.length;
     out.wordsTiles = document.querySelectorAll('#wordsTilePool .tile').length;
@@ -264,8 +265,12 @@ app.whenReady().then(async () => {
     startChosenExercise();
     await sleep(150);
     out.soundItems = quiz.items.length;
-    out.soundCard = !!document.querySelector('#quizFocus .soundcard');
-    out.soundFocus = (document.querySelector('#quizFocus .soundcard .focus') || {}).textContent || '';
+    /* niente risposta scritta: né il gruppo («CHI») né la parola */
+    out.soundBox = (document.getElementById('quizFocus').textContent || '').trim();
+    out.soundQuestion = document.getElementById('quizQuestion').textContent;
+    out.soundTitle = document.getElementById('quizTitle').textContent;
+    out.soundWord = quiz.items[0] ? quiz.items[0].word : '';
+    out.soundAnswer = quiz.items[0] ? quiz.items[0].answer : '';
     out.soundOptions = document.querySelectorAll('#quizOptions .opt').length;
     out.soundAllType = quiz.items.every(i => i.type === 'sound');
     // singolo esercizio scelto dal docente
@@ -382,7 +387,8 @@ app.whenReady().then(async () => {
 
   console.log("\n— LABORATORIO PAROLE —");
   expect("schermata parole attiva", results.wordsActive);
-  expect("titolo della parola", /^1\. ape$/.test(results.wordsTitle), results.wordsTitle);
+  expect("titolo senza la parola scritta", /^1\./.test(results.wordsTitle) &&
+    results.wordsTitle.toLowerCase().indexOf(results.wordsWord) < 0, results.wordsTitle);
   expect("caselle = pezzi della parola", results.wordsSlots === results.wordsUnits, `${results.wordsSlots}/${results.wordsUnits}`);
   expect("tessere = pezzi + 3 distrattori", results.wordsTiles === results.wordsUnits + 3, results.wordsTiles);
   expect("illustrazione della parola", /illustrations\/41\.png$/.test(results.wordsImg), results.wordsImg);
@@ -415,8 +421,11 @@ app.whenReady().then(async () => {
 
   console.log("\n— SUONI DIFFICILI —");
   expect("20 schede", results.soundItems === 20, results.soundItems);
-  expect("scheda del gruppo visibile", results.soundCard);
-  expect("il gruppo mostrato è quello giusto", results.soundFocus.length > 0, results.soundFocus);
+  expect("nessun gruppo scritto sulla TV", results.soundBox === "", results.soundBox);
+  expect("la domanda non mostra la parola", results.soundWord &&
+    !results.soundQuestion.toLowerCase().includes(results.soundWord.toLowerCase()), results.soundQuestion);
+  expect("il titolo non dice il gruppo cercato", results.soundAnswer &&
+    !results.soundTitle.toLowerCase().includes(results.soundAnswer.toLowerCase()), results.soundTitle);
   expect("4 opzioni", results.soundOptions === 4, results.soundOptions);
   expect("tutte le domande sono di tipo suono", results.soundAllType);
   expect("esercizio singolo scelto dal docente", results.singleItems === 1 && results.singleAnswer === "cia", `${results.singleItems}/${results.singleAnswer}`);

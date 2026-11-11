@@ -1,14 +1,17 @@
 # Attribuzioni dei fonemi
 
 I file di `audio/fonemi/` sono registrazioni fonetiche di terzi, adattate
-(ritaglio e normalizzazione) per l'uso didattico. Il progetto nel suo insieme
+(ritaglio e normalizzazione) per l'uso didattico — con un'eccezione: la /o/, che
+è stata registrata per questo progetto (vedi l'elenco in fondo), perché quella
+della raccolta somigliava troppo a una /u/. Il progetto nel suo insieme
 è distribuito con licenza **CC BY 4.0**; i file qui sotto restano soggetti
 alla licenza della loro fonte, indicata per ciascuno. Le modifiche sono
 elencate perché le licenze CC BY-SA le richiedono.
 
 ## Fonti
 
-1. **IPA sound files** — 27 fonemi. Autore: Ruben Schachtenhaufen.
+1. **IPA sound files** — 26 fonemi (la /o/ è rifatta in casa, vedi sotto).
+   Autore: Ruben Schachtenhaufen.
    <https://github.com/NewDanishPhonetics/IPA-sound-files>.
    Licenza **CC0 1.0** (<https://creativecommons.org/publicdomain/zero/1.0/>):
    non richiede attribuzione; la si conserva comunque per correttezza e per
@@ -77,12 +80,19 @@ sono obblighi, ma l'attribuzione resta gradita.
 ### `o.mp3`
 
 - **Fonema**: /o/
-- **Autore**: Ruben Schachtenhaufen
-- **URL originale**: https://github.com/NewDanishPhonetics/IPA-sound-files/blob/main/o.wav
-- **Licenza originale**: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
-- **Modifiche**: ritaglio 0.030–0.600 s (misurato sull'inviluppo), sfumature di 4/14 ms, normalizzazione di loudness a −16 LUFS, ricodifica MP3 mono 64 kbps 44,1 kHz. Nessuna vocale aggiunta, nessuna ripetizione, nessun allungamento artificiale.
+- **Autore**: sintesi vocale *Emma (Premium)* di macOS, voce italiana; clip prodotto
+  per questo progetto.
+- **URL originale**: nessuno (non è materiale di terzi)
+- **Licenza**: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), come il
+  resto del progetto
+- **Perché è stata rifatta**: la /o/ della raccolta CC0 è una vocale arretrata che
+  all'orecchio di un bambino somiglia alla /u/. Questa è una /o/ italiana ed è la
+  stessa voce che pronuncia le sillabe e le parole dell'app.
+- **Modifiche**: sintesi a 75 parole al minuto, rifilo dei silenzi ai bordi, 0,20 s
+  di coda per non troncare la vocale, sfumature di 20/100 ms, normalizzazione di
+  loudness a −16 LUFS, ricodifica MP3 mono 64 kbps 44,1 kHz.
 - **File distribuito**: `audio/fonemi/o.mp3`
-- **Durata**: 0.57 s
+- **Durata**: 0.40 s
 
 ### `o_aperta.mp3`
 
