@@ -145,6 +145,11 @@ app.whenReady().then(async () => {
   /* --- finestra bassa: è il caso in cui prima si scorreva di più --- */
   await fit(1280, 640);
   await audit("LIVELLO 12 finestra bassa 1280x640", `showScreen('home'); startLevel(11);`);
+  /* Lo slider deve ingrandire le caselle senza lasciare la scena nascosta o
+     un vuoto in fondo: è il caso che su Windows si comportava diversamente. */
+  const slotGrandi = await audit("LIVELLO 12 caselle grandi 1280x640", `showScreen('home'); startLevel(11); applySlotScale(1.9,false);`);
+  if (!slotGrandi.tileCleared) problems.push("caselle grandi: la barra copre le tessere");
+  await win.webContents.executeJavaScript(`applySlotScale(1,false);`);
   await audit("PAROLE finestra bassa 1280x640", `startWord(3);`);
   await audit("TROFEI finestra bassa 1280x640", `showScreen('trophies');`);
 

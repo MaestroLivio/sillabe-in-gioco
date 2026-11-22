@@ -246,9 +246,11 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.5.2-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.5.2.dmg` (Intel)
-- versioni `.zip` per gli aggiornamenti automatici
+- `Sillabe in Gioco-2.5.3-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.5.3-arm64-mac.zip` per l'aggiornamento automatico
+
+Le release ufficiali includono solo **macOS Apple Silicon** e **Windows x64**.
+macOS Intel, Linux, PWA e ChromeOS non vengono più pacchettizzati.
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
 
@@ -273,8 +275,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.5.2.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.5.2.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.5.3.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.5.3.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -282,46 +284,12 @@ Requisiti: Windows 10/11 a 64 bit.
 > L'installer non è firmato con un certificato EV, quindi SmartScreen può mostrare un avviso:
 > *Ulteriori informazioni → Esegui comunque*.
 
-### ChromeOS / Chromebook
+### Altre piattaforme
 
-Due strade, entrambe incluse.
-
-**A. Estensione (consigliata per il Launcher e la modalità finestra)**
-
-```bash
-npm run build:chromeos
-```
-
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.5.2.zip`.
-
-Installazione in modalità sviluppatore:
-
-1. Apri `chrome://extensions`
-2. Attiva **Modalità sviluppatore**
-3. **Carica estensione non pacchettizzata** → seleziona `dist/chromeos`
-4. L'app si apre in una finestra dedicata e compare nel Launcher
-
-**B. PWA installabile**
-
-```bash
-npm run build:web
-```
-
-Pubblica `dist/web/` su un hosting HTTPS (GitHub Pages, Firebase Hosting, Netlify…),
-poi su Chromebook: Chrome → menu → **Installa app**. Funziona offline dopo il primo caricamento.
-
-Per la pubblicazione sul **Chrome Web Store** serve lo ZIP di `dist/chromeos` e una
-privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
-
-### Web / PWA
-
-```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.5.2.zip
-npm run serve          # prova locale con service worker attivo
-```
-
-Il pacchetto è statico: nessun backend, nessun database, nessuna API esterna.
-Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
+Dalla versione 2.5.3 le release automatiche includono solo **macOS Apple Silicon**
+e **Windows x64**. Linux, macOS Intel, PWA e ChromeOS non vengono più generati:
+il codice resta apribile nel browser con `index.html`, ma non ci sono più pacchetti
+ufficiali per queste piattaforme.
 
 ---
 
@@ -341,7 +309,7 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run test:viaggio:ui` | Audit Electron del viaggio: mappa, unità, esercizi, memoria, treno, frasi, pannello docente |
 | `npm run test:audio` | Verifica i clip: copertura di sillabe/frasi/parole, durate, file orfani |
 | `npm run test:pronuncia` | Controlla che le sillabe critiche non siano compitate lettera per lettera |
-| `npm run test:release -- v2.5.2` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i clip audio dichiarati dal manifest |
+| `npm run test:release -- v2.5.3` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i clip audio dichiarati dal manifest |
 | `npm run test:smoke` | Smoke test headless Electron: schermate, laboratorio parole, suoni, impostazioni e accesso al viaggio |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |
@@ -349,15 +317,13 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run icons` | Rigenera tutte le icone PNG da `build/icon.svg` |
 | `npm run icons:native` | Genera `icon.icns` (macOS) e `icon.ico` (Windows) |
 | `npm run screenshots` | Cattura le 12 schermate in `build/screenshots/` |
-| `npm run build:web` | Pacchetto PWA + estensione ChromeOS in `dist/` |
-| `npm run build:mac` | DMG + ZIP per macOS: arm64 e x64 |
-| `npm run build:mac:arm64` | Solo Apple Silicon (DMG + ZIP) |
-| `npm run build:mac:x64` | Solo Intel (DMG + ZIP) |
-| `npm run make:dmg` | Ricrea solo i DMG dalle app già impacchettate in `dist/` |
+| `npm run build:mac` | DMG + ZIP per macOS Apple Silicon |
+| `npm run build:mac:arm64` | Alias di `build:mac` (solo Apple Silicon) |
+| `npm run make:dmg` | Ricrea solo il DMG Apple Silicon dalle app già impacchettate in `dist/` |
 | `npm run clean:volumes` | Smonta i volumi DMG rimasti agganciati da build interrotte (solo macOS) |
-| `npm run build:win` | Installer NSIS + versione portabile |
-| `npm run build:linux` | AppImage + DEB |
-| `npm run dist` | Icone + pacchetti web + macOS + Windows |
+| `npm run build:win` | Installer NSIS + versione portabile per Windows x64 |
+| `npm run build:all` | macOS Apple Silicon + Windows x64 |
+| `npm run dist` | Icone + illustrazioni + validazione + macOS Apple Silicon + Windows x64 |
 
 ---
 
@@ -395,7 +361,7 @@ sillabe-in-gioco/
 │   └── make-*.js               # Script di generazione icone
 ├── scripts/
 │   ├── serve.js                # Server statico di sviluppo
-│   ├── package-web.js          # Build PWA + estensione ChromeOS
+│   ├── package-web.js          # Build web legacy (non usata dalle release)
 │   ├── validate.js             # Validazione contenuti didattici
 │   ├── smoke-test.js           # Test end-to-end headless
 │   ├── levels-audit.js         # Audit illustrazioni/caselle dei 40 livelli
@@ -403,7 +369,7 @@ sillabe-in-gioco/
 │   ├── clean-volumes.js        # Smonta volumi DMG residui
 │   ├── make-dmg.js             # Crea i DMG con hdiutil in un solo passaggio
 │   └── screenshots.js          # Cattura screenshot
-├── .github/workflows/          # CI: build matrix macOS/Windows/Linux
+├── .github/workflows/          # CI: build matrix macOS arm64 + Windows x64
 ├── README.md
 ├── PRIVACY.md
 ├── CHANGELOG.md
@@ -428,9 +394,9 @@ sillabe-in-gioco/
 │                risultati · trofei (classe .active)       │
 └──────────────────────────────────────────────────────────┘
         │                    │                    │
-        ▼                    ▼                    ▼
-  Electron (desktop)    PWA (browser)    Estensione MV3
-  mac / win / linux     ChromeOS/web     ChromeOS Launcher
+        ▼                    ▼
+  Electron (desktop)    Browser (index.html)
+  macOS arm64 / win x64  uso locale, senza pacchetto
 ```
 
 Scelte tecniche rilevanti:
@@ -457,8 +423,8 @@ Dettagli in [PRIVACY.md](PRIVACY.md).
 
 ## Pubblicazione
 
-Il rilascio è **automatico**: la CI compila su macOS, Windows e Linux a ogni tag `v*`
-e pubblica gli artefatti nella release GitHub.
+Il rilascio è **automatico**: a ogni tag `v*` la CI compila solo **macOS Apple
+Silicon** e **Windows x64** e pubblica gli artefatti nella release GitHub.
 
 ```bash
 npm version patch          # aggiorna package.json e crea il commit + tag
@@ -466,11 +432,14 @@ git push origin main --follow-tags
 ```
 
 La release viene creata da `.github/workflows/build.yml` con le note prese da
-`CHANGELOG.md`. Per una build locale (solo macOS) e un caricamento manuale:
+`CHANGELOG.md`. La matrice di build contiene solo `macos-latest` e
+`windows-latest`; niente più Linux, macOS Intel, PWA o ChromeOS.
+
+Per una build locale e un caricamento manuale:
 
 ```bash
 npm run dist
-gh release upload "v$(node -p "require('./package.json').version")" dist/*.dmg dist/*.zip
+gh release upload "v$(node -p "require('./package.json').version")" dist/*.dmg dist/*.zip dist/*.exe
 ```
 
 > [!NOTE]

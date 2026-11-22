@@ -211,9 +211,7 @@ function downloadTo(url, destPath, onProgress, getRequest) {
      "data": "2026-10-26T10:00:00Z",
      "pacchetti": {
        "darwin-arm64": { "file": "…dmg", "sha256": "…", "byte": 110820130 },
-       "darwin-x64":   { … },
-       "win32-x64":    { … },
-       "linux-x64":    { … }
+       "win32-x64":    { "file": "…exe", "sha256": "…", "byte": 86207366 }
      }
    }
    Il campo si chiama "pacchetti" per restare coerente con il resto del

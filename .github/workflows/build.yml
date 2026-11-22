@@ -57,7 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+        os: [macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -72,22 +72,15 @@ jobs:
       - name: Icone
         run: npm run icons && npm run icons:native
 
-      - name: Pacchetto web e ChromeOS
-        run: npm run build:web
-
-      - name: Build macOS
+      - name: Build macOS Apple Silicon
         if: matrix.os == 'macos-latest'
         run: npm run build:mac
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: "false"
 
-      - name: Build Windows
+      - name: Build Windows x64
         if: matrix.os == 'windows-latest'
         run: npm run build:win
-
-      - name: Build Linux
-        if: matrix.os == 'ubuntu-latest'
-        run: npm run build:linux
 
       - name: Carica artefatti
         uses: actions/upload-artifact@v4
@@ -97,8 +90,6 @@ jobs:
             dist/*.dmg
             dist/*.zip
             dist/*.exe
-            dist/*.AppImage
-            dist/*.deb
           if-no-files-found: warn
           retention-days: 14
 

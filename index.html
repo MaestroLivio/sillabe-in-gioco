@@ -355,16 +355,20 @@ body.theme-night .tile{background:#3a3020;color:#ffe0ad;border-color:#c78a2c}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
 /* PRIORITÀ ALLE CASELLE — quando lo slider le ingrandisce, gli altri elementi
-   della schermata cedono il posto in quest'ordine: prima la scena (ridotta a
-   metà), poi la scena del tutto, poi la riga della parola che cresce e le
-   etichette del vassoio, infine il testo della mascotte. Caselle e pezzi da
-   trascinare non vengono mai sacrificati. */
-.app[data-slots="1"] .stage{max-height:min(38vh,210px);overflow:hidden}
+   della schermata cedono il posto in quest'ordine: prima la scena (ridotta
+   allo spazio che avanza), poi la scena del tutto, poi la riga della parola
+   che cresce e le etichette del vassoio, infine il testo della mascotte.
+   Caselle e pezzi da trascinare non vengono mai sacrificati.
+
+   Il livello non è deciso da una soglia fissa sullo slider: `fitScreen()`
+   misura l'ingombro reale e sceglie il livello meno invasivo che entra nella
+   finestra. Così font, barra e DPI diversi (Windows) non nascondono la scena
+   prima del necessario. */
+.app[data-slots="1"] .stage{max-height:var(--stage-max,min(38vh,210px));overflow:hidden}
 .app[data-slots="2"] .stage,
 .app[data-slots="3"] .stage{display:none}
 .app[data-slots="2"] .wordbig,
 .app[data-slots="3"] .wordbig{display:none}
-.app[data-slots="1"] .tiles-head h2,
 .app[data-slots="2"] .tiles-head h2,
 .app[data-slots="3"] .tiles-head h2{display:none}
 .app[data-slots="3"] .mtext span{display:none}
@@ -2348,6 +2352,68 @@ function fitSfora() {
   return !!(pool && bar && pool.getBoundingClientRect().bottom > bar.getBoundingClientRect().top - 2);
 }
 
+/** Schermate in cui lo slider A+/A− ingrandisce caselle e tessere. */
+function isSlotScreen(active) {
+  return !!active && /^screen-(level|words|syll)$/.test(active.id);
+}
+
+/** Sceglie il livello di sacrificio meno invasivo che entra davvero.
+
+    Prima si misura a scala naturale: se la scena intera entra, resta; se non
+    entra si prova la scena ridotta, poi nascosta, poi le etichette compatte.
+    Le vecchie soglie fisse (1,4 / 1,65) nascondevano la scena anche quando
+    c'era ancora spazio, soprattutto su Windows dove font e barra sono più
+    alti: il risultato era una schermata vuota nella parte bassa. */
+function chooseSlotLevel(app, active, widthMax) {
+  if (!isSlotScreen(active)) {
+    app.style.removeProperty("--stage-max");
+    return "0";
+  }
+  const scala = Number(settings.slotScale) || 1;
+  if (scala <= 1.02) {
+    app.style.removeProperty("--stage-max");
+    return "0";
+  }
+  const bar = active.querySelector(".bottombar");
+  const stage = active.querySelector(".stage");
+  app.style.width = widthMax + "px";
+  app.style.maxWidth = widthMax + "px";
+  app.dataset.slots = "0";
+  syncBottomBarHeight(1);
+
+  /* Quanto spazio resta alla scena se le caselle crescono? Si misura la
+     schermata *senza* la scena, lasciando visibili riga-parola ed etichette:
+     la differenza è lo spazio verticale che la scena può occupare davvero.
+     Così non si nasconde la scena quando basterebbe rimpicciolirla, e non
+     resta il vuoto in fondo che si vedeva su Windows. */
+  let disponibile = 0;
+  if (stage) {
+    const prima = stage.style.display;
+    stage.style.display = "none";
+    const attivoSenzaScena = active.getBoundingClientRect().height;
+    const barra = bar ? bar.getBoundingClientRect().height : 0;
+    disponibile = Math.floor(window.innerHeight - attivoSenzaScena - barra - 24);
+    stage.style.display = prima;
+  }
+  const SOGLIA_SCENA = 80; // sotto questa altezza la scena non è più utile
+  if (disponibile >= SOGLIA_SCENA) {
+    const margine = stage ? (parseFloat(getComputedStyle(stage).marginTop) || 0) : 0;
+    app.dataset.slots = "1";
+    app.style.setProperty("--stage-max", Math.max(0, Math.min(420, disponibile - margine)) + "px");
+    syncBottomBarHeight(1);
+    if (!fitSfora()) return "1";
+  }
+  /* Se anche la scena ridotta non entra, si sacrificano prima i testi
+     secondari, poi la scena del tutto. */
+  app.style.removeProperty("--stage-max");
+  app.dataset.slots = "2";
+  syncBottomBarHeight(1);
+  if (!fitSfora()) return "2";
+  app.dataset.slots = "3";
+  syncBottomBarHeight(1);
+  return "3";
+}
+
 /** Riduce l'app quanto basta perché la schermata attiva entri nella finestra. */
 function fitScreen() {
   const app = document.querySelector(".app");
@@ -2358,6 +2424,9 @@ function fitScreen() {
   app.style.height = "";
   app.style.width = "";
   app.style.maxWidth = "";
+  /* il livello delle caselle si decide prima di ridurre tutto: così lo
+     slider ingrandisce davvero e non fa rimpicciolire l'intera interfaccia */
+  app.dataset.slots = chooseSlotLevel(app, active, widthMax);
   const applica = valore => {
     app.style.zoom = String(valore);
     app.style.width = (widthMax / valore) + "px";
@@ -3791,6 +3860,11 @@ function openSettings() {
       settings[key] = transform ? transform(input) : input.value;
       saveJSON(SETTINGS_KEY, settings);
       applySettings();
+      /* il testo più grande cambia altezze e a capo: la barra e il
+         riadattamento vanno rimisurati subito, anche su Windows dove i font
+         di ripiego sono più alti */
+      syncBottomBarHeight();
+      scheduleFit();
     });
   };
   bind("setFont", "fontScale", i => parseFloat(i.value));
@@ -3880,19 +3954,15 @@ function openHelp() {
  * e per lasciare loro il posto gli altri elementi cedono — vedi le regole
  * `.app[data-slots=…]`: prima la scena a metà, poi la scena del tutto, poi la
  * riga della parola e le etichette del vassoio. La priorità è delle caselle.
+ * Il livello di sacrificio non è più una soglia fissa: lo sceglie fitScreen()
+ * misurando l'ingombro reale della schermata.
  */
-function slotLevel(v) {
-  return v <= 1.02 ? "0" : v < 1.4 ? "1" : v < 1.65 ? "2" : "3";
-}
 function applySlotScale(v, persist) {
   const value = Math.min(1.9, Math.max(1, Number(v) || 1));
   settings.slotScale = value;
   if (persist) saveJSON(SETTINGS_KEY, settings);
   const app = document.querySelector(".app");
-  if (app) {
-    app.style.setProperty("--sz", String(value));
-    app.dataset.slots = slotLevel(value);
-  }
+  if (app) app.style.setProperty("--sz", String(value));
   $$("input[data-slotzoom]").forEach(i => {
     if (Number(i.value) !== value) i.value = String(value);
   });

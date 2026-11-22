@@ -4,6 +4,24 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.5.3] — 2026-11-22
+
+### Corretto
+- **Su Windows lo slider non nasconde più la scena troppo presto.** Il livello
+  di sacrificio della scena TV era deciso da soglie fisse (1,4× e 1,65×): con
+  font e barra più alti, Windows perdeva la scena e lasciava un vuoto in fondo
+  anche quando c'era ancora spazio. Ora `fitScreen()` misura l'ingombro reale,
+  calcola lo spazio disponibile e riduce la scena solo quanto serve; se la
+  scena resta visibile, si allunga fino a riempire la parte bassa. Lo stesso
+  riadattamento viene rifatto subito quando cambia la dimensione del testo.
+
+### Cambiato
+- **Le release future contengono solo Windows x64 e macOS Apple Silicon.**
+  Rimossi dal flusso di pubblicazione macOS Intel, Linux, PWA e ChromeOS: la CI
+  costruisce solo le due piattaforme richieste, il manifest degli aggiornamenti
+  contiene solo i relativi pacchetti e i test di release non cercano più gli
+  artefatti delle piattaforme ritirate.
+
 ## [2.5.2] — 2026-11-14
 
 ### Cambiato

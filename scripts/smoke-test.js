@@ -88,6 +88,8 @@ app.whenReady().then(async () => {
     out.slotSliders = document.querySelectorAll('input[data-slotzoom]').length;
     const firstSlot = document.querySelector('#slotsWrap .slot');
     out.slotH0 = firstSlot ? Math.round(firstSlot.getBoundingClientRect().height) : 0;
+    const stagePrima = document.querySelector('#screen-level .stage');
+    out.stageH0 = Math.round(stagePrima.getBoundingClientRect().height);
     const slotSlider = document.querySelector('#screen-level input[data-slotzoom]');
     if (slotSlider) {
       slotSlider.value = '1.9';
@@ -96,7 +98,9 @@ app.whenReady().then(async () => {
     await sleep(140);
     out.slotH1 = firstSlot ? Math.round(firstSlot.getBoundingClientRect().height) : 0;
     out.slotLevel = document.querySelector('.app').dataset.slots;
-    out.stageHidden = getComputedStyle(document.querySelector('#screen-level .stage')).display === 'none';
+    const stageEl = document.querySelector('#screen-level .stage');
+    out.stageHidden = getComputedStyle(stageEl).display === 'none';
+    out.stageH = Math.round(stageEl.getBoundingClientRect().height);
     if (slotSlider) {
       slotSlider.value = '1';
       slotSlider.dispatchEvent(new Event('input', { bubbles: true }));
@@ -402,7 +406,11 @@ app.whenReady().then(async () => {
   expect("tutte le caselle riempite", results.placedSlots === 8, results.placedSlots);
   expect("slider in ogni esercizio", results.slotSliders === 3, results.slotSliders);
   expect("lo slider ingrandisce le caselle", results.slotH1 > results.slotH0 + 4, `${results.slotH0}→${results.slotH1}`);
-  expect("priorità alle caselle: la scena cede il posto", results.slotLevel === "3" && results.stageHidden, `${results.slotLevel}/${results.stageHidden}`);
+  /* La scena cede spazio alle caselle, ma non deve sparire per soglia fissa:
+     il livello scelto dipende dall'ingombro reale (Windows compreso). */
+  expect("priorità alle caselle: la scena cede il posto",
+    results.slotLevel !== "0" && (results.stageHidden || results.stageH < results.stageH0),
+    `${results.slotLevel}/${results.stageHidden ? "nascosta" : results.stageH0 + "→" + results.stageH + "px"}`);
   expect("riportando lo slider la casella torna piccola", results.slotBack <= results.slotH0 + 2, `${results.slotH0}/${results.slotBack}`);
 
   console.log("\n— LIVELLO 21 (coordinate) —");

@@ -9,11 +9,9 @@ Per l'installazione tecnica vedi [README.md](README.md).
 
 | Piattaforma | Come |
 |---|---|
-| **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
-| **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
-| **Windows** | Esegui `SillabeInGioco-Setup-2.5.2.exe` e segui la procedura |
-| **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
-| **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
+| **Browser** | Doppio clic su `index.html` (uso locale, senza installazione) |
+| **macOS Apple Silicon** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
+| **Windows x64** | Esegui `SillabeInGioco-Setup-2.5.3.exe` e segui la procedura |
 
 > [!TIP]
 > Al primo avvio il sistema potrebbe chiedere il permesso di usare la voce:

@@ -275,9 +275,9 @@ function checkManifest(file, assetByName) {
     return problems.concat("aggiornamento.json: manca l'elenco dei pacchetti");
   }
 
-  /* Ogni sistema che l'app sa aggiornare deve avere il suo file: un buco qui
-     significa «scarica a mano dalla pagina delle release». */
-  for (const key of ["darwin-arm64", "darwin-x64", "win32-x64", "linux-x64"]) {
+  /* Le release pubblicano solo macOS Apple Silicon e Windows x64: sono le
+     uniche voci che il manifest deve contenere. */
+  for (const key of ["darwin-arm64", "win32-x64"]) {
     const voce = manifest.pacchetti[key];
     if (!voce) {
       problems.push(`aggiornamento.json: manca il pacchetto ${key}`);

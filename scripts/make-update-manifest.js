@@ -29,11 +29,12 @@ const VERSION = pkg.version;
    chiede un file che non esiste e il download finisce in 404. Per questo si
    cerca il file con un'espressione che accetta entrambe le forme, e poi il nome
    trovato viene normalizzato con releaseName() prima di scriverlo. */
+/* Le release pubblicate contengono solo macOS Apple Silicon e Windows x64.
+   Le altre piattaforme non vengono più costruite: chi le usa trova nella
+   pagina delle release il messaggio di scaricare manualmente. */
 const TARGETS = [
   { key: "darwin-arm64", re: new RegExp(`^Sillabe[ .]in[ .]Gioco-${escapeRe(VERSION)}-arm64\\.dmg$`) },
-  { key: "darwin-x64", re: new RegExp(`^Sillabe[ .]in[ .]Gioco-${escapeRe(VERSION)}\\.dmg$`) },
-  { key: "win32-x64", re: new RegExp(`^SillabeInGioco-Setup-${escapeRe(VERSION)}\\.exe$`) },
-  { key: "linux-x64", re: new RegExp(`^SillabeInGioco-${escapeRe(VERSION)}\\.AppImage$`) }
+  { key: "win32-x64", re: new RegExp(`^SillabeInGioco-Setup-${escapeRe(VERSION)}\\.exe$`) }
 ];
 
 function escapeRe(s) {
