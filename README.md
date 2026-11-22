@@ -34,6 +34,8 @@ esercizi, schede stampabili e trofei.
 - Tre modalità d'ingresso alla tessera: **drag & drop** (mouse, dito, penna), **tap su tessera + tap sulla casella**, **tastiera** (Invio/Spazio).
 - **Un'illustrazione originale per ognuna delle 40 frasi e per ognuna delle 20 parole**: scene vettoriali da libro illustrato (personaggi, animali, arredi, paesaggi) in 1280×720, senza alcun testo dentro il disegno.
 - Tessere **distrattore** sempre presenti, rimescolabili con un tocco.
+- **Slider della dimensione** (1×–1,9×) in fondo alle schermate di lavoro: ingrandisce caselle e tessere e fa cedere il posto alla scena, così le caselle restano sempre intere.
+- **Home a menu**: cinque voci con i loro sottomenu (frasi, la prima parola, formazione di parole, giochi, strumenti), un elenco alla volta.
 - Animazioni di conferma, errore (shake), completamento (pop + coriandoli).
 
 ### Formazione di parole
@@ -244,8 +246,8 @@ npm run build:mac
 
 Genera in `dist/`:
 
-- `Sillabe in Gioco-2.5.1-arm64.dmg` (Apple Silicon)
-- `Sillabe in Gioco-2.5.1.dmg` (Intel)
+- `Sillabe in Gioco-2.5.2-arm64.dmg` (Apple Silicon)
+- `Sillabe in Gioco-2.5.2.dmg` (Intel)
 - versioni `.zip` per gli aggiornamenti automatici
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
@@ -271,8 +273,8 @@ npm run build:win
 
 Genera in `dist/`:
 
-- `SillabeInGioco-Setup-2.5.1.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
-- `SillabeInGioco-Portable-2.5.1.exe` — versione portabile su chiavetta USB
+- `SillabeInGioco-Setup-2.5.2.exe` — installer NSIS (installazione per utente, scelta della cartella, collegamenti a Desktop e Start Menu, disinstallazione pulita)
+- `SillabeInGioco-Portable-2.5.2.exe` — versione portabile su chiavetta USB
 
 Requisiti: Windows 10/11 a 64 bit.
 
@@ -290,7 +292,7 @@ Due strade, entrambe incluse.
 npm run build:chromeos
 ```
 
-Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.5.1.zip`.
+Genera `dist/chromeos/` e `dist/SillabeInGioco-ChromeOS-v2.5.2.zip`.
 
 Installazione in modalità sviluppatore:
 
@@ -314,7 +316,7 @@ privacy policy (vedi [PRIVACY.md](PRIVACY.md)).
 ### Web / PWA
 
 ```bash
-npm run build:web      # crea dist/web + dist/sillabe-web-v2.5.1.zip
+npm run build:web      # crea dist/web + dist/sillabe-web-v2.5.2.zip
 npm run serve          # prova locale con service worker attivo
 ```
 
@@ -339,7 +341,7 @@ Compatibile con Chrome, Edge, Safari 16.4+, Firefox (senza installazione PWA).
 | `npm run test:viaggio:ui` | Audit Electron del viaggio: mappa, unità, esercizi, memoria, treno, frasi, pannello docente |
 | `npm run test:audio` | Verifica i clip: copertura di sillabe/frasi/parole, durate, file orfani |
 | `npm run test:pronuncia` | Controlla che le sillabe critiche non siano compitate lettera per lettera |
-| `npm run test:release -- v2.5.1` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i clip audio dichiarati dal manifest |
+| `npm run test:release -- v2.5.2` | Scarica gli artefatti pubblicati e verifica che contengano le 67 illustrazioni e i clip audio dichiarati dal manifest |
 | `npm run test:smoke` | Smoke test headless Electron: schermate, laboratorio parole, suoni, impostazioni e accesso al viaggio |
 | `npm run test:levels` | Audit dei 40 livelli: illustrazione, caselle, tessere, distrattori |
 | `npm run test:layout` | Audit di layout: overflow, barra inferiore, target ≥ 40 px, resa illustrazione |

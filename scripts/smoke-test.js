@@ -62,6 +62,15 @@ app.whenReady().then(async () => {
     out.homeActive = document.getElementById('screen-home').classList.contains('active');
     out.groupCards = document.querySelectorAll('#groupList .group-card').length;
     out.homeStats = document.querySelectorAll('#homeStats .stat').length;
+    /* menu della home: quattro voci, ognuna con il suo sottomenu */
+    out.menuBtns = document.querySelectorAll('#screen-home .menu-btn').length;
+    document.getElementById('menuFrasi').click();
+    await sleep(90);
+    out.menuOpen = document.getElementById('subFrasi').classList.contains('open');
+    out.groupVisible = document.getElementById('groupList').offsetParent !== null;
+    document.getElementById('menuFrasi').click();
+    await sleep(80);
+    out.menuClosed = !document.getElementById('subFrasi').classList.contains('open');
 
     // apri livello 1
     startLevel(0);
@@ -73,6 +82,27 @@ app.whenReady().then(async () => {
     out.tvSvg = !!document.querySelector('#tvImage img');
     out.tvSvgLength = (document.querySelector('#tvImage img') || {}).src?.length || 0;
     out.tvIllustration = (document.querySelector('#tvImage img') || {}).getAttribute('src') || '';
+
+    /* slider della dimensione: ingrandisce caselle e tessere, e la scena cede
+       il posto (priorità alle caselle) */
+    out.slotSliders = document.querySelectorAll('input[data-slotzoom]').length;
+    const firstSlot = document.querySelector('#slotsWrap .slot');
+    out.slotH0 = firstSlot ? Math.round(firstSlot.getBoundingClientRect().height) : 0;
+    const slotSlider = document.querySelector('#screen-level input[data-slotzoom]');
+    if (slotSlider) {
+      slotSlider.value = '1.9';
+      slotSlider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    await sleep(140);
+    out.slotH1 = firstSlot ? Math.round(firstSlot.getBoundingClientRect().height) : 0;
+    out.slotLevel = document.querySelector('.app').dataset.slots;
+    out.stageHidden = getComputedStyle(document.querySelector('#screen-level .stage')).display === 'none';
+    if (slotSlider) {
+      slotSlider.value = '1';
+      slotSlider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    await sleep(140);
+    out.slotBack = firstSlot ? Math.round(firstSlot.getBoundingClientRect().height) : 0;
 
     // risolvi il livello 1 programmaticamente
     const missing = L.slots.filter(s => !s.filled);
@@ -357,6 +387,9 @@ app.whenReady().then(async () => {
   expect("card «La prima parola» fuori dai quattro percorsi", results.syllCard);
   expect("4 statistiche", results.homeStats === 4, results.homeStats);
   expect("20 parole nel laboratorio", results.wordListChips === 20, results.wordListChips);
+  expect("5 menu con sottomenu", results.menuBtns === 5, results.menuBtns);
+  expect("il sottomenu si apre", results.menuOpen && results.groupVisible, `${results.menuOpen}/${results.groupVisible}`);
+  expect("il sottomenu si richiude", results.menuClosed);
 
   console.log("\n— LIVELLO 1 (guidato) —");
   expect("schermata livello attiva", results.levelActive);
@@ -367,6 +400,10 @@ app.whenReady().then(async () => {
   expect("illustrazione riferita al file del livello 1", /illustrations\/01\.png$/.test(results.tvIllustration), results.tvIllustration);
   expect("livello completabile senza errori", results.completedL1);
   expect("tutte le caselle riempite", results.placedSlots === 8, results.placedSlots);
+  expect("slider in ogni esercizio", results.slotSliders === 3, results.slotSliders);
+  expect("lo slider ingrandisce le caselle", results.slotH1 > results.slotH0 + 4, `${results.slotH0}→${results.slotH1}`);
+  expect("priorità alle caselle: la scena cede il posto", results.slotLevel === "3" && results.stageHidden, `${results.slotLevel}/${results.stageHidden}`);
+  expect("riportando lo slider la casella torna piccola", results.slotBack <= results.slotH0 + 2, `${results.slotH0}/${results.slotBack}`);
 
   console.log("\n— LIVELLO 21 (coordinate) —");
   expect("connettore centrale", results.connectors === 1, results.connectors);

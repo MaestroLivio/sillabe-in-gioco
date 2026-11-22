@@ -11,7 +11,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 |---|---|
 | **Browser** | Doppio clic su `index.html` (o apri `dist/web/index.html`) |
 | **macOS** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
-| **Windows** | Esegui `SillabeInGioco-Setup-2.5.1.exe` e segui la procedura |
+| **Windows** | Esegui `SillabeInGioco-Setup-2.5.2.exe` e segui la procedura |
 | **ChromeOS** | `chrome://extensions` → *Modalità sviluppatore* → *Carica estensione non pacchettizzata* → cartella `dist/chromeos` |
 | **Chromebook / PWA** | Apri la versione web su HTTPS → menu Chrome → *Installa app* |
 
@@ -25,11 +25,21 @@ Per l'installazione tecnica vedi [README.md](README.md).
 
 - **Continua** riprende il livello dove eri rimasto.
 - **Livello a caso** propone un esercizio qualsiasi tra i 40.
-- **I cinque percorsi**: il primo, **La prima parola**, porta dal suono alla sillaba alla parola (12 tappe, 101 esercizi); gli altri quattro mostrano 10 livelli di frasi ciascuno con le stelle ottenute. Tocca un percorso per aprire il primo esercizio non ancora completato.
-- **Strumenti**: Parole, Suoni difficili, Esercizi, Stampa, Trofei, Aiuto.
-- **Formazione di parole**: le 20 parole da comporre, con la figura e lo stato di completamento;
-  tocca una parola per aprirla.
-- **Il tuo progresso**: livelli completati, stelle, precisione, tempo di gioco.
+- **Il tuo progresso** è nella scheda di benvenuto: il cerchio con la percentuale dei
+  40 livelli e, sotto, quattro numeri (livelli completati, stelle, precisione, tempo di gioco).
+- **Il viaggio delle sillabe**: la card subito sotto il benvenuto (vedi §2b).
+- **Imparare a leggere**: un menu con tre voci, ognuna con il suo elenco —
+  - **Le frasi**: i quattro percorsi delle frasi, 10 livelli ciascuno con le stelle
+    ottenute; tocca un percorso per aprire il primo livello non ancora completato.
+  - **La prima parola**: il percorso dal suono alla sillaba alla parola (12 tappe,
+    101 esercizi).
+  - **Formazione di parole**: le 20 parole da comporre, con la figura e lo stato di
+    completamento; in cima c'è «Continua dal laboratorio».
+- **Giochi e strumenti**: l'altro menu —
+  - **Giochi**: Suoni difficili ed Esercizi.
+  - **Strumenti**: Stampa, Trofei, Aiuto.
+- Le voci dei menu si aprono una alla volta e si richiudono toccandole di nuovo:
+  la home resta corta e ogni elenco compare solo quando serve.
 - L'ingranaggio in alto a destra apre le **impostazioni**; la ✕ chiude l'app (nel browser torna alla scheda precedente).
 
 ---
@@ -87,6 +97,7 @@ Dettagli e limiti: [`docs/VIAGGIO.md`](docs/VIAGGIO.md).
 | 🖨️ **STAMPA** | Genera la scheda A4 del livello corrente: frase, caselle, tessere da ritagliare |
 | 🔄 **RIFAI** | Svuota le caselle e rimette tutte le tessere nel vassoio |
 | 🎁 **HO FINITO** | Verifica il lavoro e dice quante sillabe mancano |
+| 🔍 **A− / A+** | Ingrandisce le caselle e i pezzi da trascinare, da 1× a 1,9×. Lo spazio si toglie prima alla scena, poi alla riga della parola: le caselle restano sempre intere |
 | ← → | Livello precedente / successivo, con contatore `n / 40` |
 
 ### L'illustrazione
@@ -156,7 +167,8 @@ precisione negli esercizi, uso della voce, livello completato senza suggerimenti
 
 ### 5a. Formazione di parole (20 parole)
 
-Dal riquadro **PAROLE** in home, oppure toccando una parola dall'elenco «Formazione di parole».
+Dal menu **Imparare a leggere → Formazione di parole** in home: «Continua dal
+laboratorio» apre la prima parola non completata, oppure tocca una parola dell'elenco.
 
 | Tappa | Parole | Cosa si unisce |
 |---|---|---|
@@ -197,8 +209,9 @@ Dal riquadro **SUONI DIFFICILI** in home. Si ascolta una parola e si sceglie **c
 | `sci` `sce` | sciarpa, pesce |
 | `spr` `str` `squ` `qua` | spremuta, strada, squalo, quaderno |
 
-Per ogni domanda la scheda mostra il **gruppo da riconoscere** e la parola con il gruppo
-evidenziato. Quattro opzioni: una sola grafia è giusta.
+La parola **si ascolta soltanto**: non è scritta a schermo, e nemmeno il gruppo da
+riconoscere lo è — altrimenti basterebbe copiare invece di scegliere. Quattro opzioni:
+una sola grafia è giusta, e dopo la risposta la voce rilegge la parola intera.
 
 ---
 

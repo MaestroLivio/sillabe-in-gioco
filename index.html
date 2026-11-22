@@ -125,7 +125,33 @@ button:disabled{opacity:.45;cursor:not-allowed}
   .hero .mascot{font-size:2.6rem}
   .progress-ring{width:64px;height:64px}
 }
-.hero{display:flex;gap:18px;align-items:center;background:linear-gradient(140deg,#fffdf8,#eaf6ff)}
+/* Menu della home: poche voci, e ogni voce apre il suo sottomenu.
+   Gli elenchi lunghi (percorsi, tappe, parole) non stanno più sparsi nella
+   home: erano tre schede che mostravano cose simili in punti diversi della
+   pagina. Ora ciascuno vive dentro il menu che lo riguarda e si apre al
+   bisogno, uno alla volta. */
+.menu-card{display:flex;flex-direction:column;gap:8px}
+.menu-btn{
+  display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:13px;
+  background:var(--cream);border:2px solid var(--line);text-align:left;font:inherit;
+  transition:transform .12s,border-color .12s
+}
+.menu-btn:hover{transform:translateY(-1px);border-color:var(--blue-l)}
+.menu-btn .mi{font-size:1.35rem;line-height:1;flex:0 0 auto}
+.menu-btn .mb{flex:1;min-width:0;font-weight:700;font-size:.9rem}
+.menu-btn .ms{display:block;font-weight:400;font-size:.71rem;color:var(--ink-soft);line-height:1.2}
+.menu-btn .chev{flex:0 0 auto;color:var(--ink-soft);transition:transform .18s}
+.menu-btn[aria-expanded="true"]{border-color:var(--blue);background:#eef7ff}
+.menu-btn[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.submenu{display:none}
+.submenu.open{display:block}
+.hero{display:flex;flex-wrap:wrap;gap:18px;align-items:center;background:linear-gradient(140deg,#fffdf8,#eaf6ff)}
+/* Le statistiche stanno nella scheda di benvenuto, sotto il cerchio del
+   progresso: erano una scheda a parte che ripeteva lo stesso dato. */
+.hero .stat-grid.mini{flex:1 0 100%;margin:0;gap:6px;grid-template-columns:repeat(4,1fr)}
+.hero .stat-grid.mini .stat{padding:6px 4px;background:transparent;border:none}
+.hero .stat-grid.mini .stat b{font-size:1rem}
+.hero .stat-grid.mini .stat span{font-size:.58rem}
 .hero .mascot{font-size:4.2rem;line-height:1;filter:drop-shadow(0 6px 0 rgba(37,56,77,.12));animation:bob 2.6s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 .hero h2{font-size:1.3rem;margin-bottom:6px}
@@ -256,10 +282,14 @@ button:disabled{opacity:.45;cursor:not-allowed}
   border-radius:16px;padding:14px 12px;min-height:86px;box-shadow:inset 0 2px 8px rgba(74,144,226,.12)
 }
 body.theme-night .slotrow{background:#1e2c3e;border-color:#33506e}
+/* `--sz` è la dimensione scelta con lo slider in fondo alla schermata:
+   crescono insieme casella, testo e tessere, così il pezzo da trascinare
+   resta della misura giusta per la casella che lo aspetta. */
 .slot{
-  min-width:56px;min-height:54px;padding:5px 11px;border-radius:12px;
+  min-width:calc(56px * var(--sz,1));min-height:calc(54px * var(--sz,1));
+  padding:calc(5px * var(--sz,1)) calc(11px * var(--sz,1));border-radius:12px;
   background:#fdfeff;border:3px solid #a9d2f2;display:grid;place-items:center;
-  font-size:1.3rem;font-weight:700;color:var(--blue-d);position:relative;
+  font-size:calc(1.3rem * var(--sz,1));font-weight:700;color:var(--blue-d);position:relative;
   transition:transform .12s,background .18s,border-color .18s
 }
 body.theme-night .slot{background:#2a3d55;border-color:#43648a;color:#dbeeff}
@@ -307,9 +337,10 @@ body.theme-night .slot.filled{background:#22402c;border-color:#4ec173;color:#a9e
 }
 body.theme-night .tile-pool{background:rgba(255,255,255,.04)}
 .tile{
-  min-width:62px;min-height:56px;padding:8px 16px;border-radius:14px;
+  min-width:calc(62px * var(--sz,1));min-height:calc(56px * var(--sz,1));
+  padding:calc(8px * var(--sz,1)) calc(16px * var(--sz,1));border-radius:14px;
   background:linear-gradient(180deg,#fffdf6,var(--cream));border:3px solid var(--orange);
-  color:#6b3f00;font-size:1.35rem;font-weight:700;display:grid;place-items:center;
+  color:#6b3f00;font-size:calc(1.35rem * var(--sz,1));font-weight:700;display:grid;place-items:center;
   user-select:none;-webkit-user-select:none;touch-action:none;cursor:grab;
   box-shadow:0 4px 0 rgba(207,122,16,.55);transition:transform .1s,box-shadow .1s
 }
@@ -322,6 +353,30 @@ body.theme-night .tile{background:#3a3020;color:#ffe0ad;border-color:#c78a2c}
 .tile.used{display:none}
 .tile.blink{animation:blink .45s 4}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* PRIORITÀ ALLE CASELLE — quando lo slider le ingrandisce, gli altri elementi
+   della schermata cedono il posto in quest'ordine: prima la scena (ridotta a
+   metà), poi la scena del tutto, poi la riga della parola che cresce e le
+   etichette del vassoio, infine il testo della mascotte. Caselle e pezzi da
+   trascinare non vengono mai sacrificati. */
+.app[data-slots="1"] .stage{max-height:min(38vh,210px);overflow:hidden}
+.app[data-slots="2"] .stage,
+.app[data-slots="3"] .stage{display:none}
+.app[data-slots="2"] .wordbig,
+.app[data-slots="3"] .wordbig{display:none}
+.app[data-slots="1"] .tiles-head h2,
+.app[data-slots="2"] .tiles-head h2,
+.app[data-slots="3"] .tiles-head h2{display:none}
+.app[data-slots="3"] .mtext span{display:none}
+.app[data-slots="3"] .toolrow .tool .tl{display:none}
+
+/* Slider della dimensione, in fondo agli esercizi */
+.slotzoom{
+  max-width:1080px;margin:6px auto 0;display:flex;align-items:center;
+  justify-content:center;gap:10px
+}
+.slotzoom .szl{font-size:.66rem;font-weight:700;letter-spacing:.5px;color:var(--ink-soft)}
+.slotzoom input[type=range]{width:100%;max-width:260px;accent-color:var(--blue)}
 
 /* ==========================================================================
    5. BOTTOM BAR
@@ -582,39 +637,66 @@ body.theme-night .trophy.unlocked{background:#3a3222}
         </div>
       </div>
       <div class="progress-ring" id="progressRing" role="img" aria-label="Progresso complessivo"><span id="progressPct">0%</span></div>
+      <div class="stat-grid mini" id="homeStats"></div>
     </div>
 
     <div class="card" id="viaggioHomeCard" style="grid-column:1/-1"></div>
 
-    <div class="card">
-      <h2>I cinque percorsi</h2>
-      <div id="syllPathCard"></div>
-      <div class="groups" id="groupList"></div>
-    </div>
+    <div class="card menu-card">
+      <h2>Imparare a leggere</h2>
+      <button class="menu-btn" id="menuFrasi" aria-expanded="false">
+        <span class="mi" aria-hidden="true">📚</span>
+        <span class="mb">Le frasi<span class="ms">40 livelli in 4 percorsi</span></span>
+        <span class="chev" aria-hidden="true">▾</span>
+      </button>
+      <div class="submenu" id="subFrasi"><div class="groups" id="groupList"></div></div>
 
-    <div class="card">
-      <h2>Strumenti</h2>
-      <p class="muted" style="margin-bottom:10px">Formazione di parole, suoni difficili, esercizi, schede da stampare, trofei e aiuto.</p>
-      <div class="tool-grid">
-        <button class="tool-btn" id="toolWords"><span class="ti">🔤</span><span class="tl">PAROLE</span></button>
-        <button class="tool-btn" id="toolSounds"><span class="ti">👂</span><span class="tl">SUONI DIFFICILI</span></button>
-        <button class="tool-btn" id="toolExercises"><span class="ti">🧰</span><span class="tl">ESERCIZI</span></button>
-        <button class="tool-btn" id="toolPrint"><span class="ti">🖨️</span><span class="tl">STAMPA</span></button>
-        <button class="tool-btn" id="toolTrophies"><span class="ti">🏆</span><span class="tl">TROFEI</span></button>
-        <button class="tool-btn" id="toolHelp"><span class="ti">❓</span><span class="tl">AIUTO</span></button>
+      <button class="menu-btn" id="menuSillabe" aria-expanded="false">
+        <span class="mi" aria-hidden="true">🔤</span>
+        <span class="mb">La prima parola<span class="ms">12 tappe, dai suoni alle parole</span></span>
+        <span class="chev" aria-hidden="true">▾</span>
+      </button>
+      <div class="submenu" id="subSillabe"><div id="syllPathCard"></div></div>
+
+      <button class="menu-btn" id="menuParole" aria-expanded="false">
+        <span class="mi" aria-hidden="true">🧩</span>
+        <span class="mb">Formazione di parole<span class="ms">20 parole da comporre</span></span>
+        <span class="chev" aria-hidden="true">▾</span>
+      </button>
+      <div class="submenu" id="subParole">
+        <div class="row" style="margin-bottom:8px">
+          <button class="btn ghost small" id="toolWords">▶ Continua dal laboratorio</button>
+        </div>
+        <div class="wordlist" id="wordList"></div>
       </div>
     </div>
 
-    <div class="card" id="wordsHomeCard">
-      <h2>Formazione di parole</h2>
-      <p class="muted" style="margin-bottom:10px">Prima si uniscono le lettere, poi le sillabe. Ogni parola ha la sua figura.</p>
-      <div class="wordlist" id="wordList"></div>
-    </div>
+    <div class="card menu-card">
+      <h2>Giochi e strumenti</h2>
+      <button class="menu-btn" id="menuGiochi" aria-expanded="false">
+        <span class="mi" aria-hidden="true">👂</span>
+        <span class="mb">Giochi<span class="ms">suoni difficili e allenamento</span></span>
+        <span class="chev" aria-hidden="true">▾</span>
+      </button>
+      <div class="submenu" id="subGiochi">
+        <div class="tool-grid">
+          <button class="tool-btn" id="toolSounds"><span class="ti">👂</span><span class="tl">SUONI DIFFICILI</span></button>
+          <button class="tool-btn" id="toolExercises"><span class="ti">🧰</span><span class="tl">ESERCIZI</span></button>
+        </div>
+      </div>
 
-    <div class="card">
-      <h2>Il tuo progresso</h2>
-      <div class="stat-grid" id="homeStats"></div>
-      <p class="muted" style="font-size:.74rem;margin-top:6px">I progressi sono salvati su questo dispositivo.</p>
+      <button class="menu-btn" id="menuStrumenti" aria-expanded="false">
+        <span class="mi" aria-hidden="true">🧷</span>
+        <span class="mb">Strumenti<span class="ms">stampa, trofei, aiuto</span></span>
+        <span class="chev" aria-hidden="true">▾</span>
+      </button>
+      <div class="submenu" id="subStrumenti">
+        <div class="tool-grid">
+          <button class="tool-btn" id="toolPrint"><span class="ti">🖨️</span><span class="tl">STAMPA</span></button>
+          <button class="tool-btn" id="toolTrophies"><span class="ti">🏆</span><span class="tl">TROFEI</span></button>
+          <button class="tool-btn" id="toolHelp"><span class="ti">❓</span><span class="tl">AIUTO</span></button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1432,7 +1514,9 @@ const DEFAULT_SETTINGS = {
   /* pausa fra un fonema e il successivo nell'ascolto «a suoni» (s):
      un fonema dietro l'altro senza pausa non si distingue */
   fonemeGap: 0.28,
-  exercise: "all"
+  exercise: "all",
+  /* dimensione di caselle e tessere negli esercizi (slider in fondo) */
+  slotScale: 1
 };
 
 function loadJSON(key, fallback) {
@@ -1899,7 +1983,7 @@ function showScreen(name) {
   // la variabile --bar-h dopo lo scambio, altrimenti il padding resta quello
   // della schermata precedente e l'ultima tessera finisce sotto la barra
   syncBottomBarHeight();
-  if (name === "home") renderHome();
+  if (name === "home") { closeMenus(null); renderHome(); }
   if (name === "trophies") renderTrophies();
 }
 
@@ -3784,6 +3868,82 @@ function openHelp() {
 }
 
 /* ------------------------------------------------------------------
+   15b. DIMENSIONE DI CASELLE E TESSERE + MENU DELLA HOME
+   ------------------------------------------------------------------ */
+
+/**
+ * Lo slider in fondo agli esercizi ingrandisce le caselle da riempire e i
+ * pezzi da trascinare.
+ *
+ * Non è uno zoom della pagina: il riadattamento rimisurerebbe tutto e
+ * l'ingrandimento si annullerebbe. Crescono solo caselle e tessere ("--sz"),
+ * e per lasciare loro il posto gli altri elementi cedono — vedi le regole
+ * `.app[data-slots=…]`: prima la scena a metà, poi la scena del tutto, poi la
+ * riga della parola e le etichette del vassoio. La priorità è delle caselle.
+ */
+function slotLevel(v) {
+  return v <= 1.02 ? "0" : v < 1.4 ? "1" : v < 1.65 ? "2" : "3";
+}
+function applySlotScale(v, persist) {
+  const value = Math.min(1.9, Math.max(1, Number(v) || 1));
+  settings.slotScale = value;
+  if (persist) saveJSON(SETTINGS_KEY, settings);
+  const app = document.querySelector(".app");
+  if (app) {
+    app.style.setProperty("--sz", String(value));
+    app.dataset.slots = slotLevel(value);
+  }
+  $$("input[data-slotzoom]").forEach(i => {
+    if (Number(i.value) !== value) i.value = String(value);
+  });
+  /* la barra cambia altezza con lo slider: la riserva va rimisurata prima del
+     riadattamento, altrimenti l'ultima fila di tessere finisce sotto */
+  syncBottomBarHeight();
+  scheduleFit();
+}
+function initSlotZoom() {
+  ["#screen-level", "#screen-words", "#screen-syll"].forEach(sel => {
+    const bar = document.querySelector(sel + " .bottombar");
+    if (!bar || bar.querySelector(".slotzoom")) return;
+    const box = el("div", "slotzoom");
+    box.innerHTML = `<span class="szl" aria-hidden="true">A−</span>
+      <input type="range" min="1" max="1.9" step="0.05" data-slotzoom
+        value="${settings.slotScale || 1}"
+        aria-label="Dimensione delle caselle e dei pezzi da trascinare">
+      <span class="szl" aria-hidden="true">A+</span>`;
+    const input = box.querySelector("input");
+    input.addEventListener("input", () => applySlotScale(parseFloat(input.value), true));
+    bar.appendChild(box);
+  });
+}
+
+/** Un sottomenu della home alla volta: gli altri si chiudono. */
+function closeMenus(except) {
+  $$("#screen-home .submenu").forEach(sub => {
+    if (sub === except) return;
+    sub.classList.remove("open");
+    const btn = sub.previousElementSibling;
+    if (btn && btn.classList.contains("menu-btn")) btn.setAttribute("aria-expanded", "false");
+  });
+}
+function initHomeMenu() {
+  $$("#screen-home .menu-btn").forEach(btn => {
+    const sub = btn.nextElementSibling;
+    if (!sub || !sub.classList.contains("submenu")) return;
+    btn.addEventListener("click", () => {
+      const open = !sub.classList.contains("open");
+      fx("click");
+      closeMenus(open ? sub : null);
+      sub.classList.toggle("open", open);
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      const label = (btn.querySelector(".mb").firstChild || {}).textContent || "";
+      announce(`${label.trim()} ${open ? "aperto" : "chiuso"}`);
+      scheduleFit();
+    });
+  });
+}
+
+/* ------------------------------------------------------------------
    16. EVENTI GLOBALI
    ------------------------------------------------------------------ */
 function switchScreenCleanup() {
@@ -3968,6 +4128,9 @@ document.addEventListener("keydown", e => {
 
 /* avvio */
 applySettings();
+initHomeMenu();
+initSlotZoom();
+applySlotScale(settings.slotScale || 1, false);
 renderHome();
 $$(".screen").forEach(s => s.classList.remove("active"));
 $("#screen-home").classList.add("active");

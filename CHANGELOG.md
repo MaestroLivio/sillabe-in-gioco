@@ -4,6 +4,32 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [2.5.2] — 2026-11-14
+
+### Cambiato
+- **Home con i sottomenu, senza sezioni ripetute.** Le sette schede della home
+  sono diventate tre blocchi: benvenuto (con le statistiche, che prima stavano
+  in una scheda a parte e ripetevano lo stesso progresso), la card del viaggio e
+  due menu a soffitto — «Imparare a leggere» (frasi, la prima parola, formazione
+  di parole) e «Giochi e strumenti» (suoni difficili, esercizi, stampa, trofei,
+  aiuto). Ogni voce apre il proprio elenco, uno alla volta; tornando alla home i
+  menu si richiudono.
+  - Ripetizioni eliminate: il pulsante «Parole» della scheda Strumenti duplicava
+    la scheda «Formazione di parole» (ora un solo elenco, con «Continua dal
+    laboratorio»); «Suoni difficili» ed «Esercizi» erano due riquadri per la
+    stessa schermata e ora stanno insieme sotto «Giochi».
+
+### Aggiunto
+- **Slider della dimensione negli esercizi.** In fondo alle tre schermate di
+  lavoro (frasi, parole, prima parola) uno slider da 1× a 1,9× ingrandisce le
+  caselle da riempire e i pezzi da trascinare, testo compreso, così il pezzo
+  resta proporzionato alla casella che lo aspetta. La scelta è salvata fra le
+  impostazioni.
+- **Le caselle hanno la priorità sulla scena.** Con lo slider alto la scena TV
+  si riduce a metà, poi sparisce, poi cedono la riga della parola e le etichette
+  del vassoio e infine si compatta la barra in basso: lo spazio si toglie a
+  tutto tranne che alle caselle.
+
 ## [2.5.1] — 2026-11-11
 
 ### Corretto
