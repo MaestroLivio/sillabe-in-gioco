@@ -14,6 +14,10 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
   calcola lo spazio disponibile e riduce la scena solo quanto serve; se la
   scena resta visibile, si allunga fino a riempire la parte bassa. Lo stesso
   riadattamento viene rifatto subito quando cambia la dimensione del testo.
+- **Le figure riservano il loro spazio prima di caricarsi.** Le immagini 16:9
+  della scena e del percorso sillabico hanno ora `aspect-ratio`, così il
+  riadattamento non misura una schermata più bassa di quella che diventa dopo
+  la decodifica e non lascia la barra sopra le tessere.
 
 ### Cambiato
 - **Le release future contengono solo Windows x64 e macOS Apple Silicon.**

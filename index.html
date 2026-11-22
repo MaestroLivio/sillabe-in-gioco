@@ -216,7 +216,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
    limita in altezza (e con lei la finestra bassa), così il resto si legge
    grande invece di far rimpicciolire tutto. */
 .tv-screen svg{max-height:min(42vh,340px)}
-.tv-screen img{display:block;width:100%;max-height:min(34vh,260px);object-fit:contain;border-radius:10px;background:#0e1f1d}
+.tv-screen img{display:block;width:100%;max-height:min(34vh,260px);aspect-ratio:16/9;object-fit:contain;border-radius:10px;background:#0e1f1d}
 /* Finestra bassa: la figura si abbassa e le zone di lavoro si stringono, così
    il testo resta grande e la schermata entra tutta senza scorrere. */
 @media (max-height:760px){
@@ -517,7 +517,7 @@ body.theme-night .syll-path{background:linear-gradient(160deg,#22334a,#1a2839);b
    il disegno manca, al suo posto compare l'emoji grande della parola. */
 .syllfigure{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px;min-height:0}
 .syllfigure .fem{font-size:4.4rem;line-height:1}
-.syllfigure .fimg{display:block;width:100%;max-height:min(22vh,170px);object-fit:contain;border-radius:10px;background:#0e1f1d}
+.syllfigure .fimg{display:block;width:100%;max-height:min(22vh,170px);aspect-ratio:16/9;object-fit:contain;border-radius:10px;background:#0e1f1d}
 
 /* Elenco delle tappe nel foglio «TAPPE» */
 .steplist{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
