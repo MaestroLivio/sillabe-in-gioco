@@ -291,12 +291,16 @@ Le release automatiche includono **macOS Apple Silicon**, **Windows x64** e il
 pacchetto **web / PWA** con l'estensione ChromeOS; Linux e macOS Intel non vengono
 più generati.
 
-Per la PWA: scarica `sillabe-web-<versione>.zip`, scompattalo su un hosting statico
-in HTTPS e apri `index.html`; da Chrome o Edge, *Installa app* (o l'icona di
-installazione nella barra degli indirizzi). Offline funziona dal secondo avvio,
-grazie al service worker. In locale: `npm run build:web`, poi
-`python3 -m http.server` dentro `dist/web` — il service worker vuole `http`, non
-`file://`.
+La **PWA è online su GitHub Pages**: https://maestrolivio.github.io/sillabe-in-gioco/
+— si apre nel browser, e da Chrome o Edge diventa un'app con *Installa app* (o
+l'icona nella barra degli indirizzi). Offline funziona dal secondo avvio, grazie al
+service worker. Il workflow `.github/workflows/pages.yml` ricostruisce e ripubblica
+`dist/web` a ogni push in `main` che tocchi l'app o il pacchetto web.
+
+In alternativa `sillabe-web-<versione>.zip` è allegato a ogni release e si può
+scompattare su qualsiasi hosting statico HTTPS. In locale: `npm run build:web`,
+poi `python3 -m http.server` dentro `dist/web` — il service worker vuole `http`,
+non `file://`.
 
 ---
 

@@ -12,6 +12,12 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
   insieme a Linux e macOS Intel. Ora un job `web` impacchetta PWA ed estensione
   ChromeOS a ogni tag, e i due zip vengono allegati alla release.
 
+- **La PWA è pubblicata su GitHub Pages**, all'indirizzo
+  https://maestrolivio.github.io/sillabe-in-gioco/: si apre nel browser e da
+  Chrome o Edge si installa come app, con il service worker attivo. Il workflow
+  `.github/workflows/pages.yml` ricostruisce e ripubblica `dist/web` a ogni push
+  in `main` che tocchi l'app, gli asset o il pacchetto web.
+
 ### Corretto
 - **Niente file `._*` nel pacchetto PWA.** Su un volume exFAT macOS affianca ogni
   file con un gemello AppleDouble: finiva nello zip e il browser lo scaricava

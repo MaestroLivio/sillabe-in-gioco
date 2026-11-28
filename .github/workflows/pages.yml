@@ -1,0 +1,69 @@
+name: Pubblica la PWA
+
+# La PWA ha bisogno di HTTPS: GitHub Pages serve `dist/web` così com'è,
+# senza duplicare in git i 470 MB di illustrazioni e voci che stanno già
+# nel repository. Il service worker (sw.js) è relativo, quindi funziona
+# sotto il sottopercorso /sillabe-in-gioco/ senza modifiche.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "sw.js"
+      - "manifest.webmanifest"
+      - "favicon.png"
+      - "css/**"
+      - "js/**"
+      - "icons/**"
+      - "illustrations/**"
+      - "audio/**"
+      - "scripts/package-web.js"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Build e deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Installa dipendenze
+        run: npm ci || npm install
+
+      - name: Icone
+        run: npm run icons
+
+      - name: Impacchetta la PWA
+        run: npm run build:web
+
+      - name: Prepara Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Carica l'artefatto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/web
+
+      - name: Pubblica
+        id: deployment
+        uses: actions/deploy-pages@v4

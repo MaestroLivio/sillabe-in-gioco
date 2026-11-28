@@ -12,6 +12,7 @@ Per l'installazione tecnica vedi [README.md](README.md).
 | **Browser** | Doppio clic su `index.html` (uso locale, senza installazione) |
 | **macOS Apple Silicon** | Apri il `.dmg` da `dist/`, trascina l'app in *Applicazioni*, avviala |
 | **Windows x64** | Esegui `SillabeInGioco-Setup-2.5.3.exe` e segui la procedura |
+| **PWA / Chromebook** | Apri https://maestrolivio.github.io/sillabe-in-gioco/ → menu Chrome o Edge → *Installa app* (offline dal secondo avvio) |
 
 > [!TIP]
 > Al primo avvio il sistema potrebbe chiedere il permesso di usare la voce:
