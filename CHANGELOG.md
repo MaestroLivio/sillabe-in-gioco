@@ -13,7 +13,7 @@ usa il [Versionamento Semantico](https://semver.org/lang/it/).
   ChromeOS a ogni tag, e i due zip vengono allegati alla release.
 
 - **La PWA è pubblicata su GitHub Pages**, all'indirizzo
-  https://maestrolivio.github.io/sillabe-in-gioco/: si apre nel browser e da
+  https://maestrolivio.github.io/SillabeInGioco/: si apre nel browser e da
   Chrome o Edge si installa come app, con il service worker attivo. Il workflow
   `.github/workflows/pages.yml` ricostruisce e ripubblica `dist/web` a ogni push
   in `main` che tocchi l'app, gli asset o il pacchetto web.
@@ -764,5 +764,5 @@ falliva.
   sintesi vocale italiana, suggerimento, rifai, stampa e navigazione.
 - Struttura dati `LEVELS` con modalità semplice e coordinata.
 
-[2.0.0]: https://github.com/MaestroLivio/sillabe-in-gioco/compare/v1.0.0...v2.0.0
-[1.0.0]: https://github.com/MaestroLivio/sillabe-in-gioco/releases/tag/v1.0.0
+[2.0.0]: https://github.com/MaestroLivio/SillabeInGioco/compare/v1.0.0...v2.0.0
+[1.0.0]: https://github.com/MaestroLivio/SillabeInGioco/releases/tag/v1.0.0

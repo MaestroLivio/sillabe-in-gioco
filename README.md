@@ -225,8 +225,8 @@ Tutte le 40 frasi sono diverse tra loro; il controllo è automatizzato (`npm run
 Serve **Node.js 18+** solo per lo sviluppo e il packaging. L'app in sé non ha dipendenze runtime.
 
 ```bash
-git clone https://github.com/MaestroLivio/sillabe-in-gioco.git
-cd sillabe-in-gioco
+git clone https://github.com/MaestroLivio/SillabeInGioco.git
+cd SillabeInGioco
 npm install          # solo per gli strumenti di build
 npm run serve        # http://localhost:4321
 ```
@@ -291,7 +291,7 @@ Le release automatiche includono **macOS Apple Silicon**, **Windows x64** e il
 pacchetto **web / PWA** con l'estensione ChromeOS; Linux e macOS Intel non vengono
 più generati.
 
-La **PWA è online su GitHub Pages**: https://maestrolivio.github.io/sillabe-in-gioco/
+La **PWA è online su GitHub Pages**: https://maestrolivio.github.io/SillabeInGioco/
 — si apre nel browser, e da Chrome o Edge diventa un'app con *Installa app* (o
 l'icona nella barra degli indirizzi). Offline funziona dal secondo avvio, grazie al
 service worker. Il workflow `.github/workflows/pages.yml` ricostruisce e ripubblica
@@ -341,7 +341,7 @@ non `file://`.
 ## Struttura del progetto
 
 ```
-sillabe-in-gioco/
+SillabeInGioco/
 ├── index.html                  # L'app completa (HTML + CSS + JS in un solo file)
 ├── manifest.webmanifest        # Manifest PWA
 ├── sw.js                       # Service worker (offline)

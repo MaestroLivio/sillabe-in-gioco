@@ -21,7 +21,7 @@ const fs = require("fs");
 const os = require("os");
 const crypto = require("crypto");
 
-const REPO = "MaestroLivio/sillabe-in-gioco";
+const REPO = "MaestroLivio/SillabeInGioco";
 const pkg = require(path.join(__dirname, "..", "package.json"));
 const VERSION = process.argv[2] || pkg.version;
 const BASE = `https://github.com/${REPO}/releases/latest/download`;

@@ -3,7 +3,7 @@ name: Pubblica la PWA
 # La PWA ha bisogno di HTTPS: GitHub Pages serve `dist/web` così com'è,
 # senza duplicare in git i 470 MB di illustrazioni e voci che stanno già
 # nel repository. Il service worker (sw.js) è relativo, quindi funziona
-# sotto il sottopercorso /sillabe-in-gioco/ senza modifiche.
+# sotto il sottopercorso /SillabeInGioco/ senza modifiche.
 
 on:
   push:

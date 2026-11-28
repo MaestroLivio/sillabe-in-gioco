@@ -41,7 +41,7 @@ const { execFileSync } = require("child_process");
 const ROOT = path.join(__dirname, "..", "..");
 const OUT = path.join(ROOT, "audio", "fonemi");
 const CACHE = path.join(os.tmpdir(), "sillabe-fonemi-src");
-const UA = "SillabeInGioco/2.4.0 (+https://github.com/MaestroLivio/sillabe-in-gioco)";
+const UA = "SillabeInGioco/2.4.0 (+https://github.com/MaestroLivio/SillabeInGioco)";
 
 const args = process.argv.slice(2);
 const check = args.includes("--check");

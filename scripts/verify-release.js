@@ -24,7 +24,7 @@ const { execFileSync } = require("child_process");
 
 const TAG = process.argv[2] || "v2.0.2";
 const KEEP = process.argv.includes("--keep");
-const REPO = "MaestroLivio/sillabe-in-gioco";
+const REPO = "MaestroLivio/SillabeInGioco";
 const EXPECTED = 67;            // illustrazioni attese in ogni artefatto
 /* Clip vocali attesi in ogni artefatto.
    I fonemi delle lettere (audio/fonemi/) non passano dal manifest della voce:

@@ -30,7 +30,7 @@ const path = require("path");
 const fs = require("fs");
 const crypto = require("crypto");
 
-const REPO = "MaestroLivio/sillabe-in-gioco";
+const REPO = "MaestroLivio/SillabeInGioco";
 const MANIFEST_URL = `https://github.com/${REPO}/releases/latest/download/aggiornamento.json`;
 const DOWNLOAD_BASE = `https://github.com/${REPO}/releases/latest/download`;
 const RELEASES_PAGE = `https://github.com/${REPO}/releases/latest`;

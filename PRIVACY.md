@@ -121,7 +121,7 @@ sostanziali al trattamento.
 ## Contatti
 
 Per domande sulla privacy: aprire una issue sul repository GitHub del progetto
-(`MaestroLivio/sillabe-in-gioco`).
+(`MaestroLivio/SillabeInGioco`).
 
 ---
 
