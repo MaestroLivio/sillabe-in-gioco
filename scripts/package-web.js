@@ -24,9 +24,17 @@ function copy(file, destDir) {
   fs.copyFileSync(path.join(ROOT, file), path.join(destDir, path.basename(file)));
 }
 
+/* Su un volume exFAT macOS accompagna ogni file con un gemello `._nome`
+   (AppleDouble). Copiarli anche solo per sbaglio sporca il pacchetto: finiscono
+   nello zip, il browser li scarica e il service worker non li conosce. */
+function isJunk(name) {
+  return name.startsWith("._") || name === ".DS_Store" || name === "__MACOSX";
+}
+
 function copyDir(src, dest) {
   fs.mkdirSync(dest, { recursive: true });
   for (const entry of fs.readdirSync(path.join(ROOT, src), { withFileTypes: true })) {
+    if (isJunk(entry.name)) continue;
     const from = path.join(ROOT, src, entry.name);
     const to = path.join(dest, entry.name);
     if (entry.isDirectory()) copyDir(path.join(src, entry.name), to);
@@ -38,7 +46,7 @@ function zip(dir, outName) {
   const out = path.join(DIST, outName);
   fs.rmSync(out, { force: true });
   try {
-    execFileSync("zip", ["-rq", out, "."], { cwd: dir });
+    execFileSync("zip", ["-rq", out, ".", "-x", "._*", "*/._*", "__MACOSX/*", "*/.DS_Store"], { cwd: dir });
     console.log("✔ " + path.relative(ROOT, out));
   } catch (e) {
     console.warn("! zip non disponibile, pacchetto non creato:", outName);

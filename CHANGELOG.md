@@ -4,6 +4,19 @@ Tutte le modifiche rilevanti di questo progetto sono documentate in questo file.
 Il formato segue [Keep a Changelog](https://keepachangelog.com/it/1.1.0/) e il progetto
 usa il [Versionamento Semantico](https://semver.org/lang/it/).
 
+## [Non pubblicato]
+
+### Aggiunto
+- **La release torna a includere la versione web / PWA.** La 2.5.3 era uscita
+  senza `sillabe-web-2.5.3.zip`, perché la build web era stata tolta dalla CI
+  insieme a Linux e macOS Intel. Ora un job `web` impacchetta PWA ed estensione
+  ChromeOS a ogni tag, e i due zip vengono allegati alla release.
+
+### Corretto
+- **Niente file `._*` nel pacchetto PWA.** Su un volume exFAT macOS affianca ogni
+  file con un gemello AppleDouble: finiva nello zip e il browser lo scaricava
+  come se fosse parte dell'app. La copia ora li salta e `zip` li esclude.
+
 ## [2.5.3] — 2026-11-22
 
 ### Corretto

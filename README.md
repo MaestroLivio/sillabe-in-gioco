@@ -249,8 +249,9 @@ Genera in `dist/`:
 - `Sillabe in Gioco-2.5.3-arm64.dmg` (Apple Silicon)
 - `Sillabe in Gioco-2.5.3-arm64-mac.zip` per l'aggiornamento automatico
 
-Le release ufficiali includono solo **macOS Apple Silicon** e **Windows x64**.
-macOS Intel, Linux, PWA e ChromeOS non vengono più pacchettizzati.
+Le release ufficiali includono **macOS Apple Silicon**, **Windows x64** e la
+**versione web / PWA** (`sillabe-web-<versione>.zip`, con l'estensione ChromeOS).
+macOS Intel e Linux non vengono più pacchettizzati.
 
 Installazione: apri il `.dmg` e trascina l'app in **Applicazioni**.
 
@@ -286,10 +287,16 @@ Requisiti: Windows 10/11 a 64 bit.
 
 ### Altre piattaforme
 
-Dalla versione 2.5.3 le release automatiche includono solo **macOS Apple Silicon**
-e **Windows x64**. Linux, macOS Intel, PWA e ChromeOS non vengono più generati:
-il codice resta apribile nel browser con `index.html`, ma non ci sono più pacchetti
-ufficiali per queste piattaforme.
+Le release automatiche includono **macOS Apple Silicon**, **Windows x64** e il
+pacchetto **web / PWA** con l'estensione ChromeOS; Linux e macOS Intel non vengono
+più generati.
+
+Per la PWA: scarica `sillabe-web-<versione>.zip`, scompattalo su un hosting statico
+in HTTPS e apri `index.html`; da Chrome o Edge, *Installa app* (o l'icona di
+installazione nella barra degli indirizzi). Offline funziona dal secondo avvio,
+grazie al service worker. In locale: `npm run build:web`, poi
+`python3 -m http.server` dentro `dist/web` — il service worker vuole `http`, non
+`file://`.
 
 ---
 
@@ -433,7 +440,8 @@ git push origin main --follow-tags
 
 La release viene creata da `.github/workflows/build.yml` con le note prese da
 `CHANGELOG.md`. La matrice di build contiene solo `macos-latest` e
-`windows-latest`; niente più Linux, macOS Intel, PWA o ChromeOS.
+`windows-latest`, più un job su Ubuntu che impacchetta la PWA e l'estensione
+ChromeOS; Linux e macOS Intel non vengono generati.
 
 Per una build locale e un caricamento manuale:
 
